@@ -130,6 +130,19 @@
     #app-frames.active { display: block; flex: 1; }
     .app-frame { position: absolute; inset: 0; border: none; display: none; width: 100%; height: 100%; }
     .app-frame.active { display: block; }
+    /* 기타 공연 탭 — iframe 대신 허브가 그리는 목록 */
+    .extra-page { overflow-y: auto; padding: 14px 16px 40px; background: var(--bg1); }
+    .xp-show { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
+    .xp-name { font-size: 16px; font-weight: 800; }
+    .xp-info { font-size: 12px; color: var(--text3); margin-top: 4px; line-height: 1.5; }
+    .xp-link { display: inline-block; font-size: 12px; margin-top: 6px; color: var(--text2); }
+    .xp-list { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .xp-sess { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; padding: 8px 10px; border-radius: 8px;
+               border: 1px solid var(--border); cursor: pointer; font-size: 13px; }
+    .xp-sess.mine { border-color: var(--text3); background: var(--bg3); }
+    .xp-when { font-weight: 700; min-width: 98px; }
+    .xp-cast { color: var(--text2); }
+    .xp-mark { margin-left: auto; font-size: 12px; font-weight: 700; }
 
     .cal-nav {
       display: flex; justify-content: space-between; align-items: center;
@@ -623,6 +636,39 @@
   </div>
 </div>
 
+<!-- 기타 공연 예매 기록 (앱이 없는 공연은 허브가 직접 받는다) -->
+<div class="overlay" id="ov-extra-rec" onclick="closeOnBg(event,'ov-extra-rec')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="custom-hd">
+      <div class="custom-title" id="xr-title">예매 기록</div>
+      <button class="custom-close" onclick="closeExtraRec()">✕</button>
+    </div>
+    <div class="form-row"><div class="form-label" id="xr-when"></div></div>
+    <div class="form-row">
+      <div class="form-label">좌석 (선택)</div>
+      <div style="display:flex;gap:6px">
+        <input class="form-input" type="text" id="xr-zone" placeholder="열 (예: B)" style="flex:1">
+        <input class="form-input" type="number" id="xr-num" placeholder="번호" style="flex:1">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">가격 (선택)</div>
+      <input class="form-input" type="number" id="xr-price" placeholder="예: 90000">
+    </div>
+    <div class="form-row">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px">
+        <input type="checkbox" id="xr-trans" onchange="document.getElementById('xr-trans-to').hidden=!this.checked"> 양도함 (관람으로 치지 않음)
+      </label>
+      <input class="form-input" type="text" id="xr-trans-to" placeholder="양도 받은 사람 (선택)" hidden style="margin-top:6px">
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" id="xr-del" onclick="deleteExtraRec()">기록 삭제</button>
+      <button class="btn-primary" onclick="saveExtraRec()">저장</button>
+    </div>
+  </div>
+</div>
+
 <!-- 설정 -->
 <div class="overlay" id="ov-settings" onclick="closeOnBg(event,'ov-settings')">
   <div class="sheet" id="sheet-settings">
@@ -877,6 +923,77 @@
     ? new URL('apps.json', location.href.replace(/[^/]*$/, '')).href
     : `https://${ORG}.github.io/apps.json`;
   const DISCOVERED_KEY = HUB_NS + 'discovered';
+
+  // ── 기타 공연 (콘서트처럼 앱 없이 일정만 있는 공연) ──
+  // apps.json 에 { "path": "hwinter2026/", "app": false } 로 올리고, 폴더에는 show.json + schedule.json 만 둔다.
+  // 허브에서는 공연마다 작품을 만들지 않고 '기타' 하나로 묶는다. 회차에는 공연 이름(_show)을 붙인다.
+  // schedule.json 의 배우 칸(cast1, cast2 …)은 작품 앱과 같은 모양이라 배우 필터가 그대로 걸린다.
+  const EXTRA_ID = 'app_extra';
+  const EXTRA_OFF_KEY = HUB_NS + 'extra_off';   // 사용자가 '기타'를 지웠으면 다시 넣지 않는다
+  const EXTRA_APP = {
+    id: EXTRA_ID, name: '기타', icon: '🎤', color: '#8A8A99', kind: 'extra',
+    scheduleUrl: APPS_INDEX_URL + '#extra', appUrl: '', deepLink: false,
+    recordsKey: HUB_NS + 'extra_records',      // 앱이 없으니 예매 기록은 허브가 갖는다
+  };
+  let extraShows = [];   // [{ id, name, icon, venue, price, url, firstDate, lastDate }]
+
+  async function extraEntries() {
+    try {
+      const r = await fetch(APPS_INDEX_URL, { cache: 'no-cache' });
+      if (!r.ok) return [];
+      const list = await r.json();
+      return (Array.isArray(list) ? list : [])
+        .filter(x => x && x.app === false && typeof x.path === 'string' && x.path)
+        .map(x => new URL(x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
+    } catch { return []; }
+  }
+  async function loadExtraSchedule() {
+    const urls = await extraEntries();
+    const shows = [], rows = [];
+    await Promise.all(urls.map(async base => {
+      try {
+        const [info, sch] = await Promise.all([
+          fetch(base + 'show.json', { cache: 'no-cache' }).then(r => r.json()),
+          fetch(base + 'schedule.json', { cache: 'no-cache' }).then(r => r.json()),
+        ]);
+        if (!Array.isArray(sch)) return;
+        const id = base.replace(/\/$/, '').split('/').pop();
+        const dates = sch.map(s => s.date).filter(Boolean).sort();
+        shows.push({ id, name: info.name || id, icon: info.icon || '', venue: info.venue || '',
+                     price: info.price || '', url: info.url || '', firstDate: dates[0], lastDate: dates[dates.length - 1] });
+        sch.forEach(s => rows.push({ ...s, _show: info.name || id, _showId: id }));
+      } catch {}
+    }));
+    extraShows = shows.sort((a, b) => (a.firstDate || '').localeCompare(b.firstDate || ''));
+    return rows;
+  }
+  // 작품 앱은 schedule.json 하나, '기타'는 여러 공연을 모은다
+  async function loadSchedule(app, opts) {
+    if (app.kind === 'extra') return loadExtraSchedule();
+    const r = await fetch(app.scheduleUrl, opts);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }
+  // 기타 공연이 하나라도 올라와 있으면 '기타'를 기본으로 켠다
+  async function ensureExtraApp() {
+    if (localStorage.getItem(EXTRA_OFF_KEY)) return;
+    const apps = getApps();
+    if (apps.some(a => a.id === EXTRA_ID)) return;
+    if (!(await extraEntries()).length) return;
+    apps.push({ ...EXTRA_APP });
+    saveApps(apps);
+  }
+  function addExtraApp() {
+    localStorage.removeItem(EXTRA_OFF_KEY);
+    const apps = getApps();
+    if (!apps.some(a => a.id === EXTRA_ID)) { apps.push({ ...EXTRA_APP }); saveApps(apps); }
+    loadSchedule(EXTRA_APP).then(rows => {
+      schedules[EXTRA_ID] = rows;
+      renderTabs(); renderFrames(); renderCalendar(); renderPresetList();
+    });
+  }
+  // 회차 이름 — '기타'는 공연 이름으로
+  const sessName = (app, s) => (s && s._show) || app.name;
   const PALETTE_FALLBACK = ['#7aacff','#f06070','#C09870','#0284c7','#1A6B72','#8B1A1A','#7B3FC4','#4CAF50'];
 
   function getDiscovered() {
@@ -930,7 +1047,7 @@
       if (!r.ok) return [];
       const list = await r.json();
       return (Array.isArray(list) ? list : [])
-        .filter(x => x && typeof x.path === 'string' && x.path)
+        .filter(x => x && x.app !== false && typeof x.path === 'string' && x.path)   // app:false 는 '기타' 공연
         .map(x => new URL(x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
     } catch { return []; }
   }
@@ -1140,6 +1257,12 @@
     const apps = getApps();
     const container = document.getElementById('app-frames');
     apps.forEach(app => {
+      if (app.kind === 'extra' && !document.getElementById(`frame-${app.id}`)) {
+        const div = document.createElement('div');
+        div.id = `frame-${app.id}`;
+        div.className = 'app-frame extra-page';
+        container.appendChild(div);
+      }
       if (app.appUrl && !document.getElementById(`frame-${app.id}`)) {
         const iframe = document.createElement('iframe');
         iframe.id = `frame-${app.id}`;
@@ -1149,7 +1272,7 @@
       }
     });
     const appIds = new Set(apps.map(a => a.id));
-    container.querySelectorAll('iframe').forEach(f => {
+    container.querySelectorAll('iframe, .extra-page').forEach(f => {
       if (!appIds.has(f.id.replace('frame-', ''))) f.remove();
     });
   }
@@ -1264,6 +1387,7 @@
       if (frame) {
         frame.classList.toggle('active', isActive);
         if (isActive && frame.src === 'about:blank') frame.src = app.appUrl;
+        if (isActive && app.kind === 'extra') renderExtraPage();
       }
       if (btn) {
         btn.style.cssText = isActive
@@ -1271,6 +1395,93 @@
           : '';
       }
     });
+  }
+
+  // ── 기타 공연 탭 ── 공연마다 정보와 회차, 내 기록
+  function renderExtraPage() {
+    const box = document.getElementById(`frame-${EXTRA_ID}`);
+    if (!box) return;
+    const rows = schedules[EXTRA_ID] || [];
+    const att  = getAttended();
+    const won  = n => n ? Number(n).toLocaleString() + '원' : '';
+    box.innerHTML = extraShows.length ? extraShows.map(sh => {
+      const sess = rows.filter(s => s._showId === sh.id)
+        .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
+      const list = sess.map(s => {
+        const d = new Date(s.date + 'T00:00:00');
+        const recs = (att[s.date] || []).filter(r => r.appId === EXTRA_ID && (!r.time || r.time === s.time));
+        const mine = recs.find(r => !r.transferred);
+        const tr   = !mine && recs.find(r => r.transferred);
+        const mark = mine ? (s.date < todayStr ? '✓ 관람' : '🎫 예매') : tr ? '↪ 양도' : '';
+        const seat = mine ? fmtSeat(mine) : '';
+        const cast = getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ');
+        return `<div class="xp-sess${mine ? ' mine' : ''}" onclick="openDay('${s.date}')">
+          <span class="xp-when">${s.date.slice(5).replace('-', '.')}(${DOW[d.getDay()]}) ${s.time || ''}</span>
+          <span class="xp-cast">${cast}</span>
+          ${mark ? `<span class="xp-mark">${mark}${seat ? ' · ' + seat : ''}</span>` : ''}
+        </div>`;
+      }).join('');
+      const period = sh.firstDate && (sh.firstDate === sh.lastDate ? sh.firstDate : sh.firstDate + ' ~ ' + sh.lastDate);
+      return `<div class="xp-show">
+        <div class="xp-name">${sh.icon ? sh.icon + ' ' : ''}${sh.name}</div>
+        <div class="xp-info">${[sh.venue, sh.price && '전석 ' + won(sh.price), period].filter(Boolean).join(' · ')}</div>
+        ${sh.url ? `<a class="xp-link" href="${sh.url}" target="_blank" rel="noopener">예매처 ›</a>` : ''}
+        <div class="xp-list">${list}</div>
+      </div>`;
+    }).join('') : '<div class="loading">올라온 기타 공연이 없습니다</div>';
+  }
+
+  let _xr = null;   // 편집 중인 회차 { ds, time, show, id }
+  function extraRecords() {
+    try { return JSON.parse(localStorage.getItem(EXTRA_APP.recordsKey)) || []; } catch { return []; }
+  }
+  function saveExtraRecords(list) { localStorage.setItem(EXTRA_APP.recordsKey, JSON.stringify(list)); }
+  function openExtraRec(ds, time) {
+    const s   = (schedules[EXTRA_ID] || []).find(x => x.date === ds && (x.time || '') === time);
+    const rec = extraRecords().find(r => r.date === ds && (r.time || '') === time);
+    _xr = { ds, time, show: s ? s._show : '', id: rec ? rec.id : null };
+    const d = new Date(ds + 'T00:00:00');
+    document.getElementById('xr-title').textContent = rec ? '예매 수정' : '예매 기록';
+    document.getElementById('xr-when').textContent =
+      `${_xr.show} · ${ds.slice(5).replace('-', '.')}(${DOW[d.getDay()]}) ${time}`;
+    document.getElementById('xr-zone').value  = rec?.seatZone || '';
+    document.getElementById('xr-num').value   = rec?.seatNumber ?? '';
+    document.getElementById('xr-price').value = rec?.price || '';
+    const tr = rec?.status === '양도';
+    document.getElementById('xr-trans').checked   = tr;
+    document.getElementById('xr-trans-to').hidden = !tr;
+    document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
+    document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
+    document.getElementById('ov-detail').classList.remove('open');
+    document.getElementById('ov-extra-rec').classList.add('open');
+  }
+  function closeExtraRec() { document.getElementById('ov-extra-rec').classList.remove('open'); }
+  function afterExtraRec() {
+    closeExtraRec(); renderCalendar(); renderExtraPage(); openDay(_xr.ds);
+  }
+  function saveExtraRec() {
+    const list = extraRecords();
+    const num  = document.getElementById('xr-num').value;
+    const tr   = document.getElementById('xr-trans').checked;
+    // 작품 앱 기록과 같은 모양 — getAttended() 가 그대로 읽는다
+    const rec = {
+      id: _xr.id || 'x' + Date.now().toString(36),
+      date: _xr.ds, time: _xr.time, show: _xr.show,
+      seatZone: document.getElementById('xr-zone').value.trim(),
+      seatNumber: num === '' ? null : Number(num),
+      price: Number(document.getElementById('xr-price').value) || null,
+      status: tr ? '양도' : '',
+      transferTo: tr ? document.getElementById('xr-trans-to').value.trim() : '',
+    };
+    const i = list.findIndex(r => r.id === rec.id);
+    if (i >= 0) list[i] = rec; else list.push(rec);
+    saveExtraRecords(list);
+    afterExtraRec();
+  }
+  function deleteExtraRec() {
+    if (!_xr.id || !confirm('이 회차 예매 기록을 지울까요?')) return;
+    saveExtraRecords(extraRecords().filter(r => r.id !== _xr.id));
+    afterExtraRec();
   }
 
   function openHiddenApps() {
@@ -1689,7 +1900,7 @@
           <div class="wk-time">${s.time || '—'}</div>
           <div class="wk-body">
             <div class="wk-line1">
-              <span class="wk-app" style="color:${app.color}">${app.icon ? app.icon + ' ' : ''}${app.name}</span>
+              <span class="wk-app" style="color:${app.color}">${app.icon ? app.icon + ' ' : ''}${sessName(app, s)}</span>
               ${mark}${seat ? `<span class="wk-seat">${seat}</span>` : ''}
               ${extra ? `<span class="wk-note">${extra}</span>` : ''}
             </div>
@@ -1906,9 +2117,12 @@
       ).join('');
       const memoSnip = note.memo ? `<span class="note-memo-snip">${note.memo.slice(0,40)}</span>` : '';
       // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
+      // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
       const jumpBtn = canJump(s._app)
         ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">${s._app.name}에서 보기 ›</button>`
-        : '';
+        : s._app.kind === 'extra'
+          ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
+          : '';
       const noteRow = `<div class="note-row">
         ${thumbsHtml}
         ${memoSnip}
@@ -1918,7 +2132,7 @@
       return `<div class="session-row">
         <div class="session-time">${s.time}</div>
         <div class="session-body">
-          <span class="session-tag" style="${appStyle(s._app.color)}">${s._app.name}</span>
+          <span class="session-tag" style="${appStyle(s._app.color)}">${sessName(s._app, s)}</span>
           <div class="session-cast">${cast}</div>
           ${attHtml}
           ${(evs => evs ? `<div class="wk-evs">${evs}</div>` : '')(eventsOn(s._app.id, ds).map(e =>
@@ -2164,6 +2378,7 @@
   function deleteApp(id) {
     if (!confirm('앱을 목록에서 삭제하시겠습니까?')) return;
     saveApps(getApps().filter(a => a.id !== id));
+    if (id === EXTRA_ID) localStorage.setItem(EXTRA_OFF_KEY, '1');
     delete schedules[id];
     renderTabs();
     renderFrames();
@@ -2227,8 +2442,14 @@
       </button>
       ${_donePresetsOpen ? done.map(row).join('') : ''}` : '';
 
+    const extraRow = !getApps().some(a => a.id === EXTRA_ID)
+      ? `<div class="preset-item" onclick="addExtraApp()">
+          <div class="preset-dot" style="background:${EXTRA_APP.color}"></div>
+          <div class="preset-name">${EXTRA_APP.icon} 기타 공연 (콘서트 등)</div>
+          <div class="preset-add">+ 추가</div>
+        </div>` : '';
     document.getElementById('preset-list').innerHTML =
-      live.map(row).join('') + doneHtml +
+      live.map(row).join('') + extraRow + doneHtml +
       `<button class="add-app-btn" style="margin-top:8px" onclick="discoverApps(false)">
         🔄 저장소에서 새 작품 찾기
       </button>`;
@@ -2623,9 +2844,7 @@
     try {
       await Promise.all(apps.map(async app => {
         try {
-          const r = await fetch(app.scheduleUrl, { cache: 'no-cache' });
-          if (!r.ok) throw new Error('HTTP ' + r.status);
-          schedules[app.id] = await r.json();
+          schedules[app.id] = await loadSchedule(app, { cache: 'no-cache' });
         } catch (e) {
           failed.push(`${app.name}(${e.message})`);
         }
@@ -2670,6 +2889,7 @@
     const t = new Date();
     currentYear = t.getFullYear(); currentMonth = t.getMonth();
     syncPresetIcons();
+    await ensureExtraApp();
     renderTabs();
     renderFrames();
     await migratePhotosToIndexedDB();
@@ -2679,9 +2899,7 @@
     const failed = [];
     await Promise.all(apps.map(async app => {
       try {
-        const r = await fetch(app.scheduleUrl);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        schedules[app.id] = await r.json();
+        schedules[app.id] = await loadSchedule(app);
       } catch (e) {
         failed.push(`${app.name}(${e.message})`);
       }
@@ -2706,7 +2924,7 @@
   _pvImg.addEventListener('dblclick', (e) => { e.stopPropagation(); pvToggleZoom(); });
 
   // 뒤로가기 버튼: 오버레이 닫기 (PWA 앱 종료 방지)
-  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-app-form','ov-filter','ov-settings','ov-detail'];
+  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-extra-rec','ov-app-form','ov-filter','ov-settings','ov-detail'];
   history.pushState({pwa:true}, '');
   window.addEventListener('popstate', () => {
     history.pushState({pwa:true}, '');

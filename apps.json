@@ -1,3 +1,9 @@
 [
-  { "path": "ever2026/" }
+  {
+    "path": "ever2026/"
+  },
+  {
+    "path": "hwinter2026/",
+    "app": false
+  }
 ]
