@@ -593,7 +593,8 @@ frame.addEventListener('load', () => {
   // schedule.json / events.json fetch 가 끝날 시간을 준다
   const start = Date.now();
   (function wait() {
-    const ready = W.getSchedule && W.getSchedule().length > 0;
+    // events.json 이 schedule.json 보다 늦게 오면(배포 주소에서 실제로 그랬다) 이벤트 검사가 빈 목록으로 실패한다
+    const ready = W.getSchedule && W.getSchedule().length > 0 && W.getEvents && W.getEvents().length > 0;
     if (ready || Date.now() - start > 6000) {
       // 10/27~11/1 기록을 저장하면 쿠폰팩 자동 추가 confirm 이 뜬다.
       // headless 에서는 응답이 없어 멈추므로 기본 거절로 스텁한다.
