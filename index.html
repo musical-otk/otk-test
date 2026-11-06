@@ -1,0 +1,2717 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>m.diary</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192-v2.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="m.diary">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#1a1a1a" id="meta-theme">
+  <style>
+    :root {
+      --bg1: #111118;
+      --bg2: #1a1a24;
+      --bg3: #22222e;
+      --border: #333340;
+      --text1: #f0f0f0;
+      --text2: #aaaaaa;
+      --text3: #666670;
+      --sat: #7aacff;
+      --attended: #44aa66;
+      --custom: #a78bfa;
+      --custom-bg: rgba(167,139,250,0.16);
+      --custom-bd: rgba(167,139,250,0.36);
+    }
+    body.light {
+      --bg1: #f8f8f6;
+      --bg2: #ffffff;
+      --bg3: #f0f0ee;
+      --border: #e0e0dc;
+      --text1: #1a1a1a;
+      --text2: #555550;
+      --text3: #999990;
+      --sat: #2a5caa;
+      --attended: #2a8a4a;
+      --custom: #7c3aed;
+      --custom-bg: rgba(124,58,237,0.08);
+      --custom-bd: rgba(124,58,237,0.28);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; overscroll-behavior: none; }
+    body {
+      background: var(--bg1); color: var(--text1);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    #app {
+      max-width: 480px; margin: 0 auto; position: relative;
+      /* 달력은 페이지 자체가 스크롤된다. 영역 안에서 스크롤되면
+         주소창이 접히지 않아 보이는 높이가 계속 좁아진다. */
+      min-height: var(--app-h, 100dvh);
+      display: flex; flex-direction: column;
+    }
+    /* iframe 을 띄울 때만 화면 높이에 고정한다. */
+    #app.frame-mode {
+      height: var(--app-h, 100dvh); min-height: 0; overflow: hidden;
+    }
+
+    .header {
+      flex-shrink: 0;
+      position: sticky; top: 0; z-index: 20;
+      background: var(--bg1); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 12px;
+      padding-top: calc(10px + env(safe-area-inset-top));
+      transition: background 0.2s, border-color 0.2s;
+      overflow-x: auto;
+    }
+    .header-title {
+      font-size: 13px; font-weight: 700; flex: 1; cursor: pointer;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 56px;
+    }
+    .hbtn {
+      background: none; border: none; cursor: pointer; color: var(--text2);
+      font-size: 15px; padding: 5px 6px; border-radius: 8px; line-height: 1;
+      flex-shrink: 0; transition: background 0.15s;
+    }
+    .hbtn:active { background: var(--bg3); }
+    #app-tabs { display: flex; gap: 6px; flex-shrink: 0; }
+    .app-btn {
+      padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+      white-space: nowrap; flex-shrink: 0; cursor: pointer;
+      border: 1px solid var(--border); background: none; color: var(--text3);
+      transition: all 0.15s;
+    }
+    .app-btn:active { opacity: 0.7; }
+    .app-btn-more { color: var(--text3); border-style: dashed; }
+
+    .app-list-note { font-size: 10px; color: var(--text3); font-weight: 500; margin-top: 2px; }
+    .app-list-eye, .app-list-mini {
+      background: none; border: 1px solid var(--border); color: var(--text3);
+      font-size: 12px; cursor: pointer; padding: 4px 7px; border-radius: 8px;
+      line-height: 1; flex-shrink: 0;
+    }
+    .app-list-eye.on { border-color: transparent; }
+    .app-list-eye:active, .app-list-mini:active { background: var(--bg3); }
+
+    /* 아이콘 대신 현재 상태를 글자로 적는 버튼 */
+    .app-list-vis {
+      border: 1px solid var(--border); background: none; color: var(--text3);
+      font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer;
+      padding: 5px 9px; border-radius: 8px; line-height: 1; flex-shrink: 0;
+      min-width: 42px; transition: all 0.15s;
+    }
+    .app-list-vis:active { background: var(--bg3); }
+    .app-list-vis.mode-show { color: var(--custom); border-color: var(--custom-bd); background: var(--custom-bg); }
+    .app-list-vis.mode-hide { color: var(--text3); border-style: dashed; }
+
+    /* 종료된 공연 접기 머리 */
+    .app-group {
+      display: flex; align-items: center; justify-content: space-between; width: 100%;
+      background: none; border: none; border-top: 1px solid var(--border);
+      color: var(--text3); font-size: 12px; font-weight: 700; font-family: inherit;
+      cursor: pointer; padding: 10px 2px 8px; margin-top: 6px;
+    }
+    .app-group:active { color: var(--text2); }
+    .app-group-caret { font-size: 11px; }
+    .preset-date { font-size: 10px; color: var(--text3); margin-right: 6px; flex-shrink: 0; }
+
+    #view-cal { flex: 1; }
+    #view-cal.hidden { display: none; }
+
+    /* 기본은 숨김. 켜져 있으면 flex:1 로 달력과 화면을 반씩 나눠 가져
+       달력이 중간에서 잘린다. */
+    #app-frames { display: none; position: relative; }
+    #app-frames.active { display: block; flex: 1; }
+    .app-frame { position: absolute; inset: 0; border: none; display: none; width: 100%; height: 100%; }
+    .app-frame.active { display: block; }
+
+    .cal-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 14px 8px;
+    }
+    .nav-btn {
+      background: none; border: none; color: var(--text2); font-size: 22px;
+      cursor: pointer; padding: 4px 10px; border-radius: 8px;
+    }
+    .nav-btn:active { background: var(--bg3); }
+    .cal-month { font-size: 17px; font-weight: 700; }
+
+    .cal-seg { display: flex; gap: 6px; padding: 0 12px 10px; }
+    .seg-btn {
+      flex: 1; padding: 7px 6px; border-radius: 9px; cursor: pointer;
+      font-size: 12px; font-weight: 700; font-family: inherit;
+      border: 1px solid var(--border); background: none; color: var(--text3);
+      transition: all 0.15s;
+    }
+    .seg-btn.on { background: var(--custom-bg); border-color: var(--custom-bd); color: var(--custom); }
+    .seg-btn:active { opacity: 0.7; }
+    .seg-filter { flex: 0 0 auto; padding: 7px 12px; }
+    /* 월/주 — 붙어 있는 한 덩어리 토글 */
+    .seg-view { display: flex; flex: 0 0 auto; }
+    .seg-view .seg-btn { flex: 0 0 auto; padding: 7px 10px; }
+    .seg-view .seg-btn:first-child { border-radius: 9px 0 0 9px; }
+    .seg-view .seg-btn:last-child  { border-radius: 0 9px 9px 0; margin-left: -1px; }
+
+    /* ── 주간 보기 — 하루씩 세로로, 회차마다 캐스팅·좌석까지 펼친다 ── */
+    #cal-week { padding: 0 12px 88px; }
+    .wk-day { border-top: 1px solid var(--border); padding: 8px 0 6px; }
+    .wk-day-hd { display: flex; align-items: center; gap: 6px; padding: 2px 2px 6px;
+                 font-size: 13px; font-weight: 700; color: var(--text2); cursor: pointer; }
+    .wk-day-hd.sunday   { color: #c06060; }
+    .wk-day-hd.saturday { color: var(--sat); }
+    .wk-day-hd .wk-today { font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 6px;
+                           background: var(--text1); color: var(--bg1); }
+    .wk-empty { font-size: 12px; color: var(--text3); font-weight: 500; margin-left: 4px; }
+    .wk-sess { display: flex; gap: 10px; padding: 7px 8px; margin-bottom: 4px;
+               border-radius: 10px; border: 1px solid transparent; cursor: pointer; }
+    .wk-sess:active { opacity: 0.7; }
+    /* 내 회차(예매·관람·기타 일정)만 작품 색으로 칠한다 — 배경색은 인라인.
+       예전엔 흰 배경 하나라 줄무늬처럼 보이고 예매로 읽히지 않았다. */
+    .wk-sess.mine .wk-bar { width: 4px; }
+    .wk-sess.transferred { opacity: 0.5; }
+    .wk-bar { width: 3px; border-radius: 2px; flex-shrink: 0; }
+    .wk-time { font-size: 13px; font-weight: 800; min-width: 40px; padding-top: 1px; }
+    .wk-body { flex: 1; min-width: 0; }
+    .wk-line1 { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 12px; }
+    .wk-app { font-weight: 700; }
+    .wk-mark { font-size: 11px; font-weight: 700; }
+    .wk-mark.att { color: var(--attended); }
+    .wk-mark.booked { color: var(--custom); }
+    .wk-mark.trans { color: var(--text3); }
+    .wk-seat { font-size: 11px; color: var(--text2); }
+    .wk-note { font-size: 11px; color: var(--text3); }
+    .wk-cast { font-size: 12px; color: var(--text2); margin-top: 3px; line-height: 1.5; }
+    .wk-cast b { color: var(--text1); }
+    .wk-evs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+    .wk-ev { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; line-height: 1.4; }
+    /* 오늘 — 칸 전체를 띄워 한눈에 찾게 한다 */
+    .wk-day.today { border-top-color: transparent; background: var(--custom-bg);
+                    border: 1.5px solid var(--custom-bd); border-radius: 12px;
+                    padding: 8px 8px 6px; margin: 4px -8px; }
+    .wk-day.today + .wk-day { border-top-color: transparent; }
+    .wk-day.today .wk-day-hd { color: var(--text1); font-size: 14px; }
+    .wk-day.past .wk-day-hd { opacity: 0.55; }
+
+    .filter-summary {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+      background: var(--custom-bg); border: 1px solid var(--custom-bd);
+      color: var(--custom); border-radius: 10px; padding: 9px 12px;
+      font-size: 12px; font-weight: 700; margin-bottom: 10px;
+    }
+    .filter-clear {
+      background: none; border: 1px solid var(--custom-bd); color: var(--custom);
+      font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer;
+      padding: 4px 10px; border-radius: 8px; flex-shrink: 0;
+    }
+    /* 배우 필터의 작품별 소제목 */
+    .filter-group {
+      display: flex; align-items: center; gap: 6px; width: 100%;
+      background: none; border: none; font-family: inherit; cursor: pointer; text-align: left;
+      font-size: 13px; font-weight: 700; color: var(--text2); padding: 10px 2px;
+    }
+    .filter-group:active { opacity: 0.7; }
+    .filter-group-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .filter-group-name { flex-shrink: 0; }
+    .filter-group-picked {
+      flex: 1; min-width: 0; font-size: 11px; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .filter-group .app-group-caret { margin-left: auto; color: var(--text3); }
+
+    .cal-grid { padding: 0 10px 24px; }
+    .cal-dow { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 4px; }
+    .dow-cell { text-align: center; font-size: 11px; color: var(--text3); padding: 4px 0; font-weight: 600; }
+    .dow-cell:first-child { color: #c06060; }
+    .dow-cell:last-child  { color: var(--sat); }
+
+    .cal-days { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+    .cal-cell {
+      display: flex; flex-direction: column; align-items: center; min-width: 0;
+      padding: 6px 3px 6px; border-radius: 8px; min-height: 58px; cursor: default;
+    }
+    .cal-cell.has-schedule { background: var(--bg2); }
+    .cal-cell.clickable    { cursor: pointer; }
+    .cal-cell.clickable:active { background: var(--bg3); }
+
+    .date-wrap { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; margin-bottom: 3px; }
+    .date-num  { font-size: 13px; color: var(--text2); font-weight: 500; line-height: 1; }
+    .cal-cell.sunday   .date-num { color: #c06060; }
+    .cal-cell.saturday .date-num { color: var(--sat); }
+    .cal-cell.today .date-wrap   { background: var(--text1); border-radius: 50%; }
+    .cal-cell.today .date-num    { color: var(--bg1); font-weight: 700; }
+
+    .attended-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--attended); margin-bottom: 2px; }
+
+    .badges { display: flex; flex-direction: column; gap: 3px; align-items: stretch; width: 100%; padding: 0 2px; min-width: 0; }
+
+    /* 관람/예매한 회차만 칩으로 강조한다. 작품명 대신 색으로 구분하므로
+       한 줄이면 충분하다. 예전엔 3줄이라 하루 4회차에 카드만 12줄이었다. */
+    .sess-card {
+      border-radius: 6px; padding: 2px 4px; width: 100%; min-width: 0; overflow: hidden;
+      display: flex; align-items: center; gap: 3px;
+    }
+    /* 시각이 남는 폭을 먹고, 뒤에 붙는 표시들은 오른쪽에 차례로 놓인다 */
+    .sess-card-time { flex: 1; min-width: 0;
+                      font-size: 9px; font-weight: 800; line-height: 1.4; letter-spacing: -0.3px;
+                      overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sess-card-icons { font-size: 8px; font-weight: 700; line-height: 1; flex-shrink: 0; opacity: 0.75; }
+    /* 사진 있음. 🖼️ 이모지는 시각을 밀어내서 칩 색을 그대로 쓰는 점으로 바꿨다. */
+    .sess-card-pic { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0;
+                     background: currentColor; opacity: 0.8; }
+    /* 양도 — 표는 있었지만 안 봤다. 관람과 헷갈리지 않게 흐리게. */
+    .sess-card.transferred { opacity: 0.5; }
+    .sess-card.transferred .sess-card-time { text-decoration: line-through; }
+
+    /* 안 가는 회차 — 회차가 적으면 시각을 그대로 적는다. */
+    .sess-dim { display: flex; align-items: center; gap: 3px; padding: 0 2px; min-width: 0;
+                font-size: 8.5px; font-weight: 600; line-height: 1.5; color: var(--text3); }
+    .sess-dim i { width: 3px; height: 7px; border-radius: 1px; flex-shrink: 0; display: block; }
+    .sess-dim span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* 회차가 몰린 날만 시간 축으로 접는다. 눈금의 좌우 위치가 곧 시각. */
+    .sess-axis { position: relative; height: 10px; width: 100%; margin-top: 1px;
+                 border-top: 1px solid var(--border); }
+    .sess-axis i { position: absolute; top: 2px; width: 3px; height: 6px; border-radius: 1px;
+                   transform: translateX(-50%); display: block; }
+    .axis-legend { font-size: 8px; color: var(--text3); text-align: center;
+                   padding: 6px 0 0; letter-spacing: 0.2px; }
+
+    .fab {
+      /* 페이지가 스크롤되므로 fixed. 480px 폭 기준으로 오른쪽에 붙인다. */
+      position: fixed; right: max(16px, calc(50% - 240px + 16px));
+      bottom: calc(20px + env(safe-area-inset-bottom));
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--custom); color: #fff;
+      border: none; font-size: 22px; cursor: pointer; line-height: 1;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+      z-index: 30;
+    }
+    .fab:active { opacity: 0.8; }
+
+    .loading { text-align: center; padding: 48px 16px; color: var(--text3); font-size: 13px; }
+
+    .toast {
+      position: fixed; left: 50%; transform: translateX(-50%) translateY(12px);
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      background: var(--bg3); color: var(--text1); border: 1px solid var(--border);
+      padding: 9px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      max-width: 88vw; text-align: center; z-index: 40;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 이모지 🔄 는 색이 제멋대로라 옆의 ☀️ ⚙️ 와 따로 놀았다. currentColor 를 따르는 선 아이콘. */
+    .hbtn-icon { display: inline-flex; align-items: center; justify-content: center; padding: 6px; }
+    .hbtn-icon svg { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hbtn-icon.spinning svg { animation: spin 0.8s linear infinite; }
+
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.48);
+      display: flex; align-items: flex-end; z-index: 200;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .overlay.open { opacity: 1; pointer-events: all; }
+    .sheet {
+      width: 100%; max-width: 480px; margin: 0 auto;
+      background: var(--bg2); border-radius: 20px 20px 0 0;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+      transform: translateY(100%); overflow-y: auto;
+      transition: background 0.2s, transform 0.26s cubic-bezier(.32,.72,0,1);
+    }
+    .overlay.open .sheet { transform: translateY(0); }
+    .sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+
+    #sheet-detail { max-height: 70vh; }
+    .sheet-date-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+    .sheet-date { font-size: 14px; font-weight: 700; color: var(--text2); }
+    .sheet-add-btn {
+      background: var(--custom-bg); color: var(--custom); border: 1px solid var(--custom-bd);
+      border-radius: 16px; font-size: 11px; font-weight: 700; padding: 4px 10px; cursor: pointer;
+    }
+    .session-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; border-top: 1px solid var(--border);
+    }
+    .session-time { font-size: 14px; font-weight: 700; min-width: 46px; padding-top: 2px; }
+    .session-body { flex: 1; }
+    .session-tag {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 5px; margin-bottom: 4px; line-height: 1.5;
+    }
+    .session-cast { font-size: 14px; font-weight: 500; }
+    .session-meta { font-size: 11px; color: var(--text3); margin-top: 3px; }
+    .session-attended { font-size: 11px; color: var(--attended); }
+    .session-transferred { font-size: 11px; color: var(--text3); }
+    .session-booked { font-size: 11px; font-weight: 700; color: var(--custom); }
+    .session-acts { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; flex-shrink: 0; padding-top: 2px; }
+    .session-act-btn {
+      background: none; border: none; color: var(--text3); font-size: 15px;
+      cursor: pointer; padding: 3px 5px; border-radius: 6px; line-height: 1;
+    }
+    .session-act-btn:active { background: var(--bg3); }
+
+    #sheet-settings { max-height: 85vh; }
+    .settings-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px 10px;
+    }
+    .settings-title { font-size: 15px; font-weight: 700; }
+    .settings-close {
+      background: none; border: none; color: var(--text2);
+      font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px;
+    }
+    .settings-body { padding: 0 16px 8px; }
+    .section-title {
+      font-size: 11px; font-weight: 700; color: var(--text3);
+      letter-spacing: 0.4px; padding: 10px 0 8px;
+      border-top: 1px solid var(--border);
+    }
+    .hint { font-size: 11px; color: var(--text3); padding-bottom: 6px; }
+    .actor-list { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 4px; }
+    .chip {
+      padding: 6px 13px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      cursor: pointer; border: 1.5px solid var(--border);
+      background: var(--bg3); color: var(--text2); transition: all 0.15s;
+    }
+
+    .app-list-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .app-list-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .app-list-name { flex: 1; font-size: 14px; font-weight: 600; }
+    .app-list-del {
+      background: none; border: none; color: var(--text3); font-size: 18px;
+      cursor: pointer; padding: 4px 8px; border-radius: 6px; line-height: 1;
+    }
+    .app-list-del:active { background: var(--bg3); }
+    .add-app-btn {
+      margin: 12px 0 4px; width: 100%; padding: 11px;
+      background: none; border: 1.5px dashed var(--border);
+      border-radius: 10px; color: var(--text3); font-size: 13px; font-weight: 600;
+      cursor: pointer;
+    }
+    .add-app-btn:active { background: var(--bg3); }
+
+    #sheet-custom, #sheet-app-form { max-height: 90vh; }
+    .custom-hd { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
+    .custom-title { font-size: 15px; font-weight: 700; }
+    .custom-close { background: none; border: none; color: var(--text2); font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+    .form-row { padding: 8px 16px; overflow: visible; }
+    .form-label { font-size: 11px; color: var(--text3); font-weight: 700; margin-bottom: 5px; }
+    .form-input {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 9px 12px; color: var(--text1);
+      font-size: 14px; font-family: inherit;
+    }
+    .form-input:focus { outline: none; border-color: var(--custom-bd); }
+    .form-actions { display: flex; gap: 8px; padding: 16px; }
+    .btn-primary { flex: 1; background: var(--custom); color: #fff; border: none; border-radius: 10px; padding: 12px; font-size: 14px; font-weight: 700; cursor: pointer; }
+    .btn-cancel  { padding: 12px 18px; background: var(--bg3); border: none; border-radius: 10px; color: var(--text2); font-size: 14px; cursor: pointer; }
+    .color-picker { display: flex; gap: 8px; flex-wrap: wrap; padding: 4px 0; }
+    .preset-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 10px;
+      border: 1.5px solid var(--border); background: var(--bg3);
+      cursor: pointer; transition: all 0.15s;
+    }
+    .preset-item:active { opacity: 0.7; }
+    .preset-item.added { opacity: 0.4; cursor: default; pointer-events: none; }
+    .preset-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .preset-name { flex: 1; font-size: 14px; font-weight: 600; }
+    .preset-add { font-size: 12px; color: var(--text3); font-weight: 700; }
+
+    .color-swatch {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 2px solid transparent; cursor: pointer;
+      transition: transform 0.1s, border-color 0.15s; flex-shrink: 0;
+    }
+    .color-swatch.selected { border-color: var(--text1); transform: scale(1.2); }
+    .color-swatch:active { transform: scale(0.9); }
+
+    /* ── 메모/사진 ── */
+    .note-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .note-thumb-wrap { position: relative; flex-shrink: 0; }
+    .note-thumb {
+      width: 52px; height: 52px; object-fit: cover; border-radius: 8px;
+      border: 1px solid var(--border); cursor: pointer; display: block;
+    }
+    .note-thumb-del {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 50%;
+      width: 18px; height: 18px; font-size: 10px; line-height: 18px; text-align: center;
+      cursor: pointer; color: var(--text2);
+    }
+    .note-memo-snip { font-size: 11px; color: var(--text3); flex: 1; white-space: pre-wrap; word-break: break-all; max-height: 32px; overflow: hidden; }
+    .jump-btn {
+      background: none; border: 1px solid var(--border); color: var(--text2);
+      font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer;
+      padding: 6px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+    }
+    .jump-btn:active { background: var(--bg3); }
+    .note-add-btn {
+      font-size: 11px; color: var(--text3); background: none;
+      border: 1px solid var(--border); border-radius: 12px; padding: 4px 10px;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .note-add-btn:active { background: var(--bg3); }
+    .note-photos-area { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0 4px; }
+    .note-photo-add {
+      width: 72px; height: 72px; border-radius: 8px;
+      border: 1.5px dashed var(--border); background: var(--bg3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; cursor: pointer; flex-shrink: 0; color: var(--text3);
+    }
+    .note-photo-add:active { opacity: 0.6; }
+    .note-large-thumb { width: 72px; height: 72px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; display: block; }
+    .note-thumb-item { position: relative; flex-shrink: 0; }
+    .note-thumb-item-del {
+      position: absolute; top: 3px; right: 3px;
+      background: rgba(0,0,0,0.6); border-radius: 50%;
+      width: 20px; height: 20px; font-size: 11px; line-height: 20px; text-align: center;
+      cursor: pointer; color: #fff;
+    }
+
+    /* ── 사진 뷰어 ── */
+    #ov-photo-view {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.96);
+      z-index: 400; display: none; flex-direction: column;
+      align-items: center; justify-content: center; overflow: hidden;
+      touch-action: none; overscroll-behavior: none;
+    }
+    #ov-photo-view.open { display: flex; }
+    #photo-viewer-img {
+      max-width: 100vw; max-height: 100dvh; object-fit: contain;
+      touch-action: none; user-select: none; -webkit-user-select: none;
+      transform-origin: center center; cursor: zoom-in;
+    }
+    #photo-viewer-img.pv-zoomed { cursor: zoom-out; }
+    #photo-viewer-img.pv-zoom-anim { transition: transform 0.25s ease; }
+    .pv-close {
+      position: absolute; top: calc(16px + env(safe-area-inset-top)); right: 16px;
+      background: rgba(255,255,255,0.15); color: #fff; border: none;
+      font-size: 18px; padding: 6px 12px; border-radius: 20px; cursor: pointer; z-index: 1;
+    }
+    .pv-download {
+      position: absolute; top: calc(16px + env(safe-area-inset-top)); left: 16px;
+      background: rgba(255,255,255,0.15); color: #fff; border: none;
+      font-size: 16px; padding: 6px 12px; border-radius: 20px; cursor: pointer; z-index: 1;
+    }
+    .pv-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.15); color: #fff; border: none;
+      font-size: 22px; padding: 10px 14px; border-radius: 50%; cursor: pointer; z-index: 1;
+    }
+    .pv-nav.prev { left: 12px; }
+    .pv-nav.next { right: 12px; }
+    .pv-nav:active { background: rgba(255,255,255,0.3); }
+    .pv-counter {
+      position: absolute; bottom: calc(20px + env(safe-area-inset-bottom));
+      color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <div class="header">
+    <div class="header-title" onclick="goToToday()">m.diary</div>
+    <button class="hbtn hbtn-icon" id="sync-btn" aria-label="동기화"
+            title="각 앱의 관람 기록과 스케줄 다시 읽기" onclick="syncNow()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"
+           stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+      ><path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/><polyline points="20.5 4 20.5 9.5 15 9.5"/></svg></button>
+    <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+    <button class="hbtn" onclick="openSettings()">⚙️</button>
+    <div id="app-tabs"></div>
+  </div>
+
+  <div id="view-cal">
+    <div class="cal-nav">
+      <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+      <div class="cal-month" id="cal-month-label"></div>
+      <button class="nav-btn" onclick="changeMonth(1)">›</button>
+    </div>
+    <div class="cal-seg">
+      <div class="seg-view">
+        <button class="seg-btn" id="seg-month" onclick="setCalView('month')">월</button>
+        <button class="seg-btn" id="seg-week"  onclick="setCalView('week')">주</button>
+      </div>
+      <button class="seg-btn" id="seg-mine" onclick="setCalMode('mine')">내 기록</button>
+      <button class="seg-btn" id="seg-all"  onclick="setCalMode('all')">전체 회차</button>
+      <button class="seg-btn seg-filter" id="seg-filter" onclick="openFilter()">🔎</button>
+    </div>
+    <div id="cal-week" hidden></div>
+    <div class="cal-grid" id="cal-grid">
+      <div class="cal-dow">
+        <div class="dow-cell">일</div><div class="dow-cell">월</div>
+        <div class="dow-cell">화</div><div class="dow-cell">수</div>
+        <div class="dow-cell">목</div><div class="dow-cell">금</div>
+        <div class="dow-cell">토</div>
+      </div>
+      <div class="cal-days" id="cal-days"></div>
+      <div class="axis-legend" id="axis-legend" style="display:none"></div>
+    </div>
+    <div id="status" class="loading">스케줄 불러오는 중…</div>
+    <button class="fab" onclick="openCustomForm('')">+</button>
+  </div>
+
+  <div id="app-frames"></div>
+  <!-- 앱 탭에서도 동기화를 누를 수 있다. #view-cal 안에 두면 그때 안 보인다. -->
+  <div id="toast" class="toast"></div>
+
+</div>
+
+<!-- 날짜 상세 -->
+<div class="overlay" id="ov-detail" onclick="closeOnBg(event,'ov-detail')">
+  <div class="sheet" id="sheet-detail">
+    <div class="sheet-handle"></div>
+    <div class="sheet-date-row">
+      <div class="sheet-date" id="sheet-date"></div>
+      <button class="sheet-add-btn" onclick="openCustomFormForDay()">+ 기타 추가</button>
+    </div>
+    <div id="sheet-content"></div>
+  </div>
+</div>
+
+<!-- 커스텀 이벤트 폼 -->
+<div class="overlay" id="ov-custom" onclick="closeOnBg(event,'ov-custom')">
+  <div class="sheet" id="sheet-custom">
+    <div class="sheet-handle"></div>
+    <div class="custom-hd">
+      <div class="custom-title" id="custom-form-title">기타 일정 추가</div>
+      <button class="custom-close" onclick="closeCustomForm()">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-label">날짜</div>
+      <input class="form-input" type="date" id="cf-date">
+    </div>
+    <div class="form-row">
+      <div class="form-label">시간 (선택)</div>
+      <input class="form-input" type="time" id="cf-time">
+    </div>
+    <div class="form-row">
+      <div class="form-label">공연명</div>
+      <input class="form-input" type="text" id="cf-name" placeholder="공연 이름">
+    </div>
+    <div class="form-row">
+      <div class="form-label">메모 (선택)</div>
+      <input class="form-input" type="text" id="cf-comment" placeholder="메모">
+    </div>
+    <div class="form-row">
+      <div class="form-label">색상</div>
+      <div class="color-picker" id="cf-colors"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">사진</div>
+      <div class="note-photos-area" id="cf-photos-area">
+        <div class="note-photo-add" onclick="document.getElementById('cf-photo-file').click()">+</div>
+      </div>
+      <input type="file" id="cf-photo-file" accept="image/*" multiple style="display:none" onchange="handleCustomPhotos(this)">
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeCustomForm()">취소</button>
+      <button class="btn-primary" onclick="saveCustomEvent()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 설정 -->
+<div class="overlay" id="ov-settings" onclick="closeOnBg(event,'ov-settings')">
+  <div class="sheet" id="sheet-settings">
+    <div class="sheet-handle"></div>
+    <div class="settings-hd">
+      <div class="settings-title">설정</div>
+      <button class="settings-close" onclick="closeSettings()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div class="section-title" style="border-top:none;padding-top:2px">앱 목록</div>
+      <div class="hint">탭으로 등록할 앱을 추가하세요.</div>
+      <div id="app-list-ui"></div>
+      <button class="add-app-btn" onclick="openAppForm()">+ 앱 추가</button>
+      <div class="section-title">보기 필터</div>
+      <div class="hint">달력에 어떤 작품·배우를 띄울지 고릅니다.</div>
+      <button class="add-app-btn" onclick="openFilter()">🔎 필터 열기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 필터 — 잠깐 한두 작품만 보고 싶을 때가 잦아 설정과 따로 뺀다 -->
+<div class="overlay" id="ov-filter">
+  <div class="sheet settings-sheet">
+    <div class="sheet-handle"></div>
+    <div class="settings-hd">
+      <div class="settings-title">보기 필터</div>
+      <button class="settings-close" onclick="closeFilter()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div id="actor-filters"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 숨겨진 공연 — 종료된 공연도 탭 설정을 바꾸지 않고 바로 열어본다 -->
+<div class="overlay" id="ov-hidden" onclick="closeOnBg(event,'ov-hidden')">
+  <div class="sheet settings-sheet">
+    <div class="sheet-handle"></div>
+    <div class="settings-hd">
+      <div class="settings-title">숨겨진 공연</div>
+      <button class="settings-close" onclick="closeHiddenApps()">✕</button>
+    </div>
+    <div class="settings-body">
+      <div id="hidden-app-list" style="display:flex;flex-direction:column;gap:6px;padding-bottom:4px"></div>
+      <button class="app-group" onclick="closeHiddenApps();openSettings()">
+        <span>탭 표시 설정</span><span class="app-group-caret">›</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 앱 추가 폼 -->
+<div class="overlay" id="ov-app-form" onclick="closeOnBg(event,'ov-app-form')">
+  <div class="sheet" id="sheet-app-form">
+    <div class="sheet-handle"></div>
+    <div class="custom-hd">
+      <div class="custom-title">앱 추가</div>
+      <button class="custom-close" onclick="closeAppForm()">✕</button>
+    </div>
+    <div id="preset-section" style="padding:0 16px 4px">
+      <div class="form-label" style="padding:6px 0 8px">알려진 앱</div>
+      <div id="preset-list" style="display:flex;flex-direction:column;gap:6px"></div>
+    </div>
+    <div style="padding:4px 16px 4px;margin-top:8px">
+      <button class="app-group" id="af-manual-toggle" onclick="toggleManualForm()">
+        <span>직접 추가</span><span class="app-group-caret">▾</span>
+      </button>
+    </div>
+    <!-- 알려진 앱은 누르면 바로 추가된다. 입력칸은 목록에 없는 앱을 넣을 때만 쓴다. -->
+    <div id="af-manual" hidden>
+    <div class="form-row" style="padding-top:0">
+      <div class="form-label">앱 이름</div>
+      <input class="form-input" id="af-name" placeholder="예: 라져">
+    </div>
+    <div class="form-row">
+      <div class="form-label">아이콘 (이모지 또는 1-2글자, 선택)</div>
+      <input class="form-input" id="af-icon" placeholder="예: ✈">
+    </div>
+    <div class="form-row">
+      <div class="form-label">스케줄 JSON URL</div>
+      <input class="form-input" id="af-schedule-url" type="url" placeholder="https://...schedule.json">
+    </div>
+    <div class="form-row">
+      <div class="form-label">앱 URL (탭으로 열 앱, 선택)</div>
+      <input class="form-input" id="af-app-url" type="url" placeholder="https://...">
+    </div>
+    <div class="form-row">
+      <div class="form-label">관람기록 키 (선택)</div>
+      <input class="form-input" id="af-records-key" placeholder="예: roger_records">
+      <div class="hint" style="margin-top:5px">앱이 사용하는 localStorage 키. 비워두면 관람기록 연동 없음.</div>
+    </div>
+    <div class="form-row">
+      <div class="form-label">색상</div>
+      <div class="color-picker" id="af-colors"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeAppForm()">취소</button>
+      <button class="btn-primary" onclick="saveAppForm()">추가</button>
+    </div>
+    </div>
+  </div>
+</div>
+
+<!-- 메모/사진 폼 -->
+<div class="overlay" id="ov-note" onclick="closeOnBg(event,'ov-note')">
+  <div class="sheet" id="sheet-note" style="max-height:88vh">
+    <div class="sheet-handle"></div>
+    <div class="custom-hd">
+      <div class="custom-title" id="note-form-title">메모 / 사진</div>
+      <button class="custom-close" onclick="closeNoteForm()">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-label">사진</div>
+      <div class="note-photos-area" id="note-photos-area"></div>
+      <input type="file" id="note-file" accept="image/*" multiple style="display:none" onchange="handleNotePhotos(this)">
+    </div>
+    <div class="form-row">
+      <div class="form-label">메모</div>
+      <textarea class="form-input" id="note-memo-input" rows="4" placeholder="관람 메모..." style="resize:none;line-height:1.5"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeNoteForm()">취소</button>
+      <button class="btn-primary" onclick="saveNoteForm()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 사진 뷰어 -->
+<div id="ov-photo-view" onclick="if(event.target===this)closePhotoViewer()">
+  <button class="pv-close" onclick="closePhotoViewer()">✕</button>
+  <button class="pv-download" onclick="pvDownload()">⬇</button>
+  <button class="pv-nav prev" id="pv-prev" onclick="pvNav(-1)">‹</button>
+  <img id="photo-viewer-img" alt="">
+  <button class="pv-nav next" id="pv-next" onclick="pvNav(1)">›</button>
+  <div class="pv-counter" id="pv-counter"></div>
+</div>
+
+<script>
+  // 테스트 사본(/otk-test/)은 같은 주소(origin)라 실제 허브와 저장소를 같이 쓴다.
+  // 설정 키만 따로 두어 섞이지 않게 한다. 관람 기록(<작품>_records)은 그대로 같이 읽는다.
+  const IS_TEST_HUB = location.pathname.startsWith('/otk-test/');
+  const HUB_NS = IS_TEST_HUB ? 'test_hub_' : 'hub_';
+  const APPS_KEY   = HUB_NS + 'apps';
+  const PREFS_KEY  = HUB_NS + 'prefs';
+  const THEME_KEY  = HUB_NS + 'theme';
+  const CUSTOM_KEY = HUB_NS + 'custom';
+  const DOW        = ['일','월','화','수','목','금','토'];
+
+  const COLOR_PALETTE = [
+    '#7aacff','#f06070','#a78bfa','#f472b6',
+    '#fb923c','#facc15','#4ade80','#22d3ee','#f87171',
+  ];
+
+  function hexToRgba(hex, alpha) {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function appStyle(color) {
+    return `background:${hexToRgba(color,0.16)};color:${color};border:1px solid ${hexToRgba(color,0.36)}`;
+  }
+
+  // ── 앱 설정 ──
+  const PRESET_APPS = [
+    {
+      id: 'app_outcasts',
+      name: '아웃캐스트',
+      icon: '🦌',
+      scheduleUrl: 'https://musical-otk.github.io/outcasts2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/outcasts2026/',
+      color: '#7aacff',
+      recordsKey: 'outcasts_records',
+      deepLink: false,   // ?date= 처리가 없는 구버전 앱
+    },
+    {
+      id: 'app_eoduk',
+      name: '어둑시니',
+      icon: '🌕',
+      scheduleUrl: 'https://musical-otk.github.io/sinimuni2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/sinimuni2026/',
+      color: '#f06070',
+      recordsKey: 'eoduk_records',
+      deepLink: false,   // ?date= 처리가 없는 구버전 앱
+    },
+    {
+      id: 'app_widerstand',
+      name: '비더슈탄트',
+      icon: '⚔️',
+      scheduleUrl: 'https://musical-otk.github.io/widerstand2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/widerstand2026/',
+      color: '#C09870',
+      recordsKey: 'wider_records',
+    },
+    {
+      id: 'app_ikkisup',
+      name: '이끼숲',
+      icon: '🌿',
+      scheduleUrl: 'https://musical-otk.github.io/ikkisup2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/ikkisup2026/',
+      color: '#1A6B72',
+      recordsKey: 'ikkisup_records',
+    },
+    {
+      id: 'app_dive',
+      name: '다이브',
+      icon: '🫧',
+      scheduleUrl: 'https://musical-otk.github.io/dive2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/dive2026/',
+      color: '#0284c7',
+      recordsKey: 'dive_records',
+    },
+    {
+      id: 'app_fated',
+      name: 'FATED',
+      icon: '🗡️',   // 비더슈탄트가 ⚔️ 를 쓰고 있어 한 자루 검으로 구분 (로고도 검 한 자루)
+      scheduleUrl: 'https://musical-otk.github.io/fated2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/fated2026/',
+      color: '#12161F',
+      recordsKey: 'fated_records',
+    },
+    {
+      id: 'app_william',
+      name: '윌리엄들',
+      icon: '📜',
+      scheduleUrl: 'https://musical-otk.github.io/william2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/william2026/',
+      color: '#3A2414',
+      recordsKey: 'william_records',
+    },
+    {
+      id: 'app_shining',
+      name: '샤이닝',
+      icon: '✨',
+      scheduleUrl: 'https://musical-otk.github.io/shining2026/schedule.json',
+      appUrl: 'https://musical-otk.github.io/shining2026/',
+      color: '#55515F',
+      recordsKey: 'shining_records',
+    },
+  ];
+
+  // ── 프리셋 자동 발견 ──
+  // 새 작품을 만들 때마다 PRESET_APPS 를 손으로 고쳐야 했다.
+  // musical-otk 계정의 저장소를 훑어 schedule.json 이 있는 것을 프리셋 후보로 만든다.
+  // (musical-otk 은 조직이 아니라 사용자 계정이라 /users 를 쓴다. /orgs 는 404)
+  const ORG = 'musical-otk';
+  const NON_DIARY = ['admin', 'sample', 'otk-schedule', 'otk-test', 'musical-otk.github.io', '.github'];
+  // 저장소 하나에 작품을 폴더로 모은 경우의 목록. [{ "path": "ever2026/" }] — 나머지 정보는 앱에서 읽는다.
+  // 실제: musical-otk.github.io 저장소 루트 / 테스트 사본: /otk-test/apps.json
+  const APPS_INDEX_URL = IS_TEST_HUB
+    ? new URL('apps.json', location.href.replace(/[^/]*$/, '')).href
+    : `https://${ORG}.github.io/apps.json`;
+  const DISCOVERED_KEY = HUB_NS + 'discovered';
+  const PALETTE_FALLBACK = ['#7aacff','#f06070','#C09870','#0284c7','#1A6B72','#8B1A1A','#7B3FC4','#4CAF50'];
+
+  function getDiscovered() {
+    try { return JSON.parse(localStorage.getItem(DISCOVERED_KEY)) || []; }
+    catch { return []; }
+  }
+
+  // 앱이 자기 정보를 갖고 있다. 저장소 이름을 쓰는 대신 그걸 읽는다.
+  //   manifest.json — 작품명(short_name), 색(theme_color)
+  //   index.html    — 이모지(<title>), 기록 키(APP_PREFIX), 딥링크 지원 여부
+  // recordsKey 를 못 읽으면 허브 달력에 관람 기록이 하나도 안 뜬다. 그게 핵심이다.
+  async function readAppMeta(appUrl) {
+    const meta = { name: '', icon: '', color: '', recordsKey: null, deepLink: undefined };
+
+    try {
+      const m = await (await fetch(appUrl + 'manifest.json', { cache: 'no-cache' })).json();
+      meta.name  = m.short_name || m.name || '';
+      meta.color = m.theme_color || '';
+    } catch {}
+
+    try {
+      const html = await (await fetch(appUrl + 'index.html', { cache: 'no-cache' })).text();
+
+      const t = html.match(/<title>([^<]*)<\/title>/);
+      if (t) {
+        const raw = t[1].trim();
+        const em  = raw.match(/^(\p{Extended_Pictographic}[\p{Extended_Pictographic}️‍]*)/u);
+        if (em) meta.icon = em[1];
+        if (!meta.name) {
+          meta.name = raw.replace(/^(\p{Extended_Pictographic}[\p{Extended_Pictographic}️‍]*)\s*/u, '')
+                         .replace(/\s*관극\s*다이어리\s*$/, '').trim();
+        }
+      }
+
+      const p = html.match(/APP_PREFIX\s*=\s*['"]([^'"]+)['"]/);
+      if (p) meta.recordsKey = p[1] + 'records';
+
+      // ?date= 를 처리하는 앱만 '앱에서 보기' 버튼을 띄운다
+      if (!/function openFromHub/.test(html)) meta.deepLink = false;
+    } catch {}
+
+    return meta;
+  }
+
+  // 폴더 작품 목록 — 파일이 없거나 깨져도 저장소 탐색은 계속한다
+  async function folderAppUrls() {
+    try {
+      const r = await fetch(APPS_INDEX_URL, { cache: 'no-cache' });
+      if (!r.ok) return [];
+      const list = await r.json();
+      return (Array.isArray(list) ? list : [])
+        .filter(x => x && typeof x.path === 'string' && x.path)
+        .map(x => new URL(x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
+    } catch { return []; }
+  }
+
+  async function discoverApps(silent) {
+    // ① 저장소마다 앱 하나 (기존 방식) ② 통합 저장소 안 폴더마다 앱 하나 (apps.json)
+    // 둘 중 하나가 막혀도(GitHub API 제한 등) 나머지는 살린다
+    let repoErr = null;
+    const repoUrls = await (async () => {
+      try {
+        const res = await fetch(`https://api.github.com/users/${ORG}/repos?per_page=100&sort=updated`);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const repos = await res.json();
+        return repos
+          .map(r => r.name)
+          .filter(n => !n.startsWith('_') && !NON_DIARY.includes(n))
+          .map(n => `https://${ORG}.github.io/${n}/`);
+      } catch (e) { repoErr = e; return []; }
+    })();
+    const folderUrls = await folderAppUrls();
+    // 같은 주소가 두 번 나오면 한 번만 (폴더 이름이 저장소 이름과 겹치면 저장소가 그 주소를 차지한다)
+    const appUrls = [...new Set([...repoUrls, ...folderUrls])];
+    if (!appUrls.length && repoErr) {
+      if (!silent) alert('저장소 목록을 불러오지 못했습니다: ' + repoErr.message);
+      return getDiscovered();
+    }
+
+    // schedule.json 이 실제로 있는 앱만 남긴다
+    const found = [];
+    // 이미 읽어둔 것은 다시 받지 않는다. 앱 코드가 190KB 라 매번 받으면 무겁다.
+    const cached = {};
+    getDiscovered().forEach(d => { if (d.recordsKey) cached[d.scheduleUrl] = d; });
+
+    await Promise.all(appUrls.map(async (appUrl, i) => {
+      const url = appUrl + 'schedule.json';
+      // 저장소 이름이든 폴더 이름이든 주소의 마지막 칸
+      const name = appUrl.replace(/\/$/, '').split('/').pop();
+      try {
+        const r = await fetch(url, { method: 'GET', cache: 'no-cache' });
+        if (!r.ok) return;
+        const rows = await r.json();
+        if (!Array.isArray(rows) || !rows.length) return;
+        const last = rows.reduce((m, x) => (x.date && x.date > m ? x.date : m), '');
+        const meta = cached[url] || await readAppMeta(appUrl);
+        found.push({
+          id: 'app_' + name.replace(/[^a-z0-9]/gi, '_'),
+          // 저장소 이름(ikkisup2026, stone2026_v2)이 그대로 뜨면 알아보기 어렵다.
+          name: meta.name || name,
+          icon: meta.icon || '',
+          scheduleUrl: url,
+          appUrl,
+          color: meta.color || PALETTE_FALLBACK[i % PALETTE_FALLBACK.length],
+          recordsKey: meta.recordsKey || null,
+          deepLink: meta.deepLink,
+          lastDate: last
+        });
+      } catch {}
+    }));
+
+    found.sort((a, b) => (b.lastDate || '').localeCompare(a.lastDate || ''));
+    localStorage.setItem(DISCOVERED_KEY, JSON.stringify(found));
+    // 앱 추가 창을 열어둔 채 백그라운드 발견이 끝나면 날짜 분류를 다시 그린다
+    if (!silent || document.getElementById('ov-app-form').classList.contains('open')) renderPresetList();
+    return found;
+  }
+
+  // 프리셋 schedule.json 에서 읽은 마지막 공연일 {scheduleUrl: 'YYYY-MM-DD'}
+  const _presetLast = {};
+  async function loadPresetDates() {
+    const todo = PRESET_APPS.filter(p => !_presetLast[p.scheduleUrl]);
+    if (!todo.length) return;
+    await Promise.all(todo.map(async p => {
+      try {
+        const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
+        const last = Array.isArray(rows) && rows.reduce((m, x) => (x.date && x.date > m ? x.date : m), '');
+        if (last) _presetLast[p.scheduleUrl] = last;
+      } catch {}
+    }));
+    renderPresetList();
+  }
+
+  // 코드에 박힌 프리셋 + 자동 발견분을 합친다. 코드 쪽 값(아이콘·색)이 우선.
+  function allPresets() {
+    // 코드 프리셋에는 마지막 공연일이 없어 끝난 공연도 진행 중으로 분류됐다.
+    // 날짜는 자동 발견 때 schedule.json 에서 읽어둔 것을 빌려 쓴다.
+    // 자동 발견은 GitHub API 제한에 막힐 수 있어, 앱 추가 창을 열 때 직접 읽은 값을 먼저 쓴다.
+    const found = getDiscovered();
+    const merged = PRESET_APPS.map(p => {
+      const d = found.find(x => x.scheduleUrl === p.scheduleUrl);
+      const last = _presetLast[p.scheduleUrl] || (d && d.lastDate);
+      return last ? { ...p, lastDate: last } : p;
+    });
+    found.forEach(d => {
+      if (!merged.some(p => p.scheduleUrl === d.scheduleUrl)) merged.push(d);
+    });
+    return merged;
+  }
+
+  function getApps() {
+    try { return JSON.parse(localStorage.getItem(APPS_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveApps(list) { localStorage.setItem(APPS_KEY, JSON.stringify(list)); }
+
+  // 이미 추가된 프리셋 앱 중 아이콘이 비어있는 경우만 최신 PRESET_APPS 값으로 채움
+  // (사용자가 직접 바꾼 아이콘은 덮어쓰지 않음)
+  function syncPresetIcons() {
+    const apps = getApps();
+    let changed = false;
+    apps.forEach(app => {
+      // 자동 발견분에도 맞춰야 한다. 저장소에서 찾아 추가한 앱은
+      // recordsKey 가 비어 있어 관람 기록이 하나도 안 뜬 채로 저장돼 있다.
+      const preset = allPresets().find(p => p.id === app.id) ||
+                     allPresets().find(p => p.scheduleUrl === app.scheduleUrl);
+      if (!preset) return;
+
+      if (!app.icon && preset.icon) { app.icon = preset.icon; changed = true; }
+
+      // 기록 키는 앱의 APP_PREFIX 라는 사실이지 사용자가 고르는 값이 아니다.
+      // 비어 있을 때만 채운다 — 직접 넣은 값은 건드리지 않는다.
+      if (!app.recordsKey && preset.recordsKey) { app.recordsKey = preset.recordsKey; changed = true; }
+
+      // deepLink 도 앱의 능력이라 프리셋 값을 그대로 따라간다.
+      if (app.deepLink !== preset.deepLink) { app.deepLink = preset.deepLink; changed = true; }
+    });
+    if (changed) saveApps(apps);
+  }
+
+  // 저장된 아이콘이 프리셋과 달라도 자동으로 덮어쓰지는 않는다.
+  // 대신 설정에서 '되돌리기'를 누를 때만 맞춘다.
+  function presetOf(id) {
+    return allPresets().find(x => x.id === id) || null;
+  }
+  function presetIconOf(id) {
+    const p = presetOf(id);
+    return p ? p.icon : null;
+  }
+  // 색도 함께 되돌린다. 프리셋 색이 팔레트에 없어서 저장할 때 기본 파란색으로
+  // 떨어진 앱들이 이미 있고, 그건 아이콘과 달리 사용자가 고른 값이 아니다.
+  function resetIconToPreset(id) {
+    const apps = getApps();
+    const app  = apps.find(a => a.id === id);
+    const p    = presetOf(id);
+    if (!app || !p) return;
+    if (p.icon)  app.icon  = p.icon;
+    if (p.color) app.color = p.color;
+    saveApps(apps);
+    renderSettingsAppList(); renderTabs(); renderCalendar();
+  }
+
+  // ── 탭 숨기기 ──
+  // 공연이 끝난 앱은 자동으로 가로탭에서 빠진다. 데이터는 그대로 남는다.
+  // 설정에서 앱별로 '항상 표시' / '항상 숨김' 을 지정하면 자동 판정보다 우선한다.
+  const HIDDEN_KEY = HUB_NS + 'tab_visibility';   // { [appId]: 'show' | 'hide' }
+  function getVisibility() {
+    try { return JSON.parse(localStorage.getItem(HIDDEN_KEY)) || {}; }
+    catch { return {}; }
+  }
+  function setVisibility(id, mode) {
+    const v = getVisibility();
+    if (mode === 'auto') delete v[id]; else v[id] = mode;
+    localStorage.setItem(HIDDEN_KEY, JSON.stringify(v));
+    renderTabs(); renderSettingsAppList();
+  }
+
+  // 스케줄의 마지막 날짜가 오늘보다 이전이면 '끝난 공연'
+  function lastShowDate(appId) {
+    const rows = schedules[appId];
+    if (!Array.isArray(rows) || !rows.length) return null;
+    return rows.reduce((m, r) => (r.date && r.date > m ? r.date : m), '');
+  }
+  function isFinished(appId) {
+    const last = lastShowDate(appId);
+    return !!last && last < todayStr;
+  }
+  function isTabVisible(app) {
+    const mode = getVisibility()[app.id];
+    if (mode === 'show') return true;
+    if (mode === 'hide') return false;
+    return !isFinished(app.id);          // 자동
+  }
+
+  // ── 배우 필드 자동 감지 (date, time 제외) ──
+  function getActorFields(record) {
+    return Object.keys(record).filter(k => k !== 'date' && k !== 'time' && !k.startsWith('_'));
+  }
+
+  // ── 탭 렌더링 ──
+  // 숨긴 공연을 잠깐 열어볼 때만 탭에 끼워 넣는다. 다른 화면으로 가면 다시 빠진다.
+  let _peekApp = null;
+
+  function renderTabs() {
+    const visible = getApps().filter(a => isTabVisible(a) || a.id === _peekApp);
+    const hiddenCount = getApps().filter(a => !isTabVisible(a)).length;
+    document.getElementById('app-tabs').innerHTML =
+      visible.map(app =>
+        `<button class="app-btn" id="btn-${app.id}" onclick="switchView('${app.id}')">${app.icon ? app.icon + ' ' : ''}${app.name}</button>`
+      ).join('') +
+      (hiddenCount ? `<button class="app-btn app-btn-more" onclick="openHiddenApps()" title="숨겨진 공연 열기">+${hiddenCount}</button>` : '');
+  }
+
+  // ── iframe 렌더링 ──
+  function renderFrames() {
+    const apps = getApps();
+    const container = document.getElementById('app-frames');
+    apps.forEach(app => {
+      if (app.appUrl && !document.getElementById(`frame-${app.id}`)) {
+        const iframe = document.createElement('iframe');
+        iframe.id = `frame-${app.id}`;
+        iframe.className = 'app-frame';
+        iframe.src = 'about:blank';
+        container.appendChild(iframe);
+      }
+    });
+    const appIds = new Set(apps.map(a => a.id));
+    container.querySelectorAll('iframe').forEach(f => {
+      if (!appIds.has(f.id.replace('frame-', ''))) f.remove();
+    });
+  }
+
+  // ── 색상 선택 ──
+  function selectColorSwatch(el) {
+    el.closest('.color-picker').querySelectorAll('.color-swatch')
+      .forEach(s => s.classList.toggle('selected', s === el));
+  }
+
+  function renderColorPicker(containerId, selectedHex) {
+    const hex = selectedHex || COLOR_PALETTE[0];
+    // 프리셋 색(#C09870 등)은 팔레트에 없다. 그대로 두면 아무 칸도 선택되지 않아
+    // 저장할 때 COLOR_PALETTE[0] 으로 떨어지고, 모든 앱이 같은 색이 된다.
+    const palette = COLOR_PALETTE.includes(hex) ? COLOR_PALETTE : [hex, ...COLOR_PALETTE];
+    document.getElementById(containerId).innerHTML = palette.map(c =>
+      `<div class="color-swatch${c === hex ? ' selected' : ''}" style="background:${c}"
+        data-hex="${c}" onclick="selectColorSwatch(this)"></div>`
+    ).join('');
+  }
+
+  // ── 상태 ──
+  let schedules = {};
+  // 각 작품 앱의 events.json (특전·커튼콜 위크 등). 기간 단위: {name, startDate, endDate, color, description?}
+  let appEvents = {};
+  async function loadEvents(list) {
+    await Promise.all(list.map(async app => {
+      const url = (app.scheduleUrl || '').replace(/schedule\.json(\?.*)?$/, 'events.json');
+      if (!url.endsWith('events.json')) return;
+      try {
+        const r = await fetch(url, { cache: 'no-cache' });
+        if (!r.ok) return;
+        const rows = await r.json();
+        if (Array.isArray(rows)) appEvents[app.id] = rows;
+      } catch {}   // 이벤트가 없는 작품도 많다. 조용히 넘어간다.
+    }));
+    if (currentView === 'cal' && getCalView() === 'week') renderCalendar();
+  }
+  function eventsOn(appId, ds) {
+    return (appEvents[appId] || []).filter(e => e.startDate && e.startDate <= ds && ds <= (e.endDate || e.startDate));
+  }
+  let currentYear, currentMonth;
+  let currentView = 'cal';
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  // ── 화면 높이 동기화 ──
+  // 앱 탭(iframe)에 들어갔다 나오면 모바일 주소창이 다시 나타나면서
+  // 100dvh 가 실제 보이는 높이보다 커져 위아래 여백이 생긴다.
+  // 실제 innerHeight 를 --app-h 로 넣어 항상 화면에 맞춘다.
+  function syncAppHeight() {
+    document.documentElement.style.setProperty('--app-h', window.innerHeight + 'px');
+  }
+  addEventListener('resize', syncAppHeight);
+  addEventListener('orientationchange', () => setTimeout(syncAppHeight, 200));
+  addEventListener('pageshow', syncAppHeight);
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', syncAppHeight);
+  }
+  syncAppHeight();
+
+  // ── 앱으로 점프 ──
+  // 앱이 ?date=&time= 을 읽어 그 회차의 기록을 연다.
+  // 아웃캐스트·어둑시니는 그 처리가 없어서 버튼을 띄우지 않는다(deepLink:false).
+  // 새로 만드는 작품은 기본으로 지원한다고 본다.
+  function canJump(app) {
+    return !!(app && app.appUrl && app.deepLink !== false);
+  }
+
+  function jumpToApp(appId, ds, time) {
+    const app = getApps().find(a => a.id === appId);
+    if (!canJump(app)) return;
+    const q = `date=${encodeURIComponent(ds)}` + (time ? `&time=${encodeURIComponent(time)}` : '');
+    const frame = document.getElementById(`frame-${appId}`);
+    if (frame) frame.src = app.appUrl + (app.appUrl.includes('?') ? '&' : '?') + q;
+    document.getElementById('ov-detail').classList.remove('open');
+    // 이미 그 탭이 열려 있으면 switchView 가 달력으로 되돌려 버린다
+    currentView = null;
+    switchView(appId);
+  }
+
+  // ── 뷰 전환 ──
+  // 달력 = 페이지 스크롤 / iframe = 화면 높이 고정.
+  // 한 곳에서만 켜고 꺼야 초기 로드나 goToToday 에서 빠지지 않는다.
+  function setFrameMode(on) {
+    document.getElementById('app').classList.toggle('frame-mode', on);
+    document.getElementById('app-frames').classList.toggle('active', on);
+    document.getElementById('view-cal').classList.toggle('hidden', on);
+  }
+
+  function switchView(view) {
+    if (currentView === view) { switchView('cal'); return; }
+    currentView = view;
+
+    // 숨긴 공연에서 다른 화면으로 넘어가면 임시 탭을 거둔다
+    const peek = view !== 'cal' && getApps().some(a => a.id === view && !isTabVisible(a)) ? view : null;
+    if (peek !== _peekApp) { _peekApp = peek; renderTabs(); }
+
+    setFrameMode(view !== 'cal');
+
+    // 앱 탭 왕복 뒤 주소창 상태가 바뀌어 있을 수 있다
+    syncAppHeight();
+    setTimeout(syncAppHeight, 300);
+
+    // 앱 안에서 예매를 기록하고 나왔을 수 있다
+    if (view === 'cal') renderCalendar();
+
+    getApps().forEach(app => {
+      const frame = document.getElementById(`frame-${app.id}`);
+      const btn   = document.getElementById(`btn-${app.id}`);
+      const isActive = view === app.id;
+
+      if (frame) {
+        frame.classList.toggle('active', isActive);
+        if (isActive && frame.src === 'about:blank') frame.src = app.appUrl;
+      }
+      if (btn) {
+        btn.style.cssText = isActive
+          ? `background:${hexToRgba(app.color,0.16)};color:${app.color};border-color:${hexToRgba(app.color,0.36)}`
+          : '';
+      }
+    });
+  }
+
+  function openHiddenApps() {
+    const hidden = getApps().filter(a => !isTabVisible(a));
+    document.getElementById('hidden-app-list').innerHTML = hidden.map(app => {
+      const last = lastShowDate(app.id);
+      const date = last ? `<div class="preset-date">${last < todayStr ? '종료 ' : '~'}${last}</div>` : '';
+      const open = app.appUrl ? '열기 ›' : '앱 주소 없음';
+      return `<div class="preset-item${app.appUrl ? '' : ' added'}" onclick="peekApp('${app.id}')">
+        <div class="preset-dot" style="background:${app.color}"></div>
+        <div class="preset-name">${app.icon ? app.icon + ' ' : ''}${app.name}</div>
+        ${date}<div class="preset-add">${open}</div>
+      </div>`;
+    }).join('');
+    document.getElementById('ov-hidden').classList.add('open');
+  }
+  function closeHiddenApps() { document.getElementById('ov-hidden').classList.remove('open'); }
+
+  function peekApp(id) {
+    closeHiddenApps();
+    currentView = null;
+    switchView(id);
+  }
+
+  function goToToday() {
+    currentView = 'cal';
+    if (_peekApp) { _peekApp = null; renderTabs(); }
+    setFrameMode(false);
+    getApps().forEach(app => {
+      const frame = document.getElementById(`frame-${app.id}`);
+      const btn   = document.getElementById(`btn-${app.id}`);
+      if (frame) frame.classList.remove('active');
+      if (btn) btn.style.cssText = '';
+    });
+    const t = new Date();
+    currentYear = t.getFullYear(); currentMonth = t.getMonth();
+    weekStart = sundayOf(t);
+    renderCalendar();
+  }
+
+  // ── 테마 ──
+  function getTheme() { return localStorage.getItem(THEME_KEY) || 'dark'; }
+  function applyTheme(t) {
+    document.body.classList.toggle('light', t === 'light');
+    document.getElementById('theme-btn').textContent = t === 'light' ? '🌙' : '☀️';
+    document.getElementById('meta-theme').content = t === 'light' ? '#f8f8f6' : '#111118';
+  }
+  function toggleTheme() {
+    const next = getTheme() === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  }
+
+  // ── 배우 필터 ──
+  function getPrefs() {
+    try { return JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; }
+    catch { return {}; }
+  }
+  function savePrefs(p) { localStorage.setItem(PREFS_KEY, JSON.stringify(p)); }
+
+  // ── 필터 ──
+  // 배우는 작품을 가로질러 고른다. 같은 배우가 여러 작품에 나오기 때문이다.
+  // 작품 필터와 AND 로 묶인다:
+  //   이한솔만            → 모든 작품의 이한솔 회차
+  //   이한솔 + 비더슈탄트 → 비더슈탄트의 이한솔 회차만
+  const FILTER_KEY = HUB_NS + 'filter';
+  function getFilter() {
+    let f = null;
+    try { f = JSON.parse(localStorage.getItem(FILTER_KEY)); } catch {}
+    if (f && Array.isArray(f.actors) && Array.isArray(f.apps)) {
+      if (!Array.isArray(f.off)) f.off = [];
+      return f;
+    }
+    // 예전에는 작품별로 따로 골랐다. 고른 배우들을 합쳐 옮긴다.
+    const old = getPrefs();
+    const actors = [...new Set(Object.values(old).flat().filter(Boolean))];
+    return { actors, apps: [], off: [] };
+  }
+  // 켜는 건 이름 단위(모든 작품에서 같이), 끄는 건 작품 단위.
+  // 끈 작품은 off 에 'appId|이름' 으로 남긴다.
+  const offKey = (appId, name) => appId + '|' + name;
+  function actorOn(f, appId, name) {
+    return f.actors.includes(name) && !f.off.includes(offKey(appId, name));
+  }
+  function saveFilter(f) { localStorage.setItem(FILTER_KEY, JSON.stringify(f)); }
+  function filterActive() {
+    const f = getFilter();
+    return f.actors.length > 0 || f.apps.length > 0;
+  }
+  function clearFilter() {
+    saveFilter({ actors: [], apps: [], off: [] });
+    renderActorFilters(); renderCalendar();
+  }
+
+  function matchesFilter(session, app, f) {
+    f = f || getFilter();
+    if (f.apps.length && !f.apps.includes(app.id)) return false;
+    if (!f.actors.length) return true;
+    return getActorFields(session).some(k => session[k] && actorOn(f, app.id, session[k]));
+  }
+
+  // 배우가 어느 작품에 나오는지. 같은 이름이 여러 작품에 있을 수 있다.
+  function actorIndex() {
+    const map = new Map();
+    getApps().forEach(app => {
+      extractActors(schedules[app.id] || []).forEach(name => {
+        if (!map.has(name)) map.set(name, []);
+        map.get(name).push(app);
+      });
+    });
+    return new Map([...map.entries()].sort((a, b) => a[0].localeCompare(b[0], 'ko')));
+  }
+
+  // ── 커스텀 이벤트 ──
+  function getCustom() {
+    try { return JSON.parse(localStorage.getItem(CUSTOM_KEY)) || []; } catch { return []; }
+  }
+  function saveCustom(list) { localStorage.setItem(CUSTOM_KEY, JSON.stringify(list)); }
+
+  let _customEditId = null, _customFormDs = '';
+  let _customPendingPhotos = []; // base64[] in memory during editing
+
+  async function openCustomForm(ds, editId) {
+    _customEditId = editId || null;
+    _customFormDs = ds || todayStr;
+    const ev = editId ? getCustom().find(e => e.id === editId) : null;
+    document.getElementById('custom-form-title').textContent = ev ? '기타 일정 수정' : '기타 일정 추가';
+    document.getElementById('cf-date').value    = ev ? ev.date    : _customFormDs;
+    document.getElementById('cf-time').value    = ev ? ev.time    : '20:00';
+    document.getElementById('cf-name').value    = ev ? ev.name    : '';
+    document.getElementById('cf-comment').value = ev ? ev.comment : '';
+    renderColorPicker('cf-colors', ev ? ev.color : COLOR_PALETTE[0]);
+    const photoMap = await PhotoDB.getMany(ev?.photoIds || []);
+    _customPendingPhotos = (ev?.photoIds || []).map(id => photoMap[id]).filter(Boolean);
+    renderCustomPhotosArea(_customPendingPhotos);
+    document.getElementById('ov-detail').classList.remove('open');
+    document.getElementById('ov-custom').classList.add('open');
+  }
+  function openCustomFormForDay() { openCustomForm(_customFormDs); }
+  function closeCustomForm() { document.getElementById('ov-custom').classList.remove('open'); }
+
+  function renderCustomPhotosArea(photos) {
+    const thumbs = photos.map((src, i) => `
+      <div class="note-thumb-item">
+        <img class="note-large-thumb" src="${src}" onclick="openPhotoViewer(_customPendingPhotos,${i})">
+        <div class="note-thumb-item-del" onclick="removeCustomPendingPhoto(${i});event.stopPropagation()">✕</div>
+      </div>`).join('');
+    document.getElementById('cf-photos-area').innerHTML =
+      thumbs + `<div class="note-photo-add" onclick="document.getElementById('cf-photo-file').click()">+</div>`;
+  }
+
+  function removeCustomPendingPhoto(idx) {
+    _customPendingPhotos.splice(idx, 1);
+    renderCustomPhotosArea(_customPendingPhotos);
+  }
+
+  function handleCustomPhotos(input) {
+    const files = [...input.files];
+    if (!files.length) return;
+    input.value = '';
+    let done = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        resizeImage(e.target.result, 1400, 1800, 0.82, resized => {
+          _customPendingPhotos.push(resized);
+          if (++done === files.length) renderCustomPhotosArea(_customPendingPhotos);
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function saveCustomEvent() {
+    const date = document.getElementById('cf-date').value;
+    const name = document.getElementById('cf-name').value.trim();
+    if (!date || !name) { alert('날짜와 공연명을 입력해주세요'); return; }
+    const time    = document.getElementById('cf-time').value;
+    const comment = document.getElementById('cf-comment').value.trim();
+    const color   = document.querySelector('#cf-colors .color-swatch.selected')?.dataset.hex || COLOR_PALETTE[0];
+    const list = getCustom();
+    // 기존 사진 삭제
+    if (_customEditId) {
+      const old = list.find(e => e.id === _customEditId);
+      await Promise.all((old?.photoIds || []).map(id => PhotoDB.remove(id)));
+    }
+    const photoIds = await Promise.all(_customPendingPhotos.map(src => PhotoDB.put(src)));
+    if (_customEditId) {
+      const idx = list.findIndex(e => e.id === _customEditId);
+      if (idx !== -1) list[idx] = { id: _customEditId, date, time, name, comment, color, photoIds };
+    } else {
+      list.push({ id: Date.now(), date, time, name, comment, color, photoIds });
+    }
+    saveCustom(list);
+    closeCustomForm();
+    renderCalendar();
+  }
+
+  async function deleteCustomEvent(id) {
+    if (!confirm('삭제하시겠습니까?')) return;
+    const ev = getCustom().find(e => e.id === id);
+    await Promise.all((ev?.photoIds || []).map(pid => PhotoDB.remove(pid)));
+    saveCustom(getCustom().filter(e => e.id !== id));
+    document.getElementById('ov-detail').classList.remove('open');
+    renderCalendar();
+  }
+
+  // ── 관람 기록 ──
+  function getAttended() {
+    const map = {};
+    getApps().forEach(app => {
+      if (!app.recordsKey) return;
+      try {
+        (JSON.parse(localStorage.getItem(app.recordsKey) || '[]')).forEach(r => {
+          if (!r.date) return;
+          (map[r.date] = map[r.date] || []).push({
+            appId: app.id, time: r.time,
+            seatZone: r.seatZone, seatRow: r.seatRow, seatNumber: r.seatNumber,
+            // 표는 있었지만 안 본 회차. 관람으로 치지 않되 기록은 남긴다.
+            transferred: r.status === '양도',
+            transferTo: r.transferTo || '',
+          });
+        });
+      } catch {}
+    });
+    return map;
+  }
+
+  // ── 배우 목록 ──
+  function extractActors(schedule) {
+    const s = new Set();
+    schedule.forEach(r => getActorFields(r).forEach(f => r[f] && s.add(r[f])));
+    return [...s].sort((a, b) => a.localeCompare(b, 'ko'));
+  }
+
+  // ── 시간 포맷 ──
+  // 예전엔 parseInt 로 시만 떼어 '6시' 로 적었더니 18:00 과 18:30 이 같아 보였다.
+  // 분이 회차를 가르므로 24시간제로 그대로 적는다.
+  function fmtTime(t) {
+    if (!t) return '';
+    const m = String(t).match(/(\d{1,2})\s*:?\s*(\d{2})?/);
+    if (!m) return String(t);
+    return m[1].padStart(2, '0') + ':' + (m[2] || '00');
+  }
+
+  function toMinutes(t) {
+    const m = String(t || '').match(/(\d{1,2})\s*:?\s*(\d{2})?/);
+    return m ? (+m[1]) * 60 + (+(m[2] || 0)) : 0;
+  }
+
+  // ── 달력 모드 ──
+  // 'mine' 은 내 관람/사진만 칩으로 띄우고 나머지 회차는 흐리게 접는다.
+  // 'all'  — 내 기록은 칩, 나머지 회차는 흐린 줄이나 축으로. 공연 일정 전체가 보인다.
+  // 'mine' — 내가 기록한 예매/관람만. 나머지 회차는 아예 그리지 않는다.
+  const CAL_MODE_KEY = HUB_NS + 'cal_mode';
+  function getCalMode() {
+    return localStorage.getItem(CAL_MODE_KEY) === 'mine' ? 'mine' : 'all';
+  }
+  function setCalMode(m) {
+    localStorage.setItem(CAL_MODE_KEY, m === 'mine' ? 'mine' : 'all');
+    renderCalendar();
+  }
+  function renderCalModeButtons() {
+    const m = getCalMode();
+    document.getElementById('seg-mine').classList.toggle('on', m === 'mine');
+    document.getElementById('seg-all').classList.toggle('on',  m === 'all');
+    // 필터가 걸려 있으면 눈에 띄어야 한다. 안 그러면 일정이 없는 줄 안다.
+    const f  = getFilter();
+    const n  = f.apps.length + f.actors.length;
+    const fb = document.getElementById('seg-filter');
+    fb.classList.toggle('on', n > 0);
+    fb.textContent = n > 0 ? `🔎 ${n}` : '🔎';
+  }
+
+  function openFilter()  {
+    document.getElementById('ov-settings').classList.remove('open');
+    _filterDoneOpen = null;
+    renderActorFilters();
+    document.getElementById('ov-filter').classList.add('open');
+  }
+  function closeFilter() { document.getElementById('ov-filter').classList.remove('open'); }
+
+  // 한 칸에 시각을 몇 줄까지 적을지. 넘으면 축으로 접는다.
+  // 화/목/금은 대개 1회, 수/토/일만 2회라 대부분의 날은 그대로 시각이 보인다.
+  const MAX_TIME_LINES = 3;
+  const AXIS_LO = 11 * 60, AXIS_HI = 21 * 60;
+
+  // 눈금의 좌우 위치로 시각을 나타낸다. 왼쪽이 낮, 오른쪽이 밤.
+  function axisPos(t) {
+    const r = (toMinutes(t) - AXIS_LO) / (AXIS_HI - AXIS_LO) * 100;
+    return Math.max(4, Math.min(96, r));
+  }
+
+  // ── 달력 ──
+  function changeMonth(d) {
+    // 주간에서는 같은 ‹ › 가 한 주씩 넘긴다
+    if (getCalView() === 'week') {
+      const w = new Date(weekStart); w.setDate(w.getDate() + 7 * d);
+      weekStart = w;
+      currentYear = w.getFullYear(); currentMonth = w.getMonth();
+      renderCalendar();
+      return;
+    }
+    currentMonth += d;
+    if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
+    if (currentMonth > 11) { currentMonth = 0;  currentYear++; }
+    renderCalendar();
+  }
+
+  // ── 월간 / 주간 ──
+  // 월간 칸은 좁아 시각과 색뿐이다. 주간은 하루씩 펼쳐 캐스팅·좌석까지 한눈에 본다.
+  const CAL_VIEW_KEY = HUB_NS + 'cal_view';
+  let weekStart = null;   // 보고 있는 주의 일요일 (Date, 0시)
+
+  function getCalView() {
+    return localStorage.getItem(CAL_VIEW_KEY) === 'week' ? 'week' : 'month';
+  }
+  function sundayOf(d) {
+    const s = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    s.setDate(s.getDate() - s.getDay());
+    return s;
+  }
+  function ymd(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function setCalView(v) {
+    if (v === getCalView()) return;
+    localStorage.setItem(CAL_VIEW_KEY, v === 'week' ? 'week' : 'month');
+    if (v === 'week') {
+      // 보던 달에 오늘이 있으면 이번 주, 아니면 그 달 첫 주
+      const t = new Date();
+      const inMonth = t.getFullYear() === currentYear && t.getMonth() === currentMonth;
+      weekStart = sundayOf(inMonth ? t : new Date(currentYear, currentMonth, 1));
+    } else if (weekStart) {
+      // 주가 두 달에 걸치면 목요일이 속한 달로 간다
+      const th = new Date(weekStart); th.setDate(th.getDate() + 4);
+      currentYear = th.getFullYear(); currentMonth = th.getMonth();
+    }
+    renderCalendar();
+  }
+  function renderCalViewButtons(v) {
+    document.getElementById('seg-month').classList.toggle('on', v === 'month');
+    document.getElementById('seg-week').classList.toggle('on', v === 'week');
+    document.getElementById('cal-grid').hidden = v === 'week';
+    document.getElementById('cal-week').hidden = v !== 'week';
+  }
+
+  function fmtSeat(r) {
+    if (r.seatZone && r.seatRow)
+      return [r.seatZone + '구역', r.seatRow + '열', r.seatNumber != null ? r.seatNumber + '번' : ''].filter(Boolean).join(' ');
+    if (r.seatZone)
+      return [r.seatZone + '열', r.seatNumber != null ? r.seatNumber + '번' : ''].filter(Boolean).join(' ');
+    if (r.seatNumber != null) return r.seatNumber + '번';
+    return '';
+  }
+
+  const mineStyle = c => `background:${hexToRgba(c,0.12)};border-color:${hexToRgba(c,0.45)}`;
+
+  function renderWeek() {
+    if (!weekStart) weekStart = sundayOf(new Date());
+    const end = new Date(weekStart); end.setDate(end.getDate() + 6);
+    const sm = weekStart.getMonth() + 1, em = end.getMonth() + 1;
+    document.getElementById('cal-month-label').textContent =
+      `${sm}월 ${weekStart.getDate()}일 – ${em !== sm ? em + '월 ' : ''}${end.getDate()}일`;
+
+    const filter   = getFilter();
+    const attended = getAttended();
+    const custom   = getCustom();
+    const apps     = getApps();
+    const notes    = getNotes();
+    const mode     = getCalMode();
+    let html = '';
+
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(weekStart); day.setDate(day.getDate() + i);
+      const ds  = ymd(day);
+      const dayAtt = attended[ds] || [];
+      const recsFor = (app, s) => dayAtt.filter(r => r.appId === app.id && (!r.time || r.time === s.time));
+      const noteOf  = (app, s) => notes[`${app.id}__${ds}__${s.time || ''}`] || {};
+
+      // 월간과 같은 규칙: 필터에 안 걸려도 내가 기록한 회차는 남긴다
+      const sess = apps.flatMap(app => (schedules[app.id] || [])
+        .filter(s => s.date === ds)
+        .map(s => {
+          const recs = recsFor(app, s);
+          const note = noteOf(app, s);
+          const mine = recs.length > 0 || (note.photoIds || []).length > 0;
+          return { s, app, recs, note, mine };
+        })
+        .filter(x => x.mine || (mode !== 'mine' && matchesFilter(x.s, app, filter))))
+        .sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
+      const customs = custom.filter(e => e.date === ds)
+        .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+      // '내 기록' 에서는 빈 날을 아예 뺀다
+      if (mode === 'mine' && !sess.length && !customs.length) continue;
+
+      const past = ds < todayStr;
+      const sessHtml = sess.map(({ s, app, recs, note, mine }) => {
+        const cast = getActorFields(s).map(k => s[k]).filter(Boolean)
+          .map(n => actorOn(filter, app.id, n) ? `<b>${n}</b>` : n).join(' · ');
+        const att   = recs.filter(r => !r.transferred);
+        const trans = !att.length && recs.find(r => r.transferred);
+        const mark = att.length
+          ? `<span class="wk-mark ${past ? 'att' : 'booked'}">${past ? '✓ 관람' : '🎫 예매'}${att.length > 1 ? ' ×' + att.length : ''}</span>`
+          : trans ? `<span class="wk-mark trans">↪ 양도${trans.transferTo ? ' · ' + trans.transferTo : ''}</span>` : '';
+        const seat = att.map(fmtSeat).filter(Boolean).join(', ');
+        const extra = [(note.photoIds || []).length ? '📷' : '', note.memo ? '📝' : ''].filter(Boolean).join(' ');
+        const evs = eventsOn(app.id, ds).map(e => {
+          const c = e.color || app.color;
+          return `<span class="wk-ev" style="${appStyle(c)}" ${e.description ? `title="${e.description.replace(/"/g, '&quot;')}"` : ''}>${e.name}</span>`;
+        }).join('');
+        return `<div class="wk-sess${mine ? ' mine' : ' plain'}${trans ? ' transferred' : ''}"
+             ${mine ? `style="${mineStyle(app.color)}"` : ''} onclick="openDay('${ds}')">
+          <div class="wk-bar" style="background:${app.color}"></div>
+          <div class="wk-time">${s.time || '—'}</div>
+          <div class="wk-body">
+            <div class="wk-line1">
+              <span class="wk-app" style="color:${app.color}">${app.icon ? app.icon + ' ' : ''}${app.name}</span>
+              ${mark}${seat ? `<span class="wk-seat">${seat}</span>` : ''}
+              ${extra ? `<span class="wk-note">${extra}</span>` : ''}
+            </div>
+            ${cast ? `<div class="wk-cast">${cast}</div>` : ''}
+            ${evs ? `<div class="wk-evs">${evs}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      const customHtml = customs.map(e => {
+        const col = e.color || COLOR_PALETTE[0];
+        return `<div class="wk-sess mine" style="${mineStyle(col)}" onclick="openDay('${ds}')">
+          <div class="wk-bar" style="background:${col}"></div>
+          <div class="wk-time">${e.time || '—'}</div>
+          <div class="wk-body">
+            <div class="wk-line1"><span class="wk-app" style="color:${col}">${e.name}</span>
+              ${(e.photoIds || []).length ? '<span class="wk-note">📷</span>' : ''}</div>
+            ${e.comment ? `<div class="wk-cast">${e.comment}</div>` : ''}
+          </div>
+        </div>`;
+      }).join('');
+
+      const dow = day.getDay();
+      const hdCls = ['wk-day-hd', dow === 0 ? 'sunday' : '', dow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
+      const empty = !sess.length && !customs.length;
+      const dayCls = ['wk-day', ds === todayStr ? 'today' : '', past ? 'past' : ''].filter(Boolean).join(' ');
+      html += `<div class="${dayCls}">
+        <div class="${hdCls}" onclick="openDay('${ds}')">
+          ${day.getMonth() + 1}/${day.getDate()} (${DOW[dow]})
+          ${ds === todayStr ? '<span class="wk-today">오늘</span>' : ''}
+          ${empty ? '<span class="wk-empty">공연 없음</span>' : ''}
+        </div>
+        ${sessHtml}${customHtml}
+      </div>`;
+    }
+
+    document.getElementById('cal-week').innerHTML = html ||
+      '<div class="loading">이번 주에는 기록한 회차가 없습니다</div>';
+    renderCalModeButtons();
+
+    // 이번 주를 처음 열 때만 오늘로 내려간다. 이벤트가 늦게 와서 다시 그릴 때마다 튀면 안 된다.
+    const key = ymd(weekStart);
+    if (_weekScrolled !== key) {
+      _weekScrolled = key;
+      // 이미 화면 안에 있으면 그대로 둔다. 내릴 때는 고정 헤더 높이만큼 덜 내린다.
+      const t = document.querySelector('#cal-week .wk-day.today');
+      if (t) {
+        const hd = document.querySelector('.header').offsetHeight;
+        const r  = t.getBoundingClientRect();
+        if (r.top < hd || r.bottom > innerHeight) scrollTo(0, scrollY + r.top - hd - 12);
+      }
+    }
+  }
+  let _weekScrolled = null;
+
+  function renderCalendar() {
+    const view = getCalView();
+    renderCalViewButtons(view);
+    if (view === 'week') { renderWeek(); return; }
+    document.getElementById('cal-month-label').textContent = `${currentYear}년 ${currentMonth + 1}월`;
+    const first    = new Date(currentYear, currentMonth, 1).getDay();
+    const days     = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const filter   = getFilter();
+    const attended = getAttended();
+    const custom   = getCustom();
+    const apps     = getApps();
+    const notes    = getNotes();
+    let html = '';
+    let usedAxis = false;   // 축을 한 번이라도 그렸을 때만 범례를 붙인다
+    const mode = getCalMode();
+
+    for (let i = 0; i < first; i++) html += '<div class="cal-cell"></div>';
+
+    for (let d = 1; d <= days; d++) {
+      const ds  = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      const dow = (first + d - 1) % 7;
+      const dayAtt  = attended[ds] || [];
+      const att     = dayAtt.length > 0;
+
+      // 배우 필터에 걸리더라도 내가 예매/관람한 회차는 남긴다.
+      // 이한솔만 보게 걸어두면 박정원 회차로 예매한 날이 통째로 사라져
+      // 칩이 아니라 점 하나로 떨어졌다. 날짜 시트는 이미 이렇게 처리하고 있었다.
+      const recsFor = (app, s) => dayAtt.filter(r => r.appId === app.id && (!r.time || r.time === s.time));
+      const isMine = (app, s) =>
+        recsFor(app, s).length > 0 ||
+        (notes[`${app.id}__${ds}__${s.time || ''}`]?.photoIds || []).length > 0;
+
+      const allSess = apps.flatMap(app => {
+        const sch = schedules[app.id] || [];
+        return sch
+          .filter(s => s.date === ds && (isMine(app, s) || matchesFilter(s, app, filter)))
+          .map(s => ({...s, _app: app}));
+      }).sort((a,b) => (a.time||'').localeCompare(b.time||''));
+
+      const showC   = custom.filter(e => e.date === ds);
+      const isToday = ds === todayStr;
+
+      // 내가 기록한 회차(관람/사진)와 그렇지 않은 회차를 가른다.
+      const marked = [], plain = [];
+      allSess.forEach(s => {
+        const recs   = recsFor(s._app, s);
+        const attCnt = recs.filter(r => !r.transferred).length;
+        const trans  = attCnt === 0 ? recs.find(r => r.transferred) : null;
+        const hasPic = (notes[`${s._app.id}__${ds}__${s.time || ''}`]?.photoIds || []).length > 0;
+        (recs.length > 0 || hasPic ? marked : plain).push({ s, attCnt, hasPic, trans });
+      });
+
+      // '내 기록' 에서는 안 간 회차를 아예 그리지 않는다.
+      const rest = mode === 'mine' ? [] : plain;
+
+      // 칸을 칠할지도 실제로 그리는 내용을 따라간다.
+      // 그러지 않으면 '내 기록' 에서 빈 칸만 색칠돼 있다.
+      const hasSch = marked.length > 0 || showC.length > 0 || rest.length > 0;
+
+      const cls = ['cal-cell', 'clickable',
+        hasSch      ? 'has-schedule' : '',
+        dow === 0   ? 'sunday'       : '',
+        dow === 6   ? 'saturday'     : '',
+        isToday     ? 'today'        : '',
+      ].filter(Boolean).join(' ');
+
+      // 칩은 색으로 이미 '내 기록'과 작품을 구분한다. 이모지를 더하면 좁은 칸에서
+      // 시각을 밀어낼 뿐이라 시간만 적는다. 같은 날 두 번 본 경우만 ×N 을 붙인다.
+      const sessBadges = marked.map(({ s, attCnt, hasPic, trans }) => `
+        <div class="sess-card${trans ? ' transferred' : ''}" style="${appStyle(s._app.color)}"
+             ${trans ? `title="양도${trans.transferTo ? ' · ' + trans.transferTo : ''}"` : ''}>
+          <span class="sess-card-time">${fmtTime(s.time)}</span>
+          ${trans ? '<span class="sess-card-icons">↪</span>' : ''}
+          ${attCnt >= 2 ? `<span class="sess-card-icons">×${attCnt}</span>` : ''}
+          ${hasPic ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
+        </div>`).join('');
+
+      // 회차가 적으면 시각을 그대로, 몰린 날만 축으로 접는다.
+      const restBadges = rest.length === 0 ? ''
+        : rest.length <= MAX_TIME_LINES
+          ? rest.map(({ s }) =>
+              `<div class="sess-dim"><i style="background:${s._app.color}"></i>` +
+              `<span>${fmtTime(s.time)}</span></div>`).join('')
+          : (usedAxis = true, `<div class="sess-axis">${rest.map(({ s }) =>
+              `<i style="left:${axisPos(s.time)}%;background:${s._app.color}"></i>`).join('')}</div>`);
+
+      const customBadges = showC.map(e => `
+        <div class="sess-card" style="${appStyle(e.color || COLOR_PALETTE[0])}">
+          <span class="sess-card-time">${fmtTime(e.time)}</span>
+          ${(e.photoIds || []).length ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
+        </div>`).join('');
+
+      html += `<div class="${cls}" onclick="openDay('${ds}')">
+        <div class="date-wrap"><span class="date-num">${d}</span></div>
+        ${att && !hasSch ? '<div class="attended-dot"></div>' : ''}
+        ${hasSch ? `<div class="badges">${sessBadges}${customBadges}${restBadges}</div>` : ''}
+      </div>`;
+    }
+    document.getElementById('cal-days').innerHTML = html;
+    renderCalModeButtons();
+
+    // 축이 없는 달에는 범례도 띄우지 않는다.
+    const legend = document.getElementById('axis-legend');
+    legend.textContent = usedAxis
+      ? `회차가 몰린 날은 눈금으로 —  왼쪽 ${AXIS_LO/60}시 · 오른쪽 ${AXIS_HI/60}시`
+      : '';
+    legend.style.display = usedAxis ? '' : 'none';
+  }
+
+  // ── 날짜 상세 ──
+  async function openDay(ds) {
+    _customFormDs = ds;
+    const attended = getAttended();
+    const d = new Date(ds + 'T00:00:00');
+    document.getElementById('sheet-date').textContent =
+      `${ds.slice(5).replace('-','.')}(${DOW[d.getDay()]})`;
+
+    const dayAtt = attended[ds] || [];
+    const apps   = getApps();
+
+    const sessions = apps.flatMap(app => {
+      const sch = schedules[app.id] || [];
+      return sch
+        .filter(s => s.date === ds && (matchesFilter(s, app) || dayAtt.some(r => r.appId === app.id && (!r.time || r.time === s.time))))
+        .map(s => ({...s, _app: app}));
+    }).sort((a,b) => (a.time||'').localeCompare(b.time||''));
+
+    const customs = getCustom().filter(e => e.date === ds)
+      .sort((a,b) => (a.time||'').localeCompare(b.time||''));
+
+    // IndexedDB에서 이 날의 모든 사진 한번에 로드
+    const notes = getNotes();
+    const allIds = [
+      ...sessions.flatMap(s => notes[`${s._app.id}__${ds}__${s.time || ''}`]?.photoIds || []),
+      ...customs.flatMap(e => e.photoIds || []),
+    ];
+    const photoMap = await PhotoDB.getMany(allIds);
+
+    _dayNotePhotos = {};
+    const regularHtml = sessions.map(s => {
+      const cast = getActorFields(s).map(f => s[f]).filter(Boolean).join(' · ');
+      const attRecs = dayAtt.filter(r => r.appId === s._app.id && (!r.time || r.time === s.time));
+      const attHtml = attRecs.map(r => {
+        const seat = fmtSeat(r);
+        const mark = r.transferred
+          ? `<span class="session-transferred">↪ 양도${r.transferTo ? ' · ' + r.transferTo : ''}</span>`
+          : ds < todayStr
+            ? '<span class="session-attended">✓ 관람</span>'
+            : '<span class="session-booked">🎫 예매</span>';
+        return `<div class="session-meta">${mark}${seat ? `&nbsp;&nbsp;${seat}` : ''}</div>`;
+      }).join('');
+      const noteKey = `${s._app.id}__${ds}__${s.time || ''}`;
+      const note = notes[noteKey] || {};
+      const photoIds = note.photoIds || [];
+      const photos = photoIds.map(id => photoMap[id]).filter(Boolean);
+      _dayNotePhotos[noteKey] = photos;
+      const thumbsHtml = photos.map((src, i) =>
+        `<div class="note-thumb-wrap"><img class="note-thumb" src="${src}" data-key="${noteKey}" data-idx="${i}"></div>`
+      ).join('');
+      const memoSnip = note.memo ? `<span class="note-memo-snip">${note.memo.slice(0,40)}</span>` : '';
+      // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
+      const jumpBtn = canJump(s._app)
+        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">${s._app.name}에서 보기 ›</button>`
+        : '';
+      const noteRow = `<div class="note-row">
+        ${thumbsHtml}
+        ${memoSnip}
+        <button class="note-add-btn" onclick="openNoteForm('${noteKey}','${s._app.name.replace(/'/g,'\\\'')}')">${(photos.length||note.memo) ? '✏️ 수정' : '+ 메모/사진'}</button>
+        ${jumpBtn}
+      </div>`;
+      return `<div class="session-row">
+        <div class="session-time">${s.time}</div>
+        <div class="session-body">
+          <span class="session-tag" style="${appStyle(s._app.color)}">${s._app.name}</span>
+          <div class="session-cast">${cast}</div>
+          ${attHtml}
+          ${(evs => evs ? `<div class="wk-evs">${evs}</div>` : '')(eventsOn(s._app.id, ds).map(e =>
+            `<span class="wk-ev" style="${appStyle(e.color || s._app.color)}">${e.name}</span>`).join(''))}
+          ${noteRow}
+        </div>
+      </div>`;
+    }).join('');
+
+    const customHtml = customs.map(e => {
+      const col = e.color || COLOR_PALETTE[0];
+      const cPhotoIds = e.photoIds || [];
+      const cPhotos = cPhotoIds.map(id => photoMap[id]).filter(Boolean);
+      _dayNotePhotos['custom_' + e.id] = cPhotos;
+      const cThumbs = cPhotos.map((src, i) =>
+        `<div class="note-thumb-wrap"><img class="note-thumb" src="${src}" data-key="custom_${e.id}" data-idx="${i}"></div>`
+      ).join('');
+      return `<div class="session-row">
+        <div class="session-time">${e.time || '—'}</div>
+        <div class="session-body">
+          <span class="session-tag" style="${appStyle(col)}">기타</span>
+          <div class="session-cast">${e.name}</div>
+          ${e.comment ? `<div class="session-meta">${e.comment}</div>` : ''}
+          ${cThumbs ? `<div class="note-row">${cThumbs}</div>` : ''}
+        </div>
+        <div class="session-acts">
+          <button class="session-act-btn" onclick="openCustomForm('${ds}',${e.id})">✏️</button>
+          <button class="session-act-btn" onclick="deleteCustomEvent(${e.id})">🗑️</button>
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('sheet-content').innerHTML =
+      (regularHtml + customHtml) || '<div style="padding:16px;color:var(--text3);font-size:13px;">일정 없음</div>';
+
+    document.getElementById('sheet-content').querySelectorAll('.note-thumb[data-key]').forEach(img => {
+      img.addEventListener('click', () => openPhotoViewerByKey(img.dataset.key, parseInt(img.dataset.idx)));
+    });
+
+    document.getElementById('ov-detail').classList.add('open');
+  }
+
+  // ── 설정 ──
+  function openSettings() {
+    renderSettingsAppList();
+    document.getElementById('ov-settings').classList.add('open');
+  }
+  function closeSettings() { document.getElementById('ov-settings').classList.remove('open'); }
+
+  // 종료된 공연은 목록에서도 접어둔다. 지우기는 애매하고, 펼쳐 놓으면 계속 길어진다.
+  let _finishedOpen = false;
+  function toggleFinishedApps() {
+    _finishedOpen = !_finishedOpen;
+    renderSettingsAppList();
+  }
+
+  function appListRow(app, vis) {
+    const mode     = vis[app.id] || 'auto';
+    const finished = isFinished(app.id);
+    const last     = lastShowDate(app.id);
+    const pre      = presetOf(app.id);
+    const preset   = pre ? pre.icon : null;
+    const iconOff  = pre && ((preset && app.icon !== preset) ||
+                             (pre.color && app.color !== pre.color));
+
+    const note = mode === 'show' ? '항상 표시'
+               : mode === 'hide' ? '항상 숨김'
+               : finished ? `공연 종료 (~${last}) · 자동 숨김`
+               : last ? `~${last}` : '스케줄 없음';
+
+    // 눈알 아이콘은 무슨 상태인지 읽히지 않았다. 현재 값을 글자로 적는다.
+    const label = mode === 'show' ? '표시' : mode === 'hide' ? '숨김' : '자동';
+
+    return `
+      <div class="app-list-item">
+        <div class="app-list-dot" style="background:${app.color}"></div>
+        <div class="app-list-name">
+          ${app.icon ? app.icon + ' ' : ''}${app.name}
+          <div class="app-list-note">${note}</div>
+        </div>
+        ${iconOff ? `<button class="app-list-mini" title="프리셋 아이콘·색으로 되돌리기"
+            onclick="resetIconToPreset('${app.id}')">${preset || '🎨'}↩</button>` : ''}
+        <button class="app-list-vis mode-${mode}"
+                title="가로탭 표시 · 자동/표시/숨김 순환"
+                onclick="cycleVisibility('${app.id}')">${label}</button>
+        <button class="app-list-del" onclick="deleteApp('${app.id}')">✕</button>
+      </div>`;
+  }
+
+  function renderSettingsAppList() {
+    const apps = getApps();
+    const vis  = getVisibility();
+    if (!apps.length) {
+      document.getElementById('app-list-ui').innerHTML =
+        '<div style="font-size:12px;color:var(--text3);padding:6px 0">등록된 앱이 없습니다</div>';
+      return;
+    }
+
+    const live = apps.filter(a => !isFinished(a.id));
+    const done = apps.filter(a =>  isFinished(a.id));
+
+    const doneHtml = done.length ? `
+      <button class="app-group" onclick="toggleFinishedApps()">
+        <span>종료된 공연 ${done.length}</span>
+        <span class="app-group-caret">${_finishedOpen ? '▴' : '▾'}</span>
+      </button>
+      ${_finishedOpen ? done.map(a => appListRow(a, vis)).join('') : ''}` : '';
+
+    document.getElementById('app-list-ui').innerHTML =
+      live.map(a => appListRow(a, vis)).join('') + doneHtml;
+  }
+
+  // 자동 → 항상 표시 → 항상 숨김 → 자동
+  function cycleVisibility(id) {
+    const cur = getVisibility()[id] || 'auto';
+    setVisibility(id, cur === 'auto' ? 'show' : cur === 'show' ? 'hide' : 'auto');
+  }
+
+  function renderActorFilters() {
+    const f     = getFilter();
+    const apps  = getApps();
+    const index = actorIndex();
+    const box   = document.getElementById('actor-filters');
+
+    if (!index.size) { box.innerHTML =
+      '<div class="hint">스케줄을 불러오면 배우 목록이 나옵니다.</div>'; return; }
+
+    const onStyle = color =>
+      `background:${hexToRgba(color,0.16)};color:${color};border-color:${hexToRgba(color,0.36)}`;
+    const withRows = apps.filter(a => (schedules[a.id] || []).length);
+    const live = withRows.filter(a => !isFinished(a.id));
+    const done = withRows.filter(a =>  isFinished(a.id));
+
+    // 끝난 공연에서 고른 게 있으면 접어두면 안 보여서 헷갈린다
+    if (_filterDoneOpen === null) {
+      _filterDoneOpen = done.some(a => f.apps.includes(a.id) ||
+        [...index.entries()].some(([n, inApps]) => f.actors.includes(n) && inApps.every(x => isFinished(x.id))));
+    }
+
+    // 작품 — 안 고르면 전체
+    const appChip = app => {
+      const on = f.apps.includes(app.id);
+      return `<button class="chip${on ? ' on' : ''}" style="${on ? onStyle(app.color) : ''}"
+        onclick="toggleFilterApp('${app.id}')">${app.icon ? app.icon + ' ' : ''}${app.name}</button>`;
+    };
+
+    // 배우 — 작품별로 묶는다. 여러 작품에 나오면 각 작품 아래 다 나오고,
+    // 고르는 건 이름 단위라 하나를 누르면 모든 작품에서 같이 켜진다.
+    // 작품마다 접어두고, 고른 배우는 소제목 옆에 작게 적어 접힌 채로도 보이게 한다.
+    const actorGroup = app => {
+      const names = [...index.entries()]
+        // actorIndex 는 getApps() 를 따로 읽어 객체가 다르다. id 로 비교한다.
+        .filter(([, inApps]) => inApps.some(a => a.id === app.id))
+        .map(([name]) => name);
+      const picked = names.filter(n => actorOn(f, app.id, n));
+      const open = _filterOpenGroups.has(app.id);
+      const chips = open ? names.map(name => {
+          const on = picked.includes(name);
+          return `<button class="chip${on ? ' on' : ''}" style="${on ? onStyle(app.color) : ''}"
+            onclick="toggleFilterActor('${name.replace(/'/g, "\\'")}','${app.id}')">${name}</button>`;
+        }).join('') : '';
+      return `<button class="filter-group" onclick="toggleFilterGroup('${app.id}')">
+          <span class="filter-group-dot" style="background:${app.color}"></span>
+          <span class="filter-group-name">${app.icon ? app.icon + ' ' : ''}${app.name}</span>
+          ${picked.length ? `<span class="filter-group-picked" style="color:${app.color}">· ${picked.join(', ')}</span>` : ''}
+          <span class="app-group-caret">${open ? '▴' : '▾'}</span>
+        </button>
+        ${open ? `<div class="actor-list">${chips}</div>` : ''}`;
+    };
+
+    const doneToggle = done.length ? `
+      <button class="app-group" onclick="toggleFilterDone()">
+        <span>종료된 공연 ${done.length}</span>
+        <span class="app-group-caret">${_filterDoneOpen ? '▴' : '▾'}</span>
+      </button>` : '';
+
+    const appChips = live.map(appChip).join('') +
+      (_filterDoneOpen ? done.map(appChip).join('') : '');
+    const actorChips = live.map(actorGroup).join('') + doneToggle +
+      (_filterDoneOpen ? done.map(actorGroup).join('') : '');
+
+    const summary = filterActive()
+      ? `<div class="filter-summary">
+           <span>${[f.apps.length ? `작품 ${f.apps.length}` : '', f.actors.length ? `배우 ${f.actors.length}` : ''].filter(Boolean).join(' · ')} 적용 중</span>
+           <button class="filter-clear" onclick="clearFilter()">모두 해제</button>
+         </div>`
+      : '';
+
+    box.innerHTML = summary +
+      `<div class="section-title" style="border-top:none;padding-top:2px">작품</div>
+       <div class="hint">아무것도 안 고르면 전체 작품을 봅니다.</div>
+       <div class="actor-list">${appChips}</div>
+       ${doneToggle}
+       <div class="section-title">배우</div>
+       <div class="hint">이름 단위로 고릅니다. 여러 작품에 나오는 배우는 한 번 누르면 모든 작품에서 같이 켜집니다. 작품과 함께 고르면 그 작품의 해당 배우 회차만 보입니다.</div>
+       ${actorChips}`;
+  }
+
+  // 종료된 공연 펼침 — null 이면 열 때 고른 게 있는지 보고 정한다
+  let _filterDoneOpen = null;
+  // 배우 목록을 펼친 작품 id
+  const _filterOpenGroups = new Set();
+  function toggleFilterGroup(id) {
+    if (_filterOpenGroups.has(id)) _filterOpenGroups.delete(id); else _filterOpenGroups.add(id);
+    renderActorFilters();
+  }
+  function toggleFilterDone() {
+    _filterDoneOpen = !_filterDoneOpen;
+    renderActorFilters();
+  }
+
+  function toggleFilterApp(id) {
+    const f = getFilter();
+    const i = f.apps.indexOf(id);
+    if (i === -1) f.apps.push(id); else f.apps.splice(i, 1);
+    saveFilter(f);
+    renderActorFilters(); renderCalendar();
+  }
+
+  function toggleFilterActor(name, appId) {
+    const f = getFilter();
+    const k = offKey(appId, name);
+    const dropName = () => {
+      f.actors = f.actors.filter(n => n !== name);
+      f.off = f.off.filter(x => !x.endsWith('|' + name));
+    };
+    if (!f.actors.includes(name)) {
+      // 처음 켜면 모든 작품에서 같이 켜진다
+      f.actors.push(name);
+      f.off = f.off.filter(x => !x.endsWith('|' + name));
+    } else if (f.off.includes(k)) {
+      f.off = f.off.filter(x => x !== k);
+    } else {
+      // 이 작품만 끈다. 다른 작품에서도 다 꺼져 있으면 이름째 지운다.
+      f.off.push(k);
+      const stillOn = (actorIndex().get(name) || []).some(a => actorOn(f, a.id, name));
+      if (!stillOn) dropName();
+    }
+    saveFilter(f);
+    renderActorFilters(); renderCalendar();
+  }
+
+  function deleteApp(id) {
+    if (!confirm('앱을 목록에서 삭제하시겠습니까?')) return;
+    saveApps(getApps().filter(a => a.id !== id));
+    delete schedules[id];
+    renderTabs();
+    renderFrames();
+    renderSettingsAppList();
+    renderActorFilters();
+    renderCalendar();
+  }
+
+  // ── 앱 추가 폼 ──
+  let _presetFormId = null; // 프리셋에서 채운 폼이면 해당 프리셋 id, 직접 추가면 null
+
+  function openAppForm() {
+    _presetFormId = null;
+    document.getElementById('af-name').value = '';
+    document.getElementById('af-icon').value = '';
+    document.getElementById('af-schedule-url').value = '';
+    document.getElementById('af-app-url').value = '';
+    document.getElementById('af-records-key').value = '';
+    renderColorPicker('af-colors', COLOR_PALETTE[0]);
+    renderPresets();
+    loadPresetDates();
+    setManualForm(false);
+    document.getElementById('ov-settings').classList.remove('open');
+    document.getElementById('ov-app-form').classList.add('open');
+  }
+
+  function renderPresets() { renderPresetList(); }
+
+  // 끝난 공연은 접어둔다. 저장소에 계속 쌓이는데 새로 추가할 일은 거의 없다.
+  // 이름으로 걸러내면 작품이 끝날 때마다 코드를 고쳐야 하므로 날짜로 판단한다.
+  let _donePresetsOpen = false;
+  function toggleDonePresets() {
+    _donePresetsOpen = !_donePresetsOpen;
+    renderPresetList();
+  }
+
+  function renderPresetList() {
+    const added = new Set(getApps().map(a => a.scheduleUrl));
+
+    const row = p => {
+      const isAdded = added.has(p.scheduleUrl);
+      const tail = p.lastDate
+        ? `<div class="preset-date">${p.lastDate < todayStr ? '종료 ' : '~'}${p.lastDate}</div>`
+        : '';
+      return `<div class="preset-item${isAdded ? ' added' : ''}" onclick="fillPresetForm('${p.id}')">
+        <div class="preset-dot" style="background:${p.color}"></div>
+        <div class="preset-name">${p.icon ? p.icon + ' ' : ''}${p.name}</div>
+        ${tail}
+        <div class="preset-add">${isAdded ? '추가됨' : '+ 추가'}</div>
+      </div>`;
+    };
+
+    const list = allPresets();
+    const live = list.filter(p => !p.lastDate || p.lastDate >= todayStr);
+    const done = list.filter(p =>  p.lastDate && p.lastDate <  todayStr);
+
+    const doneHtml = done.length ? `
+      <button class="app-group" onclick="toggleDonePresets()">
+        <span>종료된 공연 ${done.length}</span>
+        <span class="app-group-caret">${_donePresetsOpen ? '▴' : '▾'}</span>
+      </button>
+      ${_donePresetsOpen ? done.map(row).join('') : ''}` : '';
+
+    document.getElementById('preset-list').innerHTML =
+      live.map(row).join('') + doneHtml +
+      `<button class="add-app-btn" style="margin-top:8px" onclick="discoverApps(false)">
+        🔄 저장소에서 새 작품 찾기
+      </button>`;
+  }
+
+  function setManualForm(open) {
+    document.getElementById('af-manual').hidden = !open;
+    document.querySelector('#af-manual-toggle .app-group-caret').textContent = open ? '▴' : '▾';
+  }
+  function toggleManualForm() {
+    const open = document.getElementById('af-manual').hidden;
+    if (open) {
+      // 프리셋으로 채워졌던 값이 남아 있으면 안 된다
+      _presetFormId = null;
+      ['af-name','af-icon','af-schedule-url','af-app-url','af-records-key']
+        .forEach(id => document.getElementById(id).value = '');
+      renderColorPicker('af-colors', COLOR_PALETTE[0]);
+    }
+    setManualForm(open);
+    if (open) document.getElementById('af-name').scrollIntoView({block: 'center', behavior: 'smooth'});
+  }
+
+  // 알려진 앱은 고칠 게 거의 없어 폼을 거치지 않고 바로 추가한다.
+  // 여러 개를 연달아 넣을 수 있게 창은 열어둔다.
+  function fillPresetForm(id) {
+    const preset = allPresets().find(p => p.id === id);
+    if (!preset) return;
+    if (getApps().find(a => a.scheduleUrl === preset.scheduleUrl)) return;
+    _presetFormId = id;
+    document.getElementById('af-name').value = preset.name;
+    document.getElementById('af-icon').value = preset.icon;
+    document.getElementById('af-schedule-url').value = preset.scheduleUrl;
+    document.getElementById('af-app-url').value = preset.appUrl;
+    document.getElementById('af-records-key').value = preset.recordsKey || '';
+    renderColorPicker('af-colors', preset.color);
+    saveAppForm(true);
+  }
+
+  function closeAppForm() {
+    document.getElementById('ov-app-form').classList.remove('open');
+    openSettings();
+  }
+
+  async function saveAppForm(keepOpen) {
+    const name        = document.getElementById('af-name').value.trim();
+    const icon        = document.getElementById('af-icon').value.trim();
+    const scheduleUrl = document.getElementById('af-schedule-url').value.trim();
+    const appUrl      = document.getElementById('af-app-url').value.trim();
+    const recordsKey  = document.getElementById('af-records-key').value.trim();
+    if (!name || !scheduleUrl) { alert('앱 이름과 스케줄 URL을 입력해주세요'); return; }
+    // 선택된 칸이 없으면 프리셋 색을 쓴다. 팔레트 기본값으로 떨어뜨리면
+    // 서로 다른 작품이 전부 같은 색이 되어버린다.
+    const presetColor = _presetFormId ? (allPresets().find(p => p.id === _presetFormId) || {}).color : null;
+    const color = document.querySelector('#af-colors .color-swatch.selected')?.dataset.hex
+                  || presetColor || COLOR_PALETTE[0];
+    const id = _presetFormId || ('app_' + Date.now());
+    const app = { id, name, icon, scheduleUrl, appUrl, color, recordsKey: recordsKey || null };
+    const apps = getApps();
+    apps.push(app);
+    saveApps(apps);
+    try {
+      schedules[id] = await fetch(scheduleUrl).then(r => r.json());
+    } catch {}
+    loadEvents([app]);
+    _presetFormId = null;
+    renderTabs();
+    renderFrames();
+    refreshStatus();
+    renderCalendar();
+    if (keepOpen) {
+      renderPresetList();
+      toast(`${name} 추가됨`);
+      return;
+    }
+    document.getElementById('ov-app-form').classList.remove('open');
+    openSettings();
+  }
+
+  // ── PhotoDB (IndexedDB) ──
+  const PhotoDB = (() => {
+    const DB_NAME = 'otk-photos', STORE = 'photos';
+    let _db = null;
+    function open() {
+      if (_db) return Promise.resolve(_db);
+      return new Promise((res, rej) => {
+        const req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = e => e.target.result.createObjectStore(STORE, {autoIncrement: true});
+        req.onsuccess = e => { _db = e.target.result; res(_db); };
+        req.onerror = e => rej(e.target.error);
+      });
+    }
+    async function put(dataUrl) {
+      const db = await open();
+      return new Promise((res, rej) => {
+        const req = db.transaction(STORE,'readwrite').objectStore(STORE).add(dataUrl);
+        req.onsuccess = e => res(e.target.result);
+        req.onerror = e => rej(e.target.error);
+      });
+    }
+    async function remove(id) {
+      const db = await open();
+      return new Promise((res, rej) => {
+        const req = db.transaction(STORE,'readwrite').objectStore(STORE).delete(id);
+        req.onsuccess = () => res();
+        req.onerror = e => rej(e.target.error);
+      });
+    }
+    async function getMany(ids) {
+      if (!ids || !ids.length) return {};
+      const db = await open();
+      return new Promise((res, rej) => {
+        const result = {}, tx = db.transaction(STORE);
+        let pending = ids.length;
+        ids.forEach(id => {
+          const req = tx.objectStore(STORE).get(id);
+          req.onsuccess = e => { result[id] = e.target.result; if (!--pending) res(result); };
+          req.onerror = e => rej(e.target.error);
+        });
+      });
+    }
+    return {put, remove, getMany};
+  })();
+
+  // ── 메모/사진 ──
+  const NOTES_KEY = HUB_NS + 'notes';
+  function getNotes() { try { return JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch { return {}; } }
+  function saveNotes(n) { localStorage.setItem(NOTES_KEY, JSON.stringify(n)); }
+
+  let _noteKey = '', _notePendingPhotos = []; // base64[] in memory during editing
+
+  async function openNoteForm(key, appName) {
+    _noteKey = key;
+    const note = getNotes()[key] || {};
+    document.getElementById('note-form-title').textContent = appName + ' 메모';
+    document.getElementById('note-memo-input').value = note.memo || '';
+    const photoMap = await PhotoDB.getMany(note.photoIds || []);
+    _notePendingPhotos = (note.photoIds || []).map(id => photoMap[id]).filter(Boolean);
+    renderNotePhotosArea(_notePendingPhotos);
+    document.getElementById('ov-detail').classList.remove('open');
+    document.getElementById('ov-note').classList.add('open');
+  }
+  function closeNoteForm() { document.getElementById('ov-note').classList.remove('open'); }
+
+  function renderNotePhotosArea(photos) {
+    const thumbs = photos.map((src, i) => `
+      <div class="note-thumb-item">
+        <img class="note-large-thumb" src="${src}" onclick="openPhotoViewer(_notePendingPhotos,${i})">
+        <div class="note-thumb-item-del" onclick="removeNotePendingPhoto(${i});event.stopPropagation()">✕</div>
+      </div>`).join('');
+    document.getElementById('note-photos-area').innerHTML =
+      thumbs + `<div class="note-photo-add" onclick="document.getElementById('note-file').click()">+</div>`;
+  }
+
+  function removeNotePendingPhoto(idx) {
+    _notePendingPhotos.splice(idx, 1);
+    renderNotePhotosArea(_notePendingPhotos);
+  }
+
+  function handleNotePhotos(input) {
+    const files = [...input.files];
+    if (!files.length) return;
+    input.value = '';
+    let done = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        resizeImage(e.target.result, 1400, 1800, 0.82, resized => {
+          _notePendingPhotos.push(resized);
+          if (++done === files.length) renderNotePhotosArea(_notePendingPhotos);
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function resizeImage(dataUrl, maxW, maxH, quality, cb) {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxW / img.width, maxH / img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      cb(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = dataUrl;
+  }
+
+  async function saveNoteForm() {
+    const notes = getNotes();
+    const memo = document.getElementById('note-memo-input').value.trim();
+    const newPhotos = _notePendingPhotos;
+    // 기존 사진 삭제
+    await Promise.all((notes[_noteKey]?.photoIds || []).map(id => PhotoDB.remove(id)));
+    // 새 사진 저장
+    const photoIds = await Promise.all(newPhotos.map(src => PhotoDB.put(src)));
+    if (!memo && !photoIds.length) delete notes[_noteKey];
+    else notes[_noteKey] = { memo, photoIds };
+    saveNotes(notes);
+    closeNoteForm();
+    openDay(_customFormDs);
+  }
+
+  // ── 사진 뷰어 ──
+  let _pvPhotos = [], _pvIdx = 0;
+  let _dayNotePhotos = {}; // noteKey → photos[], populated in openDay
+  const _pv = { scale: 1, x: 0, y: 0, startDist: 0, startScale: 1, startX: 0, startY: 0, lastTap: 0 };
+
+  function pvClampPan() {
+    const img = document.getElementById('photo-viewer-img');
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    if (!nw || !nh) return;
+    const box = document.getElementById('ov-photo-view');
+    const vw = box.clientWidth, vh = box.clientHeight;
+    const containScale = Math.min(1, vw / nw, vh / nh);
+    const scaledW = nw * containScale * _pv.scale;
+    const scaledH = nh * containScale * _pv.scale;
+    const maxX = Math.max(0, (scaledW - vw) / 2);
+    const maxY = Math.max(0, (scaledH - vh) / 2);
+    _pv.x = Math.min(maxX, Math.max(-maxX, _pv.x));
+    _pv.y = Math.min(maxY, Math.max(-maxY, _pv.y));
+  }
+  function pvApply() {
+    const img = document.getElementById('photo-viewer-img');
+    pvClampPan();
+    img.style.transform = `translate(${_pv.x}px,${_pv.y}px) scale(${_pv.scale})`;
+    img.classList.toggle('pv-zoomed', _pv.scale > 1);
+  }
+  function pvReset() { _pv.scale = 1; _pv.x = 0; _pv.y = 0; pvApply(); }
+  function pvFitWidthScale() {
+    const img = document.getElementById('photo-viewer-img');
+    const nw = img.naturalWidth, nh = img.naturalHeight;
+    if (!nw || !nh) return 2.5;
+    const box = document.getElementById('ov-photo-view');
+    const vw = box.clientWidth, vh = box.clientHeight;
+    const containScale  = Math.min(1, vw / nw, vh / nh);
+    const renderedWidth = nw * containScale;
+    if (!renderedWidth) return 2.5;
+    return Math.min(6, Math.max(1, vw / renderedWidth));
+  }
+  function pvToggleZoom() {
+    const img = document.getElementById('photo-viewer-img');
+    img.classList.add('pv-zoom-anim');
+    _pv.scale = _pv.scale > 1 ? 1 : pvFitWidthScale();
+    _pv.x = 0; _pv.y = 0;
+    pvApply();
+    setTimeout(() => img.classList.remove('pv-zoom-anim'), 250);
+  }
+
+  function pvNav(dir) {
+    _pvIdx = (_pvIdx + dir + _pvPhotos.length) % _pvPhotos.length;
+    pvReset();
+    document.getElementById('photo-viewer-img').src = _pvPhotos[_pvIdx];
+    pvUpdateCounter();
+  }
+  function pvUpdateCounter() {
+    const el = document.getElementById('pv-counter');
+    el.textContent = _pvPhotos.length > 1 ? `${_pvIdx + 1} / ${_pvPhotos.length}` : '';
+    document.getElementById('pv-prev').style.display = _pvPhotos.length > 1 ? '' : 'none';
+    document.getElementById('pv-next').style.display = _pvPhotos.length > 1 ? '' : 'none';
+  }
+
+  function openPhotoViewerByKey(key, idx) {
+    const photos = _dayNotePhotos[key] || [];
+    if (photos.length) openPhotoViewer(photos, idx);
+  }
+
+  function openPhotoViewer(photos, idx) {
+    _pvPhotos = Array.isArray(photos) ? photos : [photos];
+    _pvIdx = idx || 0;
+    pvReset();
+    document.getElementById('photo-viewer-img').src = _pvPhotos[_pvIdx];
+    pvUpdateCounter();
+    document.getElementById('ov-photo-view').classList.add('open');
+  }
+  function closePhotoViewer() { document.getElementById('ov-photo-view').classList.remove('open'); }
+  function pvDownload() {
+    const src = _pvPhotos[_pvIdx];
+    if (!src) return;
+    const a = document.createElement('a');
+    a.href = src;
+    a.download = `photo_${Date.now()}.jpg`;
+    a.click();
+  }
+
+  function pvTouchStart(e) {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      _pv.startDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+      _pv.startScale = _pv.scale;
+    } else if (e.touches.length === 1) {
+      _pv.startX = e.touches[0].clientX - _pv.x;
+      _pv.startY = e.touches[0].clientY - _pv.y;
+      const now = Date.now();
+      if (now - _pv.lastTap < 280) pvToggleZoom();
+      _pv.lastTap = now;
+    }
+  }
+  function pvTouchMove(e) {
+    e.preventDefault();
+    if (e.touches.length === 2) {
+      const d = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY);
+      _pv.scale = Math.min(6, Math.max(1, _pv.startScale * (d / _pv.startDist)));
+      if (_pv.scale <= 1) { _pv.x = 0; _pv.y = 0; }
+      pvApply();
+    } else if (e.touches.length === 1 && _pv.scale > 1) {
+      _pv.x = e.touches[0].clientX - _pv.startX;
+      _pv.y = e.touches[0].clientY - _pv.startY;
+      pvApply();
+    }
+  }
+  function pvTouchEnd() { if (_pv.scale < 1.05) { _pv.scale = 1; _pv.x = 0; _pv.y = 0; pvApply(); } }
+
+  function closeOnBg(e, id) {
+    if (e.target === document.getElementById(id))
+      document.getElementById(id).classList.remove('open');
+  }
+
+  // ── 초기화 ──
+  // localStorage base64 → IndexedDB 마이그레이션 (구버전 데이터 변환)
+  async function migratePhotosToIndexedDB() {
+    let migrated = false;
+    const notes = getNotes();
+    for (const key of Object.keys(notes)) {
+      const note = notes[key];
+      if (Array.isArray(note.photos) && note.photos.length > 0 && !note.photoIds) {
+        const ids = [];
+        for (const b64 of note.photos) {
+          const id = await PhotoDB.put(b64);
+          ids.push(id);
+        }
+        note.photoIds = ids;
+        delete note.photos;
+        migrated = true;
+      }
+    }
+    if (migrated) localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+
+    let customMigrated = false;
+    const customs = getCustom();
+    for (const e of customs) {
+      if (Array.isArray(e.photos) && e.photos.length > 0 && !e.photoIds) {
+        const ids = [];
+        for (const b64 of e.photos) {
+          const id = await PhotoDB.put(b64);
+          ids.push(id);
+        }
+        e.photoIds = ids;
+        delete e.photos;
+        customMigrated = true;
+      }
+    }
+    if (customMigrated) localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
+  }
+
+  // 앱을 추가한 뒤에도 '앱을 추가해 주세요' 가 남아 있던 것을 막는다.
+  // 상태 문구를 만드는 곳을 한 군데로 모은다.
+  function refreshStatus(failed) {
+    const status = document.getElementById('status');
+    if (!getApps().length) {
+      status.textContent = '⚙️ 설정에서 앱을 추가해 주세요';
+      status.style.display = '';
+    } else if (failed && failed.length) {
+      status.textContent = `⚠️ 스케줄을 못 불러온 앱: ${failed.join(', ')}`;
+      status.style.display = '';
+    } else {
+      status.style.display = 'none';
+    }
+  }
+
+  let _toastTimer = null;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => el.classList.remove('show'), 2200);
+  }
+
+  // ── 동기화 ──
+  // 관람 기록은 각 앱이 같은 오리진의 localStorage 에 쓰므로 데이터 자체는 공유된다.
+  // 문제는 허브가 다시 그릴 일이 없다는 것 — 앱에서 기록하고 돌아와도 화면이 그대로였다.
+  let _syncing = false;
+  async function syncNow(silent) {
+    if (_syncing) return;
+    _syncing = true;
+    const btn = document.getElementById('sync-btn');
+    btn.classList.add('spinning');
+
+    const apps = getApps();
+    const failed = [];
+    try {
+      await Promise.all(apps.map(async app => {
+        try {
+          const r = await fetch(app.scheduleUrl, { cache: 'no-cache' });
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          schedules[app.id] = await r.json();
+        } catch (e) {
+          failed.push(`${app.name}(${e.message})`);
+        }
+      }));
+
+      refreshStatus(failed);
+      renderTabs();
+      renderCalendar();        // getAttended() 가 여기서 각 앱 기록을 다시 읽는다
+      await loadEvents(apps);
+      await discoverApps(true);
+    } finally {
+      // 중간에 터지면 버튼이 계속 돌고 두 번 다시 못 누르게 된다
+      btn.classList.remove('spinning');
+      _syncing = false;
+    }
+
+    if (!silent) {
+      if (failed.length) { toast(`⚠️ ${failed.join(', ')}`); }
+      else {
+        // 몇 건인지만 말하면 0건일 때 원인을 알 수 없다. 어디가 비었는지 보여준다.
+        const att = getAttended();
+        const n = Object.values(att).reduce((a, v) => a + v.length, 0);
+        const noKey = apps.filter(a => !a.recordsKey).map(a => a.name);
+        if (n > 0)            toast(`동기화 완료 · 관람 기록 ${n}건`);
+        else if (noKey.length) toast(`기록 키가 없는 앱: ${noKey.join(', ')}`);
+        else                   toast('저장된 관람 기록이 없습니다');
+      }
+    }
+  }
+
+  // 앱 탭에서 기록하고 돌아오는 경우가 가장 흔하다. 그때는 알아서 다시 읽는다.
+  function refreshRecords() {
+    if (currentView === 'cal') { renderTabs(); renderCalendar(); }
+  }
+  // 다른 탭이나 별도로 띄운 앱에서 기록했을 때 (같은 오리진에서만 발생)
+  addEventListener('storage', refreshRecords);
+  // 홈 화면에서 다시 열었을 때
+  addEventListener('visibilitychange', () => { if (!document.hidden) refreshRecords(); });
+
+  async function init() {
+    applyTheme(getTheme());
+    const t = new Date();
+    currentYear = t.getFullYear(); currentMonth = t.getMonth();
+    syncPresetIcons();
+    renderTabs();
+    renderFrames();
+    await migratePhotosToIndexedDB();
+    const apps = getApps();
+    if (!apps.length) { refreshStatus(); return; }
+    // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
+    const failed = [];
+    await Promise.all(apps.map(async app => {
+      try {
+        const r = await fetch(app.scheduleUrl);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        schedules[app.id] = await r.json();
+      } catch (e) {
+        failed.push(`${app.name}(${e.message})`);
+      }
+    }));
+
+    refreshStatus(failed);
+
+    renderTabs();          // 스케줄이 있어야 '공연 종료' 판정이 되므로 다시 그린다
+    renderCalendar();
+    loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
+
+    discoverApps(true);    // 새 작품 자동 발견 (백그라운드, 실패해도 조용히)
+  }
+
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+
+  // 사진 뷰어 터치 이벤트 (passive:false 필요)
+  const _pvImg = document.getElementById('photo-viewer-img');
+  _pvImg.addEventListener('touchstart', pvTouchStart, {passive: false});
+  _pvImg.addEventListener('touchmove',  pvTouchMove,  {passive: false});
+  _pvImg.addEventListener('touchend',   pvTouchEnd,   {passive: false});
+  _pvImg.addEventListener('dblclick', (e) => { e.stopPropagation(); pvToggleZoom(); });
+
+  // 뒤로가기 버튼: 오버레이 닫기 (PWA 앱 종료 방지)
+  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-app-form','ov-filter','ov-settings','ov-detail'];
+  history.pushState({pwa:true}, '');
+  window.addEventListener('popstate', () => {
+    history.pushState({pwa:true}, '');
+    for (const id of OVERLAY_CLOSE_ORDER) {
+      const el = document.getElementById(id);
+      if (el?.classList.contains('open')) { el.classList.remove('open'); return; }
+    }
+  });
+
+  init();
+</script>
+</body>
+</html>

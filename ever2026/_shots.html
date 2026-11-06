@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>SHOTS</title>
+<style>
+  html,body{margin:0;padding:0;background:#fff;}
+  iframe{width:430px;height:932px;border:0;display:block;}
+</style>
+</head>
+<body>
+<iframe id="app" src="./index.html"></iframe>
+<script>
+/*
+  guide.html 용 스크린샷 촬영 하네스 (개발 도구, 배포 대상 아님).
+    _shots.html?tab=home | calendar | coupon | stats
+  index.html 을 iframe 으로 띄우고 샘플 기록을 심은 뒤 해당 탭으로 전환한다.
+  headless Chrome --screenshot 으로 캡처한다.
+*/
+const TAB = new URLSearchParams(location.search).get('tab') || 'home';
+
+// 실제 schedule.json 의 캐스팅과 일치시킨 샘플 관람 기록
+const SAMPLE = [
+  { date:'2026-10-21', time:'20:00', francis:'이준우', remy:'권태하', joy:'이동연',
+    seatFloor:'1층', seatZone:'F', seatNumber:8, price:38500, discountType:'프리뷰 할인', rating:5,
+    comment:'첫공. 숲 세트가 압도적이었다.' },
+  { date:'2026-10-24', time:'19:00', francis:'랑연', remy:'정단비', joy:'공현비',
+    seatFloor:'1층', seatZone:'C', seatNumber:10, price:38500, discountType:'프리뷰 할인', rating:5,
+    comment:'랑연 페어 첫 관람' },
+  { date:'2026-10-29', time:'16:00', francis:'랑연', remy:'정단비', joy:'공현비',
+    seatFloor:'2층', seatZone:'C', seatNumber:9, price:38500, discountType:'마티네 할인', rating:4,
+    comment:'2층도 시야 괜찮다' },
+  { date:'2026-10-31', time:'19:00', francis:'이승준', remy:'박경호', joy:'이동연',
+    seatFloor:'1층', seatZone:'J', seatNumber:12, price:53900, discountType:'재관람 할인', rating:5,
+    comment:'쿠폰팩 받음' },
+  { date:'2026-11-07', time:'15:00', francis:'이준우', remy:'권태하', joy:'이동연',
+    seatFloor:'1층', seatZone:'D', seatNumber:5, price:46200, discountType:'40% 실물 할인권', rating:5,
+    comment:'포토카드 증정 회차' }
+];
+
+function seed(W) {
+  // 기존 데이터 정리
+  Object.keys(W.localStorage)
+    .filter(k => k.startsWith('ever_') && !['ever_schedule','ever_events'].includes(k))
+    .forEach(k => W.localStorage.removeItem(k));
+
+  // 도장판 하나 만들고 앱 로직으로 도장을 찍어 카운트·마일스톤 정합성을 맞춘다
+  const board = { id: W.uuid(), name: '1', totalSlots: 7,
+                  milestones: W.defaultMilestones(), currentCount: 0, history: [] };
+  W.saveStampBoards([board]);
+
+  const now = new Date().toISOString();
+  const records = SAMPLE.map(s => Object.assign({
+    id: W.uuid(), isBooked: true, paidDiff: false, eungBingPassUsed: false,
+    doubleStampUsed: false, stampBoardId: board.id, stampQty: 1,
+    memo: '', createdAt: now, updatedAt: now
+  }, s));
+  W.saveRecords(records);
+
+  records.forEach(r => {
+    W.applyStampToBoard(board.id, 1, r.date, '관람 연동');
+    W.applyStampToBoard._lastOverflow = 0;
+    const bs = W.getStampBoards();
+    const b  = bs.find(x => x.id === board.id);
+    if (b?.history?.length) {
+      b.history[b.history.length - 1].recordId = r.id;
+      W.saveStampBoards(bs);
+    }
+  });
+}
+
+const frame = document.getElementById('app');
+frame.addEventListener('load', () => {
+  const W = frame.contentWindow;
+  const start = Date.now();
+  (function wait() {
+    const ready = W.getSchedule && W.getSchedule().length > 0;
+    if (!ready && Date.now() - start < 6000) return setTimeout(wait, 150);
+
+    seed(W);
+
+    // 상세 패널 (미니 좌석도 확인용)
+    // 도장 카드 변경 모드 (이력 패널에서 2건 고른 상태)
+    if (TAB === 'stampmove') {
+      const bs = W.getStampBoards();
+      bs.push({ id: 'b2', name: '2', totalSlots: 7, milestones: W.defaultMilestones(), currentCount: 0, history: [] });
+      W.saveStampBoards(bs);
+      const ct = W.document.querySelector(`.tab-btn[onclick*="'coupon'"]`); if (ct) W.switchTab('coupon', ct);
+      W.openStampHistory(bs[0].id); W.toggleStampMoveMode();
+      const h = W.getStampBoards()[0].history;
+      W.toggleStampMoveSel(h.length - 1, true); W.toggleStampMoveSel(h.length - 2, true);
+      document.title = 'SHOT stampmove'; return;
+    }
+    if (TAB === 'detail') {
+      const home = W.document.querySelector(`.tab-btn[onclick*="'home'"]`);
+      if (home) W.switchTab('home', home);
+      const target = W.getRecords().find(r => r.seatFloor === '2층') || W.getRecords()[0];
+      W.openDetail(target.id);
+      document.title = 'SHOT detail';
+      return;
+    }
+
+    const btn = W.document.querySelector(`.tab-btn[onclick*="'${TAB}'"]`);
+    if (btn) W.switchTab(TAB, btn);
+
+    // 캘린더는 10월을 보여주고, 이벤트가 걸린 날짜를 펼쳐 둔다
+    if (TAB === 'calendar') { W.initCal(); W.renderCalendar(); W.calDayClick('2026-10-31'); }
+    if (TAB === 'stats')    W.switchStatTab('heatmap', W.document.querySelector('.stats-subtab'));
+
+    document.title = 'SHOT ' + TAB;
+  })();
+});
+</script>
+</body>
+</html>

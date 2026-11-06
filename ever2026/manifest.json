@@ -1,0 +1,28 @@
+{
+  "name": "V에버애프터 관극 다이어리",
+  "short_name": "V에버애프터",
+  "description": "뮤지컬 V에버애프터 2026 관람 기록 앱",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F8F3F3",
+  "theme_color": "#9E1B2C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "m.diary",
+  "short_name": "m.diary",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#13131f",
+  "theme_color": "#13131f",
+  "icons": [
+    { "src": "icon-192-v2.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512-v2.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

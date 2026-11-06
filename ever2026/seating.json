@@ -1,0 +1,469 @@
+{
+  "venue": "링크아트센터드림 드림1관",
+  "totalSeats": 351,
+  "source": "공식 좌석 배치도 (x.com/MJ_Starfish/status/2104813424085737743, 4번째 이미지)",
+  "verification": "비더슈탄트(같은 드림1관, widerstand2026 SEAT_PLAN)와 열·블록·번호 일치. 휠체어석 E1~3 만 추가 (348 + 3)",
+  "_model": {
+    "segments": "[시작 칸(0~21), 첫 번호, 끝 번호] — 두 층 모두 22칸 격자",
+    "unavailable": "판매보류석",
+    "wheelchair": "휠체어석 번호 목록 (좌석 수에 포함)"
+  },
+  "floors": [
+    {
+      "name": "1층",
+      "grade": "R석",
+      "price": 77000,
+      "seatCount": 248,
+      "rows": [
+        {
+          "row": "A",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": [
+            1,
+            20
+          ]
+        },
+        {
+          "row": "B",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "C",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "D",
+          "first": 1,
+          "last": 19,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              15
+            ],
+            [
+              18,
+              16,
+              19
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "E",
+          "first": 1,
+          "last": 3,
+          "segments": [
+            [
+              0,
+              1,
+              3
+            ]
+          ],
+          "unavailable": [],
+          "wheelchair": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "row": "F",
+          "first": 1,
+          "last": 16,
+          "segments": [
+            [
+              5,
+              1,
+              12
+            ],
+            [
+              18,
+              13,
+              16
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "G",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              1
+            ],
+            [
+              5,
+              2,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "H",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              1
+            ],
+            [
+              5,
+              2,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "I",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              1
+            ],
+            [
+              5,
+              2,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "J",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "K",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "L",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "M",
+          "first": 1,
+          "last": 20,
+          "segments": [
+            [
+              0,
+              1,
+              4
+            ],
+            [
+              5,
+              5,
+              16
+            ],
+            [
+              18,
+              17,
+              20
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "N",
+          "first": 1,
+          "last": 19,
+          "segments": [
+            [
+              0,
+              1,
+              8
+            ],
+            [
+              9,
+              9,
+              19
+            ]
+          ],
+          "unavailable": []
+        }
+      ]
+    },
+    {
+      "name": "2층",
+      "grade": "S석",
+      "price": 55000,
+      "seatCount": 103,
+      "rows": [
+        {
+          "row": "B",
+          "first": 1,
+          "last": 18,
+          "segments": [
+            [
+              2,
+              1,
+              5
+            ],
+            [
+              8,
+              6,
+              14
+            ],
+            [
+              18,
+              15,
+              18
+            ]
+          ],
+          "unavailable": [
+            18
+          ]
+        },
+        {
+          "row": "C",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              4
+            ],
+            [
+              8,
+              5,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "D",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              4
+            ],
+            [
+              8,
+              5,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "E",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              4
+            ],
+            [
+              8,
+              5,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "F",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              4
+            ],
+            [
+              8,
+              5,
+              13
+            ],
+            [
+              18,
+              14,
+              17
+            ]
+          ],
+          "unavailable": []
+        },
+        {
+          "row": "G",
+          "first": 1,
+          "last": 17,
+          "segments": [
+            [
+              3,
+              1,
+              17
+            ]
+          ],
+          "unavailable": []
+        }
+      ]
+    }
+  ]
+}
