@@ -167,9 +167,9 @@
   .heatmap-tab{flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;text-align:center;}
   .heatmap-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
   .heatmap-scroll{overflow-x:auto;}
-  .heatmap-wrap{padding:4px 0;display:flex;flex-direction:column;gap:2px;width:max-content;margin:0 auto;}
-  .hm-row{display:flex;align-items:center;gap:0;}
-  .hm-label{width:18px;font-size:9px;color:var(--text3);text-align:center;font-weight:700;flex-shrink:0;}
+  .heatmap-wrap{padding:4px 0;display:flex;flex-direction:column;gap:1px;width:max-content;margin:0 auto;}
+  .hm-row{display:flex;align-items:center;gap:0;}   /* 줄 간격은 .heatmap-wrap gap 1px = 좌석 사이 간격(셀 margin-right 1px) */
+  .hm-label{width:18px;height:11px;line-height:11px;font-size:9px;color:var(--text3);text-align:center;font-weight:700;flex-shrink:0;}
   .hm-cell{width:11px;height:11px;border-radius:2px;background:var(--bg3);border:1px solid var(--border);flex-shrink:0;}
   .hm-cell.v1{background:var(--seat1);border-color:var(--seat1);}
   .hm-cell.v2{background:var(--seat2);border-color:var(--seat2);}
@@ -2315,10 +2315,11 @@ function buildMiniSeat(floor, rowKey, num) {
   const aisle = aisleCols(floor);
   const seatNum = parseInt(num);
 
-  let html = '<div style="overflow-x:auto;margin:8px 0;"><div style="display:flex;flex-direction:column;gap:2px;width:max-content;margin:0 auto;">';
+  // 줄 간격 = 좌석 사이 간격(G) — 히트맵과 같게
+  let html = `<div style="overflow-x:auto;margin:8px 0;"><div style="display:flex;flex-direction:column;gap:${G}px;width:max-content;margin:0 auto;">`;
   plan.rows.forEach(r => {
     const isTarget = r === rowKey;
-    const lbl = `<div style="width:14px;font-size:8px;color:${isTarget?'var(--accent)':'var(--text3)'};text-align:center;font-weight:${isTarget?'700':'400'};flex-shrink:0;margin-right:${G}px;">${r}</div>`;
+    const lbl = `<div style="width:14px;height:${C}px;line-height:${C}px;font-size:8px;color:${isTarget?'var(--accent)':'var(--text3)'};text-align:center;font-weight:${isTarget?'700':'400'};flex-shrink:0;margin-right:${G}px;">${r}</div>`;
     html += `<div style="display:flex;align-items:center;gap:0;">${lbl}`;
     seatRowCells(floor, r).forEach((n, i) => {
       const w = aisle[i] ? AW : C;
