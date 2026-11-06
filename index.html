@@ -925,7 +925,8 @@
   const DISCOVERED_KEY = HUB_NS + 'discovered';
 
   // ── 기타 공연 (콘서트처럼 앱 없이 일정만 있는 공연) ──
-  // apps.json 에 { "path": "hwinter2026/", "app": false } 로 올리고, 폴더에는 show.json + schedule.json 만 둔다.
+  // extras/ 폴더에 공연마다 파일 하나(정보 + schedule 배열)를 두고, apps.json 에 { "path": "extras/<공연>.json", "app": false } 한 줄.
+  // (예전 모양 — 폴더에 show.json + schedule.json — 도 그대로 읽는다)
   // 허브에서는 공연마다 작품을 만들지 않고 '기타' 하나로 묶는다. 회차에는 공연 이름(_show)을 붙인다.
   // schedule.json 의 배우 칸(cast1, cast2 …)은 작품 앱과 같은 모양이라 배우 필터가 그대로 걸린다.
   const EXTRA_ID = 'app_extra';
@@ -944,7 +945,7 @@
       const list = await r.json();
       return (Array.isArray(list) ? list : [])
         .filter(x => x && x.app === false && typeof x.path === 'string' && x.path)
-        .map(x => new URL(x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
+        .map(x => new URL(/\.json$/.test(x.path) ? x.path : x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
     } catch { return []; }
   }
   async function loadExtraSchedule() {
@@ -952,12 +953,18 @@
     const shows = [], rows = [];
     await Promise.all(urls.map(async base => {
       try {
-        const [info, sch] = await Promise.all([
-          fetch(base + 'show.json', { cache: 'no-cache' }).then(r => r.json()),
-          fetch(base + 'schedule.json', { cache: 'no-cache' }).then(r => r.json()),
-        ]);
+        let info, sch;
+        if (/\.json$/.test(base)) {               // extras/<공연>.json — 정보와 회차가 한 파일
+          info = await fetch(base, { cache: 'no-cache' }).then(r => r.json());
+          sch  = info.schedule;
+        } else {                                   // <공연>/show.json + schedule.json
+          [info, sch] = await Promise.all([
+            fetch(base + 'show.json', { cache: 'no-cache' }).then(r => r.json()),
+            fetch(base + 'schedule.json', { cache: 'no-cache' }).then(r => r.json()),
+          ]);
+        }
         if (!Array.isArray(sch)) return;
-        const id = base.replace(/\/$/, '').split('/').pop();
+        const id = base.replace(/\/$/, '').split('/').pop().replace(/\.json$/, '');
         const dates = sch.map(s => s.date).filter(Boolean).sort();
         shows.push({ id, name: info.name || id, icon: info.icon || '', venue: info.venue || '',
                      price: info.price || '', url: info.url || '', firstDate: dates[0], lastDate: dates[dates.length - 1] });
