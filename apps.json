@@ -42,5 +42,9 @@
   {
     "path": "shows/starcrossed2026.json",
     "app": false
+  },
+  {
+    "path": "shows/goddess2026.json",
+    "app": false
   }
 ]
