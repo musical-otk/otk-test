@@ -127,6 +127,13 @@
     #view-cal.hidden { display: none; }
     /* 찾는 중에는 달력을 숨기고 결과만 */
     #view-cal.searching > :not(#home-search) { display: none !important; }
+    #view-cal.hearting > :not(#home-hearts) { display: none !important; }
+    #home-hearts { padding: 4px 16px 24px; }
+    .hp-title { flex: 1; font-size: 16px; font-weight: 800; }
+    .hbtn-heart { color: #e0485a; font-size: 18px; }
+    .hp-row { display: flex; align-items: center; gap: 8px; padding: 10px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
+    .hp-name { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .hp-sub { font-size: 12px; color: var(--text3); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     #home-search { padding: 4px 16px 12px; }
     .hs-bar { display: flex; gap: 6px; align-items: center; position: sticky; top: 0; z-index: 3; background: var(--bg1); padding: 6px 0; }
     .hs-bar .form-input { flex: 1; }
@@ -600,11 +607,19 @@
       ><path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/><polyline points="20.5 4 20.5 9.5 15 9.5"/></svg></button>
     <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☀️</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
+    <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심 작품·배우">♥</button>
     <button class="hbtn" onclick="openSettings()">⚙️</button>
     <div id="app-tabs"></div>
   </div>
 
   <div id="view-cal">
+    <!-- 관심 — ♥ 로 연다. 관심 작품·배우를 보고 빼는 곳 (넣기는 찾기에서) -->
+    <div id="home-hearts" hidden>
+      <div class="hs-bar"><div class="hp-title">♥ 관심</div>
+        <button class="srch-btn on" onclick="closeHearts();openSearch()">+ 찾아서 추가</button>
+        <button class="hs-close" onclick="closeHearts()" title="달력으로">✕</button></div>
+      <div id="hearts-body"></div>
+    </div>
     <!-- 찾기 — 🔍 로 연다. 입력하는 동안 달력 자리에 결과가 나온다 -->
     <div id="home-search" hidden>
       <div class="hs-bar">
@@ -1665,6 +1680,11 @@
   }
 
   function goToToday() {
+    // 열린 창·찾기·관심을 모두 닫고 달력으로
+    document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+    if (!document.getElementById('home-search').hidden) closeSearch();
+    if (!document.getElementById('home-hearts').hidden) closeHearts();
+    scrollTo(0, 0);
     currentView = 'cal';
     if (_peekApp) { _peekApp = null; renderTabs(); }
     setFrameMode(false);
@@ -2594,10 +2614,69 @@
   }
   async function pickFilterActor(name) { return heartActor(name); }
 
+  // ── 관심 페이지 ── 관심 작품·배우 목록. ♥ 로 빼고, 이름을 누르면 찾기의 자세히로
+  function openHearts() {
+    const box = document.getElementById('home-hearts');
+    if (!box.hidden && currentView === 'cal') { closeHearts(); return; }
+    if (currentView !== 'cal') switchView('cal');
+    if (!document.getElementById('home-search').hidden) closeSearch();
+    box.hidden = false;
+    document.getElementById('view-cal').classList.add('hearting');
+    scrollTo(0, 0);
+    renderHearts();
+    ensureCatalog().then(renderHearts);
+  }
+  function closeHearts() {
+    document.getElementById('home-hearts').hidden = true;
+    document.getElementById('view-cal').classList.remove('hearting');
+  }
+  function renderHearts() {
+    const body = document.getElementById('hearts-body');
+    if (!body || document.getElementById('home-hearts').hidden) return;
+    const H = getHearts();
+    const { works, actors } = catalog('all');
+    const esc = s => s.replace(/'/g, "\\'");
+    const kind = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
+    const rowsW = id => (schedules[id] && schedules[id].length ? schedules[id] : _catalogRows[id]) || [];
+    const wRow = id => {
+      const w = works.find(x => x.id === id) || getApps().find(a => a.id === id);
+      if (!w) return '';
+      const rows = rowsW(id), dates = rows.map(s => s.date).sort();
+      const left = rows.filter(s => s.date >= todayStr).length;
+      return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
+        <span class="filter-group-dot" style="background:${w.color}"></span>
+        <span class="hp-name">${w.icon || ''} ${w.name}</span>
+        <span class="hp-sub">${kind(w)}${dates.length ? ` · ~${dates[dates.length - 1].slice(5).replace('-', '/')}` : ''}${left ? ` · 남은 ${left}회` : ' · 종료'}</span>
+        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartWork('${id}');renderHearts()">♥</button>
+      </div>`;
+    };
+    const aRow = n => {
+      const ws = (actors.get(n) || []).filter(w => rowsW(w.id).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === n)));
+      return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('actor','${esc(n)}')">
+        <span class="hp-name">${n}</span>
+        <span class="hp-sub">${ws.length ? ws.map(w => w.icon || w.name).join(' ') : '남은 공연 없음'}</span>
+        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartActor('${esc(n)}');renderHearts()">♥</button>
+      </div>`;
+    };
+    body.innerHTML = (!H.works.length && !H.actors.length)
+      ? '<div class="hint" style="padding:12px 2px">아직 관심이 없습니다. [+ 찾아서 추가]에서 작품·배우의 ♡ 를 누르세요.</div>'
+      : `<div class="flt-sec">관심 작품 ${H.works.length}</div>${H.works.map(wRow).join('') || '<div class="hint">없음</div>'}
+         <div class="flt-sec" style="margin-top:10px">관심 배우 ${H.actors.length}</div>${H.actors.map(aRow).join('') || '<div class="hint">없음</div>'}
+         <div class="hint" style="padding-top:10px">작품 ♥ 는 전체 회차, 배우 ♥ 는 그 배우가 나오는 회차가 달력에 들어옵니다. 잠깐 숨기려면 🔎 필터에서 끄세요.</div>`;
+  }
+
   // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
   let _srchSel = null;   // 자세히 보는 것 { type: 'work' | 'actor', key }
   let _srchPastOpen = false;
-  function pickSearch(type, key) { _srchSel = { type, key }; _srchPastOpen = false; renderSearch(); }
+  function pickSearch(type, key) {
+    _srchSel = { type, key }; _srchPastOpen = false;
+    const q = document.getElementById('srch-q');
+    if (q && !q.value) {   // 관심 페이지에서 넘어오면 검색어가 비어 있다 — 이름을 넣어 둔다
+      const w = type === 'work' && (catalog('all').works.find(x => x.id === key) || {});
+      q.value = type === 'work' ? (w.name || '') : key;
+    }
+    renderSearch();
+  }
   function backSearch() { _srchSel = null; renderSearch(); }
   // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
@@ -2605,6 +2684,7 @@
     if (!box.hidden && currentView === 'cal') { closeSearch(); return; }
     if (currentView !== 'cal') switchView('cal');
     document.getElementById('ov-settings').classList.remove('open');
+    if (!document.getElementById('home-hearts').hidden) closeHearts();
     const q = document.getElementById('srch-q');
     q.value = '';
     _srchSel = null;
