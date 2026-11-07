@@ -235,6 +235,7 @@
     /* 캐스팅과 이벤트는 한 줄에 이어 쓰고, 넘칠 때만 다음 줄로 */
     .srch-body { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
     .srch-body > .srch-sub { margin: 0; }
+    .flt-hit-heart { color: #e0485a; font-size: 11px; }
     .srch-body > .srch-evs { display: contents; }
     .srch-hd-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
     .srch-heart { background: none; border: none; font-size: 22px; line-height: 1; color: var(--text3); cursor: pointer; padding: 0 2px; }
@@ -2906,8 +2907,8 @@
     if (!box) return;
     const raw = (document.getElementById('srch-q').value || '').trim();
     const q = norm(raw);
-    document.getElementById('view-cal').classList.toggle('searching', !!q);
-    if (!q) { box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다. 달력에 넣지 않은 공연도 나옵니다.</div>'; return; }
+    // 빈 칸이어도 전체 공연 목록을 보여 주니 달력은 접는다 (고른 공연 자세히도 마찬가지)
+    document.getElementById('view-cal').classList.toggle('searching', !!q || !!_srchSel || !document.getElementById('home-search').hidden);
     const cat = catalog('all');
     // 공연은 끝난 것도 찾는다. 배우 옆에 붙이는 작품만 남은 공연으로 줄인다
     const live = w => { const r = rowsOf(w); return !r.length || r.some(s => s.date >= todayStr); };
@@ -2916,6 +2917,19 @@
     const kindTag = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
     const nextOf = rows => rows.filter(s => s.date >= todayStr).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     const when = s => { const d = new Date(s.date + 'T00:00:00'); return `${s.date.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) ${s.time || ''}`; };
+    // 공연 한 줄 — 검색 결과와 빈 칸일 때 전체 목록이 같이 쓴다
+    const workHit = w => `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
+        <span class="filter-group-dot" style="background:${w.color}"></span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}${getHearts().works.includes(w.id) ? ' <span class="flt-hit-heart">♥</span>' : ''}</span>
+        <span class="flt-hit-sub">${kindTag(w)}${live(w) ? (w.added ? '' : ' · 달력에 없음') : ' · 종료'}</span>
+      </button>`;
+    if (!q && !_srchSel) {
+      const all = works.filter(w => w.kind !== 'extra').sort((a, b) => a.name.localeCompare(b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
+      box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
+        (all.length ? `<div class="flt-sec">전체 공연 ${all.length}</div>` + all.map(workHit).join('')
+                    : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '불러오는 중…' : '올라온 공연이 없습니다'}</div>`);
+      return;
+    }
     let html = '';
 
     // 날짜
@@ -3030,12 +3044,7 @@
 
     // 목록 — 이름만 한 줄씩
     const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
-    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(w =>
-      `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
-        <span class="filter-group-dot" style="background:${w.color}"></span>
-        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}</span>
-        <span class="flt-hit-sub">${kindTag(w)}${live(w) ? (w.added ? '' : ' · 달력에 없음') : ' · 종료'}</span>
-      </button>`).join('');
+    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(workHit).join('');
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
       `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
