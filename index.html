@@ -203,6 +203,11 @@
     .srch-sess { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 4px; }
     .srch-sess .srch-row { font-size: 12px; padding: 6px 2px; }
     .srch-sess .srch-time { min-width: 108px; }
+    .srch-icon { font-size: 13px; }
+    .srch-hd-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+    .srch-heart { background: none; border: none; font-size: 22px; line-height: 1; color: var(--text3); cursor: pointer; padding: 0 2px; }
+    .srch-heart.on { color: #e0485a; }
+    .srch-open { background: none; border: none; font-size: 12px; color: var(--text2); cursor: pointer; }
     .srch-time.sat { color: var(--sat); }
     .srch-time.sun { color: #c06060; }
     .srch-tag.mine { color: var(--custom); border-color: var(--custom); font-weight: 700; }
@@ -2601,7 +2606,8 @@
     }
     return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
   }
-  function rowsOf(w) { return (w.added ? schedules[w.id] : _catalogRows[w.id]) || []; }
+  // 방금 넣은 작품은 스케줄을 다시 받는 중일 수 있다 — 받아 둔 것으로 메운다
+  function rowsOf(w) { return (w.added && (schedules[w.id] || []).length ? schedules[w.id] : _catalogRows[w.id] || schedules[w.id]) || []; }
   function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
   function eventsOf(w) { return (infoOf(w) || {}).events || appEvents[w.id] || _catalogEvents[w.id] || []; }
   function renderSearch() {
@@ -2646,41 +2652,42 @@
     }
 
     // 자세히 — 고른 공연 하나 / 배우 한 명
+    // 공연 하나 — 제목 오른쪽 하트로 달력에 넣고 뺀다
+    const heart = w => `<button class="srch-heart${w.added ? ' on' : ''}" title="${w.added ? '달력에서 빼기' : '달력에 넣기'}"
+        onclick="toggleHeart('${w.id}')">${w.added ? '♥' : '♡'}</button>`;
     const workCard = w => {
       const info = infoOf(w) || {};
-      const rows = rowsOf(w), nx = nextOf(rows);
+      const rows = rowsOf(w);
       const dates = rows.map(s => s.date).sort();
       const period = info.startDate ? `${info.startDate} ~ ${info.endDate || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
-      const evs = eventsOf(w).filter(e => e.startDate <= todayStr && todayStr <= (e.endDate || e.startDate));
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
-          <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span></div>
+          <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span>
+          <span class="srch-hd-right">${w.added ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
         <div class="srch-sub">${[info.venue, period].filter(Boolean).join(' · ')}</div>
-        ${nx.length ? `<div class="srch-sub">다음 회차 ${when(nx[0])} · ${getActorFields(nx[0]).map(k => nx[0][k]).filter(Boolean).join(' · ')}</div>` : rows.length ? '<div class="srch-sub">공연 종료</div>' : ''}
-        ${evs.length ? `<div class="wk-evs">${evs.map(e => `<span class="wk-ev" style="${appStyle(e.color || w.color)}">${e.name}</span>`).join('')}</div>` : ''}
-        <div class="srch-acts">${act(w)}</div>
-        ${sessList(w, rows)}
+        ${sessList(rows.map(s => ({ w, s })), false)}
       </div>`;
     };
-    // 회차 목록 — 달력에 넣지 않아도 본다. 지난 회차는 접어 둔다
-    const sessList = (w, rows) => {
-      if (!rows.length) return '';
+    // 회차 목록 — 달력에 넣지 않아도 본다. 지난 회차는 접어 둔다. withIcon: 여러 작품이 섞이면 작품 아이콘을 붙인다
+    const sessList = (items, withIcon) => {
+      if (!items.length) return '';
       const att = getAttended();
-      const sorted = [...rows].sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
-      const past = sorted.filter(s => s.date < todayStr);
+      const sorted = [...items].sort((a, b) => (a.s.date + (a.s.time || '')).localeCompare(b.s.date + (b.s.time || '')));
+      const past = sorted.filter(x => x.s.date < todayStr);
       const open = _srchPastOpen;
-      const show = open ? sorted : sorted.filter(s => s.date >= todayStr);
-      const evOn = ds => eventsOf(w)
+      const show = open ? sorted : sorted.filter(x => x.s.date >= todayStr);
+      const evOn = (w, ds) => eventsOf(w)
         .filter(e => e.startDate <= ds && ds <= (e.endDate || e.startDate)).map(e => e.name);
       return `<div class="srch-sess">
         ${past.length ? `<button class="srch-back" onclick="_srchPastOpen=!_srchPastOpen;renderSearch()">${open ? '지난 회차 접기 ▴' : `지난 회차 ${past.length}개 ▾`}</button>` : ''}
-        ${show.map(s => {
+        ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => x.appId === w.id && (!x.time || x.time === s.time));
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
-          const ev = evOn(s.date);
+          const ev = evOn(w, s.date);
           const dow = new Date(s.date + 'T00:00:00').getDay();
           return `<div class="srch-row" onclick="sessTap('${w.id}','${s.date}','${s.time || ''}')">
             <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
+            ${withIcon ? `<span class="srch-icon" title="${w.name}">${w.icon || '•'}</span>` : ''}
             <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
             ${mark ? `<span class="srch-tag mine">${mark}</span>` : ''}
             ${ev.length ? `<span class="srch-tag">${ev.join(' · ')}</span>` : ''}
@@ -2688,15 +2695,15 @@
         }).join('')}
       </div>`;
     };
+    // 배우 한 명 — 나오는 작품(아이콘)과 회차를 공연과 같은 목록으로
     const actorCard = (n, inWorks) => {
-      const nx = inWorks.flatMap(w => nextOf(rowsOf(w)).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => ({ w, s })))
-        .sort((a, b) => (a.s.date + a.s.time).localeCompare(b.s.date + b.s.time)).slice(0, 4);
+      const items = inWorks.flatMap(w => rowsOf(w).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => ({ w, s })));
       const on = getFilter().actors.includes(n);
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="srch-name">${n}</span>
-          <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}${w.added ? '' : '(달력에 없음)'}`).join(' · ')}</span></div>
-        ${nx.map(({ w, s }) => `<div class="srch-sub">${when(s)} · ${w.icon || ''}${sessName(w, s)}</div>`).join('') || '<div class="srch-sub">앞으로 회차 없음</div>'}
-        <div class="srch-acts"><button class="srch-btn${on ? '' : ' on'}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}').then(renderSearch)">${on ? '필터에 있음' : '필터에 넣기'}</button></div>
+          <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}`).join(' · ')}</span>
+          <span class="srch-hd-right"><button class="srch-btn${on ? '' : ' on'}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}').then(renderSearch)">${on ? '필터에 있음' : '필터에 넣기'}</button></span></div>
+        ${sessList(items, true) || '<div class="srch-sub">앞으로 회차 없음</div>'}
       </div>`;
     };
     const esc = s => s.replace(/'/g, "\\'");
@@ -2720,12 +2727,19 @@
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
       `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
         <span class="flt-hit-name">${n}</span>
-        <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => (w.icon || '') + w.name).join(' · ') : '남은 공연 없음'}</span>
+        <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => `<span title="${w.name}">${w.icon || w.name}</span>`).join(' ') : '남은 공연 없음'}</span>
       </button>`).join('');
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
   }
   async function addDataShow(id) { await addPresetById(id); renderSearch(); }
+  // ♡ 달력에 넣기 / ♥ 빼기 — 앱 작품은 앱 추가·삭제와 같다
+  async function toggleHeart(id) {
+    const app = getApps().find(a => a.id === id);
+    if (!app) { await addPresetById(id); renderSearch(); return; }
+    if (!confirm(`${app.name} 을(를) 달력에서 뺄까요?${app.kind === 'data' || app.kind === 'extra' ? '' : '\n(앱에 저장된 관람 기록은 그대로 남습니다)'}`)) return;
+    removeDataShow(id);
+  }
   // 찾기에서 회차를 누르면 바로 예매 입력 — 앱 작품은 그 앱의 회차 화면, 정보만·기타는 허브의 예매 기록 창
   async function sessTap(id, ds, time) {
     let app = getApps().find(a => a.id === id);
