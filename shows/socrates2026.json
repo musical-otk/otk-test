@@ -6,6 +6,9 @@
   "startDate": "2026-09-10",
   "endDate": "2026-11-29",
   "official": "https://x.com/HJCULTURE",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26010086"
+  },
   "roles": [
     {
       "key": "socrates",

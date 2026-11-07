@@ -6,6 +6,9 @@
   "startDate": "2026-12-16",
   "endDate": "2027-03-14",
   "official": "https://x.com/HJCULTURE",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26014988"
+  },
   "roles": [
     {
       "key": "turing",
