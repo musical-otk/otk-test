@@ -1720,7 +1720,11 @@
     if (!document.getElementById('home-search').hidden) renderSearch(); else openDay(_xr.ds);
   }
   async function saveExtraRec() {
-    if (!getApps().some(a => a.id === _xr.appId)) await heartWork(_xr.appId);   // 예매했으면 그 작품은 관심
+    // 예매만으로는 ♥ 를 누르지 않는다 — 탭 없이 들어와 예매한 회차만 달력에 남는다
+    if (!getApps().some(a => a.id === _xr.appId)) {
+      const ok = _xr.appId === EXTRA_ID ? (addExtraApp(), true) : await addPresetById(_xr.appId, true);
+      if (!ok) { toast('이 작품을 넣지 못했습니다 — 🔄 로 목록을 새로 받은 뒤 다시 해 주세요'); return; }
+    }
     await saveXrNote();
     const list = extraRecords(_xr.key);
     const num  = document.getElementById('xr-num').value;
@@ -1750,6 +1754,7 @@
       saveNotes(notes);
       await Promise.all((note.photoIds || []).map(id => PhotoDB.remove(id)));
     }
+    pruneViaActor();   // 예매 때문에만 들어와 있던 작품이면 기록이 없어지면 뺀다
     afterExtraRec();
   }
 
@@ -1875,7 +1880,7 @@
   function matchesFilter(session, app, f) {
     f = f || getFilter();
     const H = getHearts();
-    if (!H.works.length && !H.actors.length) return true;
+    if (!H.works.length && !H.actors.length) return !app.viaActor;   // ♥ 없이 들어온 작품(예매·배우)은 전체를 보이지 않는다
     if (workOn(f, app.id)) return true;
     return getActorFields(session).some(k => session[k] && actorOn(f, app.id, session[k]));
   }
@@ -1884,8 +1889,9 @@
   // 배우 ♡ 때문에 들어오는 작품 — 탭 없이 그 배우 회차만
   function addViaActor(id) { return addPresetById(id, true); }
   const futureWith = (rows, name) => (rows || []).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === name));
-  // 이 작품이 관심 배우 때문에 필요한가
+  // 이 작품이 ♥ 없이도 달력에 있어야 하나 — 관심 배우가 나오거나, 내가 예매한 회차가 있으면
   function neededByActor(id) {
+    if (id !== EXTRA_ID && extraRecords(recKeyOf(id)).length) return true;
     const rows = (schedules[id] && schedules[id].length ? schedules[id] : _catalogRows[id]) || [];
     if (!rows.length && getHearts().actors.length) return true;   // 스케줄을 못 받았으면 함부로 지우지 않는다
     return getHearts().actors.some(n => futureWith(rows, n));
