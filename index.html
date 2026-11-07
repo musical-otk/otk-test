@@ -1144,7 +1144,10 @@
   const PALETTE_FALLBACK = ['#7aacff','#f06070','#C09870','#0284c7','#1A6B72','#8B1A1A','#7B3FC4','#4CAF50'];
 
   function getDiscovered() {
-    try { return JSON.parse(localStorage.getItem(DISCOVERED_KEY)) || []; }
+    // 저장해 둔 목록에도 뺀 저장소(NON_DIARY)가 남아 있을 수 있다 — 읽을 때 거른다
+    // 저장소 앱(/<저장소>/schedule.json)만 본다 — 정보만 작품은 /otk-test/shows/… 라 걸리면 안 된다
+    const skip = d => { try { const m = new URL(d.scheduleUrl || '').pathname.match(/^\/([^/]+)\/schedule\.json$/); return !!m && NON_DIARY.includes(m[1]); } catch { return false; } };
+    try { return (JSON.parse(localStorage.getItem(DISCOVERED_KEY)) || []).filter(d => !skip(d)); }
     catch { return []; }
   }
 
@@ -2474,11 +2477,13 @@
     const apps   = getApps();
     const notes0 = getNotes();
 
-    // 달력과 같은 규칙 — 필터에 안 걸려도 기록이나 사진이 있는 회차는 남긴다
+    // 달력과 같은 규칙 — 필터에 안 걸려도 기록이나 사진이 있는 회차는 남긴다.
+    // '내 기록' 보기에서는 그런 회차만 (필터에 걸린 회차는 빼고)
+    const mineOnly = getCalMode() === 'mine';
     const sessions = apps.flatMap(app => {
       const sch = schedules[app.id] || [];
       return sch
-        .filter(s => s.date === ds && (matchesFilter(s, app) || dayAtt.some(r => recHit(r, app.id, s)) ||
+        .filter(s => s.date === ds && ((!mineOnly && matchesFilter(s, app)) || dayAtt.some(r => recHit(r, app.id, s)) ||
                                        (notes0[noteKeyFor(app.id, ds, s)]?.photoIds || []).length > 0))
         .map(s => ({...s, _app: app}));
     }).sort((a,b) => (a.time||'').localeCompare(b.time||''));
