@@ -3011,8 +3011,17 @@
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
-        ${sessList(rows.filter(s => !_srchActors.size || getActorFields(s).some(k => _srchActors.has(s[k]))).map(s => ({ w, s })), false)}
+        ${sessList(rows.filter(castPick(rows)).map(s => ({ w, s })), false)}
       </div>`;
+    };
+    // 고른 배우로 회차 거르기 — 같은 배역끼리는 '또는', 다른 배역끼리는 '그리고'.
+    // 조성윤·유현석(한영범) + 김리현(류순호) → 조성윤-김리현, 유현석-김리현 회차
+    const castPick = rows => {
+      if (!_srchActors.size) return () => true;
+      const byRole = {};   // 배역 → 그 배역에서 고른 배우들
+      rows.forEach(s => getActorFields(s).forEach(k => { if (_srchActors.has(s[k])) (byRole[k] = byRole[k] || new Set()).add(s[k]); }));
+      const roles = Object.keys(byRole);
+      return s => roles.every(k => byRole[k].has(s[k]));
     };
     // 배우로 좁혀 보기 — 이 화면에서만. 관심·달력 필터와 상관없다
     const castChips = (rows, info) => {
