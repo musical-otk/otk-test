@@ -232,8 +232,10 @@
     .srch-chip { font-size: 12px; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg2); color: var(--text2); cursor: pointer; }
     .srch-chip.on { background: var(--custom); border-color: var(--custom); color: #fff; }
     .srch-sess .srch-row { flex-wrap: nowrap; align-items: flex-start; }
-    .srch-body { flex: 1; min-width: 0; }
-    .srch-evs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    /* 캐스팅과 이벤트는 한 줄에 이어 쓰고, 넘칠 때만 다음 줄로 */
+    .srch-body { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+    .srch-body > .srch-sub { margin: 0; }
+    .srch-body > .srch-evs { display: contents; }
     .srch-hd-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
     .srch-heart { background: none; border: none; font-size: 22px; line-height: 1; color: var(--text3); cursor: pointer; padding: 0 2px; }
     .srch-heart.on { color: #e0485a; }
