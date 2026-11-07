@@ -1033,7 +1033,7 @@
   // musical-otk 계정의 저장소를 훑어 schedule.json 이 있는 것을 프리셋 후보로 만든다.
   // (musical-otk 은 조직이 아니라 사용자 계정이라 /users 를 쓴다. /orgs 는 404)
   const ORG = 'musical-otk';
-  const NON_DIARY = ['admin', 'sample', 'otk-schedule', 'otk-test', 'musical-otk.github.io', '.github'];
+  const NON_DIARY = ['admin', 'sample', 'otk-schedule', 'otk-test', 'musical-otk.github.io', '.github', 'letter2026', 'stone2026'];
   // 저장소 하나에 작품을 폴더로 모은 경우의 목록. [{ "path": "ever2026/" }] — 나머지 정보는 앱에서 읽는다.
   // 실제: musical-otk.github.io 저장소 루트 / 테스트 사본: /otk-test/apps.json
   const APPS_INDEX_URL = IS_TEST_HUB
@@ -2839,6 +2839,7 @@
     }
     renderSearch();
   }
+  let _srchEndedOpen = false;
   function backSearch() { _srchSel = null; renderSearch(); }
   // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
@@ -2925,9 +2926,12 @@
       </button>`;
     if (!q && !_srchSel) {
       const all = works.filter(w => w.kind !== 'extra').sort((a, b) => a.name.localeCompare(b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
+      const on = all.filter(live), ended = all.filter(w => !live(w));   // 끝난 공연은 접어 둔다
       box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
-        (all.length ? `<div class="flt-sec">전체 공연 ${all.length}</div>` + all.map(workHit).join('')
-                    : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '불러오는 중…' : '올라온 공연이 없습니다'}</div>`);
+        (all.length ? `<div class="flt-sec">공연 ${on.length}</div>` + on.map(workHit).join('') +
+          (ended.length ? `<button class="srch-back" onclick="_srchEndedOpen=!_srchEndedOpen;renderSearch()">${_srchEndedOpen ? '지난 공연 접기 ▴' : `지난 공연 ${ended.length}개 ▾`}</button>` +
+            (_srchEndedOpen ? ended.map(workHit).join('') : '') : '')
+          : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '불러오는 중…' : '올라온 공연이 없습니다'}</div>`);
       return;
     }
     let html = '';
