@@ -2861,6 +2861,7 @@
   function pickSearch(type, key) {
     _srchSel = { type, key }; _srchPastOpen = false; _srchActors.clear();
     const q = document.getElementById('srch-q');
+    _srchBackQ = q ? q.value : '';   // '‹ 목록'은 들어오기 전 화면으로 — 빈 칸에서 왔으면 전체 목록
     if (q && !q.value) {   // 관심 페이지에서 넘어오면 검색어가 비어 있다 — 이름을 넣어 둔다
       const w = type === 'work' && (catalog('all').works.find(x => x.id === key) || {});
       q.value = type === 'work' ? (w.name || '') : key;
@@ -2868,7 +2869,8 @@
     renderSearch();
   }
   let _srchEndedOpen = false;
-  function backSearch() { _srchSel = null; renderSearch(); }
+  let _srchBackQ = '';
+  function backSearch() { _srchSel = null; const q = document.getElementById('srch-q'); if (q) q.value = _srchBackQ; renderSearch(); }
   // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
     const box = document.getElementById('home-search');

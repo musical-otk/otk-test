@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'otk-schedule-v87';
+﻿const CACHE_NAME = 'otk-schedule-v88';
 // 테스트 사본(/otk-test/)에서도 그대로 돌게 sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
