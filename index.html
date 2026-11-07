@@ -2494,7 +2494,8 @@
     if (Object.keys(_catalogRows).length === 0 && !_catalogLoading)
       ensureCatalog().then(renderFilterResults);
     const f = getFilter();
-    const { works, actors } = catalog('filter');
+    const { works } = catalog('filter');
+    const { actors } = catalog('all');
     const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q))
       .sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 8);
@@ -2540,13 +2541,15 @@
     clearFilterQuery();
     renderActorFilters(); renderCalendar();
   }
+  // 배우를 넣으면 그 배우가 나오는 작품을 다 달력에 넣는다 (사용자 결정).
+  // 끝난 작품은 빼고, 그 배우의 남은 회차가 있는 작품만 — 앱 작품이면 앱 추가, 정보만 작품이면 달력에 넣기
   async function pickFilterActor(name) {
-    const inWorks = catalog('filter').actors.get(name) || [];
-    if (inWorks.length && !inWorks.some(w => w.added)) {
-      const names = inWorks.map(w => w.name).join(', ');
-      if (!confirm(`${name} 배우가 나오는 작품(${names})이 아직 달력에 없습니다. 넣을까요?`)) return;
-      for (const w of inWorks) await addPresetById(w.id);
-    }
+    await ensureCatalog();
+    const inWorks = catalog('all').actors.get(name) || [];
+    const todo = inWorks.filter(w => !w.added && (_catalogRows[w.id] || [])
+      .some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === name)));
+    for (const w of todo) await addPresetById(w.id);
+    if (todo.length) toast(`${todo.map(w => w.name).join(', ')} 추가됨`);
     const f = getFilter();
     if (!f.actors.includes(name)) {
       f.actors.push(name);
