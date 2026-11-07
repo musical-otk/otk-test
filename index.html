@@ -2683,10 +2683,13 @@
   // 추가하지 않은 작품까지 찾으려면 그 스케줄이 필요하다. 처음 찾을 때 한 번만 받아 둔다.
   const _catalogRows = {};          // presetId → schedule rows
   let _catalogLoading = null;
+  const _cardRetried = new Set();
+  const _catalogTried = new Set();   // 한 번 받아 본 작품 — 실패한 걸 끝없이 다시 받지 않게
   function ensureCatalog() {
     if (_catalogLoading) return _catalogLoading;
     const added = new Set(getApps().map(a => a.scheduleUrl));
     const todo = allPresets().filter(p => !added.has(p.scheduleUrl) && !_catalogRows[p.id]);
+    todo.forEach(p => _catalogTried.add(p.id));
     _catalogLoading = Promise.all(todo.map(async p => {
       try {
         const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
@@ -2698,7 +2701,12 @@
           if (Array.isArray(ev)) _catalogEvents[p.id] = ev;
         }
       } catch {}
-    })).then(() => { _catalogLoading = null; });
+    })).then(() => {
+      _catalogLoading = null;
+      // 받는 사이에 작품 목록이 새로 들어왔으면(새 작품) 그것도 받는다 — 안 그러면 그 작품만 회차가 비었다
+      const more = allPresets().filter(p => !getApps().some(a => a.scheduleUrl === p.scheduleUrl) && !_catalogRows[p.id] && !_catalogTried.has(p.id));
+      if (more.length) return ensureCatalog();
+    });
     return _catalogLoading;
   }
   // 작품 = 추가한 앱 + 아직 안 한 프리셋. 배우 = 이름 → 나오는 작품들
@@ -2997,6 +3005,10 @@
       const info = infoOf(w) || {};
       const ai = appInfoOf(w);   // 앱 작품은 그 앱의 show-info.json (처음 열 때 받아 온다)
       const rows = rowsOf(w);
+      // 회차가 비어 있으면 한 번만 다시 받아 본다 (받지 못하면 그대로 — 끝없이 다시 그리지 않게)
+      if (!rows.length && !_catalogLoading && !w.added && !_cardRetried.has(w.id)) {
+        _cardRetried.add(w.id); _catalogTried.delete(w.id); ensureCatalog().then(() => { if (_srchSel) renderSearch(); });
+      }
       const dates = rows.map(s => s.date).sort();
       const start = info.startDate || ai.startDate, end = info.endDate || ai.endDate;
       const period = start ? `${start} ~ ${end || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
