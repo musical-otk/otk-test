@@ -200,6 +200,9 @@
     .srch-btn.sub { font-weight: 500; color: var(--text3); }
     .srch-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; flex-wrap: wrap; }
     .srch-time { font-weight: 700; min-width: 42px; }
+    .srch-sess { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 4px; }
+    .srch-sess .srch-row { font-size: 12px; padding: 6px 2px; }
+    .srch-sess .srch-time { min-width: 108px; }
     .srch-tag.mine { color: var(--custom); border-color: var(--custom); font-weight: 700; }
     .srch-back { background: none; border: none; color: var(--text2); font-size: 13px; padding: 4px 2px 8px; cursor: pointer; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
@@ -2546,7 +2549,8 @@
 
   // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
   let _srchSel = null;   // 자세히 보는 것 { type: 'work' | 'actor', key }
-  function pickSearch(type, key) { _srchSel = { type, key }; renderSearch(); }
+  let _srchPastOpen = false;
+  function pickSearch(type, key) { _srchSel = { type, key }; _srchPastOpen = false; renderSearch(); }
   function backSearch() { _srchSel = null; renderSearch(); }
   // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
@@ -2641,6 +2645,32 @@
         ${nx.length ? `<div class="srch-sub">다음 회차 ${when(nx[0])} · ${getActorFields(nx[0]).map(k => nx[0][k]).filter(Boolean).join(' · ')}</div>` : rows.length ? '<div class="srch-sub">공연 종료</div>' : ''}
         ${evs.length ? `<div class="wk-evs">${evs.map(e => `<span class="wk-ev" style="${appStyle(e.color || w.color)}">${e.name}</span>`).join('')}</div>` : ''}
         <div class="srch-acts">${act(w)}</div>
+        ${sessList(w, rows)}
+      </div>`;
+    };
+    // 회차 목록 — 달력에 넣지 않아도 본다. 지난 회차는 접어 둔다
+    const sessList = (w, rows) => {
+      if (!rows.length) return '';
+      const att = getAttended();
+      const sorted = [...rows].sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
+      const past = sorted.filter(s => s.date < todayStr);
+      const open = _srchPastOpen;
+      const show = open ? sorted : sorted.filter(s => s.date >= todayStr);
+      const evOn = ds => ((infoOf(w) || {}).events || appEvents[w.id] || [])
+        .filter(e => e.startDate <= ds && ds <= (e.endDate || e.startDate)).map(e => e.name);
+      return `<div class="srch-sess">
+        ${past.length ? `<button class="srch-back" onclick="_srchPastOpen=!_srchPastOpen;renderSearch()">${open ? '지난 회차 접기 ▴' : `지난 회차 ${past.length}개 ▾`}</button>` : ''}
+        ${show.map(s => {
+          const r = (att[s.date] || []).find(x => x.appId === w.id && (!x.time || x.time === s.time));
+          const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
+          const ev = evOn(s.date);
+          return `<div class="srch-row"${w.added ? ` onclick="openDay('${s.date}')"` : ''}>
+            <span class="srch-time">${when(s)}</span>
+            <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+            ${mark ? `<span class="srch-tag mine">${mark}</span>` : ''}
+            ${ev.length ? `<span class="srch-tag">${ev.join(' · ')}</span>` : ''}
+          </div>`;
+        }).join('')}
       </div>`;
     };
     const actorCard = (n, inWorks) => {
