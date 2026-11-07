@@ -224,6 +224,8 @@
     .srch-mark { font-size: 11px; font-weight: 700; color: var(--custom); margin-top: 2px; }
     .srch-mark.tr { color: var(--text3); }
     .srch-icon { font-size: 13px; }
+    .srch-links { display: flex; gap: 14px; margin-top: 6px; }
+    .srch-link { font-size: 12px; font-weight: 700; color: var(--text2); text-decoration: none; }
     .srch-cast { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
     .srch-cast-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
     .srch-cast-lbl { font-size: 11px; color: var(--text3); min-width: 52px; }
@@ -2867,6 +2869,17 @@
   // 방금 넣은 작품은 스케줄을 다시 받는 중일 수 있다 — 받아 둔 것으로 메운다
   function rowsOf(w) { return (w.added && (schedules[w.id] || []).length ? schedules[w.id] : _catalogRows[w.id] || schedules[w.id]) || []; }
   function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
+  const _appInfo = {};   // 앱 작품 id → show-info.json ({} = 받는 중이거나 없음)
+  function appInfoOf(w) {
+    if (w.kind === 'data' || w.kind === 'extra') return {};
+    if (!(w.id in _appInfo)) {
+      _appInfo[w.id] = {};
+      const url = ((getApps().find(a => a.id === w.id) || allPresets().find(p => p.id === w.id)) || {}).appUrl;
+      if (url) fetch(url + 'show-info.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : {})
+        .then(j => { _appInfo[w.id] = j || {}; if (_srchSel) renderSearch(); }).catch(() => {});
+    }
+    return _appInfo[w.id];
+  }
   function eventsOf(w) { return (infoOf(w) || {}).events || appEvents[w.id] || _catalogEvents[w.id] || []; }
   function renderSearch() {
     const box = document.getElementById('srch-results');
@@ -2910,14 +2923,23 @@
         onclick="toggleHeart('${w.id}')">${on ? '♥' : '♡'}</button>`; };
     const workCard = w => {
       const info = infoOf(w) || {};
+      const ai = appInfoOf(w);   // 앱 작품은 그 앱의 show-info.json (처음 열 때 받아 온다)
       const rows = rowsOf(w);
       const dates = rows.map(s => s.date).sort();
-      const period = info.startDate ? `${info.startDate} ~ ${info.endDate || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
+      const start = info.startDate || ai.startDate, end = info.endDate || ai.endDate;
+      const period = start ? `${start} ~ ${end || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
+      // 공식 계정 · 예매처 — 정보만 작품은 official·url, 앱 작품은 show-info 의 official.{x, ticketlink …}
+      const off = ai.official || {};
+      const xUrl = info.official || off.x;
+      const ticket = info.url || off.ticketlink || off.interpark || off.yes24 || off.nol || '';
+      const links = [xUrl && `<a class="srch-link" href="${xUrl}" target="_blank" rel="noopener">𝕏 공식 계정 ›</a>`,
+                     ticket && `<a class="srch-link" href="${ticket}" target="_blank" rel="noopener">🎟 예매처 ›</a>`].filter(Boolean).join('');
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
           <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span>
           <span class="srch-hd-right">${getHearts().works.includes(w.id) ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
-        <div class="srch-sub">${[info.venue, period].filter(Boolean).join(' · ')}</div>
+        <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
+        ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, info)}
         ${sessList(rows.filter(s => !_srchActors.size || getActorFields(s).some(k => _srchActors.has(s[k]))).map(s => ({ w, s })), false)}
       </div>`;
