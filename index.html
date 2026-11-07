@@ -431,6 +431,7 @@
 
     #sheet-settings { max-height: 85vh; }
     #ov-search .sheet, #ov-filter .sheet { max-height: calc(var(--vv-h, 100vh) * 0.88); }
+    #ov-extra-rec .sheet { max-height: calc(var(--vv-h, 100vh) * 0.92); }
     .flt-q { position: sticky; top: 0; z-index: 2; box-shadow: 0 6px 8px -4px var(--bg2); }
     .settings-hd {
       display: flex; align-items: center; justify-content: space-between;
@@ -739,8 +740,17 @@
       <input class="form-input" type="number" id="xr-price" placeholder="예: 90000">
     </div>
     <div class="form-row">
+      <div class="form-label">메모 (선택)</div>
+      <textarea class="form-input" id="xr-memo" rows="3" placeholder="메모"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-label">사진</div>
+      <div class="note-photos-area" id="xr-photos-area"></div>
+      <input type="file" id="xr-photo-file" accept="image/*" multiple style="display:none" onchange="handleXrPhotos(this)">
+    </div>
+    <div class="form-row">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px">
-        <input type="checkbox" id="xr-trans" onchange="document.getElementById('xr-trans-to').hidden=!this.checked"> 양도함 (관람으로 치지 않음)
+        <input type="checkbox" id="xr-trans" onchange="document.getElementById('xr-trans-to').hidden=!this.checked"> 양도
       </label>
       <input class="form-input" type="text" id="xr-trans-to" placeholder="양도 받은 사람 (선택)" hidden style="margin-top:6px">
     </div>
@@ -1623,8 +1633,49 @@
     document.getElementById('xr-trans-to').hidden = !tr;
     document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
     document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
+    // 메모·사진은 날짜 상세의 '📝 메모'와 같은 자리(notes)에 둔다 — 어느 쪽에서 써도 같이 보인다
+    _xr.noteKey = `${appId}__${ds}__${time || ''}`;
+    const note = getNotes()[_xr.noteKey] || {};
+    document.getElementById('xr-memo').value = note.memo || '';
+    PhotoDB.getMany(note.photoIds || []).then(map => {
+      _xrPhotos = (note.photoIds || []).map(id => map[id]).filter(Boolean);
+      renderXrPhotos();
+    });
+    _xrPhotos = []; renderXrPhotos();
     document.getElementById('ov-detail').classList.remove('open');
     document.getElementById('ov-extra-rec').classList.add('open');
+  }
+  let _xrPhotos = [];   // 편집 중인 사진 (dataURL)
+  function renderXrPhotos() {
+    document.getElementById('xr-photos-area').innerHTML = _xrPhotos.map((src, i) => `
+      <div class="note-thumb-item">
+        <img class="note-large-thumb" src="${src}" onclick="openPhotoViewer(_xrPhotos,${i})">
+        <div class="note-thumb-item-del" onclick="_xrPhotos.splice(${i},1);renderXrPhotos();event.stopPropagation()">✕</div>
+      </div>`).join('') +
+      `<div class="note-photo-add" onclick="document.getElementById('xr-photo-file').click()">+</div>`;
+  }
+  function handleXrPhotos(input) {
+    const files = [...input.files];
+    if (!files.length) return;
+    input.value = '';
+    let done = 0;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => resizeImage(e.target.result, 1400, 1800, 0.82, r => {
+        _xrPhotos.push(r);
+        if (++done === files.length) renderXrPhotos();
+      });
+      reader.readAsDataURL(file);
+    });
+  }
+  async function saveXrNote() {
+    const notes = getNotes();
+    const memo = document.getElementById('xr-memo').value.trim();
+    await Promise.all((notes[_xr.noteKey]?.photoIds || []).map(id => PhotoDB.remove(id)));
+    const photoIds = await Promise.all(_xrPhotos.map(src => PhotoDB.put(src)));
+    if (!memo && !photoIds.length) delete notes[_xr.noteKey];
+    else notes[_xr.noteKey] = { memo, photoIds };
+    saveNotes(notes);
   }
   function closeExtraRec() { document.getElementById('ov-extra-rec').classList.remove('open'); }
   function afterExtraRec() {
@@ -1632,7 +1683,8 @@
     // 찾기에서 왔으면 찾기 화면을 그대로 두고 표시만 갱신한다
     if (!document.getElementById('home-search').hidden) renderSearch(); else openDay(_xr.ds);
   }
-  function saveExtraRec() {
+  async function saveExtraRec() {
+    await saveXrNote();
     const list = extraRecords(_xr.key);
     const num  = document.getElementById('xr-num').value;
     const tr   = document.getElementById('xr-trans').checked;
