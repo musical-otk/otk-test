@@ -2780,12 +2780,13 @@
       const left = rows.filter(s => s.date >= todayStr).length;
       const state = !rows.length ? '' : left ? ` · 남은 ${left}회` : ' · 종료';
       const mode = getVisibility()[id] || 'auto';
-      const vis = mode === 'show' ? '탭 표시' : mode === 'hide' ? '탭 숨김' : '탭 자동';
+      // '탭'·'자동'은 처음 보는 사람이 모른다 — 맨 위 작품 버튼에 어떻게 보이는지 그대로 적는다
+      const vis = mode === 'show' ? '항상 보임' : mode === 'hide' ? '숨김' : '끝나면 숨김';
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="hp-name">${w.icon || ''} ${w.name}</span>
         <span class="hp-sub">${kind(w)}${dates.length ? ` · ~${dates[dates.length - 1].slice(5).replace('-', '/')}` : ''}${state}</span>
-        <button class="hp-vis mode-${mode}" title="가로 탭 — 자동(종료되면 숨김)/표시/숨김" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
+        <button class="hp-vis mode-${mode}" title="맨 위 작품 버튼 — 끝나면 숨김 → 항상 → 안 보임 순서로 바뀝니다" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
         <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('work','${id}')">♥</button>
       </div>`;
     };
@@ -2799,7 +2800,9 @@
     };
     body.innerHTML = (!H.works.length && !H.actors.length)
       ? '<div class="hint" style="padding:12px 2px">아직 관심이 없습니다. [+ 찾아서 추가]에서 작품·배우의 ♡ 를 누르세요.</div>'
-      : `<div class="flt-sec">관심 작품 ${H.works.length}</div>${H.works.map(wRow).join('') || '<div class="hint">없음</div>'}
+      : `<div class="flt-sec">관심 작품 ${H.works.length}</div>
+         <div class="hint" style="padding:0 2px 4px">오른쪽 버튼은 맨 위 작품 버튼에 보일지예요 — 끝나면 숨김 → 항상 보임 → 숨김.</div>
+         ${H.works.map(wRow).join('') || '<div class="hint">없음</div>'}
          <div class="flt-sec" style="margin-top:10px">관심 배우 ${H.actors.length}</div>${H.actors.map(aRow).join('') || '<div class="hint">없음</div>'}
          <div class="hint" style="padding-top:10px">작품 ♥ 는 전체 회차, 배우 ♥ 는 그 배우가 나오는 회차가 달력에 들어옵니다. 잠깐 숨기려면 🔎 필터에서 끄세요.</div>`;
     body.innerHTML += `<button class="hp-link" onclick="closeHearts();openAppForm()">목록에 없는 앱 직접 추가 ›</button>`;
