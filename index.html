@@ -2229,6 +2229,10 @@
 
   const mineStyle = c => `background:${hexToRgba(c,0.12)};border-color:${hexToRgba(c,0.45)}`;
 
+  // 공연 회차와 내 일정을 한 줄로 시간순 — 따로 그려 이어 붙이면 내 일정이 늘 맨 뒤로 갔다. 같은 시각이면 공연이 먼저
+  const mergeByTime = (ta, ha, tb, hb) =>
+    [...ha.map((h, i) => ({ t: ta[i] || '', h })), ...hb.map((h, i) => ({ t: tb[i] || '', h }))]
+      .sort((a, b) => a.t.localeCompare(b.t)).map(x => x.h).join('');
   function renderWeek() {
     if (!weekStart) weekStart = sundayOf(new Date());
     const end = new Date(weekStart); end.setDate(end.getDate() + 6);
@@ -2297,7 +2301,7 @@
             ${evs ? `<div class="wk-evs">${evs}</div>` : ''}
           </div>
         </div>`;
-      }).join('');
+      });
 
       const customHtml = customs.map(e => {
         const col = e.color || COLOR_PALETTE[0];
@@ -2310,7 +2314,7 @@
             ${e.comment ? `<div class="wk-cast">${e.comment}</div>` : ''}
           </div>
         </div>`;
-      }).join('');
+      });
 
       const dow = day.getDay();
       const hdCls = ['wk-day-hd', dow === 0 ? 'sunday' : '', dow === 6 ? 'saturday' : ''].filter(Boolean).join(' ');
@@ -2322,7 +2326,7 @@
           ${ds === todayStr ? '<span class="wk-today">오늘</span>' : ''}
           ${empty ? '<span class="wk-empty">공연 없음</span>' : ''}
         </div>
-        ${sessHtml}${customHtml}
+        ${mergeByTime(sess.map(x => x.s.time), sessHtml, customs.map(e => e.time), customHtml)}
       </div>`;
     }
 
@@ -2539,7 +2543,7 @@
           ${noteRow}
         </div>
       </div>`;
-    }).join('');
+    });
 
     const customHtml = customs.map(e => {
       const col = e.color || COLOR_PALETTE[0];
@@ -2562,10 +2566,10 @@
           <button class="session-act-btn" onclick="deleteCustomEvent(${e.id})">🗑️</button>
         </div>
       </div>`;
-    }).join('');
+    });
 
     document.getElementById('sheet-content').innerHTML =
-      (regularHtml + customHtml) || '<div style="padding:16px;color:var(--text3);font-size:13px;">일정 없음</div>';
+      mergeByTime(sessions.map(s => s.time), regularHtml, customs.map(e => e.time), customHtml) || '<div style="padding:16px;color:var(--text3);font-size:13px;">일정 없음</div>';
 
     document.getElementById('sheet-content').querySelectorAll('.note-thumb[data-key]').forEach(img => {
       img.addEventListener('click', () => openPhotoViewerByKey(img.dataset.key, parseInt(img.dataset.idx)));
