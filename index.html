@@ -1954,6 +1954,18 @@
     if (todo.length) toast(`${todo.map(w => w.name).join(', ')} — ${name} 회차만 달력에`);
     afterHearts();
   }
+  // 관심 배우가 나오는 작품을 맞춘다 — 하트를 누른 뒤에 올라온 작품, 그때 목록을 못 받은 작품도 들어오게.
+  // 앱을 열 때(작품 목록을 받은 뒤) 한 번 돈다
+  async function syncActorWorks() {
+    const names = getHearts().actors;
+    if (!names.length) return;
+    await ensureCatalog();
+    const apps = getApps();
+    const todo = allPresets().filter(p => !apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl) &&
+      names.some(n => futureWith(_catalogRows[p.id], n)));
+    for (const p of todo) await addViaActor(p.id);
+    if (todo.length) afterHearts();
+  }
   function unheartActor(name) {
     const h = getHearts();
     saveHearts({ ...h, actors: h.actors.filter(x => x !== name) });
@@ -3630,7 +3642,7 @@
     renderFrames();
     await migratePhotosToIndexedDB();
     const apps = getApps();
-    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true); return; }
+    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(syncActorWorks, syncActorWorks); return; }
     // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
     const failed = [];
     await Promise.all(apps.map(async app => {
@@ -3647,7 +3659,8 @@
     renderCalendar();
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
-    discoverApps(true);    // 새 작품 자동 발견 (백그라운드, 실패해도 조용히)
+    // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
+    discoverApps(true).then(syncActorWorks, syncActorWorks);
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
