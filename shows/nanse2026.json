@@ -6,6 +6,10 @@
   "startDate": "2026-09-08",
   "endDate": "2026-11-29",
   "official": "https://x.com/kontentz",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket",
+    "ticketlink": "https://www.ticketlink.co.kr/search?query=%EB%82%9C%EC%84%B8"
+  },
   "roles": [
     {
       "key": "jeong",

@@ -224,7 +224,7 @@
     .srch-mark { font-size: 11px; font-weight: 700; color: var(--custom); margin-top: 2px; }
     .srch-mark.tr { color: var(--text3); }
     .srch-icon { font-size: 13px; }
-    .srch-links { display: flex; gap: 14px; margin-top: 6px; }
+    .srch-links { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; }
     .srch-link { font-size: 12px; font-weight: 700; color: var(--text2); text-decoration: none; }
     .srch-cast { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
     .srch-cast-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -1595,7 +1595,7 @@
       const info = dataInfo[appId] || {};
       const dates = rows.map(s => s.date).sort();
       shows = [{ id: appId, name: info.name || app.name, icon: info.icon || app.icon, venue: info.venue,
-                 url: info.url || info.official, firstDate: info.startDate || dates[0], lastDate: info.endDate || dates[dates.length - 1],
+                 url: info.official, tickets: ticketLinks(info), firstDate: info.startDate || dates[0], lastDate: info.endDate || dates[dates.length - 1],
                  events: (info.events || []).filter(e => (e.endDate || e.startDate) >= todayStr) }];
     }
     box.innerHTML = shows.length ? shows.map(sh => {
@@ -1629,6 +1629,7 @@
         <div class="xp-name">${sh.icon ? sh.icon + ' ' : ''}${sh.name}</div>
         <div class="xp-info">${[sh.venue, sh.price && '전석 ' + won(sh.price), period].filter(Boolean).join(' · ')}</div>
         ${sh.url ? `<a class="xp-link" href="${sh.url}" target="_blank" rel="noopener">${appId === EXTRA_ID ? '예매처' : '공식 계정'} ›</a>` : ''}
+        ${(sh.tickets || []).map(k => `<a class="xp-link" style="margin-left:10px" href="${k.url}" target="_blank" rel="noopener">🎟 ${k.label} ›</a>`).join('')}
         ${(sh.events || []).length ? `<div class="wk-evs" style="margin-top:8px">${sh.events.map(e =>
           `<span class="wk-ev" style="${appStyle(e.color || '#888')}">${e.name} ${e.startDate.slice(5).replace('-', '/')}${e.endDate && e.endDate !== e.startDate ? '~' + e.endDate.slice(5).replace('-', '/') : ''}</span>`).join('')}</div>` : ''}
         <div class="xp-list">${list}</div>
@@ -2879,6 +2880,14 @@
   function rowsOf(w) { return (w.added && (schedules[w.id] || []).length ? schedules[w.id] : _catalogRows[w.id] || schedules[w.id]) || []; }
   function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
   const _appInfo = {};   // 앱 작품 id → show-info.json ({} = 받는 중이거나 없음)
+  // 예매처 — 정보만 작품은 tickets{nol, ticketlink …}, 앱 작품은 show-info 의 official 에 같은 이름으로. 예전 한 칸짜리 url 도 읽는다
+  const TICKET_SITES = { nol: 'NOL', ticketlink: '티켓링크', yes24: '예스24', interpark: '인터파크', melon: '멜론티켓', timeticket: '타임티켓' };
+  function ticketLinks(info, off) {
+    const t = { ...(off || {}), ...((info || {}).tickets || {}) };
+    const list = Object.keys(TICKET_SITES).filter(k => t[k]).map(k => ({ label: TICKET_SITES[k], url: t[k] }));
+    if (!list.length && info && info.url) list.push({ label: '예매처', url: info.url });
+    return list;
+  }
   function appInfoOf(w) {
     if (w.kind === 'data' || w.kind === 'extra') return {};
     if (!(w.id in _appInfo)) {
@@ -2940,9 +2949,8 @@
       // 공식 계정 · 예매처 — 정보만 작품은 official·url, 앱 작품은 show-info 의 official.{x, ticketlink …}
       const off = ai.official || {};
       const xUrl = info.official || off.x;
-      const ticket = info.url || off.ticketlink || off.interpark || off.yes24 || off.nol || '';
       const links = [xUrl && `<a class="srch-link" href="${xUrl}" target="_blank" rel="noopener">𝕏 공식 계정 ›</a>`,
-                     ticket && `<a class="srch-link" href="${ticket}" target="_blank" rel="noopener">🎟 예매처 ›</a>`].filter(Boolean).join('');
+                     ...ticketLinks(info, off).map(k => `<a class="srch-link" href="${k.url}" target="_blank" rel="noopener">🎟 ${k.label} ›</a>`)].filter(Boolean).join('');
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
           <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span>

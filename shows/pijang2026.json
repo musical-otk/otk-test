@@ -6,6 +6,10 @@
   "startDate": "2026-12-08",
   "endDate": "2027-02-28",
   "official": "https://x.com/kontentz",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/search?query=%ED%94%BC%EC%9E%A5%ED%8C%8C%EC%9E%A5%EC%9D%98%20%EC%98%A4%EB%A5%98",
+    "yes24": "http://ticket.yes24.com/"
+  },
   "roles": [
     {
       "key": "dan",
