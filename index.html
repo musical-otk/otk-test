@@ -1738,9 +1738,16 @@
     saveExtraRecords(list, _xr.key);
     afterExtraRec();
   }
-  function deleteExtraRec() {
+  async function deleteExtraRec() {
     if (!_xr.id || !confirm('이 회차 예매 기록을 지울까요?')) return;
     saveExtraRecords(extraRecords(_xr.key).filter(r => r.id !== _xr.id), _xr.key);
+    // 메모·사진이 남으면 그 회차가 계속 '내 회차'로 보인다 — 같이 지울지 묻는다
+    const notes = getNotes(), note = notes[_xr.noteKey];
+    if (note && (note.memo || (note.photoIds || []).length) && confirm('이 회차의 메모·사진도 같이 지울까요?')) {
+      delete notes[_xr.noteKey];
+      saveNotes(notes);
+      await Promise.all((note.photoIds || []).map(id => PhotoDB.remove(id)));
+    }
     afterExtraRec();
   }
 
