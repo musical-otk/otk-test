@@ -204,6 +204,9 @@
     .srch-sess .srch-row { font-size: 12px; padding: 6px 2px; }
     .srch-sess .srch-time { min-width: 108px; }
     .srch-icon { font-size: 13px; }
+    .srch-sess .srch-row { flex-wrap: nowrap; align-items: flex-start; }
+    .srch-body { flex: 1; min-width: 0; }
+    .srch-evs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
     .srch-hd-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
     .srch-heart { background: none; border: none; font-size: 22px; line-height: 1; color: var(--text3); cursor: pointer; padding: 0 2px; }
     .srch-heart.on { color: #e0485a; }
@@ -2465,7 +2468,7 @@
     });
     const actors = new Map();
     works.forEach(w => {
-      const rows = w.added ? schedules[w.id] : _catalogRows[w.id];
+      const rows = (w.added && (schedules[w.id] || []).length) ? schedules[w.id] : (_catalogRows[w.id] || schedules[w.id]);
       extractActors(rows || []).forEach(n => {
         if (!actors.has(n)) actors.set(n, []);
         actors.get(n).push(w);
@@ -2688,9 +2691,11 @@
           return `<div class="srch-row" onclick="sessTap('${w.id}','${s.date}','${s.time || ''}')">
             <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
             ${withIcon ? `<span class="srch-icon" title="${w.name}">${w.icon || '•'}</span>` : ''}
-            <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
-            ${mark ? `<span class="srch-tag mine">${mark}</span>` : ''}
-            ${ev.length ? `<span class="srch-tag">${ev.join(' · ')}</span>` : ''}
+            <div class="srch-body">
+              <div><span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+                ${mark ? `<span class="srch-tag mine">${mark}</span>` : ''}</div>
+              ${ev.length ? `<div class="srch-evs">${ev.map(x => `<span class="srch-tag">${x}</span>`).join('')}</div>` : ''}
+            </div>
           </div>`;
         }).join('')}
       </div>`;
@@ -2702,7 +2707,8 @@
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="srch-name">${n}</span>
           <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}`).join(' · ')}</span>
-          <span class="srch-hd-right"><button class="srch-btn${on ? '' : ' on'}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}').then(renderSearch)">${on ? '필터에 있음' : '필터에 넣기'}</button></span></div>
+          <span class="srch-hd-right"><button class="srch-heart${on ? ' on' : ''}" title="${on ? '필터에서 빼기' : '필터에 넣기'}"
+            onclick="toggleActorHeart('${n.replace(/'/g, "\\'")}')">${on ? '♥' : '♡'}</button></span></div>
         ${sessList(items, true) || '<div class="srch-sub">앞으로 회차 없음</div>'}
       </div>`;
     };
@@ -2733,6 +2739,12 @@
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
   }
   async function addDataShow(id) { await addPresetById(id); renderSearch(); }
+  // 배우 ♡ 필터에 넣기(나오는 작품도 달력에) / ♥ 필터에서 빼기
+  async function toggleActorHeart(name) {
+    if (getFilter().actors.includes(name)) removeFilterActor(name);
+    else await pickFilterActor(name);
+    renderSearch();
+  }
   // ♡ 달력에 넣기 / ♥ 빼기 — 앱 작품은 앱 추가·삭제와 같다
   async function toggleHeart(id) {
     const app = getApps().find(a => a.id === id);
