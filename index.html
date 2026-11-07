@@ -131,6 +131,10 @@
     #home-hearts { padding: 4px 16px 24px; }
     .hp-title { flex: 1; font-size: 16px; font-weight: 800; }
     .hbtn-heart { color: #e0485a; font-size: 18px; }
+    .hp-vis { font-size: 11px; padding: 3px 8px; border-radius: 10px; border: 1px solid var(--border); background: none; color: var(--text3); cursor: pointer; flex-shrink: 0; white-space: nowrap; }
+    .hp-vis.mode-show { color: var(--text1); border-color: var(--text3); }
+    .hp-vis.mode-hide { text-decoration: line-through; }
+    .hp-link { display: block; margin: 16px auto 0; background: none; border: none; font-size: 12px; color: var(--text3); cursor: pointer; }
     .hp-row { display: flex; align-items: center; gap: 8px; padding: 10px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
     .hp-name { font-size: 14px; font-weight: 700; flex-shrink: 0; }
     .hp-sub { font-size: 12px; color: var(--text3); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -608,15 +612,14 @@
       ><path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/><polyline points="20.5 4 20.5 9.5 15 9.5"/></svg></button>
     <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☀️</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
-    <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심 작품·배우">♥</button>
-    <button class="hbtn" onclick="openSettings()">⚙️</button>
+    <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">♥</button>
     <div id="app-tabs"></div>
   </div>
 
   <div id="view-cal">
     <!-- 관심 — ♥ 로 연다. 관심 작품·배우를 보고 빼는 곳 (넣기는 찾기에서) -->
     <div id="home-hearts" hidden>
-      <div class="hs-bar"><div class="hp-title">♥ 관심</div>
+      <div class="hs-bar"><div class="hp-title">♥ 관심함</div>
         <button class="srch-btn on" onclick="closeHearts();openSearch()">+ 찾아서 추가</button>
         <button class="hs-close" onclick="closeHearts()" title="달력으로">✕</button></div>
       <div id="hearts-body"></div>
@@ -2491,7 +2494,8 @@
   }
 
   // ── 설정 ──
-  function openSettings() {
+  function openSettings() { openHearts(); }
+  function openSettingsOld() {
     renderSettingsAppList();
     document.getElementById('ov-settings').classList.add('open');
   }
@@ -2695,11 +2699,14 @@
       if (!w) return '';
       const rows = rowsW(id), dates = rows.map(s => s.date).sort();
       const left = rows.filter(s => s.date >= todayStr).length;
+      const mode = getVisibility()[id] || 'auto';
+      const vis = mode === 'show' ? '탭 표시' : mode === 'hide' ? '탭 숨김' : '탭 자동';
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="hp-name">${w.icon || ''} ${w.name}</span>
         <span class="hp-sub">${kind(w)}${dates.length ? ` · ~${dates[dates.length - 1].slice(5).replace('-', '/')}` : ''}${left ? ` · 남은 ${left}회` : ' · 종료'}</span>
-        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartWork('${id}');renderHearts()">♥</button>
+        <button class="hp-vis mode-${mode}" title="가로 탭 — 자동(종료되면 숨김)/표시/숨김" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
+        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('work','${id}')">♥</button>
       </div>`;
     };
     const aRow = n => {
@@ -2707,7 +2714,7 @@
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('actor','${esc(n)}')">
         <span class="hp-name">${n}</span>
         <span class="hp-sub">${ws.length ? ws.map(w => w.icon || w.name).join(' ') : '남은 공연 없음'}</span>
-        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartActor('${esc(n)}');renderHearts()">♥</button>
+        <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('actor','${esc(n)}')">♥</button>
       </div>`;
     };
     body.innerHTML = (!H.works.length && !H.actors.length)
@@ -2715,6 +2722,14 @@
       : `<div class="flt-sec">관심 작품 ${H.works.length}</div>${H.works.map(wRow).join('') || '<div class="hint">없음</div>'}
          <div class="flt-sec" style="margin-top:10px">관심 배우 ${H.actors.length}</div>${H.actors.map(aRow).join('') || '<div class="hint">없음</div>'}
          <div class="hint" style="padding-top:10px">작품 ♥ 는 전체 회차, 배우 ♥ 는 그 배우가 나오는 회차가 달력에 들어옵니다. 잠깐 숨기려면 🔎 필터에서 끄세요.</div>`;
+    body.innerHTML += `<button class="hp-link" onclick="closeHearts();openAppForm()">목록에 없는 앱 직접 추가 ›</button>`;
+  }
+  // 관심함에서 빼기는 한 번 묻는다 — 줄 전체가 눌리는 곳이라 잘못 누르기 쉽다
+  function unheartFromBox(type, key) {
+    const name = type === 'work' ? ((getApps().find(a => a.id === key) || {}).name || '') : key;
+    if (!confirm(`${name} 을(를) 관심함에서 뺄까요?`)) return;
+    if (type === 'work') unheartWork(key); else unheartActor(key);
+    renderHearts();
   }
 
   // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
@@ -3055,7 +3070,7 @@
 
   function closeAppForm() {
     document.getElementById('ov-app-form').classList.remove('open');
-    openSettings();
+    openHearts();
   }
 
   async function saveAppForm(keepOpen) {
