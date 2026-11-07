@@ -1,0 +1,279 @@
+{
+  "name": "피장파장의 오류",
+  "icon": "🏠",
+  "color": "#3A86C8",
+  "venue": "브릭스씨어터",
+  "startDate": "2026-12-08",
+  "endDate": "2027-02-28",
+  "official": "https://x.com/kontentz",
+  "roles": [
+    {
+      "key": "dan",
+      "label": "김단"
+    },
+    {
+      "key": "sogeum",
+      "label": "우소금"
+    },
+    {
+      "key": "daenyeong",
+      "label": "윤대녕"
+    },
+    {
+      "key": "yuri",
+      "label": "정유리"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-08",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "김동준",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "dan": "김기택",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "dan": "김기택",
+      "sogeum": "류동휘",
+      "daenyeong": "김동준",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "정태영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "16:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "dan": "김기택",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-10",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2114968086298419386"
+    },
+    {
+      "name": "커튼콜 데이",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-13",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2114968086298419386"
+    },
+    {
+      "name": "트리플 적립 위크",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-20",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2114968086298419386"
+    },
+    {
+      "name": "스페셜 커튼콜 위크",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-27",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2114968086298419386"
+    }
+  ]
+}
