@@ -1555,17 +1555,43 @@
   //   이한솔만            → 모든 작품의 이한솔 회차
   //   이한솔 + 비더슈탄트 → 비더슈탄트의 이한솔 회차만
   const FILTER_KEY = HUB_NS + 'filter';
+  // 필터 규칙 (v2): 회차는 '그 작품을 골랐거나' '그 작품에서 켜 둔 배우가 나오면' 보인다. 고를수록 늘기만 한다.
+  //   작품 칩 = 그 작품 회차 전부. 배우 = 이름 단위로 켜고, 작품마다 끈다(off).
+  // v1 은 둘 다 만족해야 보였다 — 작품 칩이 배우를 그 작품으로 좁히는 데 쓰였고,
+  // 고른 작품에 안 나오는 배우는 소리 없이 0회차가 됐다.
   function getFilter() {
     let f = null;
     try { f = JSON.parse(localStorage.getItem(FILTER_KEY)); } catch {}
     if (f && Array.isArray(f.actors) && Array.isArray(f.apps)) {
       if (!Array.isArray(f.off)) f.off = [];
+      // 옮기려면 배우가 어느 작품에 나오는지 알아야 한다 — 스케줄이 다 들어온 뒤에만
+      if (f.v !== 2 && getApps().every(a => Array.isArray(schedules[a.id]))) { f = migrateFilterV2(f); saveFilter(f); }
       return f;
     }
     // 예전에는 작품별로 따로 골랐다. 고른 배우들을 합쳐 옮긴다.
     const old = getPrefs();
     const actors = [...new Set(Object.values(old).flat().filter(Boolean))];
-    return { actors, apps: [], off: [] };
+    return { v: 2, actors, apps: [], off: [] };
+  }
+  // v1 → v2: 보이던 회차가 그대로 보이게 옮긴다.
+  // 작품과 배우를 같이 골랐다면 작품 칩은 '배우를 좁히는' 뜻이었다 → 그 밖의 작품에서 배우를 끄고 작품 칩은 푼다.
+  // 고른 작품에 하나도 안 나오는 배우는 v1 에서 안 보이던 것이라(버그) 모든 작품에서 켜 둔다.
+  // 배우 없이 작품만 골랐다면 뜻이 같아 그대로 둔다.
+  function migrateFilterV2(f) {
+    const out = { v: 2, actors: [...f.actors], apps: [...f.apps], off: [...(f.off || [])] };
+    if (!f.apps.length || !f.actors.length) return out;
+    const index = actorIndex();
+    f.actors.forEach(name => {
+      const inApps = (index.get(name) || []).map(a => a.id);
+      const scope  = inApps.filter(id => f.apps.includes(id));
+      if (!scope.length) return;
+      inApps.filter(id => !scope.includes(id)).forEach(id => {
+        const k = offKey(id, name);
+        if (!out.off.includes(k)) out.off.push(k);
+      });
+    });
+    out.apps = [];
+    return out;
   }
   // 켜는 건 이름 단위(모든 작품에서 같이), 끄는 건 작품 단위.
   // 끈 작품은 off 에 'appId|이름' 으로 남긴다.
@@ -1579,14 +1605,14 @@
     return f.actors.length > 0 || f.apps.length > 0;
   }
   function clearFilter() {
-    saveFilter({ actors: [], apps: [], off: [] });
+    saveFilter({ v: 2, actors: [], apps: [], off: [] });
     renderActorFilters(); renderCalendar();
   }
 
   function matchesFilter(session, app, f) {
     f = f || getFilter();
-    if (f.apps.length && !f.apps.includes(app.id)) return false;
-    if (!f.actors.length) return true;
+    if (!f.apps.length && !f.actors.length) return true;
+    if (f.apps.includes(app.id)) return true;
     return getActorFields(session).some(k => session[k] && actorOn(f, app.id, session[k]));
   }
 
@@ -2304,7 +2330,9 @@
       return `<button class="filter-group" onclick="toggleFilterGroup('${app.id}')">
           <span class="filter-group-dot" style="background:${app.color}"></span>
           <span class="filter-group-name">${app.icon ? app.icon + ' ' : ''}${app.name}</span>
-          ${picked.length ? `<span class="filter-group-picked" style="color:${app.color}">· ${picked.join(', ')}</span>` : ''}
+          ${f.apps.includes(app.id)
+            ? `<span class="filter-group-picked" style="color:${app.color}">· 전체</span>`
+            : picked.length ? `<span class="filter-group-picked" style="color:${app.color}">· ${picked.join(', ')}</span>` : ''}
           <span class="app-group-caret">${open ? '▴' : '▾'}</span>
         </button>
         ${open ? `<div class="actor-list">${chips}</div>` : ''}`;
@@ -2330,11 +2358,11 @@
 
     box.innerHTML = summary +
       `<div class="section-title" style="border-top:none;padding-top:2px">작품</div>
-       <div class="hint">아무것도 안 고르면 전체 작품을 봅니다.</div>
+       <div class="hint">고른 작품은 모든 회차가 보입니다. 아무것도 안 고르면 전체를 봅니다.</div>
        <div class="actor-list">${appChips}</div>
        ${doneToggle}
        <div class="section-title">배우</div>
-       <div class="hint">이름 단위로 고릅니다. 여러 작품에 나오는 배우는 한 번 누르면 모든 작품에서 같이 켜집니다. 작품과 함께 고르면 그 작품의 해당 배우 회차만 보입니다.</div>
+       <div class="hint">고른 배우의 회차가 작품 칩과 합쳐서 보입니다. 처음 누르면 모든 작품에서 켜지고, 한 작품에서만 보려면 다른 작품 묶음에서 그 배우를 끄세요.</div>
        ${actorChips}`;
   }
 
