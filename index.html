@@ -340,12 +340,14 @@
 
     .badges { display: flex; flex-direction: column; gap: 3px; align-items: stretch; width: 100%; padding: 0 2px; min-width: 0; }
 
-    /* 관람/예매한 회차만 칩으로 강조한다. 작품명 대신 색으로 구분하므로
-       한 줄이면 충분하다. 예전엔 3줄이라 하루 4회차에 카드만 12줄이었다. */
+    /* 관람/예매한 회차만 칩으로 강조한다. 윗줄 시각, 아랫줄 작품 이름 —
+       작품이 많아져 색만으로는 구분이 안 됐다. 긴 이름은 앞만 보이고 … */
     .sess-card {
       border-radius: 6px; padding: 2px 4px; width: 100%; min-width: 0; overflow: hidden;
-      display: flex; align-items: center; gap: 3px;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0 3px;
     }
+    .sess-card-name { flex-basis: 100%; min-width: 0; font-size: 8px; font-weight: 600; line-height: 1.3;
+                      letter-spacing: -0.4px; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     /* 시각이 남는 폭을 먹고, 뒤에 붙는 표시들은 오른쪽에 차례로 놓인다 */
     .sess-card-time { flex: 1; min-width: 0;
                       font-size: 9px; font-weight: 800; line-height: 1.4; letter-spacing: -0.3px;
@@ -363,6 +365,8 @@
                 font-size: 8.5px; font-weight: 600; line-height: 1.5; color: var(--text3); }
     .sess-dim i { width: 3px; height: 7px; border-radius: 1px; flex-shrink: 0; display: block; }
     .sess-dim span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sess-dim { flex-wrap: wrap; column-gap: 3px; row-gap: 0; }
+    .sess-dim .sess-dim-name { flex-basis: 100%; padding-left: 6px; font-size: 7.5px; font-weight: 500; line-height: 1.3; letter-spacing: -0.4px; }
 
     /* 회차가 몰린 날만 시간 축으로 접는다. 눈금의 좌우 위치가 곧 시각. */
     .sess-axis { position: relative; height: 10px; width: 100%; margin-top: 1px;
@@ -2434,8 +2438,7 @@
         isToday     ? 'today'        : '',
       ].filter(Boolean).join(' ');
 
-      // 칩은 색으로 이미 '내 기록'과 작품을 구분한다. 이모지를 더하면 좁은 칸에서
-      // 시각을 밀어낼 뿐이라 시간만 적는다. 같은 날 두 번 본 경우만 ×N 을 붙인다.
+      // 칩: 윗줄 시각(+양도·×N·사진 표시), 아랫줄 작품 이름. 같은 날 두 번 본 경우만 ×N 을 붙인다.
       const sessBadges = marked.map(({ s, attCnt, hasPic, trans }) => `
         <div class="sess-card${trans ? ' transferred' : ''}" style="${appStyle(s._app.color)}"
              ${trans ? `title="양도${trans.transferTo ? ' · ' + trans.transferTo : ''}"` : ''}>
@@ -2443,6 +2446,7 @@
           ${trans ? '<span class="sess-card-icons">↪</span>' : ''}
           ${attCnt >= 2 ? `<span class="sess-card-icons">×${attCnt}</span>` : ''}
           ${hasPic ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
+          <span class="sess-card-name">${sessName(s._app, s)}</span>
         </div>`).join('');
 
       // 회차가 적으면 시각을 그대로, 몰린 날만 축으로 접는다.
@@ -2450,7 +2454,7 @@
         : rest.length <= MAX_TIME_LINES
           ? rest.map(({ s }) =>
               `<div class="sess-dim"><i style="background:${s._app.color}"></i>` +
-              `<span>${fmtTime(s.time)}</span></div>`).join('')
+              `<span>${fmtTime(s.time)}</span><span class="sess-dim-name">${sessName(s._app, s)}</span></div>`).join('')
           : (usedAxis = true, `<div class="sess-axis">${rest.map(({ s }) =>
               `<i style="left:${axisPos(s.time)}%;background:${s._app.color}"></i>`).join('')}</div>`);
 
@@ -2458,6 +2462,7 @@
         <div class="sess-card" style="${appStyle(e.color || COLOR_PALETTE[0])}">
           <span class="sess-card-time">${fmtTime(e.time)}</span>
           ${(e.photoIds || []).length ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
+          <span class="sess-card-name">${e.name}</span>
         </div>`).join('');
 
       html += `<div class="${cls}" onclick="openDay('${ds}')">
