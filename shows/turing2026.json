@@ -1,0 +1,73 @@
+{
+  "name": "앨런 튜링",
+  "icon": "🔐",
+  "color": "#2E4A6B",
+  "venue": "예스24아트원 1관",
+  "startDate": "2026-12-16",
+  "endDate": "2027-03-14",
+  "official": "https://x.com/HJCULTURE",
+  "roles": [
+    {
+      "key": "turing",
+      "label": "앨런 튜링"
+    },
+    {
+      "key": "grey",
+      "label": "존 그레이"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "turing": "주민진",
+      "grey": "조성윤"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "turing": "유승현",
+      "grey": "조훈"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "turing": "박규원",
+      "grey": "박두호"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "turing": "주민진",
+      "grey": "곽민수"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "turing": "박규원",
+      "grey": "조훈"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "turing": "유승현",
+      "grey": "조성윤"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "turing": "주민진",
+      "grey": "곽민수"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대인사 및 포토타임",
+      "startDate": "2026-12-16",
+      "endDate": "2026-12-19",
+      "color": "#2E4A6B",
+      "description": "12/16·17·18 20시, 12/19 15시 공연 종료 후",
+      "url": "https://x.com/HJCULTURE/status/2110163173592478068"
+    }
+  ]
+}

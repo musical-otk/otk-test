@@ -132,6 +132,7 @@
     .app-frame.active { display: block; }
     /* 기타 공연 탭 — iframe 대신 허브가 그리는 목록 */
     .extra-page { overflow-y: auto; padding: 14px 16px 40px; background: var(--bg1); }
+    .preset-kind { white-space: nowrap; font-size: 10px; font-weight: 600; color: var(--text3); border: 1px solid var(--border); border-radius: 8px; padding: 1px 6px; margin-left: 4px; vertical-align: 2px; }
     .xp-show { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px; }
     .xp-name { font-size: 16px; font-weight: 800; }
     .xp-info { font-size: 12px; color: var(--text3); margin-top: 4px; line-height: 1.5; }
@@ -954,13 +955,27 @@
   };
   let extraShows = [];   // [{ id, name, icon, venue, price, url, firstDate, lastDate }]
 
+  // app:false 줄은 두 종류다 — '기타'로 묶는 공연(group:"extra", extras/)과 작품마다 따로 보이는 '정보만' 작품(shows/)
+  const isExtraEntry = x => x.group === 'extra' || /^extras\//.test(x.path);
+  async function appsIndex() {
+    try {
+      const r = await fetch(APPS_INDEX_URL, { cache: 'no-cache' });
+      if (!r.ok) return [];
+      const list = await r.json();
+      return (Array.isArray(list) ? list : []).filter(x => x && typeof x.path === 'string' && x.path);
+    } catch { return []; }
+  }
+  async function dataShowUrls() {
+    return (await appsIndex()).filter(x => x.app === false && !isExtraEntry(x) && /\.json$/.test(x.path))
+      .map(x => new URL(x.path, APPS_INDEX_URL).href);
+  }
   async function extraEntries() {
     try {
       const r = await fetch(APPS_INDEX_URL, { cache: 'no-cache' });
       if (!r.ok) return [];
       const list = await r.json();
       return (Array.isArray(list) ? list : [])
-        .filter(x => x && x.app === false && typeof x.path === 'string' && x.path)
+        .filter(x => x && x.app === false && typeof x.path === 'string' && x.path && isExtraEntry(x))
         .map(x => new URL(/\.json$/.test(x.path) ? x.path : x.path.replace(/\/?$/, '/'), APPS_INDEX_URL).href);
     } catch { return []; }
   }
@@ -991,8 +1006,15 @@
     return rows;
   }
   // 작품 앱은 schedule.json 하나, '기타'는 여러 공연을 모은다
+  const dataInfo = {};   // 정보만 작품의 show 파일 (극장·기간·예매처·이벤트)
   async function loadSchedule(app, opts) {
     if (app.kind === 'extra') return loadExtraSchedule();
+    if (app.kind === 'data') {
+      const info = await fetch(app.scheduleUrl, opts || { cache: 'no-cache' }).then(r => r.json());
+      dataInfo[app.id] = info;
+      appEvents[app.id] = Array.isArray(info.events) ? info.events : [];   // events.json 대신 같은 파일에
+      return Array.isArray(info.schedule) ? info.schedule : [];
+    }
     const r = await fetch(app.scheduleUrl, opts);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.json();
@@ -1133,6 +1155,22 @@
       } catch {}
     }));
 
+    // 정보만 작품 (shows/<id>.json) — 앱이 없으니 기록은 허브가 작품마다 따로 갖는다
+    await Promise.all((await dataShowUrls()).map(async url => {
+      try {
+        const info = await fetch(url, { cache: 'no-cache' }).then(r => r.json());
+        const sch = Array.isArray(info.schedule) ? info.schedule : [];
+        if (!sch.length) return;
+        const sid = url.split('/').pop().replace(/\.json$/, '');
+        found.push({
+          id: 'show_' + sid.replace(/[^a-z0-9]/gi, '_'), kind: 'data',
+          name: info.name || sid, icon: info.icon || '', color: info.color || PALETTE_FALLBACK[0],
+          scheduleUrl: url, appUrl: '', deepLink: false, recordsKey: HUB_NS + 'rec_' + sid,
+          lastDate: sch.reduce((m, x) => (x.date && x.date > m ? x.date : m), ''),
+        });
+      } catch {}
+    }));
+
     found.sort((a, b) => (b.lastDate || '').localeCompare(a.lastDate || ''));
     localStorage.setItem(DISCOVERED_KEY, JSON.stringify(found));
     // 앱 추가 창을 열어둔 채 백그라운드 발견이 끝나면 날짜 분류를 다시 그린다
@@ -1198,6 +1236,7 @@
 
       // deepLink 도 앱의 능력이라 프리셋 값을 그대로 따라간다.
       if (app.deepLink !== preset.deepLink) { app.deepLink = preset.deepLink; changed = true; }
+      if (preset.kind && app.kind !== preset.kind) { app.kind = preset.kind; changed = true; }
     });
     if (changed) saveApps(apps);
   }
@@ -1280,7 +1319,7 @@
     const apps = getApps();
     const container = document.getElementById('app-frames');
     apps.forEach(app => {
-      if (app.kind === 'extra' && !document.getElementById(`frame-${app.id}`)) {
+      if ((app.kind === 'extra' || app.kind === 'data') && !document.getElementById(`frame-${app.id}`)) {
         const div = document.createElement('div');
         div.id = `frame-${app.id}`;
         div.className = 'app-frame extra-page';
@@ -1410,7 +1449,7 @@
       if (frame) {
         frame.classList.toggle('active', isActive);
         if (isActive && frame.src === 'about:blank') frame.src = app.appUrl;
-        if (isActive && app.kind === 'extra') renderExtraPage();
+        if (isActive && (app.kind === 'extra' || app.kind === 'data')) renderExtraPage(app.id);
       }
       if (btn) {
         btn.style.cssText = isActive
@@ -1421,18 +1460,42 @@
   }
 
   // ── 기타 공연 탭 ── 공연마다 정보와 회차, 내 기록
-  function renderExtraPage() {
-    const box = document.getElementById(`frame-${EXTRA_ID}`);
+  const _xpPastOpen = new Set();
+  function toggleXpPast(showId, appId) {
+    if (_xpPastOpen.has(showId)) _xpPastOpen.delete(showId); else _xpPastOpen.add(showId);
+    renderExtraPage(appId);
+  }
+  // 기타(여러 공연) · 정보만 작품(한 공연) 페이지 — 정보, 진행 중·예정 이벤트, 회차와 내 기록
+  function renderExtraPage(appId) {
+    appId = appId || EXTRA_ID;
+    const box = document.getElementById(`frame-${appId}`);
     if (!box) return;
-    const rows = schedules[EXTRA_ID] || [];
+    const rows = schedules[appId] || [];
     const att  = getAttended();
     const won  = n => n ? Number(n).toLocaleString() + '원' : '';
-    box.innerHTML = extraShows.length ? extraShows.map(sh => {
-      const sess = rows.filter(s => s._showId === sh.id)
+    let shows = extraShows;
+    if (appId !== EXTRA_ID) {
+      const app = getApps().find(a => a.id === appId) || {};
+      const info = dataInfo[appId] || {};
+      const dates = rows.map(s => s.date).sort();
+      shows = [{ id: appId, name: info.name || app.name, icon: info.icon || app.icon, venue: info.venue,
+                 url: info.url || info.official, firstDate: info.startDate || dates[0], lastDate: info.endDate || dates[dates.length - 1],
+                 events: (info.events || []).filter(e => (e.endDate || e.startDate) >= todayStr) }];
+    }
+    box.innerHTML = shows.length ? shows.map(sh => {
+      const all = rows.filter(s => appId !== EXTRA_ID || s._showId === sh.id)
         .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
-      const list = sess.map(s => {
+      // 지난 회차는 내가 기록한 것만 남기고 접는다 — 석 달짜리 공연은 100회가 넘는다
+      const mineOn = s => (att[s.date] || []).some(r => r.appId === appId && (!r.time || r.time === s.time));
+      const pastOpen = _xpPastOpen.has(sh.id);
+      const past = all.filter(s => s.date < todayStr);
+      const sess = pastOpen ? all : all.filter(s => s.date >= todayStr || mineOn(s));
+      const hidden = past.length - past.filter(mineOn).length;
+      const list = (hidden && !pastOpen
+          ? `<button class="app-group" onclick="toggleXpPast('${sh.id}','${appId}')"><span>지난 회차 ${hidden}개 보기</span><span class="app-group-caret">▾</span></button>` : '') +
+        sess.map(s => {
         const d = new Date(s.date + 'T00:00:00');
-        const recs = (att[s.date] || []).filter(r => r.appId === EXTRA_ID && (!r.time || r.time === s.time));
+        const recs = (att[s.date] || []).filter(r => r.appId === appId && (!r.time || r.time === s.time));
         const mine = recs.find(r => !r.transferred);
         const tr   = !mine && recs.find(r => r.transferred);
         const mark = mine ? (s.date < todayStr ? '✓ 관람' : '🎫 예매') : tr ? '↪ 양도' : '';
@@ -1443,26 +1506,33 @@
           <span class="xp-cast">${cast}</span>
           ${mark ? `<span class="xp-mark">${mark}${seat ? ' · ' + seat : ''}</span>` : ''}
         </div>`;
-      }).join('');
+      }).join('') + (pastOpen && hidden
+          ? `<button class="app-group" onclick="toggleXpPast('${sh.id}','${appId}')"><span>지난 회차 접기</span><span class="app-group-caret">▴</span></button>` : '');
       const period = sh.firstDate && (sh.firstDate === sh.lastDate ? sh.firstDate : sh.firstDate + ' ~ ' + sh.lastDate);
       return `<div class="xp-show">
         <div class="xp-name">${sh.icon ? sh.icon + ' ' : ''}${sh.name}</div>
         <div class="xp-info">${[sh.venue, sh.price && '전석 ' + won(sh.price), period].filter(Boolean).join(' · ')}</div>
-        ${sh.url ? `<a class="xp-link" href="${sh.url}" target="_blank" rel="noopener">예매처 ›</a>` : ''}
+        ${sh.url ? `<a class="xp-link" href="${sh.url}" target="_blank" rel="noopener">${appId === EXTRA_ID ? '예매처' : '공식 계정'} ›</a>` : ''}
+        ${(sh.events || []).length ? `<div class="wk-evs" style="margin-top:8px">${sh.events.map(e =>
+          `<span class="wk-ev" style="${appStyle(e.color || '#888')}">${e.name} ${e.startDate.slice(5).replace('-', '/')}${e.endDate && e.endDate !== e.startDate ? '~' + e.endDate.slice(5).replace('-', '/') : ''}</span>`).join('')}</div>` : ''}
         <div class="xp-list">${list}</div>
       </div>`;
     }).join('') : '<div class="loading">올라온 기타 공연이 없습니다</div>';
   }
 
-  let _xr = null;   // 편집 중인 회차 { ds, time, show, id }
-  function extraRecords() {
-    try { return JSON.parse(localStorage.getItem(EXTRA_APP.recordsKey)) || []; } catch { return []; }
+  let _xr = null;   // 편집 중인 회차 { appId, key, ds, time, show, id }
+  const recKeyOf = appId => (getApps().find(a => a.id === appId) || EXTRA_APP).recordsKey;
+  function extraRecords(key) {
+    try { return JSON.parse(localStorage.getItem(key || EXTRA_APP.recordsKey)) || []; } catch { return []; }
   }
-  function saveExtraRecords(list) { localStorage.setItem(EXTRA_APP.recordsKey, JSON.stringify(list)); }
-  function openExtraRec(ds, time) {
-    const s   = (schedules[EXTRA_ID] || []).find(x => x.date === ds && (x.time || '') === time);
-    const rec = extraRecords().find(r => r.date === ds && (r.time || '') === time);
-    _xr = { ds, time, show: s ? s._show : '', id: rec ? rec.id : null };
+  function saveExtraRecords(list, key) { localStorage.setItem(key || EXTRA_APP.recordsKey, JSON.stringify(list)); }
+  function openExtraRec(ds, time, appId) {
+    appId = appId || EXTRA_ID;
+    const key = recKeyOf(appId);
+    const app = getApps().find(a => a.id === appId) || EXTRA_APP;
+    const s   = (schedules[appId] || []).find(x => x.date === ds && (x.time || '') === time);
+    const rec = extraRecords(key).find(r => r.date === ds && (r.time || '') === time);
+    _xr = { appId, key, ds, time, show: (s && s._show) || app.name, id: rec ? rec.id : null };
     const d = new Date(ds + 'T00:00:00');
     document.getElementById('xr-title').textContent = rec ? '예매 수정' : '예매 기록';
     document.getElementById('xr-when').textContent =
@@ -1480,10 +1550,10 @@
   }
   function closeExtraRec() { document.getElementById('ov-extra-rec').classList.remove('open'); }
   function afterExtraRec() {
-    closeExtraRec(); renderCalendar(); renderExtraPage(); openDay(_xr.ds);
+    closeExtraRec(); renderCalendar(); renderExtraPage(_xr.appId); openDay(_xr.ds);
   }
   function saveExtraRec() {
-    const list = extraRecords();
+    const list = extraRecords(_xr.key);
     const num  = document.getElementById('xr-num').value;
     const tr   = document.getElementById('xr-trans').checked;
     // 작품 앱 기록과 같은 모양 — getAttended() 가 그대로 읽는다
@@ -1498,12 +1568,12 @@
     };
     const i = list.findIndex(r => r.id === rec.id);
     if (i >= 0) list[i] = rec; else list.push(rec);
-    saveExtraRecords(list);
+    saveExtraRecords(list, _xr.key);
     afterExtraRec();
   }
   function deleteExtraRec() {
     if (!_xr.id || !confirm('이 회차 예매 기록을 지울까요?')) return;
-    saveExtraRecords(extraRecords().filter(r => r.id !== _xr.id));
+    saveExtraRecords(extraRecords(_xr.key).filter(r => r.id !== _xr.id), _xr.key);
     afterExtraRec();
   }
 
@@ -2172,8 +2242,8 @@
       // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
       const jumpBtn = canJump(s._app)
         ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">${s._app.name}에서 보기 ›</button>`
-        : s._app.kind === 'extra'
-          ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
+        : (s._app.kind === 'extra' || s._app.kind === 'data')
+          ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}','${s._app.id}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
           : '';
       const noteRow = `<div class="note-row">
         ${thumbsHtml}
@@ -2315,6 +2385,7 @@
       try {
         const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
         if (Array.isArray(rows)) _catalogRows[p.id] = rows;
+        else if (rows && Array.isArray(rows.schedule)) _catalogRows[p.id] = rows.schedule;
       } catch {}
     })).then(() => { _catalogLoading = null; });
     return _catalogLoading;
@@ -2662,7 +2733,7 @@
         : '';
       return `<div class="preset-item${isAdded ? ' added' : ''}" onclick="fillPresetForm('${p.id}')">
         <div class="preset-dot" style="background:${p.color}"></div>
-        <div class="preset-name">${p.icon ? p.icon + ' ' : ''}${p.name}</div>
+        <div class="preset-name">${p.icon ? p.icon + ' ' : ''}${p.name}${p.kind === 'data' ? ' <span class="preset-kind">정보만</span>' : ''}</div>
         ${tail}
         <div class="preset-add">${isAdded ? '추가됨' : '+ 추가'}</div>
       </div>`;
@@ -2744,11 +2815,14 @@
                   || presetColor || COLOR_PALETTE[0];
     const id = _presetFormId || ('app_' + Date.now());
     const app = { id, name, icon, scheduleUrl, appUrl, color, recordsKey: recordsKey || null };
+    const preset = _presetFormId ? allPresets().find(p => p.id === _presetFormId) : null;
+    if (preset && preset.kind) app.kind = preset.kind;
+    if (preset && preset.deepLink === false) app.deepLink = false;
     const apps = getApps();
     apps.push(app);
     saveApps(apps);
     try {
-      schedules[id] = await fetch(scheduleUrl).then(r => r.json());
+      schedules[id] = await loadSchedule(app);
     } catch {}
     loadEvents([app]);
     _presetFormId = null;

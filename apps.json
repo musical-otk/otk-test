@@ -4,6 +4,15 @@
   },
   {
     "path": "extras/hwinter2026.json",
+    "app": false,
+    "group": "extra"
+  },
+  {
+    "path": "shows/socrates2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/turing2026.json",
     "app": false
   }
 ]

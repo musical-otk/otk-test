@@ -1,0 +1,750 @@
+{
+  "name": "소크라테스 패러독스",
+  "icon": "😎",
+  "color": "#3E8E2F",
+  "venue": "NOL 서경스퀘어 스콘 1관",
+  "startDate": "2026-09-10",
+  "endDate": "2026-11-29",
+  "official": "https://x.com/HJCULTURE",
+  "roles": [
+    {
+      "key": "socrates",
+      "label": "소크라테스"
+    },
+    {
+      "key": "meletus",
+      "label": "멜레토스"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-09-10",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-11",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-12",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-12",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-13",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-13",
+      "time": "18:00",
+      "socrates": "정민",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-15",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-16",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "18:00",
+      "socrates": "정민",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-22",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-09-29",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-01",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "14:00",
+      "socrates": "김도빈",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "18:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "14:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "18:00",
+      "socrates": "김도빈",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-15",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "18:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "14:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "18:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "18:00",
+      "socrates": "김도빈",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "18:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "socrates": "조풍래",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "socrates": "김도빈",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "18:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "이종석"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "socrates": "정민",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "socrates": "김도빈",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "16:00",
+      "socrates": "조풍래",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "socrates": "문경초",
+      "meletus": "황민수"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "14:00",
+      "socrates": "조풍래",
+      "meletus": "이준우"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "18:00",
+      "socrates": "정민",
+      "meletus": "최호승"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "16:00",
+      "socrates": "김도빈",
+      "meletus": "이종석"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-09-10",
+      "endDate": "2026-09-12",
+      "color": "#3E8E2F",
+      "description": "9/10·11 20시, 9/12 14시 공연 종료 후",
+      "url": "https://x.com/HJCULTURE/status/2097135375273898305"
+    },
+    {
+      "name": "웰컴 쿠폰팩 증정",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-20",
+      "color": "#3E8E2F",
+      "description": "유료 티켓 1매당 쿠폰팩(온라인 40%·현장 50%·증빙패스·더블적립)",
+      "url": "https://x.com/HJCULTURE/status/2074731667181412641"
+    },
+    {
+      "name": "첫공 무대인사 (김도빈)",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-22",
+      "color": "#3E8E2F",
+      "description": "20시 공연 종료 후",
+      "url": "https://x.com/HJCULTURE/status/2097135375273898305"
+    },
+    {
+      "name": "커튼콜 데이 · 친필 덕담 엽서 증정",
+      "startDate": "2026-09-23",
+      "endDate": "2026-09-27",
+      "color": "#3E8E2F",
+      "description": "커튼콜 촬영 가능, 유료 티켓 1매당 엽서 1장",
+      "url": "https://x.com/HJCULTURE/status/2102201511916994850"
+    },
+    {
+      "name": "스페셜 스윙 데이",
+      "startDate": "2026-09-24",
+      "endDate": "2026-09-24",
+      "color": "#3E8E2F",
+      "description": "코러스 배혜진 → 김유민",
+      "url": "https://x.com/HJCULTURE/status/2101929426351178082"
+    },
+    {
+      "name": "스페셜 스윙 데이",
+      "startDate": "2026-09-26",
+      "endDate": "2026-09-26",
+      "color": "#3E8E2F",
+      "description": "코러스 김기영 → 이지혁",
+      "url": "https://x.com/HJCULTURE/status/2101929426351178082"
+    },
+    {
+      "name": "첫공 무대인사 (이종석)",
+      "startDate": "2026-09-29",
+      "endDate": "2026-09-29",
+      "color": "#3E8E2F",
+      "description": "20시 공연 종료 후",
+      "url": "https://x.com/HJCULTURE/status/2097135375273898305"
+    },
+    {
+      "name": "멜로디 카드 + 가사지 증정 위크",
+      "startDate": "2026-09-30",
+      "endDate": "2026-10-05",
+      "color": "#3E8E2F",
+      "description": "음원 QR은 10/12까지",
+      "url": "https://x.com/HJCULTURE/status/2102276714277810636"
+    },
+    {
+      "name": "스페셜 커튼콜 위크",
+      "startDate": "2026-10-07",
+      "endDate": "2026-10-11",
+      "color": "#3E8E2F",
+      "url": "https://x.com/HJCULTURE/status/2107404301366894927"
+    },
+    {
+      "name": "아테네 토크쇼 「무엇이든 물어보소ㅋ」",
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-16",
+      "color": "#3E8E2F",
+      "description": "커튼콜 후 무대 토크 (촬영 불가)",
+      "url": "https://x.com/HJCULTURE/status/2108105364747300881"
+    },
+    {
+      "name": "등에 주의보",
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-18",
+      "color": "#3E8E2F",
+      "description": "로비 암구호 이벤트, 티켓 1매당 1회",
+      "url": "https://x.com/HJCULTURE/status/2108105123063038038"
+    },
+    {
+      "name": "실황 촬영",
+      "startDate": "2026-10-16",
+      "endDate": "2026-10-16",
+      "color": "#3E8E2F",
+      "description": "20시 공연, 객석에 카메라 설치",
+      "url": "https://x.com/HJCULTURE/status/2110612482595459238"
+    },
+    {
+      "name": "SING-ALONG WEEK",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-25",
+      "color": "#3E8E2F",
+      "description": "싱어롱 + 더블적립",
+      "url": "https://x.com/HJCULTURE/status/2104754216397078886"
+    },
+    {
+      "name": "웰컴 투 아고라",
+      "startDate": "2026-10-27",
+      "endDate": "2026-11-01",
+      "color": "#3E8E2F",
+      "description": "사용기간 10/27~11/26",
+      "url": "https://x.com/HJCULTURE/status/2114643206100980063"
+    },
+    {
+      "name": "소크라테스 신곡 발표 (스페셜 넘버 최초공개)",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-06",
+      "color": "#3E8E2F",
+      "description": "커튼콜 후 미공개 넘버 시연 (촬영 불가)",
+      "url": "https://x.com/HJCULTURE/status/2117164811360551284"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-14",
+      "color": "#3E8E2F",
+      "description": "11/7·8 멜레토스 픽, 11/10~12·14(14시) 소크라테스 픽",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "스윙 데이",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#3E8E2F",
+      "description": "14·18시 코러스 박희태 → 이지혁",
+      "url": "https://x.com/HJCULTURE/status/2116062553742999669"
+    },
+    {
+      "name": "스윙 데이",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-11",
+      "color": "#3E8E2F",
+      "description": "20시 코러스 김예나 → 김유민",
+      "url": "https://x.com/HJCULTURE/status/2116062553742999669"
+    },
+    {
+      "name": "막공 무대인사",
+      "startDate": "2026-11-27",
+      "endDate": "2026-11-29",
+      "color": "#3E8E2F",
+      "description": "11/27 20시, 11/28 14·18시, 11/29 16시",
+      "url": "https://x.com/HJCULTURE/status/2115000634080723379"
+    }
+  ]
+}
