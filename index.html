@@ -190,6 +190,7 @@
     .flt-tg { font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); background: none; color: var(--text3); cursor: pointer; }
     .flt-x { margin-left: auto; background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 2px 4px; }
     .flt-browse-hd { margin-top: 10px; }
+    .flt-allon { display: flex; justify-content: flex-end; padding: 0 0 4px; }
     /* 정보 검색 */
     .srch-card { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; background: var(--bg3); }
     .srch-card-hd { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 2px; }
@@ -1985,7 +1986,7 @@
     const n  = f.offWorks.length + f.offActors.length + f.off.length;
     const fb = document.getElementById('seg-filter');
     fb.classList.toggle('on', n > 0);
-    fb.textContent = n > 0 ? '🔎 일부 끔' : '🔎';
+    fb.textContent = '🔎';   // 꺼 둔 게 있으면 버튼 색(on)으로만 알린다
   }
 
   function openFilter()  {
@@ -2555,8 +2556,7 @@
       </div>`;
     };
     box.innerHTML = `
-      ${filterActive() ? `<div class="filter-summary"><span>일부 꺼 둠</span><button class="filter-clear" onclick="clearFilter()">모두 켜기</button></div>` : ''}
-      <div class="hint">관심(♡) 중에서 지금 달력에 보일 것만 켜고 끕니다. 관심은 🔍 찾기에서 넣고 뺍니다.</div>
+      ${filterActive() ? `<div class="flt-allon"><button class="filter-clear" onclick="clearFilter()">모두 켜기</button></div>` : ''}
       ${works.length ? `<div class="section-title" style="border-top:none">관심 작품 — 전체 회차</div>
         <div class="actor-list">${live.map(wChip).join('')}${done.map(wChip).join('')}</div>` : ''}
       ${H.actors.length ? `<div class="section-title">관심 배우 — 나오는 회차</div>
