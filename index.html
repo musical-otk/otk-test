@@ -123,6 +123,12 @@
 
     #view-cal { flex: 1; }
     #view-cal.hidden { display: none; }
+    /* 찾는 중에는 달력을 숨기고 결과만 */
+    #view-cal.searching > :not(#home-search) { display: none !important; }
+    #home-search { padding: 4px 16px 12px; }
+    .hs-bar { display: flex; gap: 6px; align-items: center; position: sticky; top: 0; z-index: 3; background: var(--bg1); padding: 6px 0; }
+    .hs-bar .form-input { flex: 1; }
+    .hs-close { background: none; border: none; font-size: 16px; color: var(--text3); padding: 6px 8px; cursor: pointer; }
 
     /* 기본은 숨김. 켜져 있으면 flex:1 로 달력과 화면을 반씩 나눠 가져
        달력이 중간에서 잘린다. */
@@ -194,6 +200,7 @@
     .srch-btn.sub { font-weight: 500; color: var(--text3); }
     .srch-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; flex-wrap: wrap; }
     .srch-time { font-weight: 700; min-width: 42px; }
+    .srch-tag.mine { color: var(--custom); border-color: var(--custom); font-weight: 700; }
     .srch-back { background: none; border: none; color: var(--text2); font-size: 13px; padding: 4px 2px 8px; cursor: pointer; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
     .seg-view { display: flex; flex: 0 0 auto; }
@@ -581,6 +588,15 @@
   </div>
 
   <div id="view-cal">
+    <!-- 찾기 — 🔍 로 연다. 입력하는 동안 달력 자리에 결과가 나온다 -->
+    <div id="home-search" hidden>
+      <div class="hs-bar">
+        <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 날짜(11/21)"
+               autocomplete="off" oninput="_srchSel = null; renderSearch()">
+        <button class="hs-close" onclick="closeSearch()" title="달력으로">✕</button>
+      </div>
+      <div id="srch-results"></div>
+    </div>
     <div class="cal-nav">
       <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
       <div class="cal-month" id="cal-month-label"></div>
@@ -666,22 +682,6 @@
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeCustomForm()">취소</button>
       <button class="btn-primary" onclick="saveCustomEvent()">저장</button>
-    </div>
-  </div>
-</div>
-
-<!-- 정보 검색 — 달력에 없는 공연까지 공연·배우·날짜로 찾는다 -->
-<div class="overlay" id="ov-search">
-  <div class="sheet settings-sheet">
-    <div class="sheet-handle"></div>
-    <div class="settings-hd">
-      <div class="settings-title">찾기</div>
-      <button class="settings-close" onclick="closeSearch()">✕</button>
-    </div>
-    <div class="settings-body">
-      <input id="srch-q" class="form-input flt-q" type="search" placeholder="공연 · 배우 · 날짜(11/21)"
-             autocomplete="off" oninput="_srchSel = null; renderSearch()">
-      <div id="srch-results"></div>
     </div>
   </div>
 </div>
@@ -2548,17 +2548,27 @@
   let _srchSel = null;   // 자세히 보는 것 { type: 'work' | 'actor', key }
   function pickSearch(type, key) { _srchSel = { type, key }; renderSearch(); }
   function backSearch() { _srchSel = null; renderSearch(); }
+  // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
+    const box = document.getElementById('home-search');
+    if (!box.hidden && currentView === 'cal') { closeSearch(); return; }
+    if (currentView !== 'cal') switchView('cal');
     document.getElementById('ov-settings').classList.remove('open');
     const q = document.getElementById('srch-q');
     q.value = '';
     _srchSel = null;
+    box.hidden = false;
     renderSearch();
-    document.getElementById('ov-search').classList.add('open');
     ensureCatalog().then(renderSearch);
+    scrollTo(0, 0);
     setTimeout(() => q.focus(), 50);
   }
-  function closeSearch() { document.getElementById('ov-search').classList.remove('open'); }
+  function closeSearch() {
+    document.getElementById('home-search').hidden = true;
+    document.getElementById('srch-q').value = '';
+    document.getElementById('view-cal').classList.remove('searching');
+    _srchSel = null;
+  }
   // 11/21 · 11월 21일 · 2026-11-21 · 1121 → YYYY-MM-DD (연도 없으면 오늘 기준 가까운 해)
   function parseQueryDate(q) {
     let y, m, d, mt;
@@ -2581,8 +2591,13 @@
     if (!box) return;
     const raw = (document.getElementById('srch-q').value || '').trim();
     const q = norm(raw);
-    if (!q) { box.innerHTML = '<div class="hint" style="padding:8px 2px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다. 달력에 없는 공연도 나옵니다.</div>'; return; }
-    const { works, actors } = catalog('all');
+    document.getElementById('view-cal').classList.toggle('searching', !!q);
+    if (!q) { box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다. 달력에 넣지 않은 공연도 나옵니다.</div>'; return; }
+    const cat = catalog('all');
+    // 공연은 끝난 것도 찾는다. 배우 옆에 붙이는 작품만 남은 공연으로 줄인다
+    const live = w => { const r = rowsOf(w); return !r.length || r.some(s => s.date >= todayStr); };
+    const works = cat.works;
+    const actors = new Map([...cat.actors.entries()].map(([n, ws]) => [n, ws.filter(live)]));
     const kindTag = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
     const nextOf = rows => rows.filter(s => s.date >= todayStr).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     const when = s => { const d = new Date(s.date + 'T00:00:00'); return `${s.date.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) ${s.time || ''}`; };
@@ -2597,16 +2612,18 @@
     // 날짜
     const ds = parseQueryDate(raw.replace(/\s+/g, ''));
     if (ds) {
-      const hits = works.flatMap(w => rowsOf(w).filter(s => s.date === ds).map(s => ({ w, s })))
+      const hits = cat.works.flatMap(w => rowsOf(w).filter(s => s.date === ds).map(s => ({ w, s })))
         .sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
+      const att = (getAttended()[ds] || []);
       const d = new Date(ds + 'T00:00:00');
       html += `<div class="flt-sec">${ds.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) 공연 ${hits.length}</div>` +
-        (hits.map(({ w, s }) => `<div class="srch-row"${w.added ? ` onclick="closeSearch();openDay('${ds}')"` : ''}>
+        (hits.map(({ w, s }) => `<div class="srch-row"${w.added ? ` onclick="openDay('${ds}')"` : ''}>
             <span class="filter-group-dot" style="background:${w.color}"></span>
             <span class="srch-time">${s.time || ''}</span>
             <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
             <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
-            ${w.added ? '' : `<span class="srch-tag">달력에 없음</span>`}
+            ${(r => r ? `<span class="srch-tag mine">${r.transferred ? '↪ 양도' : ds < todayStr ? '✓ 관람' : '🎫 예매'}</span>` : '')(
+              att.find(r => r.appId === w.id && (!r.time || r.time === s.time)))}
           </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없습니다</div>');
     }
 
@@ -2652,13 +2669,13 @@
       `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}</span>
-        <span class="flt-hit-sub">${kindTag(w)}${w.added ? '' : ' · 달력에 없음'}</span>
+        <span class="flt-hit-sub">${kindTag(w)}${live(w) ? (w.added ? '' : ' · 달력에 없음') : ' · 종료'}</span>
       </button>`).join('');
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
       `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
         <span class="flt-hit-name">${n}</span>
-        <span class="flt-hit-sub">${inWorks.map(w => (w.icon || '') + w.name).join(' · ')}</span>
+        <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => (w.icon || '') + w.name).join(' · ') : '남은 공연 없음'}</span>
       </button>`).join('');
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
@@ -3422,7 +3439,7 @@
   _pvImg.addEventListener('dblclick', (e) => { e.stopPropagation(); pvToggleZoom(); });
 
   // 뒤로가기 버튼: 오버레이 닫기 (PWA 앱 종료 방지)
-  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-extra-rec','ov-search','ov-app-form','ov-filter','ov-settings','ov-detail'];
+  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-extra-rec','ov-app-form','ov-filter','ov-settings','ov-detail'];
   history.pushState({pwa:true}, '');
   window.addEventListener('popstate', () => {
     history.pushState({pwa:true}, '');
