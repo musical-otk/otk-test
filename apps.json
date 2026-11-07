@@ -26,5 +26,9 @@
   {
     "path": "shows/pijang2026.json",
     "app": false
+  },
+  {
+    "path": "shows/othello2026.json",
+    "app": false
   }
 ]
