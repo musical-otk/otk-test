@@ -164,7 +164,23 @@
     }
     .seg-btn.on { background: var(--custom-bg); border-color: var(--custom-bd); color: var(--custom); }
     .seg-btn:active { opacity: 0.7; }
-    .seg-filter { flex: 0 0 auto; padding: 7px 12px; }
+    .seg-filter { flex: 0 1 auto; padding: 7px 12px; max-width: 42%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* 필터 창 — 찾기 / 적용 중 */
+    .flt-q { width: 100%; margin: 2px 0 6px; }
+    .flt-sec { font-size: 11px; font-weight: 700; color: var(--text3); padding: 8px 2px 4px; }
+    .flt-hit { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 9px 10px; margin-bottom: 4px;
+               border: 1px solid var(--border); border-radius: 10px; background: var(--bg3); color: var(--text1); font-size: 13px; cursor: pointer; }
+    .flt-hit.on { opacity: 0.6; }
+    .flt-hit-name { font-weight: 700; flex-shrink: 0; }
+    .flt-hit-sub { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .flt-applied-hd { display: flex; align-items: center; justify-content: space-between; }
+    .flt-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+    .flt-row-name { font-size: 13px; font-weight: 700; flex-shrink: 0; }
+    .flt-row-sub { font-size: 11px; color: var(--text3); }
+    .flt-tgs { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+    .flt-tg { font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); background: none; color: var(--text3); cursor: pointer; }
+    .flt-x { margin-left: auto; background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 2px 4px; }
+    .flt-browse-hd { margin-top: 10px; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
     .seg-view { display: flex; flex: 0 0 auto; }
     .seg-view .seg-btn { flex: 0 0 auto; padding: 7px 10px; }
@@ -1786,14 +1802,17 @@
     const n  = f.apps.length + f.actors.length;
     const fb = document.getElementById('seg-filter');
     fb.classList.toggle('on', n > 0);
-    fb.textContent = n > 0 ? `🔎 ${n}` : '🔎';
+    const first = f.apps.length ? (getApps().find(a => a.id === f.apps[0]) || {}).name : f.actors[0];
+    fb.textContent = n > 0 ? `🔎 ${first || ''}${n > 1 ? ` 외 ${n - 1}` : ''}` : '🔎';
   }
 
   function openFilter()  {
     document.getElementById('ov-settings').classList.remove('open');
     _filterDoneOpen = null;
+    clearFilterQuery();
     renderActorFilters();
     document.getElementById('ov-filter').classList.add('open');
+    ensureCatalog();
   }
   function closeFilter() { document.getElementById('ov-filter').classList.remove('open'); }
 
@@ -2284,11 +2303,201 @@
     setVisibility(id, cur === 'auto' ? 'show' : cur === 'show' ? 'hide' : 'auto');
   }
 
+  // ── 공연·배우 찾기 (필터 창과 홈 검색이 같이 쓴다) ──
+  // 추가하지 않은 작품까지 찾으려면 그 스케줄이 필요하다. 처음 찾을 때 한 번만 받아 둔다.
+  const _catalogRows = {};          // presetId → schedule rows
+  let _catalogLoading = null;
+  function ensureCatalog() {
+    if (_catalogLoading) return _catalogLoading;
+    const added = new Set(getApps().map(a => a.scheduleUrl));
+    const todo = allPresets().filter(p => !added.has(p.scheduleUrl) && !_catalogRows[p.id]);
+    _catalogLoading = Promise.all(todo.map(async p => {
+      try {
+        const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
+        if (Array.isArray(rows)) _catalogRows[p.id] = rows;
+      } catch {}
+    })).then(() => { _catalogLoading = null; });
+    return _catalogLoading;
+  }
+  // 작품 = 추가한 앱 + 아직 안 한 프리셋. 배우 = 이름 → 나오는 작품들
+  function catalog() {
+    const apps = getApps();
+    const works = apps.map(a => ({ id: a.id, name: a.name, icon: a.icon, color: a.color, added: true }));
+    allPresets().forEach(p => {
+      if (apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl)) return;
+      works.push({ id: p.id, name: p.name, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate });
+    });
+    const actors = new Map();
+    works.forEach(w => {
+      const rows = w.added ? schedules[w.id] : _catalogRows[w.id];
+      extractActors(rows || []).forEach(n => {
+        if (!actors.has(n)) actors.set(n, []);
+        actors.get(n).push(w);
+      });
+    });
+    return { works, actors };
+  }
+  const norm = s => (s || '').replace(/\s+/g, '').toLowerCase();
+
   function renderActorFilters() {
+    const box = document.getElementById('actor-filters');
+    if (!document.getElementById('flt-q')) {
+      box.innerHTML = `
+        <input id="flt-q" class="form-input flt-q" type="search" placeholder="🔎 작품·배우 찾기"
+               autocomplete="off" oninput="renderFilterResults()">
+        <div id="flt-results"></div>
+        <div id="flt-applied"></div>
+        <div id="flt-browse"></div>`;
+    }
+    renderFilterResults();
+    renderFilterApplied();
+    renderFilterBrowse();
+  }
+
+  // ① 찾은 결과 — 누르면 바로 '적용 중'에 들어간다
+  function renderFilterResults() {
+    const q = norm(document.getElementById('flt-q')?.value);
+    const box = document.getElementById('flt-results');
+    if (!box) return;
+    if (!q) { box.innerHTML = ''; return; }
+    if (Object.keys(_catalogRows).length === 0 && !_catalogLoading)
+      ensureCatalog().then(renderFilterResults);
+    const f = getFilter();
+    const { works, actors } = catalog();
+    const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
+    const as = [...actors.entries()].filter(([n]) => norm(n).includes(q))
+      .sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 8);
+    const wRow = w => {
+      const on = f.apps.includes(w.id);
+      return `<button class="flt-hit${on ? ' on' : ''}" onclick="pickFilterWork('${w.id}')">
+        <span class="filter-group-dot" style="background:${w.color}"></span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}</span>
+        <span class="flt-hit-sub">${on ? '적용 중' : w.added ? '작품 전체' : '추가 안 한 작품'}</span>
+      </button>`;
+    };
+    const aRow = ([n, ws]) => {
+      const on = f.actors.includes(n);
+      return `<button class="flt-hit${on ? ' on' : ''}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}')">
+        <span class="flt-hit-name">${n}</span>
+        <span class="flt-hit-sub">${on ? '적용 중 · ' : ''}${ws.map(w => (w.icon || '') + w.name).join(' · ')}</span>
+      </button>`;
+    };
+    box.innerHTML = (ws.length || as.length)
+      ? (ws.length ? `<div class="flt-sec">작품</div>${ws.map(wRow).join('')}` : '') +
+        (as.length ? `<div class="flt-sec">배우</div>${as.map(aRow).join('')}` : '')
+      : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 작품·배우가 없습니다'}</div>`;
+  }
+  function clearFilterQuery() {
+    const q = document.getElementById('flt-q');
+    if (q) q.value = '';
+  }
+  // 아직 추가하지 않은 작품은 먼저 추가한다 (안 하면 달력에 안 뜬다)
+  async function addPresetById(id) {
+    if (getApps().some(a => a.id === id)) return;
+    fillPresetForm(id);
+    for (let i = 0; i < 40 && !getApps().some(a => a.id === id); i++) await new Promise(r => setTimeout(r, 50));
+  }
+  async function pickFilterWork(id) {
+    const w = catalog().works.find(x => x.id === id);
+    if (!w) return;
+    if (!w.added) {
+      if (!confirm(`${w.name} 은(는) 아직 추가하지 않은 작품입니다. 추가하고 필터에 넣을까요?`)) return;
+      await addPresetById(id);
+    }
+    const f = getFilter();
+    if (!f.apps.includes(id)) { f.apps.push(id); saveFilter(f); }
+    clearFilterQuery();
+    renderActorFilters(); renderCalendar();
+  }
+  async function pickFilterActor(name) {
+    const inWorks = catalog().actors.get(name) || [];
+    if (inWorks.length && !inWorks.some(w => w.added)) {
+      const names = inWorks.map(w => w.name).join(', ');
+      if (!confirm(`${name} 배우가 나오는 작품(${names})을 아직 추가하지 않았습니다. 추가할까요?`)) return;
+      for (const w of inWorks) await addPresetById(w.id);
+    }
+    const f = getFilter();
+    if (!f.actors.includes(name)) {
+      f.actors.push(name);
+      f.off = f.off.filter(x => !x.endsWith('|' + name));   // 처음 넣으면 모든 작품에서 켜진다
+      saveFilter(f);
+    }
+    clearFilterQuery();
+    renderActorFilters(); renderCalendar();
+  }
+
+  // ② 적용 중 — 고른 것만 한 줄씩. 배우는 나오는 작품마다 켜고 끈다
+  function renderFilterApplied() {
+    const box = document.getElementById('flt-applied');
+    if (!box) return;
+    const f = getFilter();
+    const apps = getApps();
+    const index = actorIndex();
+    if (!f.apps.length && !f.actors.length) {
+      box.innerHTML = `<div class="section-title">적용 중</div>
+        <div class="hint">아무것도 안 고르면 전체 회차를 봅니다. 작품을 넣으면 그 작품 회차 전부, 배우를 넣으면 그 배우가 나오는 회차가 합쳐서 보입니다.</div>`;
+      return;
+    }
+    const workRow = id => {
+      const a = apps.find(x => x.id === id);
+      if (!a) return '';
+      return `<div class="flt-row">
+        <span class="filter-group-dot" style="background:${a.color}"></span>
+        <span class="flt-row-name">${a.icon ? a.icon + ' ' : ''}${a.name}</span>
+        <span class="flt-row-sub">작품 전체</span>
+        <button class="flt-x" onclick="toggleFilterApp('${id}')" title="빼기">✕</button>
+      </div>`;
+    };
+    const actorRow = name => {
+      const inApps = index.get(name) || [];
+      const esc = name.replace(/'/g, "\\'");
+      const toggles = inApps.map(a => {
+        const on = actorOn(f, a.id, name);
+        return `<button class="flt-tg${on ? ' on' : ''}" style="${on ? `color:${a.color};border-color:${hexToRgba(a.color, 0.5)};background:${hexToRgba(a.color, 0.12)}` : ''}"
+          onclick="setFilterActorWork('${esc}','${a.id}')">${a.icon || ''}${a.name}</button>`;
+      }).join('');
+      return `<div class="flt-row">
+        <span class="flt-row-name">${name}</span>
+        <span class="flt-tgs">${toggles || '<span class="flt-row-sub">추가한 작품에 안 나옵니다</span>'}</span>
+        <button class="flt-x" onclick="removeFilterActor('${esc}')" title="빼기">✕</button>
+      </div>`;
+    };
+    box.innerHTML = `<div class="section-title flt-applied-hd">
+        <span>적용 중</span><button class="filter-clear" onclick="clearFilter()">모두 해제</button>
+      </div>
+      ${f.apps.map(workRow).join('')}${f.actors.map(actorRow).join('')}
+      ${f.actors.length ? '<div class="hint" style="padding-top:4px">배우 옆 작품을 눌러 그 작품에서만 켜고 끕니다.</div>' : ''}`;
+  }
+  // 한 작품에서 켜고 끈다. 전부 꺼도 이름은 남긴다 — ✕ 로만 뺀다
+  function setFilterActorWork(name, appId) {
+    const f = getFilter();
+    const k = offKey(appId, name);
+    if (f.off.includes(k)) f.off = f.off.filter(x => x !== k); else f.off.push(k);
+    saveFilter(f);
+    renderActorFilters(); renderCalendar();
+  }
+  function removeFilterActor(name) {
+    const f = getFilter();
+    f.actors = f.actors.filter(n => n !== name);
+    f.off = f.off.filter(x => !x.endsWith('|' + name));
+    saveFilter(f);
+    renderActorFilters(); renderCalendar();
+  }
+
+  // ③ 작품별로 둘러보기 — 이름이 기억 안 날 때. 기본은 접어 둔다
+  let _filterBrowseOpen = false;
+  function toggleFilterBrowse() { _filterBrowseOpen = !_filterBrowseOpen; renderFilterBrowse(); }
+  function renderFilterBrowse() {
+    const host = document.getElementById('flt-browse');
+    if (!host) return;
+    const head = `<button class="app-group flt-browse-hd" onclick="toggleFilterBrowse()">
+        <span>작품별로 둘러보기</span><span class="app-group-caret">${_filterBrowseOpen ? '▴' : '▾'}</span>
+      </button>`;
+    if (!_filterBrowseOpen) { host.innerHTML = head; return; }
     const f     = getFilter();
     const apps  = getApps();
     const index = actorIndex();
-    const box   = document.getElementById('actor-filters');
+    const box   = { set innerHTML(h) { host.innerHTML = head + h; } };
 
     if (!index.size) { box.innerHTML =
       '<div class="hint">스케줄을 불러오면 배우 목록이 나옵니다.</div>'; return; }
@@ -2349,14 +2558,7 @@
     const actorChips = live.map(actorGroup).join('') + doneToggle +
       (_filterDoneOpen ? done.map(actorGroup).join('') : '');
 
-    const summary = filterActive()
-      ? `<div class="filter-summary">
-           <span>${[f.apps.length ? `작품 ${f.apps.length}` : '', f.actors.length ? `배우 ${f.actors.length}` : ''].filter(Boolean).join(' · ')} 적용 중</span>
-           <button class="filter-clear" onclick="clearFilter()">모두 해제</button>
-         </div>`
-      : '';
-
-    box.innerHTML = summary +
+    box.innerHTML =
       `<div class="section-title" style="border-top:none;padding-top:2px">작품</div>
        <div class="hint">고른 작품은 모든 회차가 보입니다. 아무것도 안 고르면 전체를 봅니다.</div>
        <div class="actor-list">${appChips}</div>
@@ -2372,11 +2574,11 @@
   const _filterOpenGroups = new Set();
   function toggleFilterGroup(id) {
     if (_filterOpenGroups.has(id)) _filterOpenGroups.delete(id); else _filterOpenGroups.add(id);
-    renderActorFilters();
+    renderFilterBrowse();
   }
   function toggleFilterDone() {
     _filterDoneOpen = !_filterDoneOpen;
-    renderActorFilters();
+    renderFilterBrowse();
   }
 
   function toggleFilterApp(id) {
