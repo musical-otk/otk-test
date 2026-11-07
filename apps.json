@@ -54,5 +54,9 @@
   {
     "path": "shows/gonetomorrow2026.json",
     "app": false
+  },
+  {
+    "path": "shows/sweeney2026.json",
+    "app": false
   }
 ]
