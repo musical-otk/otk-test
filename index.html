@@ -2790,7 +2790,7 @@
     const H = getHearts();
     const { works, actors } = catalog('all');
     const esc = s => s.replace(/'/g, "\\'");
-    const kind = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
+    const kind = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '앱';   // 찾기와 같게 — 정보만은 표시 없음
     const rowsW = id => (schedules[id] && schedules[id].length ? schedules[id] : _catalogRows[id]) || [];
     const wRow = id => {
       const w = works.find(x => x.id === id) || getApps().find(a => a.id === id);
@@ -2804,7 +2804,7 @@
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="hp-name">${w.icon || ''} ${w.name}</span>
-        <span class="hp-sub">${kind(w)}${dates.length ? ` · ~${dates[dates.length - 1].slice(5).replace('-', '/')}` : ''}${state}</span>
+        <span class="hp-sub">${[kind(w), dates.length && `~${dates[dates.length - 1].slice(5).replace('-', '/')}`, state.replace(/^ · /, '')].filter(Boolean).join(' · ')}</span>
         <button class="hp-vis mode-${mode}" title="맨 위 작품 버튼 — 끝나면 숨김 → 항상 → 안 보임 순서로 바뀝니다" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
         <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('work','${id}')">♥</button>
       </div>`;
@@ -2924,14 +2924,18 @@
     const live = w => { const r = rowsOf(w); return !r.length || r.some(s => s.date >= todayStr); };
     const works = cat.works;
     const actors = new Map([...cat.actors.entries()].map(([n, ws]) => [n, ws.filter(live)]));
-    const kindTag = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
+    // 상세 앱이 있는 작품만 '앱' 표시 — 정보만 작품은 따로 붙이지 않는다
+    const kindTag = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '앱';
+    // ♥ 없이 예매만 해서 달력에 들어온 작품 — 몇 회 예매했는지 (양도 제외)
+    const att0 = Object.values(getAttended()).flat();
+    const bookedOnly = w => getHearts().works.includes(w.id) ? 0 : att0.filter(r => r.appId === w.id && !r.transferred).length;
     const nextOf = rows => rows.filter(s => s.date >= todayStr).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     const when = s => { const d = new Date(s.date + 'T00:00:00'); return `${s.date.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) ${s.time || ''}`; };
     // 공연 한 줄 — 검색 결과와 빈 칸일 때 전체 목록이 같이 쓴다
     const workHit = w => `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}${getHearts().works.includes(w.id) ? ' <span class="flt-hit-heart">♥</span>' : ''}</span>
-        <span class="flt-hit-sub">${kindTag(w)}${live(w) ? (w.added ? '' : ' · 달력에 없음') : ' · 종료'}</span>
+        <span class="flt-hit-sub">${[kindTag(w), !live(w) && '종료', bookedOnly(w) && `🎫 예매 ${bookedOnly(w)}`].filter(Boolean).join(' · ')}</span>
       </button>`;
     if (!q && !_srchSel) {
       const all = works.filter(w => w.kind !== 'extra').sort((a, b) => a.name.localeCompare(b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
@@ -2983,7 +2987,7 @@
                      ...ticketLinks(info, off).map(k => `<a class="srch-link" href="${k.url}" target="_blank" rel="noopener">🎟 ${k.label} ›</a>`)].filter(Boolean).join('');
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
-          <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span>
+          <span class="srch-name">${w.icon || ''} ${w.name}</span>${kindTag(w) ? `<span class="srch-tag">${kindTag(w)}</span>` : ''}
           <span class="srch-hd-right">${getHearts().works.includes(w.id) ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
