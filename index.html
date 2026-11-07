@@ -1407,7 +1407,18 @@
   }
   let currentYear, currentMonth;
   let currentView = 'cal';
-  const todayStr = new Date().toISOString().slice(0, 10);
+  // 오늘 = 기기 시간대 기준 날짜. toISOString 은 UTC 라 한국에서는 오전 9시 전까지 어제가 '오늘'로 나왔다
+  const localYmd = (d = new Date()) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  let todayStr = localYmd();
+  // 켜 둔 채 자정을 넘기거나 다음 날 다시 열면 오늘을 새로 잡는다
+  function refreshToday() {
+    const t = localYmd();
+    if (t === todayStr) return false;
+    todayStr = t;
+    return true;
+  }
+  setInterval(() => { if (refreshToday() && currentView === 'cal') { renderTabs(); renderCalendar(); } }, 60 * 1000);
 
   // ── 화면 높이 동기화 ──
   // 앱 탭(iframe)에 들어갔다 나오면 모바일 주소창이 다시 나타나면서
@@ -3328,7 +3339,7 @@
   // 다른 탭이나 별도로 띄운 앱에서 기록했을 때 (같은 오리진에서만 발생)
   addEventListener('storage', refreshRecords);
   // 홈 화면에서 다시 열었을 때
-  addEventListener('visibilitychange', () => { if (!document.hidden) refreshRecords(); });
+  addEventListener('visibilitychange', () => { if (!document.hidden) { refreshToday(); refreshRecords(); } });
 
   async function init() {
     applyTheme(getTheme());
