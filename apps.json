@@ -14,5 +14,9 @@
   {
     "path": "shows/turing2026.json",
     "app": false
+  },
+  {
+    "path": "shows/icetree2026.json",
+    "app": false
   }
 ]

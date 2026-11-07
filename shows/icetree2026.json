@@ -1,0 +1,208 @@
+{
+  "name": "얼음나무 숲",
+  "icon": "❄️",
+  "color": "#3B4F8C",
+  "venue": "동덕여자대학교 공연예술센터 코튼홀",
+  "startDate": "2026-12-23",
+  "endDate": "2027-03-14",
+  "official": "https://x.com/beautifulway21",
+  "roles": [
+    {
+      "key": "anatoje",
+      "label": "아나토제 바옐"
+    },
+    {
+      "key": "goyo",
+      "label": "고요 드 모르페"
+    },
+    {
+      "key": "tristan",
+      "label": "트리스탄 벨제"
+    },
+    {
+      "key": "kise",
+      "label": "키세 외"
+    },
+    {
+      "key": "kiyol",
+      "label": "키욜 외"
+    },
+    {
+      "key": "keizer",
+      "label": "케이저 외"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "anatoje": "김종구",
+      "goyo": "정민",
+      "tristan": "노희찬",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "anatoje": "홍승안",
+      "goyo": "박정혁",
+      "tristan": "이현",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "15:00",
+      "anatoje": "기세중",
+      "goyo": "박선영",
+      "tristan": "권태하",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "19:00",
+      "anatoje": "홍승안",
+      "goyo": "정민",
+      "tristan": "노희찬",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "anatoje": "기세중",
+      "goyo": "박정혁",
+      "tristan": "이현",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "anatoje": "홍승안",
+      "goyo": "박선영",
+      "tristan": "권태하",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "anatoje": "김종구",
+      "goyo": "정민",
+      "tristan": "이현",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "anatoje": "김종구",
+      "goyo": "박정혁",
+      "tristan": "노희찬",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "anatoje": "기세중",
+      "goyo": "정민",
+      "tristan": "권태하",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "16:00",
+      "anatoje": "홍승안",
+      "goyo": "박선영",
+      "tristan": "이현",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "anatoje": "김종구",
+      "goyo": "박정혁",
+      "tristan": "노희찬",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "anatoje": "기세중",
+      "goyo": "박선영",
+      "tristan": "노희찬",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "anatoje": "홍승안",
+      "goyo": "박정혁",
+      "tristan": "권태하",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "15:00",
+      "anatoje": "김종구",
+      "goyo": "정민",
+      "tristan": "이현",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "anatoje": "홍승안",
+      "goyo": "박정혁",
+      "tristan": "노희찬",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "anatoje": "김종구",
+      "goyo": "정민",
+      "tristan": "권태하",
+      "kise": "제진빈",
+      "kiyol": "장준우",
+      "keizer": "김지호"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "anatoje": "기세중",
+      "goyo": "박선영",
+      "tristan": "이현",
+      "kise": "장유정",
+      "kiyol": "장준환",
+      "keizer": "이홍섭"
+    }
+  ],
+  "events": []
+}
