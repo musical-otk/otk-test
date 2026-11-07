@@ -194,6 +194,7 @@
     .srch-btn.sub { font-weight: 500; color: var(--text3); }
     .srch-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; flex-wrap: wrap; }
     .srch-time { font-weight: 700; min-width: 42px; }
+    .srch-back { background: none; border: none; color: var(--text2); font-size: 13px; padding: 4px 2px 8px; cursor: pointer; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
     .seg-view { display: flex; flex: 0 0 auto; }
     .seg-view .seg-btn { flex: 0 0 auto; padding: 7px 10px; }
@@ -401,6 +402,8 @@
     .session-act-btn:active { background: var(--bg3); }
 
     #sheet-settings { max-height: 85vh; }
+    #ov-search .sheet, #ov-filter .sheet { max-height: 88vh; }
+    .flt-q { position: sticky; top: 0; z-index: 2; box-shadow: 0 6px 8px -4px var(--bg2); }
     .settings-hd {
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 16px 10px;
@@ -676,7 +679,7 @@
     </div>
     <div class="settings-body">
       <input id="srch-q" class="form-input flt-q" type="search" placeholder="공연 · 배우 · 날짜(11/21)"
-             autocomplete="off" oninput="renderSearch()">
+             autocomplete="off" oninput="_srchSel = null; renderSearch()">
       <div id="srch-results"></div>
     </div>
   </div>
@@ -2541,10 +2544,14 @@
   }
 
   // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
+  let _srchSel = null;   // 자세히 보는 것 { type: 'work' | 'actor', key }
+  function pickSearch(type, key) { _srchSel = { type, key }; renderSearch(); }
+  function backSearch() { _srchSel = null; renderSearch(); }
   function openSearch() {
     document.getElementById('ov-settings').classList.remove('open');
     const q = document.getElementById('srch-q');
     q.value = '';
+    _srchSel = null;
     renderSearch();
     document.getElementById('ov-search').classList.add('open');
     ensureCatalog().then(renderSearch);
@@ -2602,9 +2609,8 @@
           </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없습니다</div>');
     }
 
-    // 공연
-    const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 8);
-    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(w => {
+    // 자세히 — 고른 공연 하나 / 배우 한 명
+    const workCard = w => {
       const info = infoOf(w) || {};
       const rows = rowsOf(w), nx = nextOf(rows);
       const dates = rows.map(s => s.date).sort();
@@ -2618,11 +2624,8 @@
         ${evs.length ? `<div class="wk-evs">${evs.map(e => `<span class="wk-ev" style="${appStyle(e.color || w.color)}">${e.name}</span>`).join('')}</div>` : ''}
         <div class="srch-acts">${act(w)}</div>
       </div>`;
-    }).join('');
-
-    // 배우
-    const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 6);
-    if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) => {
+    };
+    const actorCard = (n, inWorks) => {
       const nx = inWorks.flatMap(w => nextOf(rowsOf(w)).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => ({ w, s })))
         .sort((a, b) => (a.s.date + a.s.time).localeCompare(b.s.date + b.s.time)).slice(0, 4);
       const on = getFilter().actors.includes(n);
@@ -2632,7 +2635,30 @@
         ${nx.map(({ w, s }) => `<div class="srch-sub">${when(s)} · ${w.icon || ''}${sessName(w, s)}</div>`).join('') || '<div class="srch-sub">앞으로 회차 없음</div>'}
         <div class="srch-acts"><button class="srch-btn${on ? '' : ' on'}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}').then(renderSearch)">${on ? '필터에 있음' : '필터에 넣기'}</button></div>
       </div>`;
-    }).join('');
+    };
+    const esc = s => s.replace(/'/g, "\\'");
+    if (_srchSel) {
+      const back = `<button class="srch-back" onclick="backSearch()">‹ 목록</button>`;
+      const w = _srchSel.type === 'work' && works.find(x => x.id === _srchSel.key);
+      const a = _srchSel.type === 'actor' && actors.get(_srchSel.key);
+      box.innerHTML = back + (w ? workCard(w) : a ? actorCard(_srchSel.key, a) : '');
+      return;
+    }
+
+    // 목록 — 이름만 한 줄씩
+    const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
+    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(w =>
+      `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
+        <span class="filter-group-dot" style="background:${w.color}"></span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}</span>
+        <span class="flt-hit-sub">${kindTag(w)}${w.added ? '' : ' · 달력에 없음'}</span>
+      </button>`).join('');
+    const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
+    if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
+      `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
+        <span class="flt-hit-name">${n}</span>
+        <span class="flt-hit-sub">${inWorks.map(w => (w.icon || '') + w.name).join(' · ')}</span>
+      </button>`).join('');
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
   }
