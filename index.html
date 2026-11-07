@@ -182,6 +182,18 @@
     .flt-tg { font-size: 11px; padding: 3px 8px; border-radius: 12px; border: 1px solid var(--border); background: none; color: var(--text3); cursor: pointer; }
     .flt-x { margin-left: auto; background: none; border: none; color: var(--text3); font-size: 13px; cursor: pointer; padding: 2px 4px; }
     .flt-browse-hd { margin-top: 10px; }
+    /* 정보 검색 */
+    .srch-card { border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; background: var(--bg3); }
+    .srch-card-hd { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 2px; }
+    .srch-name { font-size: 14px; font-weight: 700; color: var(--text1); }
+    .srch-sub { font-size: 12px; color: var(--text3); line-height: 1.6; }
+    .srch-tag { font-size: 10px; color: var(--text3); border: 1px solid var(--border); border-radius: 8px; padding: 1px 6px; white-space: nowrap; }
+    .srch-acts { display: flex; gap: 6px; margin-top: 6px; }
+    .srch-btn { font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg2); color: var(--text1); cursor: pointer; }
+    .srch-btn.on { background: var(--custom); border-color: var(--custom); color: #fff; }
+    .srch-btn.sub { font-weight: 500; color: var(--text3); }
+    .srch-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 13px; cursor: pointer; flex-wrap: wrap; }
+    .srch-time { font-weight: 700; min-width: 42px; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
     .seg-view { display: flex; flex: 0 0 auto; }
     .seg-view .seg-btn { flex: 0 0 auto; padding: 7px 10px; }
@@ -559,6 +571,7 @@
            stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
       ><path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/><polyline points="20.5 4 20.5 9.5 15 9.5"/></svg></button>
     <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+    <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
     <button class="hbtn" onclick="openSettings()">⚙️</button>
     <div id="app-tabs"></div>
   </div>
@@ -649,6 +662,22 @@
     <div class="form-actions">
       <button class="btn-cancel" onclick="closeCustomForm()">취소</button>
       <button class="btn-primary" onclick="saveCustomEvent()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 정보 검색 — 달력에 없는 공연까지 공연·배우·날짜로 찾는다 -->
+<div class="overlay" id="ov-search">
+  <div class="sheet settings-sheet">
+    <div class="sheet-handle"></div>
+    <div class="settings-hd">
+      <div class="settings-title">찾기</div>
+      <button class="settings-close" onclick="closeSearch()">✕</button>
+    </div>
+    <div class="settings-body">
+      <input id="srch-q" class="form-input flt-q" type="search" placeholder="공연 · 배우 · 날짜(11/21)"
+             autocomplete="off" oninput="renderSearch()">
+      <div id="srch-results"></div>
     </div>
   </div>
 </div>
@@ -2385,18 +2414,21 @@
       try {
         const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
         if (Array.isArray(rows)) _catalogRows[p.id] = rows;
-        else if (rows && Array.isArray(rows.schedule)) _catalogRows[p.id] = rows.schedule;
+        else if (rows && Array.isArray(rows.schedule)) { _catalogRows[p.id] = rows.schedule; _catalogInfo[p.id] = rows; }
       } catch {}
     })).then(() => { _catalogLoading = null; });
     return _catalogLoading;
   }
   // 작품 = 추가한 앱 + 아직 안 한 프리셋. 배우 = 이름 → 나오는 작품들
-  function catalog() {
+  const _catalogInfo = {};          // presetId → 정보만 작품 파일 (극장·기간·이벤트)
+  function catalog(scope) {
     const apps = getApps();
-    const works = apps.map(a => ({ id: a.id, name: a.name, icon: a.icon, color: a.color, added: true }));
+    const works = apps.map(a => ({ id: a.id, name: a.name, icon: a.icon, color: a.color, added: true, kind: a.kind || 'app' }));
     allPresets().forEach(p => {
       if (apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl)) return;
-      works.push({ id: p.id, name: p.name, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate });
+      // 필터에서는 앱 작품을 넣지 않는다(앱 추가로). 정보만 작품은 필터에서도 바로 넣을 수 있다
+      if (scope === 'filter' && p.kind !== 'data') return;
+      works.push({ id: p.id, name: p.name, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate, kind: p.kind || 'app' });
     });
     const actors = new Map();
     works.forEach(w => {
@@ -2434,7 +2466,7 @@
     if (Object.keys(_catalogRows).length === 0 && !_catalogLoading)
       ensureCatalog().then(renderFilterResults);
     const f = getFilter();
-    const { works, actors } = catalog();
+    const { works, actors } = catalog('filter');
     const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q))
       .sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 8);
@@ -2443,7 +2475,7 @@
       return `<button class="flt-hit${on ? ' on' : ''}" onclick="pickFilterWork('${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}</span>
-        <span class="flt-hit-sub">${on ? '적용 중' : w.added ? '작품 전체' : '추가 안 한 작품'}</span>
+        <span class="flt-hit-sub">${on ? '적용 중' : w.added ? '작품 전체' : '달력에 없는 작품 · 정보만'}</span>
       </button>`;
     };
     const aRow = ([n, ws]) => {
@@ -2469,10 +2501,10 @@
     for (let i = 0; i < 40 && !getApps().some(a => a.id === id); i++) await new Promise(r => setTimeout(r, 50));
   }
   async function pickFilterWork(id) {
-    const w = catalog().works.find(x => x.id === id);
+    const w = catalog('filter').works.find(x => x.id === id);
     if (!w) return;
     if (!w.added) {
-      if (!confirm(`${w.name} 은(는) 아직 추가하지 않은 작품입니다. 추가하고 필터에 넣을까요?`)) return;
+      if (!confirm(`${w.name} 은(는) 아직 달력에 없습니다. 달력에 넣고 필터에도 넣을까요?`)) return;
       await addPresetById(id);
     }
     const f = getFilter();
@@ -2481,10 +2513,10 @@
     renderActorFilters(); renderCalendar();
   }
   async function pickFilterActor(name) {
-    const inWorks = catalog().actors.get(name) || [];
+    const inWorks = catalog('filter').actors.get(name) || [];
     if (inWorks.length && !inWorks.some(w => w.added)) {
       const names = inWorks.map(w => w.name).join(', ');
-      if (!confirm(`${name} 배우가 나오는 작품(${names})을 아직 추가하지 않았습니다. 추가할까요?`)) return;
+      if (!confirm(`${name} 배우가 나오는 작품(${names})이 아직 달력에 없습니다. 넣을까요?`)) return;
       for (const w of inWorks) await addPresetById(w.id);
     }
     const f = getFilter();
@@ -2495,6 +2527,109 @@
     }
     clearFilterQuery();
     renderActorFilters(); renderCalendar();
+  }
+
+  // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
+  function openSearch() {
+    document.getElementById('ov-settings').classList.remove('open');
+    const q = document.getElementById('srch-q');
+    q.value = '';
+    renderSearch();
+    document.getElementById('ov-search').classList.add('open');
+    ensureCatalog().then(renderSearch);
+    setTimeout(() => q.focus(), 50);
+  }
+  function closeSearch() { document.getElementById('ov-search').classList.remove('open'); }
+  // 11/21 · 11월 21일 · 2026-11-21 · 1121 → YYYY-MM-DD (연도 없으면 오늘 기준 가까운 해)
+  function parseQueryDate(q) {
+    let y, m, d, mt;
+    if ((mt = q.match(/^(\d{4})[-./](\d{1,2})[-./](\d{1,2})$/))) [, y, m, d] = mt;
+    else if ((mt = q.match(/^(\d{1,2})[/.\-](\d{1,2})$/)) || (mt = q.match(/^(\d{1,2})월(\d{1,2})일?$/))) [, m, d] = mt;
+    else return null;
+    m = +m; d = +d;
+    if (!(m >= 1 && m <= 12 && d >= 1 && d <= 31)) return null;
+    if (!y) {
+      const t = new Date(todayStr + 'T00:00:00');
+      y = t.getFullYear();
+      if (m < t.getMonth() + 1 - 6) y++;          // 11월에 '1/10' 을 치면 내년
+    }
+    return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+  }
+  function rowsOf(w) { return (w.added ? schedules[w.id] : _catalogRows[w.id]) || []; }
+  function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
+  function renderSearch() {
+    const box = document.getElementById('srch-results');
+    if (!box) return;
+    const raw = (document.getElementById('srch-q').value || '').trim();
+    const q = norm(raw);
+    if (!q) { box.innerHTML = '<div class="hint" style="padding:8px 2px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다. 달력에 없는 공연도 나옵니다.</div>'; return; }
+    const { works, actors } = catalog('all');
+    const kindTag = w => w.kind === 'data' ? '정보만' : w.kind === 'extra' ? '기타' : '앱';
+    const nextOf = rows => rows.filter(s => s.date >= todayStr).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
+    const when = s => { const d = new Date(s.date + 'T00:00:00'); return `${s.date.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) ${s.time || ''}`; };
+    const act = w => w.added
+      ? `<button class="srch-btn" onclick="closeSearch();switchView('${w.id}')">보기</button>` +
+        (w.kind === 'data' ? `<button class="srch-btn sub" onclick="removeDataShow('${w.id}')">달력에서 빼기</button>` : '')
+      : w.kind === 'data'
+        ? `<button class="srch-btn on" onclick="addDataShow('${w.id}')">달력에 넣기</button>`
+        : `<button class="srch-btn" onclick="addPresetById('${w.id}').then(renderSearch)">앱 추가</button>`;
+    let html = '';
+
+    // 날짜
+    const ds = parseQueryDate(raw.replace(/\s+/g, ''));
+    if (ds) {
+      const hits = works.flatMap(w => rowsOf(w).filter(s => s.date === ds).map(s => ({ w, s })))
+        .sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
+      const d = new Date(ds + 'T00:00:00');
+      html += `<div class="flt-sec">${ds.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) 공연 ${hits.length}</div>` +
+        (hits.map(({ w, s }) => `<div class="srch-row"${w.added ? ` onclick="closeSearch();openDay('${ds}')"` : ''}>
+            <span class="filter-group-dot" style="background:${w.color}"></span>
+            <span class="srch-time">${s.time || ''}</span>
+            <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
+            <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+            ${w.added ? '' : `<span class="srch-tag">달력에 없음</span>`}
+          </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없습니다</div>');
+    }
+
+    // 공연
+    const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 8);
+    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(w => {
+      const info = infoOf(w) || {};
+      const rows = rowsOf(w), nx = nextOf(rows);
+      const dates = rows.map(s => s.date).sort();
+      const period = info.startDate ? `${info.startDate} ~ ${info.endDate || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
+      const evs = (info.events || appEvents[w.id] || []).filter(e => e.startDate <= todayStr && todayStr <= (e.endDate || e.startDate));
+      return `<div class="srch-card">
+        <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
+          <span class="srch-name">${w.icon || ''} ${w.name}</span><span class="srch-tag">${kindTag(w)}</span></div>
+        <div class="srch-sub">${[info.venue, period].filter(Boolean).join(' · ')}</div>
+        ${nx.length ? `<div class="srch-sub">다음 회차 ${when(nx[0])} · ${getActorFields(nx[0]).map(k => nx[0][k]).filter(Boolean).join(' · ')}</div>` : rows.length ? '<div class="srch-sub">공연 종료</div>' : ''}
+        ${evs.length ? `<div class="wk-evs">${evs.map(e => `<span class="wk-ev" style="${appStyle(e.color || w.color)}">${e.name}</span>`).join('')}</div>` : ''}
+        <div class="srch-acts">${act(w)}</div>
+      </div>`;
+    }).join('');
+
+    // 배우
+    const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 6);
+    if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) => {
+      const nx = inWorks.flatMap(w => nextOf(rowsOf(w)).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => ({ w, s })))
+        .sort((a, b) => (a.s.date + a.s.time).localeCompare(b.s.date + b.s.time)).slice(0, 4);
+      const on = getFilter().actors.includes(n);
+      return `<div class="srch-card">
+        <div class="srch-card-hd"><span class="srch-name">${n}</span>
+          <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}${w.added ? '' : '(달력에 없음)'}`).join(' · ')}</span></div>
+        ${nx.map(({ w, s }) => `<div class="srch-sub">${when(s)} · ${w.icon || ''}${sessName(w, s)}</div>`).join('') || '<div class="srch-sub">앞으로 회차 없음</div>'}
+        <div class="srch-acts"><button class="srch-btn${on ? '' : ' on'}" onclick="pickFilterActor('${n.replace(/'/g, "\\'")}').then(renderSearch)">${on ? '필터에 있음' : '필터에 넣기'}</button></div>
+      </div>`;
+    }).join('');
+
+    box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
+  }
+  async function addDataShow(id) { await addPresetById(id); renderSearch(); }
+  function removeDataShow(id) {
+    saveApps(getApps().filter(a => a.id !== id));
+    delete schedules[id];
+    renderTabs(); renderFrames(); renderCalendar(); renderSearch();
   }
 
   // ② 적용 중 — 고른 것만 한 줄씩. 배우는 나오는 작품마다 켜고 끈다
@@ -2739,7 +2874,7 @@
       </div>`;
     };
 
-    const list = allPresets();
+    const list = allPresets().filter(p => p.kind !== 'data');
     const live = list.filter(p => !p.lastDate || p.lastDate >= todayStr);
     const done = list.filter(p =>  p.lastDate && p.lastDate <  todayStr);
 
@@ -3235,7 +3370,7 @@
   _pvImg.addEventListener('dblclick', (e) => { e.stopPropagation(); pvToggleZoom(); });
 
   // 뒤로가기 버튼: 오버레이 닫기 (PWA 앱 종료 방지)
-  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-extra-rec','ov-app-form','ov-filter','ov-settings','ov-detail'];
+  const OVERLAY_CLOSE_ORDER = ['ov-photo-view','ov-note','ov-custom','ov-extra-rec','ov-search','ov-app-form','ov-filter','ov-settings','ov-detail'];
   history.pushState({pwa:true}, '');
   window.addEventListener('popstate', () => {
     history.pushState({pwa:true}, '');
