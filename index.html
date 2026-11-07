@@ -518,16 +518,20 @@
     }
     .note-memo-snip { font-size: 11px; color: var(--text3); flex: 1; white-space: pre-wrap; word-break: break-all; max-height: 32px; overflow: hidden; }
     .jump-btn {
-      background: none; border: 1px solid var(--border); color: var(--text2);
-      font-size: 11px; font-weight: 700; font-family: inherit; cursor: pointer;
-      padding: 6px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0;
+      background: none; border: none; color: var(--text2);
+      font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer;
+      padding: 2px 0; white-space: nowrap; flex-shrink: 0;
     }
     .jump-btn:active { background: var(--bg3); }
     .note-add-btn {
-      font-size: 11px; color: var(--text3); background: none;
-      border: 1px solid var(--border); border-radius: 12px; padding: 4px 10px;
+      font-size: 12px; color: var(--text3); background: none;
+      border: none; padding: 2px 0;
       cursor: pointer; white-space: nowrap; flex-shrink: 0;
     }
+    .note-acts { margin-left: auto; display: flex; gap: 14px; align-items: center; }
+    .session-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .session-evs { display: flex; flex-wrap: wrap; gap: 2px 10px; margin-top: 4px; font-size: 11px; color: var(--text3); }
+    .session-evs i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: 1px; }
     .note-add-btn:active { background: var(--bg3); }
     .note-photos-area { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0 4px; }
     .note-photo-add {
@@ -2355,24 +2359,27 @@
       // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
       // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
       const jumpBtn = canJump(s._app)
-        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">${s._app.name}에서 보기 ›</button>`
+        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">앱에서 보기 ›</button>`
         : (s._app.kind === 'extra' || s._app.kind === 'data')
           ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}','${s._app.id}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
           : '';
       const noteRow = `<div class="note-row">
         ${thumbsHtml}
         ${memoSnip}
-        <button class="note-add-btn" onclick="openNoteForm('${noteKey}','${s._app.name.replace(/'/g,'\\\'')}')">${(photos.length||note.memo) ? '✏️ 수정' : '+ 메모/사진'}</button>
-        ${jumpBtn}
+        <span class="note-acts">
+          <button class="note-add-btn" onclick="openNoteForm('${noteKey}','${s._app.name.replace(/'/g,'\\\'')}')">${(photos.length||note.memo) ? '📝 메모 수정' : '📝 메모'}</button>
+          ${jumpBtn}
+        </span>
       </div>`;
-      return `<div class="session-row">
+      // 칩을 줄인다 — 작품은 색 글씨 + 왼쪽 색 막대, 이벤트는 작은 글씨 한 줄, 버튼은 글자 링크
+      const evs = eventsOn(s._app.id, ds);
+      return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${s._app.color}">
         <div class="session-time">${s.time}</div>
         <div class="session-body">
-          <span class="session-tag" style="${appStyle(s._app.color)}">${sessName(s._app, s)}</span>
+          <div class="session-name" style="color:${s._app.color}">${s._app.icon ? s._app.icon + ' ' : ''}${sessName(s._app, s)}</div>
           <div class="session-cast">${cast}</div>
           ${attHtml}
-          ${(evs => evs ? `<div class="wk-evs">${evs}</div>` : '')(eventsOn(s._app.id, ds).map(e =>
-            `<span class="wk-ev" style="${appStyle(e.color || s._app.color)}">${e.name}</span>`).join(''))}
+          ${evs.length ? `<div class="session-evs">${evs.map(e => `<span><i style="background:${e.color || s._app.color}"></i>${e.name}</span>`).join('')}</div>` : ''}
           ${noteRow}
         </div>
       </div>`;
