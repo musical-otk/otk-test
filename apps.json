@@ -50,5 +50,9 @@
   {
     "path": "shows/mnantlers2026.json",
     "app": false
+  },
+  {
+    "path": "shows/gonetomorrow2026.json",
+    "app": false
   }
 ]

@@ -1,0 +1,432 @@
+{
+  "name": "곤 투모로우",
+  "icon": "🕯️",
+  "color": "#8B1A2B",
+  "venue": "홍익대대학로아트센터 대극장",
+  "startDate": "2026-09-15",
+  "endDate": "2026-11-29",
+  "official": "https://x.com/page1company",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26011520",
+    "ticketlink": "https://www.ticketlink.co.kr/product/64817",
+    "yes24": "https://m.ticket.yes24.com/Perf/59596"
+  },
+  "roles": [
+    {
+      "key": "okgyun",
+      "label": "김옥균"
+    },
+    {
+      "key": "junghoon",
+      "label": "한정훈"
+    },
+    {
+      "key": "gojong",
+      "label": "고종"
+    },
+    {
+      "key": "lee",
+      "label": "이완"
+    },
+    {
+      "key": "wada",
+      "label": "와다"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-27",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "지현준"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "지현준"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "원태민",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "okgyun": "손동운",
+      "junghoon": "문유강",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "원태민",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "지현준"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "okgyun": "최재웅",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "지현준",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:30",
+      "okgyun": "고훈정",
+      "junghoon": "신성민",
+      "gojong": "박영수",
+      "lee": "지현준",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "19:30",
+      "okgyun": "손동운",
+      "junghoon": "김재범",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "신성민",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "원태민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "okgyun": "고훈정",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:30",
+      "okgyun": "손동운",
+      "junghoon": "원태민",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "okgyun": "최재웅",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:30",
+      "okgyun": "고훈정",
+      "junghoon": "문유강",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "문유강",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "19:30",
+      "okgyun": "고훈정",
+      "junghoon": "김재범",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "원태민",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "okgyun": "최재웅",
+      "junghoon": "신성민",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "문유강",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "okgyun": "고훈정",
+      "junghoon": "원태민",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:30",
+      "okgyun": "손동운",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "19:30",
+      "okgyun": "손동운",
+      "junghoon": "문유강",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "19:30",
+      "okgyun": "고훈정",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "okgyun": "최재웅",
+      "junghoon": "신성민",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:30",
+      "okgyun": "손동운",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "okgyun": "고훈정",
+      "junghoon": "원태민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:30",
+      "okgyun": "김경수",
+      "junghoon": "원태민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "19:30",
+      "okgyun": "김경수",
+      "junghoon": "김재범",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "15:00",
+      "okgyun": "손동운",
+      "junghoon": "원태민",
+      "gojong": "박영수",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "19:30",
+      "okgyun": "고훈정",
+      "junghoon": "신성민",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "19:30",
+      "okgyun": "최재웅",
+      "junghoon": "김재범",
+      "gojong": "고영빈",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "19:30",
+      "okgyun": "손동운",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "okgyun": "김경수",
+      "junghoon": "원태민",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:30",
+      "okgyun": "고훈정",
+      "junghoon": "김재범",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "okgyun": "김경수",
+      "junghoon": "문유강",
+      "gojong": "박영수",
+      "lee": "김태한",
+      "wada": "신현준"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:30",
+      "okgyun": "최재웅",
+      "junghoon": "신성민",
+      "gojong": "고영빈",
+      "lee": "신재희",
+      "wada": "신현준"
+    }
+  ],
+  "events": [
+    {
+      "name": "스페셜 커튼콜·사인회",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#8B1A2B",
+      "description": "18:30 고훈정·문유강·신재희",
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "MINI OST 증정 (A VER.)",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-15",
+      "color": "#8B1A2B",
+      "description": "유료 관객 전원",
+      "url": "https://x.com/page1company/status/2118206677745086778"
+    },
+    {
+      "name": "MINI OST 증정 (B VER.)",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#8B1A2B",
+      "description": "유료 관객 전원",
+      "url": "https://x.com/page1company/status/2118206677745086778"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-17",
+      "color": "#8B1A2B",
+      "description": "19:30 공연 후",
+      "url": "https://x.com/page1company/status/2115345037408297427"
+    }
+  ]
+}
