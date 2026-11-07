@@ -219,7 +219,10 @@
     .srch-time { font-weight: 700; min-width: 42px; }
     .srch-sess { margin-top: 10px; border-top: 1px solid var(--border); padding-top: 4px; }
     .srch-sess .srch-row { font-size: 12px; padding: 6px 2px; }
-    .srch-sess .srch-time { min-width: 108px; }
+    .srch-sess .srch-time { min-width: 0; }
+    .srch-when { display: flex; flex-direction: column; min-width: 98px; flex-shrink: 0; }
+    .srch-mark { font-size: 11px; font-weight: 700; color: var(--custom); margin-top: 2px; }
+    .srch-mark.tr { color: var(--text3); }
     .srch-icon { font-size: 13px; }
     .srch-cast { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
     .srch-cast-row { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
@@ -2942,11 +2945,13 @@
           const ev = evOn(w, s.date);
           const dow = new Date(s.date + 'T00:00:00').getDay();
           return `<div class="srch-row" onclick="sessTap('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">
-            <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
+            <div class="srch-when">
+              <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
+              ${mark ? `<span class="srch-mark${r && r.transferred ? ' tr' : ''}">${mark}</span>` : ''}
+            </div>
             ${withIcon ? `<span class="srch-icon" title="${w.name}">${w.icon || '•'}</span>` : ''}
             <div class="srch-body">
-              <div><span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
-                ${mark ? `<span class="srch-tag mine">${mark}</span>` : ''}</div>
+              <div class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</div>
               ${ev.length ? `<div class="srch-evs">${ev.map(x => `<span class="srch-tag">${x}</span>`).join('')}</div>` : ''}
             </div>
           </div>`;
