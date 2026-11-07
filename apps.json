@@ -30,5 +30,13 @@
   {
     "path": "shows/othello2026.json",
     "app": false
+  },
+  {
+    "path": "shows/mbutterfly2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/human2026.json",
+    "app": false
   }
 ]

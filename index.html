@@ -2946,6 +2946,7 @@
       const dates = rows.map(s => s.date).sort();
       const start = info.startDate || ai.startDate, end = info.endDate || ai.endDate;
       const period = start ? `${start} ~ ${end || ''}` : dates.length ? `${dates[0]} ~ ${dates[dates.length - 1]}` : '';
+      // 배역 이름도 정보만 작품은 info.roles, 앱 작품은 show-info 의 roles
       // 공식 계정 · 예매처 — 정보만 작품은 official·url, 앱 작품은 show-info 의 official.{x, ticketlink …}
       const off = ai.official || {};
       const xUrl = info.official || off.x;
@@ -2957,7 +2958,7 @@
           <span class="srch-hd-right">${getHearts().works.includes(w.id) ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
-        ${castChips(rows, info)}
+        ${castChips(rows, { roles: info.roles || ai.roles })}
         ${sessList(rows.filter(s => !_srchActors.size || getActorFields(s).some(k => _srchActors.has(s[k]))).map(s => ({ w, s })), false)}
       </div>`;
     };

@@ -1,0 +1,107 @@
+{
+  "name": "인간실격: 사양 편",
+  "icon": "🥀",
+  "color": "#7A1212",
+  "venue": "예스24스테이지 3관",
+  "startDate": "2026-12-11",
+  "endDate": "2027-03-07",
+  "official": "https://x.com/arthus_initium",
+  "tickets": {
+    "yes24": "http://ticket.yes24.com/Perf/60772",
+    "ticketlink": "https://www.ticketlink.co.kr/product/66527"
+  },
+  "roles": [
+    {
+      "key": "dazai",
+      "label": "다자이 오사무"
+    },
+    {
+      "key": "shizuko",
+      "label": "오타 시즈코"
+    },
+    {
+      "key": "ango",
+      "label": "사카구치 안고"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "dazai": "안재영",
+      "shizuko": "김주연",
+      "ango": "강정우"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "dazai": "박정원",
+      "shizuko": "박새힘",
+      "ango": "손유동"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "dazai": "정재환",
+      "shizuko": "한수야",
+      "ango": "반정모"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "dazai": "안재영",
+      "shizuko": "박새힘",
+      "ango": "반정모"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "dazai": "박정원",
+      "shizuko": "김주연",
+      "ango": "손유동"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "dazai": "정재환",
+      "shizuko": "박새힘",
+      "ango": "강정우"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "dazai": "박정원",
+      "shizuko": "한수야",
+      "ango": "반정모"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "dazai": "안재영",
+      "shizuko": "김주연",
+      "ango": "강정우"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "dazai": "박정원",
+      "shizuko": "박새힘",
+      "ango": "손유동"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "dazai": "정재환",
+      "shizuko": "김주연",
+      "ango": "반정모"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "dazai": "안재영",
+      "shizuko": "한수야",
+      "ango": "강정우"
+    }
+  ],
+  "events": []
+}

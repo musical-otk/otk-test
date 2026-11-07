@@ -1,0 +1,824 @@
+{
+  "name": "엠. 버터플라이",
+  "icon": "🦋",
+  "color": "#B0195E",
+  "venue": "YES24스테이지 1관",
+  "startDate": "2026-09-22",
+  "endDate": "2026-12-13",
+  "official": "https://x.com/thebestplays",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26011453",
+    "yes24": "http://ticket.yes24.com/"
+  },
+  "roles": [
+    {
+      "key": "rene",
+      "label": "르네 갈리마르"
+    },
+    {
+      "key": "song",
+      "label": "송 릴링"
+    },
+    {
+      "key": "pinkerton",
+      "label": "핑커튼"
+    },
+    {
+      "key": "agnes",
+      "label": "아녜스/친"
+    },
+    {
+      "key": "toulon",
+      "label": "툴롱 외"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-09-22",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "15:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "19:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-25",
+      "time": "15:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "14:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "14:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "18:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-09-29",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "16:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-01",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "15:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "19:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "14:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "18:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "14:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "19:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "14:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "18:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "16:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-15",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "15:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "19:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "14:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "18:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "16:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "15:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "16:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "16:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "16:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "rene": "안재영",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "안상은",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "rene": "주민진",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "유태율",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "rene": "주민진",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "rene": "유현석",
+      "song": "김바다",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "rene": "안재영",
+      "song": "홍기범",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "rene": "주민진",
+      "song": "유태율",
+      "pinkerton": "장재웅",
+      "agnes": "전하영",
+      "toulon": "황만익"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "rene": "안재영",
+      "song": "김바다",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "rene": "유현석",
+      "song": "홍기범",
+      "pinkerton": "남민우",
+      "agnes": "안상은",
+      "toulon": "김승용"
+    }
+  ],
+  "events": [
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-08",
+      "color": "#B0195E",
+      "description": "11/4 16시·5 20시·6 20시·7 15·19시·8 14·18시, 공연 후 15분",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#B0195E",
+      "description": "20시 공연 후 (유현석·홍기범·김승용·전하영)",
+      "url": "https://x.com/thebestplays/status/2116364556834685228"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#B0195E",
+      "description": "19시 공연 후 (안재영·김바다·남민우·안상은)",
+      "url": "https://x.com/thebestplays/status/2116364556834685228"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-15",
+      "color": "#B0195E",
+      "description": "18시 공연 후 (주민진·유태율·황만익·장재웅)",
+      "url": "https://x.com/thebestplays/status/2116364556834685228"
+    },
+    {
+      "name": "재관람카드 스페셜 더블 적립",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-15",
+      "color": "#B0195E",
+      "url": "https://x.com/thebestplays/status/2117904685172719938"
+    },
+    {
+      "name": "관객과의 대화 with 데이비드 헨리 황",
+      "startDate": "2026-11-18",
+      "endDate": "2026-11-18",
+      "color": "#B0195E",
+      "description": "20시 공연 후",
+      "url": "https://x.com/thebestplays/status/2116367053456126262"
+    }
+  ]
+}
