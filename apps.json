@@ -38,5 +38,9 @@
   {
     "path": "shows/human2026.json",
     "app": false
+  },
+  {
+    "path": "shows/starcrossed2026.json",
+    "app": false
   }
 ]
