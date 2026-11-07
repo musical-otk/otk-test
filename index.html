@@ -23,6 +23,7 @@
       --attended: #44aa66;
       --custom: #a78bfa;
       --custom-bg: rgba(167,139,250,0.16);
+      --today-band: rgba(255,255,255,0.07);
       --custom-bd: rgba(167,139,250,0.36);
     }
     body.light {
@@ -37,6 +38,7 @@
       --attended: #2a8a4a;
       --custom: #7c3aed;
       --custom-bg: rgba(124,58,237,0.08);
+      --today-band: rgba(0,0,0,0.055);
       --custom-bd: rgba(124,58,237,0.28);
     }
 
@@ -228,8 +230,7 @@
                  font-size: 13px; font-weight: 700; color: var(--text2); cursor: pointer; }
     .wk-day-hd.sunday   { color: #c06060; }
     .wk-day-hd.saturday { color: var(--sat); }
-    .wk-day-hd .wk-today { font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 6px;
-                           background: var(--text1); color: var(--bg1); }
+    .wk-day-hd .wk-today { font-size: 11px; font-weight: 800; color: var(--text2); }
     .wk-empty { font-size: 12px; color: var(--text3); font-weight: 500; margin-left: 4px; }
     .wk-sess { display: flex; gap: 10px; padding: 7px 8px; margin-bottom: 4px;
                border-radius: 10px; border: 1px solid transparent; cursor: pointer; }
@@ -254,10 +255,8 @@
     .wk-evs { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
     .wk-ev { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; line-height: 1.4; }
     /* 오늘 — 칸 전체를 띄워 한눈에 찾게 한다 */
-    .wk-day.today { border-top-color: transparent; background: var(--custom-bg);
-                    border: 1.5px solid var(--custom-bd); border-radius: 12px;
-                    padding: 8px 8px 6px; margin: 4px -8px; }
-    .wk-day.today + .wk-day { border-top-color: transparent; }
+    /* 오늘 — 카드 대신 가로 회색 띠. 내 예매 카드(작품 색)가 그 위에서 잘 보이게 */
+    .wk-day.today { background: var(--today-band); box-shadow: 0 0 0 100vmax var(--today-band); clip-path: inset(0 -100vmax); }
     .wk-day.today .wk-day-hd { color: var(--text1); font-size: 14px; }
     .wk-day.past .wk-day-hd { opacity: 0.55; }
 
