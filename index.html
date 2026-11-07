@@ -647,7 +647,7 @@
     <!-- 찾기 — 🔍 로 연다. 입력하는 동안 달력 자리에 결과가 나온다 -->
     <div id="home-search" hidden>
       <div class="hs-bar">
-        <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 날짜(11/21)"
+        <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 이벤트 · 날짜"
                autocomplete="off" oninput="_srchSel = null; renderSearch()">
         <button class="hs-close" onclick="closeSearch()" title="달력으로">✕</button>
       </div>
@@ -2959,7 +2959,7 @@
     if (!q && !_srchSel) {
       const all = works.filter(w => w.kind !== 'extra').sort((a, b) => a.name.localeCompare(b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
       const on = all.filter(live), ended = all.filter(w => !live(w));   // 끝난 공연은 접어 둔다
-      box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연 이름, 배우 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
+      box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연·배우·이벤트 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
         (all.length ? `<div class="flt-sec">공연 ${on.length}</div>` + on.map(workHit).join('') +
           (ended.length ? `<button class="srch-back" onclick="_srchEndedOpen=!_srchEndedOpen;renderSearch()">${_srchEndedOpen ? '지난 공연 접기 ▴' : `지난 공연 ${ended.length}개 ▾`}</button>` +
             (_srchEndedOpen ? ended.map(workHit).join('') : '') : '')
@@ -3088,7 +3088,20 @@
         <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => `<span title="${w.name}">${w.icon || w.name}</span>`).join(' ') : '남은 공연 없음'}</span>
       </button>`).join('');
 
-    box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우가 없습니다'}</div>`;
+    // 이벤트 — 이름(설명 포함)에 걸린 것 중 아직 안 끝난 것. 누르면 그 작품 자세히
+    const md = s => s.slice(5).replace('-', '/');
+    const evs = works.flatMap(w => eventsOf(w)
+        .filter(e => e.name && (e.endDate || e.startDate) >= todayStr && norm(e.name + ' ' + (e.description || '')).includes(q))
+        .map(e => ({ w, e })))
+      .sort((a, b) => a.e.startDate.localeCompare(b.e.startDate)).slice(0, 12);
+    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, e }) =>
+      `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
+        <span class="filter-group-dot" style="background:${w.color}"></span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${e.name}</span>
+        <span class="flt-hit-sub">${w.name} · ${md(e.startDate)}${e.endDate && e.endDate !== e.startDate ? '~' + md(e.endDate) : ''}</span>
+      </button>`).join('');
+
+    box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우·이벤트가 없습니다'}</div>`;
   }
   // 배우 ♡ 필터에 넣기(나오는 작품도 달력에) / ♥ 필터에서 빼기
   async function toggleActorHeart(name) {
