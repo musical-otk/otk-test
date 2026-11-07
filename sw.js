@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'otk-schedule-v77';
+﻿const CACHE_NAME = 'otk-schedule-v78';
 // 테스트 사본(/otk-test/)에서도 그대로 돌게 sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
@@ -24,50 +24,42 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
+// 매번 서버에 '바뀌었나' 물어본다 (cache: 'no-cache' — 안 바뀌었으면 304 로 가볍다).
+// 그냥 fetch 하면 GitHub Pages 의 max-age=600 때문에 브라우저가 10분 동안 옛 파일을 내줘서,
+// 앱을 완전히 껐다 켜도 업데이트가 안 보였다.
+const fresh = req => fetch(req.mode === 'navigate' ? req.url : req, { cache: 'no-cache', credentials: 'same-origin' });
+
 self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
 
-  // schedule.json — 네트워크 우선 (최신 스케줄), 실패 시 캐시
-  if (url.pathname.endsWith('schedule.json')) {
+  // HTML · JSON(작품 목록·스케줄·정보만 작품·show-info) — 네트워크 우선, 끊기면 캐시.
+  // JSON 을 캐시 우선으로 두면 apps.json · shows/*.json 이 허브 버전을 올리기 전까지 안 바뀐다.
+  const isHtml = req.mode === 'navigate' || url.pathname === BASE + '/' || url.pathname.endsWith('.html');
+  if (isHtml || url.pathname.endsWith('.json')) {
     event.respondWith(
-      fetch(event.request)
+      fresh(req)
         .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          if (response && response.ok && url.origin === location.origin) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
+          }
           return response;
         })
-        .catch(() => caches.match(event.request))
+        .catch(() => caches.match(req).then(c => c || (isHtml ? caches.match(BASE + '/') : undefined)))
     );
     return;
   }
 
-  // HTML — 네트워크 우선, 실패하면 캐시.
-  // 캐시 우선으로 두면 CACHE_NAME 을 손으로 올리기 전까지 새 버전이 영원히 안 뜬다.
-  // 앱 코드가 통째로 index.html 한 장에 있어서 특히 티가 크다.
-  const isHtml = event.request.mode === 'navigate' ||
-                 url.pathname === BASE + '/' ||
-                 url.pathname.endsWith('.html');
-  if (isHtml) {
-    event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          return response;
-        })
-        .catch(() => caches.match(event.request).then(c => c || caches.match(BASE + '/')))
-    );
-    return;
-  }
-
-  // 나머지 — 캐시 우선
+  // 나머지(아이콘 등) — 캐시 우선
   event.respondWith(
-    caches.match(event.request).then(cached => {
+    caches.match(req).then(cached => {
       if (cached) return cached;
-      return fetch(event.request).then(response => {
+      return fetch(req).then(response => {
         if (response && response.status === 200) {
           const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          caches.open(CACHE_NAME).then(cache => cache.put(req, clone));
         }
         return response;
       });
