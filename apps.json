@@ -62,5 +62,9 @@
   {
     "path": "shows/sachungi2026.json",
     "app": false
+  },
+  {
+    "path": "shows/wheel2026.json",
+    "app": false
   }
 ]

@@ -1,0 +1,886 @@
+{
+  "name": "수레바퀴 아래서",
+  "icon": "🕊️",
+  "color": "#7A5A3A",
+  "venue": "SH아트홀",
+  "startDate": "2026-10-13",
+  "endDate": "2027-01-03",
+  "official": "https://x.com/nepcontents",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/65502"
+  },
+  "roles": [
+    {
+      "key": "hans",
+      "label": "한스"
+    },
+    {
+      "key": "heilner",
+      "label": "하일러"
+    },
+    {
+      "key": "lucius",
+      "label": "루치우스"
+    },
+    {
+      "key": "principal",
+      "label": "교장"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-13",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-15",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "14:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "14:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "14:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "이서후",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "18:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-08",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "16:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "18:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "14:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "이서후",
+      "principal": "박소리"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "허순미"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "hans": "김서환",
+      "heilner": "황건우",
+      "lucius": "신은호",
+      "principal": "황만익"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "이서후",
+      "principal": "허순미"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "18:00",
+      "hans": "홍성원",
+      "heilner": "한상훈",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "14:00",
+      "hans": "김서연",
+      "heilner": "송영미",
+      "lucius": "정지혜",
+      "principal": "허순미"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "18:00",
+      "hans": "박새힘",
+      "heilner": "조영화",
+      "lucius": "김이진",
+      "principal": "박소리"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "hans": "홍성원",
+      "heilner": "황건우",
+      "lucius": "임재윤",
+      "principal": "황만익"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "hans": "김서환",
+      "heilner": "한상훈",
+      "lucius": "신은호",
+      "principal": "황만익"
+    }
+  ],
+  "events": [
+    {
+      "name": "커튼콜 데이",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-25",
+      "color": "#7A5A3A",
+      "url": "https://x.com/nepcontents/status/2112403603352940799"
+    },
+    {
+      "name": "더블적립 위크",
+      "startDate": "2026-10-27",
+      "endDate": "2026-11-01",
+      "color": "#7A5A3A",
+      "url": "https://x.com/nepcontents/status/2103762060941361537"
+    },
+    {
+      "name": "스페셜 커튼콜 위크",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-15",
+      "color": "#7A5A3A",
+      "url": "https://x.com/nepcontents/status/2114938690212700537"
+    },
+    {
+      "name": "쿠폰팩 증정 위크",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#7A5A3A",
+      "url": "https://x.com/nepcontents/status/2118238457411887433"
+    },
+    {
+      "name": "폴라로이드 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-12-06",
+      "color": "#7A5A3A",
+      "description": "폴라로이드 사진 증정",
+      "url": "https://x.com/nepcontents/status/2118239057985888422"
+    }
+  ]
+}
