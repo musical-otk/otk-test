@@ -1483,8 +1483,11 @@
     }));
     if (currentView === 'cal' && getCalView() === 'week') renderCalendar();
   }
-  function eventsOn(appId, ds) {
-    return (appEvents[appId] || []).filter(e => e.startDate && e.startDate <= ds && ds <= (e.endDate || e.startDate));
+  // time 을 주면 times(회차 시간)가 적힌 이벤트는 그 회차에만 — 같은 날 낮 커튼콜·밤 사인회가 섞이지 않게
+  const evAt = (e, ds, time) => e.startDate && e.startDate <= ds && ds <= (e.endDate || e.startDate) &&
+    (!time || !e.times || !e.times.length || e.times.includes(time));
+  function eventsOn(appId, ds, time) {
+    return (appEvents[appId] || []).filter(e => evAt(e, ds, time));
   }
   let currentYear, currentMonth;
   let currentView = 'cal';
@@ -2302,7 +2305,7 @@
           : trans ? `<span class="wk-mark trans">↪ 양도${trans.transferTo ? ' · ' + trans.transferTo : ''}</span>` : '';
         const seat = att.map(fmtSeat).filter(Boolean).join(', ');
         const extra = [(note.photoIds || []).length ? '📷' : '', note.memo ? '📝' : ''].filter(Boolean).join(' ');
-        const evs = eventsOn(app.id, ds).map(e => {
+        const evs = eventsOn(app.id, ds, s.time).map(e => {
           const c = e.color || app.color;
           return `<span class="wk-ev" style="${appStyle(c)}" ${e.description ? `title="${e.description.replace(/"/g, '&quot;')}"` : ''}>${e.name}</span>`;
         }).join('');
@@ -2556,7 +2559,7 @@
         </span>
       </div>`;
       // 칩을 줄인다 — 작품은 색 글씨 + 왼쪽 색 막대, 이벤트는 작은 글씨 한 줄, 버튼은 글자 링크
-      const evs = eventsOn(s._app.id, ds);
+      const evs = eventsOn(s._app.id, ds, s.time);
       return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${s._app.color}">
         <div class="session-time">${s.time}</div>
         <div class="session-body">
@@ -3057,14 +3060,13 @@
       const past = sorted.filter(x => x.s.date < todayStr);
       const open = _srchPastOpen;
       const show = open ? sorted : sorted.filter(x => x.s.date >= todayStr);
-      const evOn = (w, ds) => eventsOf(w)
-        .filter(e => e.startDate <= ds && ds <= (e.endDate || e.startDate)).map(e => e.name);
+      const evOn = (w, ds, time) => eventsOf(w).filter(e => evAt(e, ds, time)).map(e => e.name);
       return `<div class="srch-sess">
         ${past.length ? `<button class="srch-back" onclick="_srchPastOpen=!_srchPastOpen;renderSearch()">${open ? '지난 회차 접기 ▴' : `지난 회차 ${past.length}개 ▾`}</button>` : ''}
         ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => recHit(x, w.id, s));
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
-          const ev = evOn(w, s.date);
+          const ev = evOn(w, s.date, s.time);
           const dow = new Date(s.date + 'T00:00:00').getDay();
           return `<div class="srch-row" onclick="sessTap('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">
             <div class="srch-when">

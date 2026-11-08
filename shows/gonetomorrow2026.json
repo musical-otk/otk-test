@@ -397,15 +397,157 @@
   ],
   "events": [
     {
-      "name": "스페셜 커튼콜·사인회",
-      "startDate": "2026-11-08",
-      "endDate": "2026-11-08",
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-30",
       "color": "#8B1A2B",
-      "description": "18:30 고훈정·문유강·신재희",
+      "times": [
+        "19:30"
+      ],
       "url": "https://x.com/page1company/status/2114333108195754476"
     },
     {
-      "name": "MINI OST 증정 (A VER.)",
+      "name": "박영수 150회",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-30",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ]
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "color": "#8B1A2B",
+      "times": [
+        "15:00"
+      ],
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-01",
+      "color": "#8B1A2B",
+      "times": [
+        "14:00"
+      ],
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "지현준 막공 무대인사",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-01",
+      "color": "#8B1A2B",
+      "times": [
+        "18:30"
+      ],
+      "url": "https://x.com/page1company/status/2098278588198076621"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-01",
+      "color": "#8B1A2B",
+      "times": [
+        "18:30"
+      ],
+      "url": "https://x.com/page1company/status/2115345037408297427"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "손동운·김재범·고영빈",
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "김재범 100회",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ]
+    },
+    {
+      "name": "사인회",
+      "startDate": "2026-11-05",
+      "endDate": "2026-11-05",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "김경수·신성민·박영수",
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#8B1A2B",
+      "times": [
+        "14:00"
+      ],
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#8B1A2B",
+      "times": [
+        "18:30"
+      ],
+      "description": "고훈정·문유강·신재희",
+      "url": "https://x.com/page1company/status/2114333108195754476"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ]
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ]
+    },
+    {
+      "name": "티켓링크 피처링",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#8B1A2B",
+      "times": [
+        "15:00",
+        "19:30"
+      ],
+      "url": "https://x.com/page1company/status/2109854229217313183"
+    },
+    {
+      "name": "실황 MINI OST 증정 (A ver.)",
       "startDate": "2026-11-10",
       "endDate": "2026-11-15",
       "color": "#8B1A2B",
@@ -413,7 +555,7 @@
       "url": "https://x.com/page1company/status/2118206677745086778"
     },
     {
-      "name": "MINI OST 증정 (B VER.)",
+      "name": "실황 MINI OST 증정 (B ver.)",
       "startDate": "2026-11-17",
       "endDate": "2026-11-22",
       "color": "#8B1A2B",
@@ -425,7 +567,9 @@
       "startDate": "2026-11-17",
       "endDate": "2026-11-17",
       "color": "#8B1A2B",
-      "description": "19:30 공연 후",
+      "times": [
+        "19:30"
+      ],
       "url": "https://x.com/page1company/status/2115345037408297427"
     }
   ]
