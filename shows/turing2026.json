@@ -67,8 +67,19 @@
     {
       "name": "첫공 무대인사 및 포토타임",
       "startDate": "2026-12-16",
+      "endDate": "2026-12-18",
+      "color": "#2E4A6B",
+      "description": "12/16·17·18 20시, 12/19 15시 공연 종료 후",
+      "url": "https://x.com/HJCULTURE/status/2110163173592478068"
+    },
+    {
+      "name": "첫공 무대인사 및 포토타임",
+      "startDate": "2026-12-19",
       "endDate": "2026-12-19",
       "color": "#2E4A6B",
+      "times": [
+        "15:00"
+      ],
       "description": "12/16·17·18 20시, 12/19 15시 공연 종료 후",
       "url": "https://x.com/HJCULTURE/status/2110163173592478068"
     }
