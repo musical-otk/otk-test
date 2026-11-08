@@ -3030,24 +3030,33 @@
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
-        ${sessList(rows.filter(castPick(rows)).map(s => ({ w, s })), false)}
+        ${sessList(rows.filter(castPick(rows, { roles: info.roles || ai.roles })).map(s => ({ w, s })), false)}
       </div>`;
     };
     // 고른 배우로 회차 거르기 — 같은 배역끼리는 '또는', 다른 배역끼리는 '그리고'.
     // 조성윤·유현석(한영범) + 김리현(류순호) → 조성윤-김리현, 유현석-김리현 회차
-    const castPick = rows => {
+    // 이름이 같은 배역은 한 배역으로 친다 — 코러스처럼 한 회차에 여럿이 나오는 배역을 칸 여러 개(코러스·코러스…)로 적은 경우
+    const roleGroup = (info, k) => ((info.roles || []).find(r => r.key === k) || {}).label || k;
+    const castPick = (rows, info) => {
       if (!_srchActors.size) return () => true;
-      const byRole = {};   // 배역 → 그 배역에서 고른 배우들
-      rows.forEach(s => getActorFields(s).forEach(k => { if (_srchActors.has(s[k])) (byRole[k] = byRole[k] || new Set()).add(s[k]); }));
+      const byRole = {};   // 배역(이름) → 그 배역에서 고른 배우들
+      rows.forEach(s => getActorFields(s).forEach(k => { if (_srchActors.has(s[k])) (byRole[roleGroup(info, k)] = byRole[roleGroup(info, k)] || new Set()).add(s[k]); }));
       const roles = Object.keys(byRole);
-      return s => roles.every(k => byRole[k].has(s[k]));
+      return s => roles.every(g => getActorFields(s).some(k => roleGroup(info, k) === g && byRole[g].has(s[k])));
     };
     // 배우로 좁혀 보기 — 이 화면에서만. 관심·달력 필터와 상관없다
     const castChips = (rows, info) => {
       const keys = [...new Set(rows.flatMap(s => getActorFields(s)))];
       const label = k => ((info.roles || []).find(r => r.key === k) || {}).label || '';
-      const groups = keys.map(k => ({ label: label(k), names: [...new Set(rows.map(s => s[k]).filter(Boolean))] }))
-        .filter(g => g.names.length);
+      // 이름이 같은 배역 칸은 한 줄로 합친다
+      const byLabel = new Map();
+      keys.forEach(k => {
+        const id = label(k) || k;
+        if (!byLabel.has(id)) byLabel.set(id, { label: label(k), names: [] });
+        const g = byLabel.get(id);
+        rows.forEach(s => { if (s[k] && !g.names.includes(s[k])) g.names.push(s[k]); });
+      });
+      const groups = [...byLabel.values()].filter(g => g.names.length);
       if (!groups.length) return '';
       return `<div class="srch-cast">${groups.map(g => `<div class="srch-cast-row">
           ${g.label ? `<span class="srch-cast-lbl">${g.label}</span>` : ''}

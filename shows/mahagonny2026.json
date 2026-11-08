@@ -1,0 +1,659 @@
+{
+  "name": "마하고니",
+  "icon": "🎡",
+  "color": "#8E55D9",
+  "venue": "링크아트센터 페이코홀",
+  "startDate": "2026-11-03",
+  "endDate": "2027-01-24",
+  "official": "https://x.com/m_mahagonny",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/65819",
+    "yes24": "https://m.ticket.yes24.com/"
+  },
+  "roles": [
+    {
+      "key": "guest",
+      "label": "게스트"
+    },
+    {
+      "key": "host",
+      "label": "호스트"
+    },
+    {
+      "key": "chorus1",
+      "label": "코러스"
+    },
+    {
+      "key": "chorus2",
+      "label": "코러스"
+    },
+    {
+      "key": "chorus3",
+      "label": "코러스"
+    },
+    {
+      "key": "chorus4",
+      "label": "코러스"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "16:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "16:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "16:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "guest": "최재웅",
+      "host": "정민",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:00",
+      "guest": "김찬종",
+      "host": "이율",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-08",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "16:00",
+      "guest": "선한국",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "16:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "guest": "김찬종",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "guest": "최재웅",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "guest": "이진혁",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "guest": "최재웅",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "16:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "guest": "김찬종",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "guest": "선한국",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "16:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "guest": "임예진",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "guest": "김찬종",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "guest": "이진혁",
+      "host": "이지연",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "guest": "최재웅",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    }
+  ],
+  "events": [
+    {
+      "name": "할인권 증정 위크",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-15",
+      "color": "#8E55D9",
+      "description": "티켓 수령 시 유료 티켓 1매당 50% 할인권 2매 증정 (적용 회차 11/17~12/20)",
+      "url": "https://x.com/m_mahagonny/status/2114537783662723443"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#8E55D9",
+      "description": "해당 기간 커튼콜 촬영 가능",
+      "url": "https://x.com/m_mahagonny/status/2114537816906772688"
+    }
+  ]
+}

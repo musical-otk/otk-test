@@ -66,5 +66,9 @@
   {
     "path": "shows/wheel2026.json",
     "app": false
+  },
+  {
+    "path": "shows/mahagonny2026.json",
+    "app": false
   }
 ]
