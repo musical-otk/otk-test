@@ -3126,15 +3126,20 @@
 
     // 이벤트 — 이름(설명 포함)에 걸린 것 중 아직 안 끝난 것. 누르면 그 작품 자세히
     const md = s => s.slice(5).replace('-', '/');
-    const evs = works.flatMap(w => eventsOf(w)
-        .filter(e => e.name && (e.endDate || e.startDate) >= todayStr && norm(e.name + ' ' + (e.description || '')).includes(q))
-        .map(e => ({ w, e })))
-      .sort((a, b) => a.e.startDate.localeCompare(b.e.startDate) || ((a.e.times || [''])[0]).localeCompare((b.e.times || [''])[0])).slice(0, 12);
-    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, e }) =>
+    // 같은 작품의 같은 이름(스페셜 커튼콜 등)은 한 줄로 묶고 날짜를 이어 쓴다
+    const evWhen = e => md(e.startDate) + (e.endDate && e.endDate !== e.startDate ? '~' + md(e.endDate) : '') + (e.times && e.times.length ? ' ' + e.times.join('·') : '');
+    const evFirst = e => e.startDate + ((e.times || [''])[0]);
+    const evMap = new Map();
+    works.forEach(w => eventsOf(w)
+      .filter(e => e.name && (e.endDate || e.startDate) >= todayStr && norm(e.name + ' ' + (e.description || '')).includes(q))
+      .forEach(e => { const k = w.id + '|' + e.name; if (!evMap.has(k)) evMap.set(k, { w, name: e.name, list: [] }); evMap.get(k).list.push(e); }));
+    const evs = [...evMap.values()].map(g => (g.list.sort((a, b) => evFirst(a).localeCompare(evFirst(b))), g))
+      .sort((a, b) => evFirst(a.list[0]).localeCompare(evFirst(b.list[0]))).slice(0, 12);
+    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, name, list }) =>
       `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
-        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${e.name}</span>
-        <span class="flt-hit-sub">${w.name} · ${md(e.startDate)}${e.endDate && e.endDate !== e.startDate ? '~' + md(e.endDate) : ''}${e.times && e.times.length ? ' ' + e.times.join('·') : ''}</span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${name}</span>
+        <span class="flt-hit-sub">${w.name} · ${list.slice(0, 4).map(evWhen).join(' · ')}${list.length > 4 ? ` 외 ${list.length - 4}회` : ''}</span>
       </button>`).join('');
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우·이벤트가 없습니다'}</div>`;
