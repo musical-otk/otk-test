@@ -3129,12 +3129,12 @@
     const evs = works.flatMap(w => eventsOf(w)
         .filter(e => e.name && (e.endDate || e.startDate) >= todayStr && norm(e.name + ' ' + (e.description || '')).includes(q))
         .map(e => ({ w, e })))
-      .sort((a, b) => a.e.startDate.localeCompare(b.e.startDate)).slice(0, 12);
+      .sort((a, b) => a.e.startDate.localeCompare(b.e.startDate) || ((a.e.times || [''])[0]).localeCompare((b.e.times || [''])[0])).slice(0, 12);
     if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, e }) =>
       `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${e.name}</span>
-        <span class="flt-hit-sub">${w.name} · ${md(e.startDate)}${e.endDate && e.endDate !== e.startDate ? '~' + md(e.endDate) : ''}</span>
+        <span class="flt-hit-sub">${w.name} · ${md(e.startDate)}${e.endDate && e.endDate !== e.startDate ? '~' + md(e.endDate) : ''}${e.times && e.times.length ? ' ' + e.times.join('·') : ''}</span>
       </button>`).join('');
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 공연·배우·이벤트가 없습니다'}</div>`;
