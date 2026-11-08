@@ -1015,6 +1015,7 @@
     {
       id: 'app_william',
       name: '윌리엄들',
+      fullName: '윌리엄과 윌리엄의 윌리엄들',   // 탭은 짧은 이름, 찾기·관심함은 정식 제목
       icon: '📜',
       scheduleUrl: 'https://musical-otk.github.io/william2026/schedule.json',
       appUrl: 'https://musical-otk.github.io/william2026/',
@@ -2717,12 +2718,13 @@
   const _catalogEvents = {};        // presetId → 추가 안 한 앱 작품의 events.json
   function catalog(scope) {
     const apps = getApps();
-    const works = apps.map(a => ({ id: a.id, name: a.name, icon: a.icon, color: a.color, added: true, kind: a.kind || 'app' }));
+    const fullOf = id => (allPresets().find(p => p.id === id) || {}).fullName;
+    const works = apps.map(a => ({ id: a.id, name: a.name, fullName: fullOf(a.id), icon: a.icon, color: a.color, added: true, kind: a.kind || 'app' }));
     allPresets().forEach(p => {
       if (apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl)) return;
       // 필터에서는 앱 작품을 넣지 않는다(앱 추가로). 정보만 작품은 필터에서도 바로 넣을 수 있다
       if (scope === 'filter' && p.kind !== 'data') return;
-      works.push({ id: p.id, name: p.name, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate, kind: p.kind || 'app' });
+      works.push({ id: p.id, name: p.name, fullName: p.fullName, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate, kind: p.kind || 'app' });
     });
     const actors = new Map();
     works.forEach(w => {
@@ -2833,7 +2835,7 @@
       const vis = mode === 'show' ? '항상 보임' : mode === 'hide' ? '숨김' : '끝나면 숨김';
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
-        <span class="hp-name">${w.icon || ''} ${w.name}</span>
+        <span class="hp-name">${w.icon || ''} ${w.fullName || w.name}</span>
         <span class="hp-sub">${[kind(w), dates.length && `~${dates[dates.length - 1].slice(5).replace('-', '/')}`, state.replace(/^ · /, '')].filter(Boolean).join(' · ')}</span>
         <button class="hp-vis mode-${mode}" title="맨 위 작품 버튼 — 끝나면 숨김 → 항상 → 안 보임 순서로 바뀝니다" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
         <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('work','${id}')">♥</button>
@@ -2966,11 +2968,11 @@
     // 공연 한 줄 — 검색 결과와 빈 칸일 때 전체 목록이 같이 쓴다
     const workHit = w => `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
-        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.name}${getHearts().works.includes(w.id) ? ' <span class="flt-hit-heart">♥</span>' : ''}</span>
+        <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.fullName || w.name}${getHearts().works.includes(w.id) ? ' <span class="flt-hit-heart">♥</span>' : ''}</span>
         <span class="flt-hit-sub">${[kindTag(w), !live(w) && '종료', bookedOnly(w) && `🎫 예매 ${bookedOnly(w)}`].filter(Boolean).join(' · ')}</span>
       </button>`;
     if (!q && !_srchSel) {
-      const all = works.filter(w => w.kind !== 'extra').sort((a, b) => a.name.localeCompare(b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
+      const all = works.filter(w => w.kind !== 'extra').sort((a, b) => (a.fullName || a.name).localeCompare(b.fullName || b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
       const on = all.filter(live), ended = all.filter(w => !live(w));   // 끝난 공연은 접어 둔다
       box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연·배우·이벤트 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
         (all.length ? `<div class="flt-sec">공연 ${on.length}</div>` + on.map(workHit).join('') +
@@ -3023,7 +3025,7 @@
                      ...ticketLinks(info, off).map(k => `<a class="srch-link" href="${k.url}" target="_blank" rel="noopener">🎟 ${k.label} ›</a>`)].filter(Boolean).join('');
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
-          <span class="srch-name">${w.icon || ''} ${w.name}</span>${kindTag(w) ? `<span class="srch-tag">${kindTag(w)}</span>` : ''}
+          <span class="srch-name">${w.icon || ''} ${w.fullName || w.name}</span>${kindTag(w) ? `<span class="srch-tag">${kindTag(w)}</span>` : ''}
           <span class="srch-hd-right">${getHearts().works.includes(w.id) ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
@@ -3104,7 +3106,7 @@
     }
 
     // 목록 — 이름만 한 줄씩
-    const ws = works.filter(w => norm(w.name).includes(q)).slice(0, 6);
+    const ws = works.filter(w => norm(w.name).includes(q) || norm(w.fullName).includes(q)).slice(0, 6);
     if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(workHit).join('');
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
