@@ -58,5 +58,9 @@
   {
     "path": "shows/sweeney2026.json",
     "app": false
+  },
+  {
+    "path": "shows/sachungi2026.json",
+    "app": false
   }
 ]
