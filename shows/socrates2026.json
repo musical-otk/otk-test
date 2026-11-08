@@ -720,9 +720,89 @@
     {
       "name": "배우픽 스페셜 커튼콜",
       "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#3E8E2F",
+      "times": [
+        "14:00"
+      ],
+      "description": "멜레토스 픽 · 벌금형도 안 돼! 추방도 안 돼! (조풍래·최호승)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#3E8E2F",
+      "times": [
+        "18:00"
+      ],
+      "description": "멜레토스 픽 · 벌금형도 안 돼! 추방도 안 돼! (정민·황민수)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#3E8E2F",
+      "times": [
+        "14:00"
+      ],
+      "description": "멜레토스 픽 · 청년들은 누가 가르치는가 (김도빈·이종석)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#3E8E2F",
+      "times": [
+        "18:00"
+      ],
+      "description": "멜레토스 픽 · 끝나지 않는 질문 (문경초·이준우)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#3E8E2F",
+      "times": [
+        "20:00"
+      ],
+      "description": "소크라테스 픽 · 등에 (문경초·황민수)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#3E8E2F",
+      "times": [
+        "20:00"
+      ],
+      "description": "소크라테스 픽 · 등에 (김도빈·이종석)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#3E8E2F",
+      "times": [
+        "20:00"
+      ],
+      "description": "소크라테스 픽 · 등에 (조풍래·이준우)",
+      "url": "https://x.com/HJCULTURE/status/2115700160785261018"
+    },
+    {
+      "name": "배우픽 스페셜 커튼콜",
+      "startDate": "2026-11-14",
       "endDate": "2026-11-14",
       "color": "#3E8E2F",
-      "description": "11/7·8 멜레토스 픽, 11/10~12·14(14시) 소크라테스 픽",
+      "times": [
+        "14:00"
+      ],
+      "description": "소크라테스 픽 · 등에 (정민·황민수)",
       "url": "https://x.com/HJCULTURE/status/2115700160785261018"
     },
     {
