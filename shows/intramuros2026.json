@@ -1,0 +1,443 @@
+{
+  "name": "인트라 무로스",
+  "icon": "🪑",
+  "color": "#2F5D8C",
+  "venue": "충무아트센터 중극장 블랙",
+  "startDate": "2026-11-10",
+  "endDate": "2027-02-14",
+  "official": "https://x.com/mbz_company",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26014594",
+    "yes24": "https://m.ticket.yes24.com/"
+  },
+  "roles": [
+    {
+      "key": "ange",
+      "label": "앙쥬"
+    },
+    {
+      "key": "kevin",
+      "label": "케빈"
+    },
+    {
+      "key": "alice",
+      "label": "알리스"
+    },
+    {
+      "key": "richard",
+      "label": "리샤르"
+    },
+    {
+      "key": "jeanne",
+      "label": "쟌느"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "ange": "이석준",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "ange": "이석준",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "김재범",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-08",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "16:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "김재범",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "ange": "오대석",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    }
+  ],
+  "events": [
+    {
+      "name": "쿠폰팩 증정 위크",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-15",
+      "color": "#2F5D8C",
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 쿠폰팩 1매 (온라인 예매 40% 할인 1매 · 재관람 카드 도장 +1 적립 1매 · 할인 증빙 프리패스 2매)",
+      "url": "https://x.com/mbz_company/status/2118637013499031856"
+    }
+  ]
+}

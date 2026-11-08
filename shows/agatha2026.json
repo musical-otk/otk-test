@@ -1,0 +1,262 @@
+{
+  "name": "아가사",
+  "icon": "🧶",
+  "color": "#8E1B1B",
+  "venue": "NOL 서경스퀘어 스콘 1관",
+  "startDate": "2026-12-09",
+  "endDate": "2027-02-28",
+  "official": "https://x.com/ninestory9",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26015729",
+    "yes24": "https://m.ticket.yes24.com/"
+  },
+  "roles": [
+    {
+      "key": "agatha",
+      "label": "아가사"
+    },
+    {
+      "key": "roy",
+      "label": "로이"
+    },
+    {
+      "key": "raymond",
+      "label": "레이몬드"
+    },
+    {
+      "key": "archibald",
+      "label": "아치볼드"
+    },
+    {
+      "key": "paul",
+      "label": "폴"
+    },
+    {
+      "key": "newman",
+      "label": "뉴먼"
+    },
+    {
+      "key": "beth",
+      "label": "베스"
+    },
+    {
+      "key": "nancy",
+      "label": "낸시"
+    },
+    {
+      "key": "heritz",
+      "label": "헤리츠"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-09",
+      "time": "19:30",
+      "agatha": "이정화",
+      "roy": "김재범",
+      "raymond": "홍나현",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "무현",
+      "beth": "한세라",
+      "nancy": "김초하",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "19:30",
+      "agatha": "백은혜",
+      "roy": "고상호",
+      "raymond": "정지우",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "하미미",
+      "nancy": "정다예",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "19:30",
+      "agatha": "최수진",
+      "roy": "원태민",
+      "raymond": "홍나현",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "14:00",
+      "agatha": "백은혜",
+      "roy": "고상호",
+      "raymond": "정지우",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "무현",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "18:30",
+      "agatha": "백은혜",
+      "roy": "원태민",
+      "raymond": "정지우",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "무현",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "agatha": "최수진",
+      "roy": "고상호",
+      "raymond": "홍나현",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "김초하",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:30",
+      "agatha": "이정화",
+      "roy": "원태민",
+      "raymond": "홍나현",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "김초하",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "19:30",
+      "agatha": "이정화",
+      "roy": "고상호",
+      "raymond": "정지우",
+      "archibald": "김대식",
+      "paul": "안두호",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "19:30",
+      "agatha": "백은혜",
+      "roy": "원태민",
+      "raymond": "정지우",
+      "archibald": "정평",
+      "paul": "박상준",
+      "newman": "무현",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "15:00",
+      "agatha": "최수진",
+      "roy": "고상호",
+      "raymond": "홍나현",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "19:30",
+      "agatha": "이정화",
+      "roy": "고상호",
+      "raymond": "홍나현",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "최반석",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "19:30",
+      "agatha": "백은혜",
+      "roy": "원태민",
+      "raymond": "홍기범",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "무현",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "agatha": "최수진",
+      "roy": "원태민",
+      "raymond": "정지우",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "18:30",
+      "agatha": "최수진",
+      "roy": "고상호",
+      "raymond": "정지우",
+      "archibald": "김대식",
+      "paul": "박상준",
+      "newman": "최반석",
+      "beth": "하미미",
+      "nancy": "김초하",
+      "heritz": "강인대"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "agatha": "백은혜",
+      "roy": "고상호",
+      "raymond": "홍나현",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "무현",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "이찬렬"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:30",
+      "agatha": "이정화",
+      "roy": "원태민",
+      "raymond": "홍기범",
+      "archibald": "정평",
+      "paul": "안두호",
+      "newman": "무현",
+      "beth": "한세라",
+      "nancy": "정다예",
+      "heritz": "이찬렬"
+    }
+  ],
+  "events": []
+}

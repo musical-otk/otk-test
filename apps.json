@@ -70,5 +70,13 @@
   {
     "path": "shows/mahagonny2026.json",
     "app": false
+  },
+  {
+    "path": "shows/agatha2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/intramuros2026.json",
+    "app": false
   }
 ]
