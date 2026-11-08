@@ -776,9 +776,78 @@
     {
       "name": "스페셜 커튼콜",
       "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#B0195E",
+      "times": [
+        "16:00"
+      ],
+      "description": "M13. 겨우 사랑 (유현석·전하영)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-05",
+      "endDate": "2026-11-05",
+      "color": "#B0195E",
+      "times": [
+        "20:00"
+      ],
+      "description": "M09. 너의 나비 (안재영·유태율·남민우·황만익)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "color": "#B0195E",
+      "times": [
+        "20:00"
+      ],
+      "description": "M12. 더 완벽한 국가를 위해 (홍기범·장재웅·안상은)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#B0195E",
+      "times": [
+        "15:00"
+      ],
+      "description": "M12. 더 완벽한 국가를 위해 (김바다·남민우·전하영)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#B0195E",
+      "times": [
+        "19:00"
+      ],
+      "description": "M02. 나비 부인의 결혼식 (안재영·홍기범·남민우·전하영·황만익)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-08",
       "endDate": "2026-11-08",
       "color": "#B0195E",
-      "description": "11/4 16시·5 20시·6 20시·7 15·19시·8 14·18시, 공연 후 15분",
+      "times": [
+        "14:00"
+      ],
+      "description": "M08. 당신과 나 사이 (주민진·유태율·안상은)",
+      "url": "https://x.com/thebestplays/status/2115729709007098189"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#B0195E",
+      "times": [
+        "18:00"
+      ],
+      "description": "M09. 너의 나비 (유현석·김바다·장재웅·김승용)",
       "url": "https://x.com/thebestplays/status/2115729709007098189"
     },
     {
@@ -786,7 +855,10 @@
       "startDate": "2026-11-10",
       "endDate": "2026-11-10",
       "color": "#B0195E",
-      "description": "20시 공연 후 (유현석·홍기범·김승용·전하영)",
+      "times": [
+        "20:00"
+      ],
+      "description": "유현석·홍기범·김승용·전하영",
       "url": "https://x.com/thebestplays/status/2116364556834685228"
     },
     {
@@ -794,7 +866,10 @@
       "startDate": "2026-11-14",
       "endDate": "2026-11-14",
       "color": "#B0195E",
-      "description": "19시 공연 후 (안재영·김바다·남민우·안상은)",
+      "times": [
+        "19:00"
+      ],
+      "description": "안재영·김바다·남민우·안상은",
       "url": "https://x.com/thebestplays/status/2116364556834685228"
     },
     {
@@ -802,7 +877,10 @@
       "startDate": "2026-11-15",
       "endDate": "2026-11-15",
       "color": "#B0195E",
-      "description": "18시 공연 후 (주민진·유태율·황만익·장재웅)",
+      "times": [
+        "18:00"
+      ],
+      "description": "주민진·유태율·황만익·장재웅",
       "url": "https://x.com/thebestplays/status/2116364556834685228"
     },
     {
@@ -817,7 +895,9 @@
       "startDate": "2026-11-18",
       "endDate": "2026-11-18",
       "color": "#B0195E",
-      "description": "20시 공연 후",
+      "times": [
+        "20:00"
+      ],
       "url": "https://x.com/thebestplays/status/2116367053456126262"
     }
   ]
