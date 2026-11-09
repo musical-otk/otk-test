@@ -347,16 +347,337 @@
       "chodh": "황두현",
       "byunjh": "김재민",
       "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "김세환",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "hanyb": "강기둥",
+      "ryush": "김리현",
+      "leecs": "양승리",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "hanyb": "강기둥",
+      "ryush": "홍기범",
+      "leecs": "양승리",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "장지후",
+      "shinsg": "곽다인",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "16:00",
+      "hanyb": "정욱진",
+      "ryush": "김리현",
+      "leecs": "김세환",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "hanyb": "정욱진",
+      "ryush": "김리현",
+      "leecs": "양승리",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "hanyb": "조성윤",
+      "ryush": "홍기범",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "18:00",
+      "hanyb": "유현석",
+      "ryush": "김리현",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "hanyb": "정욱진",
+      "ryush": "류동휘",
+      "leecs": "장지후",
+      "shinsg": "임준혁",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "hanyb": "강기둥",
+      "ryush": "류동휘",
+      "leecs": "장지후",
+      "shinsg": "임준혁",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "김리현",
+      "leecs": "양승리",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "16:00",
+      "hanyb": "조성윤",
+      "ryush": "홍기범",
+      "leecs": "장지후",
+      "shinsg": "곽다인",
+      "chodh": "황두현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "hanyb": "정욱진",
+      "ryush": "김리현",
+      "leecs": "장지후",
+      "shinsg": "임진섭",
+      "chodh": "황두현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "김재민",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "hanyb": "조성윤",
+      "ryush": "홍기범",
+      "leecs": "김세환",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "hanyb": "정욱진",
+      "ryush": "홍기범",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "14:00",
+      "hanyb": "강기둥",
+      "ryush": "김리현",
+      "leecs": "장지후",
+      "shinsg": "임진섭",
+      "chodh": "황두현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "18:00",
+      "hanyb": "강기둥",
+      "ryush": "김리현",
+      "leecs": "장지후",
+      "shinsg": "임진섭",
+      "chodh": "황두현",
+      "byunjh": "장재웅",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "hanyb": "정욱진",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "곽다인",
+      "chodh": "김성현",
+      "byunjh": "김재민",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "임준혁",
+      "chodh": "김성현",
+      "byunjh": "김재민",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "16:00",
+      "hanyb": "강기둥",
+      "ryush": "김리현",
+      "leecs": "장지후",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "hanyb": "강기둥",
+      "ryush": "홍기범",
+      "leecs": "장지후",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "서동진",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "장재웅",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "hanyb": "정욱진",
+      "ryush": "김리현",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "18:00",
+      "hanyb": "정욱진",
+      "ryush": "홍기범",
+      "leecs": "김세환",
+      "shinsg": "곽다인",
+      "chodh": "황두현",
+      "byunjh": "김재민",
+      "goddess": "최서연"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "14:00",
+      "hanyb": "유현석",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "임준혁",
+      "chodh": "김대웅",
+      "byunjh": "장재웅",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "18:00",
+      "hanyb": "조성윤",
+      "ryush": "류동휘",
+      "leecs": "양승리",
+      "shinsg": "곽다인",
+      "chodh": "김대웅",
+      "byunjh": "장재웅",
+      "goddess": "한보라"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "hanyb": "강기둥",
+      "ryush": "홍기범",
+      "leecs": "장지후",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "hanyb": "강기둥",
+      "ryush": "김리현",
+      "leecs": "장지후",
+      "shinsg": "임진섭",
+      "chodh": "김성현",
+      "byunjh": "서동진",
+      "goddess": "강지혜"
     }
   ],
-  "events": [
-    {
-      "name": "야간 공연 관람의 날",
-      "startDate": "2026-11-27",
-      "endDate": "2026-11-27",
-      "color": "#3E8ED0",
-      "description": "20시 공연 S석 10,000원 (대학로티켓닷컴)",
-      "url": "https://x.com/thegoddess_yw/status/2118161383418159374"
-    }
-  ]
+  "events": []
 }

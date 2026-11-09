@@ -387,6 +387,188 @@
       "jeyoung": "김이후",
       "sinae": "한재아",
       "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-30",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-07",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "16:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-14",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "전민지"
     }
   ],
   "events": [
@@ -723,6 +905,30 @@
       "color": "#9B1C1C",
       "description": "주차별 카드 9/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
       "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "폴라로이드 증정 위크",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-06",
+      "color": "#9B1C1C",
+      "description": "유료 티켓 1매당 당일 출연진 폴라로이드 3종 중 랜덤 1장 증정 (티켓 수령 후 MD/적립부스에서 수령)",
+      "url": "https://x.com/nangman_b20/status/2119777273863913479"
+    },
+    {
+      "name": "2차 스페셜 커튼콜(장면시연) 위크",
+      "startDate": "2026-12-07",
+      "endDate": "2026-12-13",
+      "color": "#9B1C1C",
+      "description": "공연 종료 후 스페셜 커튼콜(기존 장면 시연) 진행, 시작 시점부터 플래시 없이 사진·동영상 촬영 가능",
+      "url": "https://x.com/nangman_b20/status/2119777273863913479"
+    },
+    {
+      "name": "멜로디 카드 증정 위크",
+      "startDate": "2026-12-14",
+      "endDate": "2026-12-20",
+      "color": "#9B1C1C",
+      "description": "유료 티켓 1매당 멜로디 카드 1매 증정 (음원 감상 QR코드, 2027년 1월 3일까지 유효)",
+      "url": "https://x.com/nangman_b20/status/2119777273863913479"
     }
   ]
 }

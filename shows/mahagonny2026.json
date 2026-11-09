@@ -654,6 +654,14 @@
       "color": "#8E55D9",
       "description": "해당 기간 커튼콜 촬영 가능",
       "url": "https://x.com/m_mahagonny/status/2114537816906772688"
+    },
+    {
+      "name": "더블 적립 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-29",
+      "color": "#8E55D9",
+      "description": "유료 티켓 1매당 도장 2개 날인 (1개 카드에 최대 2개, 새 카드 발급 가능, 티켓 뒷면에 도장 2번. MD부스 공연 시작 1시간 전~10분 전 / 종료 후 10분간)",
+      "url": "https://x.com/m_mahagonny/status/2119618477187043627"
     }
   ]
 }

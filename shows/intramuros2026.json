@@ -438,6 +438,39 @@
       "color": "#2F5D8C",
       "description": "매표소 티켓 수령 시 유료 티켓 1매당 쿠폰팩 1매 (온라인 예매 40% 할인 1매 · 재관람 카드 도장 +1 적립 1매 · 할인 증빙 프리패스 2매)",
       "url": "https://x.com/mbz_company/status/2118637013499031856"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "개막 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mbz_company/status/2108075248939942205"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "첫 공연 표기 — 캐스트별 첫공 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mbz_company/status/2108075248939942205"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "첫 공연 표기 — 캐스트별 첫공 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mbz_company/status/2108075248939942205"
     }
   ]
 }

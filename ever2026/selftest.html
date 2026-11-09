@@ -545,9 +545,9 @@ t('D. 데이터', '스케줄 61회차 로드 (프리뷰~2차 오픈분)', () => 
 t('D. 데이터', '스케줄 배우가 ROLES 배우 안에 있음', () => {
   W.getSchedule().forEach(x => g('ROLES').forEach(r => ok(r.actors.includes(x[r.key]), `${x.date} ${x.time} ${r.label} ${x[r.key]}`)));
 });
-t('D. 데이터', '이벤트 2건 (쿠폰팩·포토카드) · X 링크 보유', () => {
+t('D. 데이터', '이벤트 3건 (쿠폰팩·포토카드·스페셜 커튼콜) · X 링크 보유', () => {
   const e = W.getEvents();
-  eq(e.map(x => x.name), ['쿠폰팩 증정', '포토카드 증정']);
+  eq(e.map(x => x.name), ['쿠폰팩 증정', '포토카드 증정', '스페셜 커튼콜']);
   ok(e.every(x => /^https:\/\/x\.com\//.test(x.url || '')), '모든 이벤트에 X 링크');
 });
 t('D. 데이터', '스케줄 기간이 2026-10-21 ~ 12-06', () => {
