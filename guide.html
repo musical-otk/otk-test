@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>m.diary 사용법</title>
+  <style>
+    :root {
+      --bg1: #111118; --bg2: #1a1a24; --bg3: #22222e; --border: #333340;
+      --text1: #f0f0f0; --text2: #aaaaaa; --text3: #666670; --custom: #a78bfa;
+    }
+    body.light {
+      --bg1: #f8f8f6; --bg2: #ffffff; --bg3: #f0f0ee; --border: #e0e0dc;
+      --text1: #1a1a1a; --text2: #555550; --text3: #999990; --custom: #7c3aed;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg1); color: var(--text1); line-height: 1.7;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 0 16px 48px; }
+    .hd { position: sticky; top: 0; background: var(--bg1); display: flex; align-items: center; gap: 10px; padding: 14px 0 10px; border-bottom: 1px solid var(--border); }
+    .hd a { color: var(--text2); text-decoration: none; font-size: 14px; }
+    .hd h1 { font-size: 17px; }
+    .toc { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 0 4px; }
+    .toc a { font-size: 12px; padding: 5px 11px; border: 1px solid var(--border); border-radius: 14px; color: var(--text2); text-decoration: none; }
+    section { padding: 22px 0 6px; border-bottom: 1px solid var(--border); }
+    h2 { font-size: 16px; margin-bottom: 10px; }
+    p, li { font-size: 14px; color: var(--text2); }
+    ul { padding-left: 18px; margin: 4px 0 8px; }
+    li { margin: 3px 0; }
+    b { color: var(--text1); }
+    .tip { margin-top: 8px; padding: 10px 12px; background: var(--bg3); border-radius: 10px; font-size: 13px; color: var(--text2); }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd"><a href="./">‹ 돌아가기</a><h1>m.diary 사용법</h1></div>
+
+  <div class="toc">
+    <a href="#start">시작하기</a><a href="#cal">달력</a><a href="#rec">기록하기</a>
+    <a href="#heart">관심함</a><a href="#set">설정</a><a href="#move">기기 옮기기</a><a href="#req">요청하기</a>
+  </div>
+
+  <section id="start">
+    <h2>시작하기</h2>
+    <p>위쪽 🔍 를 눌러 공연이나 배우를 찾고 <b>♡</b> 를 누르세요. 그 공연의 회차가 달력에 들어와요.</p>
+    <ul>
+      <li><b>작품 ♡</b> — 그 작품의 모든 회차</li>
+      <li><b>배우 ♡</b> — 그 배우가 나오는 회차 (여러 작품이어도 다)</li>
+    </ul>
+    <p>날짜(11/21)나 이벤트 이름으로도 찾을 수 있어요.</p>
+  </section>
+
+  <section id="cal">
+    <h2>달력</h2>
+    <ul>
+      <li><b>월 / 주</b> — 한 달씩 또는 한 주씩 봐요.</li>
+      <li><b>내 기록</b> — 예매하거나 본 회차만 보여요.</li>
+      <li><b>전체 회차</b> — 관심 작품·배우의 모든 회차를 보여요.</li>
+      <li>날짜를 누르면 그날 회차와 캐스팅, 이벤트가 나와요.</li>
+    </ul>
+  </section>
+
+  <section id="rec">
+    <h2>기록하기</h2>
+    <p>찾기나 달력에서 회차를 누르면 회차 정보가 뜨고, 아래 버튼으로 기록해요.</p>
+    <ul>
+      <li><b>예매 기록</b> — 앞으로 볼 회차</li>
+      <li><b>관람 기록</b> — 이미 본 회차</li>
+      <li><b>양도</b> — 표를 넘긴 회차는 따로 표시돼요.</li>
+      <li>회차마다 <b>메모·사진</b>을 남길 수 있어요.</li>
+    </ul>
+    <div class="tip">이름 옆에 <b>전용 앱</b>이 붙은 작품은 그 작품 앱에서 기록해요. 쿠폰·도장판도 거기 있어요.</div>
+  </section>
+
+  <section id="heart">
+    <h2>관심함 ❤️</h2>
+    <p>♡ 한 작품과 배우를 모아 보는 곳이에요.</p>
+    <ul>
+      <li>관심을 빼면 달력에서도 빠져요.</li>
+      <li>잠깐만 안 보고 싶으면 🔎 필터에서 끄세요. 관심은 그대로 남아요.</li>
+      <li>작품 오른쪽 버튼으로 위쪽 작품 버튼에 보일지 정해요 (끝나면 숨김 / 항상 / 안 보임).</li>
+    </ul>
+  </section>
+
+  <section id="set">
+    <h2>설정 ⚙️</h2>
+    <ul>
+      <li><b>공연 정보 새로 받기</b> — 새 회차·캐스팅 변경·새 이벤트를 받아요. 지난번과 바뀐 점을 정리해 보여 줘요.</li>
+      <li><b>새로 올라온 작품</b> — 새로 들어온 작품이 일주일 동안 보여요.</li>
+      <li><b>기록 새로고침</b> — 작품 앱에서 입력한 기록이 달력에 안 보일 때 눌러요.</li>
+      <li><b>최신 버전으로 다시 열기</b> — 화면이 예전 그대로일 때 눌러요. 기록은 지워지지 않아요.</li>
+    </ul>
+  </section>
+
+  <section id="move">
+    <h2>백업 · 기기 옮기기</h2>
+    <p>기록은 지금 쓰는 기기(브라우저)에만 저장돼요. 폰과 PC를 같이 쓰거나 기기를 바꿀 때는 백업 파일로 옮겨요.</p>
+    <ul>
+      <li>쓰던 기기에서 ⚙️ → <b>백업 파일 받기</b></li>
+      <li>파일을 새 기기로 보내기 (카톡 나에게 보내기, 메일 등)</li>
+      <li>새 기기에서 ⚙️ → <b>백업 파일에서 복원</b> → 파일 고르기</li>
+    </ul>
+    <ul>
+      <li><b>합치기</b> — 새 기기 기록은 두고, 없는 기록만 더해요.</li>
+      <li><b>덮어쓰기</b> — 새 기기 기록을 백업 내용으로 바꿔요.</li>
+      <li>복원한 뒤 마음에 안 들면 한 번 되돌릴 수 있어요.</li>
+    </ul>
+    <div class="tip">사진까지 옮기려면 <b>사진까지 백업</b>을 고르세요. 파일이 커질 수 있어요.</div>
+  </section>
+
+  <section id="req">
+    <h2>요청하기</h2>
+    <p>없는 작품이 있거나 캐스팅·이벤트가 틀렸으면 ⚙️ → <b>작품 추가·정보 수정 요청</b>으로 알려 주세요. 로그인 없이 보낼 수 있어요.</p>
+  </section>
+</div>
+<script>
+  // 허브와 같은 밝기로 — 테스트 사본은 test_hub_ 키를 쓴다
+  try {
+    const ns = location.pathname.startsWith('/otk-test/') ? 'test_hub_' : 'hub_';
+    if (localStorage.getItem(ns + 'theme') === 'light') document.body.classList.add('light');
+  } catch (e) {}
+</script>
+</body>
+</html>
