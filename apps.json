@@ -102,5 +102,9 @@
   {
     "path": "shows/anarchist2026.json",
     "app": false
+  },
+  {
+    "path": "shows/nof2026.json",
+    "app": false
   }
 ]

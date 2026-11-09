@@ -1,0 +1,827 @@
+{
+  "name": "네이처 오브 포겟팅",
+  "icon": "🧩",
+  "color": "#B5322A",
+  "venue": "세종문화회관 S씨어터",
+  "startDate": "2026-09-18",
+  "endDate": "2026-11-29",
+  "official": "https://x.com/thebestplays",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/64482",
+    "nol": "https://nol.yanolja.com/ticket/products/P0004771"
+  },
+  "roles": [
+    {
+      "key": "tom",
+      "label": "톰"
+    },
+    {
+      "key": "sophie",
+      "label": "소피·이자벨라"
+    },
+    {
+      "key": "mike",
+      "label": "마이크"
+    },
+    {
+      "key": "emma",
+      "label": "엠마"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-09-18",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-22",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "16:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-25",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "15:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "19:30",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-29",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "16:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-01",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "15:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "19:30",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "16:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-15",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "19:30",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "15:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "15:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:30",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "16:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:30",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "15:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "tom": "전성우",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "16:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "tom": "박정원",
+      "sophie": "김주연",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "tom": "백성현",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "tom": "박정원",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:30",
+      "tom": "백성현",
+      "sophie": "이정화",
+      "mike": "곽다인",
+      "emma": "강은나"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "15:00",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "19:30",
+      "tom": "전성우",
+      "sophie": "김주연",
+      "mike": "김시유",
+      "emma": "송나영"
+    }
+  ],
+  "events": [
+    {
+      "name": "하이터치 배웅회",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-03",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 당일 출연진 6인이 나가는 길을 하이터치로 배웅 (사진·영상 촬영, 편지·선물 전달 제한. 진행 기간 MD부스 미운영)",
+      "url": "https://x.com/thebestplays/status/2115692644944998762"
+    },
+    {
+      "name": "하이터치 배웅회",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 당일 출연진 6인이 나가는 길을 하이터치로 배웅 (사진·영상 촬영, 편지·선물 전달 제한. 진행 기간 MD부스 미운영)",
+      "url": "https://x.com/thebestplays/status/2115692644944998762"
+    },
+    {
+      "name": "하이터치 배웅회",
+      "startDate": "2026-11-05",
+      "endDate": "2026-11-05",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 당일 출연진 6인이 나가는 길을 하이터치로 배웅 (사진·영상 촬영, 편지·선물 전달 제한. 진행 기간 MD부스 미운영)",
+      "url": "https://x.com/thebestplays/status/2115692644944998762"
+    },
+    {
+      "name": "앵콜! 셀카 포토카드 · 단체 인화사진 · 공연 사진 엽서 증정",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-29",
+      "color": "#B5322A",
+      "description": "당일 유료 티켓 확인 후 '당일 캐스트 셀카 포토카드 세트' · '단체 인화사진 1매' · '공연 사진 엽서 1매' 중 1종 선택 (MD부스, 소진 시 종료)",
+      "url": "https://x.com/thebestplays/status/2117104416272613476"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "톰 ver. (Bicycle Dream · Second Skin · Crescendo) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "이자벨라 ver. (Bicycle Dream · Banquet Trance · First Dance) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "이자벨라 ver. (Bicycle Dream · Banquet Trance · First Dance) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "톰 ver. (Bicycle Dream · Second Skin · Crescendo) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#B5322A",
+      "times": [
+        "15:00"
+      ],
+      "description": "톰 ver. (Bicycle Dream · Second Skin · Crescendo) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#B5322A",
+      "times": [
+        "19:30"
+      ],
+      "description": "이자벨라 ver. (Bicycle Dream · Banquet Trance · First Dance) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-15",
+      "color": "#B5322A",
+      "times": [
+        "15:00"
+      ],
+      "description": "이자벨라 ver. (Bicycle Dream · Banquet Trance · First Dance) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "실황 음원 뮤직 카드 증정",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-15",
+      "color": "#B5322A",
+      "times": [
+        "19:30"
+      ],
+      "description": "톰 ver. (Bicycle Dream · Second Skin · Crescendo) · 유료 티켓 1매당 2종 중 1종, QR은 11/30까지",
+      "url": "https://x.com/thebestplays/status/2117904763606143107"
+    },
+    {
+      "name": "캐스팅보드 응모 이벤트",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-29",
+      "color": "#B5322A",
+      "description": "유료 티켓 1매당 응모권 1매 (출연진별 1종 총 12종, 각 출연진 마지막 공연 시작 전까지 응모, MD부스 응모함)",
+      "url": "https://x.com/thebestplays/status/2116009697945772401"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-18",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "전성우·김주연·곽다인·강은나 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/thebestplays/status/2079786011232784823"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-19",
+      "color": "#B5322A",
+      "times": [
+        "15:00"
+      ],
+      "description": "박정원·이정화·김시유·송나영 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/thebestplays/status/2079786011232784823"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-19",
+      "color": "#B5322A",
+      "times": [
+        "19:30"
+      ],
+      "description": "백성현 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/thebestplays/status/2079786011232784823"
+    },
+    {
+      "name": "로비 포토부스",
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-20",
+      "color": "#B5322A",
+      "description": "로비 운영시간 중 운영",
+      "url": "https://x.com/thebestplays/status/2100510099014049962"
+    },
+    {
+      "name": "개막 기념 프로필사진 엽서 증정",
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-20",
+      "color": "#B5322A",
+      "description": "개막 기념 프로필사진 엽서 증정 이벤트",
+      "url": "https://x.com/thebestplays/status/2097943155177865282"
+    },
+    {
+      "name": "감사 이벤트 — 10월 달력 증정",
+      "startDate": "2026-09-20",
+      "endDate": "2026-09-20",
+      "color": "#B5322A",
+      "description": "9/20(일) 공연 관객께 2026년 10월 달력 증정 (연극열전10 증빙 프리 쿠폰으로 사용 가능)",
+      "url": "https://x.com/thebestplays/status/2101280142660116587"
+    },
+    {
+      "name": "추석엔 추억 도장",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-27",
+      "color": "#B5322A",
+      "description": "재관람카드 적립 시 티켓 뒷면 확인 도장을 2023년 재관람카드 도장(6종 중 택1)으로 날인",
+      "url": "https://x.com/thebestplays/status/2101166967952715872"
+    },
+    {
+      "name": "공연 영상 촬영",
+      "startDate": "2026-09-23",
+      "endDate": "2026-09-23",
+      "color": "#B5322A",
+      "times": [
+        "20:00"
+      ],
+      "description": "객석 내 카메라 설치로 일부 좌석 판매 마감",
+      "url": "https://x.com/thebestplays/status/2088075688603767080"
+    },
+    {
+      "name": "단체 인화사진 증정",
+      "startDate": "2026-09-29",
+      "endDate": "2026-10-05",
+      "color": "#B5322A",
+      "description": "5종 중 1종 선택 수령",
+      "url": "https://x.com/thebestplays/status/2103039233472479742"
+    },
+    {
+      "name": "공연 100회 기념 — 100회 떡 증정",
+      "startDate": "2026-09-30",
+      "endDate": "2026-09-30",
+      "color": "#B5322A",
+      "times": [
+        "16:00"
+      ],
+      "description": "2022년 초연부터 100회째 공연, MD부스에서 당일 유료 티켓 확인 후 수령",
+      "url": "https://x.com/thebestplays/status/2104828528860565900"
+    },
+    {
+      "name": "셀카 포토카드 증정",
+      "startDate": "2026-10-07",
+      "endDate": "2026-10-11",
+      "color": "#B5322A",
+      "description": "셀카 포토카드 증정 이벤트",
+      "url": "https://x.com/thebestplays/status/2105183363430830098"
+    },
+    {
+      "name": "재관람카드 트리플 적립 & 스페셜 디자인 할인권",
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-18",
+      "color": "#B5322A",
+      "description": "유료 티켓 1매당 도장 3개 적립 (3회 적립 시 40% 할인권 1매, 6회 적립 시 2매)",
+      "url": "https://x.com/thebestplays/status/2107380344911736964"
+    }
+  ]
+}
