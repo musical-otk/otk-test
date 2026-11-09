@@ -525,6 +525,14 @@
       cursor: pointer;
     }
     .add-app-btn:active { background: var(--bg3); }
+    .set-btn {
+      width: 100%; margin: 2px 0 10px; padding: 11px 12px; text-align: left;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-size: 13px; font-weight: 600; cursor: pointer;
+    }
+    .set-btn:active { opacity: .7; }
+    .set-btn.set-row { display: flex; justify-content: space-between; align-items: center; }
+    .set-btn.spinning { opacity: .5; pointer-events: none; }
 
     #sheet-custom, #sheet-app-form { max-height: 90vh; }
     .custom-hd { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
@@ -653,11 +661,7 @@
 
   <div class="header">
     <div class="header-title" onclick="goToToday()">m.diary</div>
-    <button class="hbtn hbtn-icon" id="sync-btn" aria-label="동기화"
-            title="각 앱의 관람 기록과 스케줄 다시 읽기" onclick="syncNow()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none"
-           stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-      ><path d="M20.5 12a8.5 8.5 0 1 1-2.49-6.01"/><polyline points="20.5 4 20.5 9.5 15 9.5"/></svg></button>
-    <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☀️</button>
+    <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()">⚙️</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
     <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">❤️</button>
     <div id="app-tabs"></div>
@@ -826,13 +830,15 @@
       <button class="settings-close" onclick="closeSettings()">✕</button>
     </div>
     <div class="settings-body">
-      <div class="section-title" style="border-top:none;padding-top:2px">앱 목록</div>
-      <div class="hint">탭으로 등록할 앱을 추가하세요.</div>
-      <div id="app-list-ui"></div>
-      <button class="add-app-btn" onclick="openAppForm()">+ 앱 추가</button>
-      <div class="section-title">보기 필터</div>
-      <div class="hint">달력에 어떤 작품·배우를 띄울지 고릅니다.</div>
-      <button class="add-app-btn" onclick="openFilter()">🔎 필터 열기</button>
+      <div class="section-title" style="border-top:none;padding-top:2px">공연 정보</div>
+      <div class="hint">스케줄·캐스팅·이벤트를 서버에서 새로 받습니다.</div>
+      <button class="set-btn" id="sync-btn" onclick="syncNow()">🔄 공연 정보 새로 받기</button>
+      <div class="section-title">내 기록</div>
+      <div class="hint">각 앱에서 입력한 관람 기록을 허브 달력에 다시 읽어 옵니다. 인터넷은 쓰지 않습니다.</div>
+      <button class="set-btn" onclick="reloadRecords()">📒 앱 기록 다시 읽기</button>
+      <div class="section-title">화면</div>
+      <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
+      <div id="app-list-ui" hidden></div>
     </div>
   </div>
 </div>
@@ -861,7 +867,7 @@
     </div>
     <div class="settings-body">
       <div id="hidden-app-list" style="display:flex;flex-direction:column;gap:6px;padding-bottom:4px"></div>
-      <button class="app-group" onclick="closeHiddenApps();openSettings()">
+      <button class="app-group" onclick="closeHiddenApps();showHearts()">
         <span>탭 표시 설정</span><span class="app-group-caret">›</span>
       </button>
     </div>
@@ -2646,10 +2652,12 @@
   }
 
   // ── 설정 ──
-  function openSettings() { showHearts(); }
-  function openSettingsOld() {
-    renderSettingsAppList();
-    document.getElementById('ov-settings').classList.add('open');
+  function openSettings() { document.getElementById('ov-settings').classList.add('open'); }
+  // 앱 기록 다시 읽기 — 네트워크 없이 각 앱 기록(localStorage)만 다시 읽어 달력을 그린다
+  function reloadRecords() {
+    renderTabs(); renderCalendar();
+    const n = Object.values(getAttended()).reduce((a, v) => a + v.length, 0);
+    toast(`기록 다시 읽음 · ${n}건`);
   }
   function closeSettings() { document.getElementById('ov-settings').classList.remove('open'); }
 
@@ -3458,7 +3466,7 @@
       return;
     }
     document.getElementById('ov-app-form').classList.remove('open');
-    openSettings();
+    showHearts();
   }
 
   // ── PhotoDB (IndexedDB) ──
@@ -3769,7 +3777,7 @@
   async function syncNow(silent) {
     if (_syncing) return;
     _syncing = true;
-    const btn = document.getElementById('sync-btn');
+    const btn = document.getElementById('sync-btn') || document.createElement('i');
     btn.classList.add('spinning');
 
     const apps = getApps();
