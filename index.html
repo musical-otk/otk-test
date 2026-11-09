@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
-  <title>m.diary</title>
+  <title>mu:di</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icon-192-v2.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-title" content="m.diary">
+  <meta name="apple-mobile-web-app-title" content="mu:di">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#1a1a1a" id="meta-theme">
   <style>
@@ -680,7 +680,7 @@
 <div id="app">
 
   <div class="header">
-    <div class="header-title" onclick="goToToday()">m.diary</div>
+    <div class="header-title" onclick="goToToday()">mu:di</div>
     <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()">⚙️</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
     <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">❤️</button>
@@ -868,7 +868,7 @@
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
       <button class="set-btn" onclick="hardReload()">🔄 최신 버전으로 다시 열기</button>
-      <button class="set-btn set-danger" onclick="wipeHubData()">m.diary 기록 모두 지우기</button>
+      <button class="set-btn set-danger" onclick="wipeHubData()">mu:di 기록 모두 지우기</button>
       <div class="hint" id="set-ver" style="text-align:center;padding-top:4px"></div>
       <div id="app-list-ui" hidden></div>
     </div>
@@ -2696,7 +2696,7 @@
     document.getElementById('ov-settings').classList.add('open');
     // 버전은 sw.js 의 CACHE_NAME 을 읽는다 — 올릴 때마다 손으로 맞출 일이 없게
     fetch('sw.js', { cache: 'no-cache' }).then(r => r.text())
-      .then(t => { const m = t.match(/otk-schedule-(v\d+)/); document.getElementById('set-ver').textContent = 'm.diary ' + (m ? m[1] : '') + (IS_TEST_HUB ? ' · 테스트' : ''); })
+      .then(t => { const m = t.match(/otk-schedule-(v\d+)/); document.getElementById('set-ver').textContent = 'mu:di ' + (m ? m[1] : '') + (IS_TEST_HUB ? ' · 테스트' : ''); })
       .catch(() => {});
   }
   // 요청 폼(구글 설문지) — 작품명이 있으면 '새 작품 추가'로 미리 채운다
@@ -2836,12 +2836,12 @@
   async function downloadBackup(withPhotos) {
     const hub = {}, apps = {};
     backupKeys().forEach(k => { const v = localStorage.getItem(k); if (k.startsWith(HUB_NS)) hub[k.slice(HUB_NS.length)] = v; else apps[k] = v; });
-    const data = { app: 'm.diary', format: 1, at: new Date().toISOString(), hub, apps };
+    const data = { app: 'mu:di', format: 1, at: new Date().toISOString(), hub, apps };
     if (withPhotos) { try { data.photos = await PhotoDB.all(); } catch (e) { toast('사진을 읽지 못해 사진 없이 저장할게요'); } }
     const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `mdiary_backup_${todayStr}${withPhotos ? '_photos' : ''}.json`;
+    a.download = `mudi_backup_${todayStr}${withPhotos ? '_photos' : ''}.json`;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
     toast(`백업 파일을 저장했어요 (${(blob.size / 1024).toFixed(0)}KB)`);
@@ -2853,7 +2853,7 @@
     const rd = new FileReader();
     rd.onload = () => {
       let d; try { d = JSON.parse(rd.result); } catch (e) { d = null; }
-      if (!d || d.app !== 'm.diary' || !d.hub) { toast('m.diary 백업 파일이 아니에요'); return; }
+      if (!d || !['mu:di', 'm.diary'].includes(d.app) || !d.hub) { toast('mu:di 백업 파일이 아니에요'); return; }   // 옛 이름(m.diary) 백업도 받는다
       _restoreData = d;
       const nRec = Object.values(d.apps || {}).concat(Object.entries(d.hub).filter(([k]) => /rec|records/.test(k)).map(([, v]) => v))
         .reduce((a, v) => { const x = pj(v); return a + (Array.isArray(x) ? x.length : 0); }, 0);

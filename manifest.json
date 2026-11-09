@@ -1,6 +1,6 @@
 {
-  "name": "m.diary",
-  "short_name": "m.diary",
+  "name": "mu:di",
+  "short_name": "mu:di",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#13131f",
