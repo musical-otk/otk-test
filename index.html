@@ -534,6 +534,11 @@
     .set-btn.set-row { display: flex; justify-content: space-between; align-items: center; }
     .set-btn.spinning { opacity: .5; pointer-events: none; }
     .set-btn.set-danger { color: #d9534f; background: none; }
+    .rs-box { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 12px; color: var(--text2); line-height: 1.6; }
+    .rs-box b { color: var(--text); }
+    .rs-btns { display: flex; gap: 6px; margin-top: 8px; }
+    .rs-btns button { flex: 1; padding: 9px 4px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--text); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .rs-btns button.pri { background: var(--custom); border-color: var(--custom); color: #fff; }
     .sd-when { font-size: 11px; color: var(--text3); padding: 0 2px 6px; }
     .sd-work { padding: 8px 2px; border-top: 1px solid var(--border); font-size: 12px; }
     .sd-work-hd { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
@@ -847,6 +852,12 @@
       <div class="section-title">내 기록</div>
       <div class="hint">각 앱에서 입력한 관람 기록을 허브 달력에 다시 읽어 옵니다. 인터넷은 쓰지 않습니다.</div>
       <button class="set-btn" onclick="reloadRecords()">📒 앱 기록 다시 읽기</button>
+      <div class="hint">다른 기기로 옮기거나 보관하려면 백업 파일을 받아 두세요. 허브와 각 작품 앱의 기록이 한 파일에 담깁니다.</div>
+      <button class="set-btn" onclick="downloadBackup(false)">💾 백업 파일 받기</button>
+      <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
+      <button class="set-btn" onclick="document.getElementById('restore-file').click()">📂 백업 파일에서 복원</button>
+      <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
+      <div id="set-restore"></div>
       <div class="section-title">화면</div>
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
       <div class="section-title">요청</div>
@@ -2671,7 +2682,7 @@
 
   // ── 설정 ──
   function openSettings() {
-    renderShowDiff(); renderNewWorks();
+    renderShowDiff(); renderNewWorks(); renderRestoreBox();
     document.getElementById('ov-settings').classList.add('open');
     // 버전은 sw.js 의 CACHE_NAME 을 읽는다 — 올릴 때마다 손으로 맞출 일이 없게
     fetch('sw.js', { cache: 'no-cache' }).then(r => r.text())
@@ -2796,6 +2807,143 @@
         <button onclick="heartNewWork('${w.id}')">♡</button></div>`).join('') : '';
   }
   async function heartNewWork(id) { await heartWork(id); renderNewWorks(); renderTabs(); renderCalendar(); toast('관심에 넣었어요'); }
+
+  // ── 백업·복원 ──
+  // 담는 것: 이 허브(hub_ 또는 test_hub_)의 키 + 같은 주소의 작품 앱 기록. 빼는 것: 다른 허브 이름공간, 스케줄·이벤트 캐시, 비교 지문
+  // 파일 안의 허브 키는 접두어를 뗀 이름으로 — 실제 허브와 테스트 사본 사이에도 옮길 수 있게
+  const OTHER_NS = IS_TEST_HUB ? 'hub_' : 'test_hub_';
+  const UNDO_KEY = HUB_NS + 'undo_restore';
+  const HUB_SKIP = ['snapshot', 'last_diff', 'discovered', 'undo_restore'];
+  const HUB_KEEP = ['theme', 'prefs', 'filter', 'cal_mode', 'cal_view', 'tab_visibility', 'recent_q', 'extra_off'];   // 설정성 — 합치기에서 기기 값 유지
+  function backupKeys() {
+    return Object.keys(localStorage).filter(k => {
+      if (k.startsWith(HUB_NS)) return !HUB_SKIP.includes(k.slice(HUB_NS.length));
+      if (k.startsWith(OTHER_NS) || k.startsWith('test_hub_') || k.startsWith('hub_')) return false;
+      return !/(_schedule|_events|^scheduleUpdatedAt|^eventsUpdatedAt)$/.test(k);
+    });
+  }
+  const pj = v => { try { return JSON.parse(v); } catch (e) { return v; } };
+  async function downloadBackup(withPhotos) {
+    const hub = {}, apps = {};
+    backupKeys().forEach(k => { const v = localStorage.getItem(k); if (k.startsWith(HUB_NS)) hub[k.slice(HUB_NS.length)] = v; else apps[k] = v; });
+    const data = { app: 'm.diary', format: 1, at: new Date().toISOString(), hub, apps };
+    if (withPhotos) { try { data.photos = await PhotoDB.all(); } catch (e) { toast('사진을 읽지 못했어요 · 사진 없이 받습니다'); } }
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `mdiary_backup_${todayStr}${withPhotos ? '_photos' : ''}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    toast(`백업 파일 받음 · ${(blob.size / 1024).toFixed(0)}KB`);
+  }
+  let _restoreData = null;
+  function pickRestore(input) {
+    const f = input.files && input.files[0]; input.value = '';
+    if (!f) return;
+    const rd = new FileReader();
+    rd.onload = () => {
+      let d; try { d = JSON.parse(rd.result); } catch (e) { d = null; }
+      if (!d || d.app !== 'm.diary' || !d.hub) { toast('m.diary 백업 파일이 아니에요'); return; }
+      _restoreData = d;
+      const nRec = Object.values(d.apps || {}).concat(Object.entries(d.hub).filter(([k]) => /rec|records/.test(k)).map(([, v]) => v))
+        .reduce((a, v) => { const x = pj(v); return a + (Array.isArray(x) ? x.length : 0); }, 0);
+      const nPh = d.photos ? Object.keys(d.photos).length : 0;
+      document.getElementById('set-restore').innerHTML = `<div class="rs-box">
+        <b>${(d.at || '').slice(0, 10)}</b> 백업 · 기록 약 ${nRec}건${nPh ? ` · 사진 ${nPh}장` : ''}<br>
+        <b>합치기</b>: 이 기기 기록은 두고, 없는 기록만 더합니다.<br>
+        <b>덮어쓰기</b>: 이 기기 기록을 백업 내용으로 바꿉니다.<br>
+        어느 쪽이든 직전 상태를 한 번 되돌릴 수 있어요.
+        <div class="rs-btns"><button class="pri" onclick="applyRestore('merge')">합치기</button><button onclick="applyRestore('overwrite')">덮어쓰기</button><button onclick="_restoreData=null;renderRestoreBox()">취소</button></div></div>`;
+    };
+    rd.readAsText(f);
+  }
+  function renderRestoreBox() {
+    const box = document.getElementById('set-restore'); if (!box) return;
+    const u = localStorage.getItem(UNDO_KEY);
+    box.innerHTML = u ? `<div class="rs-box">${pj(u).at ? pj(u).at.slice(5, 16).replace('T', ' ') + ' ' : ''}복원 전 상태를 보관하고 있어요.
+      <div class="rs-btns"><button onclick="undoRestore()">↩ 복원 되돌리기</button><button onclick="localStorage.removeItem(UNDO_KEY);renderRestoreBox()">보관 지우기</button></div></div>` : '';
+  }
+  // 합치기 — 기록(id 가 있는 배열)은 id 합집합, 같은 id 는 updatedAt 늦은 쪽(없으면 기기), 같은 회차 다른 id 는 기기 유지
+  const isObj = v => v && typeof v === 'object' && !Array.isArray(v);
+  const sameSess = (a, b) => a.date && a.date === b.date && (a.time || '') === (b.time || '') && (a.appId || a.showId || '') === (b.appId || b.showId || '');
+  function mergeVal(dev, bak) {
+    if (dev === undefined || dev === null) return bak;
+    if (bak === undefined || bak === null) return dev;
+    if (Array.isArray(dev) && Array.isArray(bak)) {
+      if ([...dev, ...bak].every(x => isObj(x) && 'id' in x)) {
+        const out = dev.slice();
+        bak.forEach(b => {
+          const i = out.findIndex(d => d.id === b.id);
+          if (i >= 0) { if (b.updatedAt && out[i].updatedAt && b.updatedAt > out[i].updatedAt) out[i] = b; }
+          else if (!out.some(d => sameSess(d, b))) out.push(b);
+        });
+        return out;
+      }
+      const seen = new Set(dev.map(x => JSON.stringify(x)));
+      return dev.concat(bak.filter(x => !seen.has(JSON.stringify(x))));
+    }
+    if (isObj(dev) && isObj(bak)) {
+      if ('photoIds' in dev || 'memo' in dev) return dev;   // 메모·사진 한 칸은 통째로 기기 쪽
+      const out = { ...dev };
+      Object.keys(bak).forEach(k => { out[k] = mergeVal(dev[k], bak[k]); });
+      return out;
+    }
+    return dev;
+  }
+  function remapPhotos(v, map) {
+    if (Array.isArray(v)) return v.map(x => remapPhotos(x, map));
+    if (!isObj(v)) return v;
+    const out = {};
+    Object.keys(v).forEach(k => {
+      out[k] = k === 'photoIds' && Array.isArray(v[k]) ? v[k].map(id => map[id] !== undefined ? map[id] : id) : remapPhotos(v[k], map);
+    });
+    return out;
+  }
+  async function applyRestore(mode) {
+    const d = _restoreData; if (!d) return;
+    if (mode === 'overwrite' && !confirm('이 기기의 기록을 백업 내용으로 바꿀까요? (한 번 되돌릴 수 있어요)')) return;
+    // 직전 상태 보관 (사진은 지우지 않으니 보관하지 않는다)
+    const before = {}; backupKeys().forEach(k => { before[k] = localStorage.getItem(k); });
+    // 사진 — 새 id 를 받고 기록 속 photoIds 를 바꾼다
+    const map = {};
+    if (d.photos) for (const [old, src] of Object.entries(d.photos)) { try { map[old] = await PhotoDB.put(src); } catch (e) {} }
+    const want = {};
+    Object.entries(d.hub).forEach(([k, v]) => { if (!HUB_SKIP.includes(k)) want[HUB_NS + k] = v; });
+    Object.entries(d.apps || {}).forEach(([k, v]) => { want[k] = v; });
+    try {
+      if (mode === 'overwrite') backupKeys().forEach(k => localStorage.removeItem(k));
+      Object.entries(want).forEach(([k, raw]) => {
+        let v = pj(raw);
+        if (k.startsWith(HUB_NS)) v = remapPhotos(v, map);
+        if (mode === 'merge' && localStorage.getItem(k) !== null) {
+          const logical = k.startsWith(HUB_NS) ? k.slice(HUB_NS.length) : k;
+          if (HUB_KEEP.includes(logical) || /_settings$/.test(k)) return;
+          v = mergeVal(pj(localStorage.getItem(k)), v);
+        }
+        localStorage.setItem(k, typeof v === 'string' ? v : JSON.stringify(v));
+      });
+      localStorage.setItem(UNDO_KEY, JSON.stringify({ at: new Date().toISOString(), keys: before }));
+    } catch (e) {
+      // 저장 공간이 차는 등 중간에 실패하면 원래대로
+      backupKeys().forEach(k => localStorage.removeItem(k));
+      Object.entries(before).forEach(([k, v]) => localStorage.setItem(k, v));
+      toast('복원하지 못했어요 · 원래대로 두었습니다 (' + e.message + ')');
+      return;
+    }
+    _restoreData = null;
+    toast(mode === 'merge' ? '합쳤어요' : '덮어썼어요');
+    setTimeout(() => location.reload(), 600);
+  }
+  function undoRestore() {
+    const u = pj(localStorage.getItem(UNDO_KEY) || 'null');
+    if (!u || !u.keys) return;
+    if (!confirm('복원하기 전 상태로 되돌릴까요?')) return;
+    backupKeys().forEach(k => localStorage.removeItem(k));
+    Object.entries(u.keys).forEach(([k, v]) => localStorage.setItem(k, v));
+    localStorage.removeItem(UNDO_KEY);
+    toast('되돌렸어요');
+    setTimeout(() => location.reload(), 600);
+  }
 
   // 앱 기록 다시 읽기 — 네트워크 없이 각 앱 기록(localStorage)만 다시 읽어 달력을 그린다
   function reloadRecords() {
@@ -3656,7 +3804,15 @@
         });
       });
     }
-    return {put, remove, getMany};
+    async function all() {
+      const db = await open();
+      return new Promise((res, rej) => {
+        const out = {}, req = db.transaction(STORE).objectStore(STORE).openCursor();
+        req.onsuccess = e => { const c = e.target.result; if (c) { out[c.key] = c.value; c.continue(); } else res(out); };
+        req.onerror = e => rej(e.target.error);
+      });
+    }
+    return {put, remove, getMany, all};
   })();
 
   // ── 메모/사진 ──
