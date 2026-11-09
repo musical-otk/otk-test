@@ -98,5 +98,9 @@
   {
     "path": "shows/posh2026.json",
     "app": false
+  },
+  {
+    "path": "shows/anarchist2026.json",
+    "app": false
   }
 ]

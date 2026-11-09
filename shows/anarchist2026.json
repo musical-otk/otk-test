@@ -1,0 +1,1187 @@
+{
+  "name": "아나키스트",
+  "icon": "🚲",
+  "color": "#C9921A",
+  "venue": "예스24아트원 1관",
+  "startDate": "2026-09-15",
+  "endDate": "2026-12-06",
+  "official": "https://x.com/mbz_anarchist",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/64924"
+  },
+  "roles": [
+    {
+      "key": "deokhyeong",
+      "label": "덕형"
+    },
+    {
+      "key": "jagyeong",
+      "label": "자경"
+    },
+    {
+      "key": "muhyeok",
+      "label": "무혁"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-09-15",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-09-16",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-09-17",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-09-18",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "15:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "19:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-09-20",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-09-22",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "16:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-09-23",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-09-24",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-09-26",
+      "time": "18:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "14:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-09-27",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-09-29",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "16:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-09-30",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-01",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-02",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "15:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-03",
+      "time": "19:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "14:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-05",
+      "time": "18:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "16:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-07",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "14:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "15:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-10",
+      "time": "19:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "14:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "18:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-13",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-14",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-15",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-16",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "15:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-17",
+      "time": "19:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "14:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "18:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "16:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "15:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "18:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "16:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "16:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "16:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "16:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "16:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "20:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "박좌헌",
+      "muhyeok": "진호"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "deokhyeong": "이진혁",
+      "jagyeong": "정재환",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "박좌헌",
+      "muhyeok": "박준형"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "deokhyeong": "이지연",
+      "jagyeong": "정우연",
+      "muhyeok": "홍나현"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "deokhyeong": "김도빈",
+      "jagyeong": "김재한",
+      "muhyeok": "박주혁"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:00",
+      "deokhyeong": "최호승",
+      "jagyeong": "정재환",
+      "muhyeok": "진호"
+    }
+  ],
+  "events": [
+    {
+      "name": "프리뷰",
+      "startDate": "2026-09-15",
+      "endDate": "2026-09-20",
+      "color": "#C9921A",
+      "description": "정식 개막 전 프리뷰 기간 (이벤트 캘린더 9-10월)",
+      "url": "https://x.com/mbz_anarchist/status/2087736240338776409"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-27",
+      "color": "#C9921A",
+      "description": "본 공연 종료 후 커튼콜에서 플래시 없이 사진·영상 촬영 가능 (자리 이동·삼각대·보조광 불가)",
+      "url": "https://x.com/mbz_anarchist/status/2100495112820465868"
+    },
+    {
+      "name": "트리플 적립 위크",
+      "startDate": "2026-09-22",
+      "endDate": "2026-09-27",
+      "color": "#C9921A",
+      "description": "유료 티켓 1매당 재관람 카드 도장 3개 적립 (당일 회차만, 1개 카드에만 적립)",
+      "url": "https://x.com/mbz_anarchist/status/2100495234568204672"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-09-29",
+      "endDate": "2026-09-29",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M4. 이름이 필요해 · 김도빈 김재한 진호",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-09-30",
+      "endDate": "2026-09-30",
+      "color": "#C9921A",
+      "times": [
+        "16:00",
+        "20:00"
+      ],
+      "description": "M4. 이름이 필요해 · 16시 이지연 정우연 홍나현 / 20시 이진혁 정재환 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-01",
+      "endDate": "2026-10-01",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M13. 우리만의 이상촌 · 박좌헌 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-02",
+      "endDate": "2026-10-02",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M5. 정의로운 은행강도 · 이지연 정우연 홍나현",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-03",
+      "endDate": "2026-10-03",
+      "color": "#C9921A",
+      "times": [
+        "15:00"
+      ],
+      "description": "M5. 정의로운 은행강도 · 최호승 정재환 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-03",
+      "endDate": "2026-10-03",
+      "color": "#C9921A",
+      "times": [
+        "19:00"
+      ],
+      "description": "M11. 내게도 생일이 · 최호승 박좌헌 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-04",
+      "endDate": "2026-10-04",
+      "color": "#C9921A",
+      "times": [
+        "14:00",
+        "18:00"
+      ],
+      "description": "M6. 환상의 짝꿍 · 14시 이지연 정우연 홍나현 / 18시 이진혁 김재한 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-10-05",
+      "endDate": "2026-10-05",
+      "color": "#C9921A",
+      "times": [
+        "14:00",
+        "18:00"
+      ],
+      "description": "M11. 내게도 생일이 · 14시 김도빈 박좌헌 진호 / 18시 김도빈 정재환 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2102669501414441464"
+    },
+    {
+      "name": "쿠폰팩 증정 위크",
+      "startDate": "2026-09-29",
+      "endDate": "2026-10-05",
+      "color": "#C9921A",
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 쿠폰팩 1매 (현장예매 50% 할인권 · MD 2,000원 할인권 · 할인 증빙 프리패스권 2매 · 초콜릿 증정권)",
+      "url": "https://x.com/mbz_anarchist/status/2102669642405961738"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 1",
+      "startDate": "2026-10-07",
+      "endDate": "2026-10-07",
+      "color": "#C9921A",
+      "times": [
+        "16:00",
+        "20:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 1)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 1",
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-08",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 1)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 1",
+      "startDate": "2026-10-09",
+      "endDate": "2026-10-09",
+      "color": "#C9921A",
+      "times": [
+        "14:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 1)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 2",
+      "startDate": "2026-10-09",
+      "endDate": "2026-10-09",
+      "color": "#C9921A",
+      "times": [
+        "18:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 2)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 2",
+      "startDate": "2026-10-10",
+      "endDate": "2026-10-10",
+      "color": "#C9921A",
+      "times": [
+        "15:00",
+        "19:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 2)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 1",
+      "startDate": "2026-10-11",
+      "endDate": "2026-10-11",
+      "color": "#C9921A",
+      "times": [
+        "14:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 1)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "미공개 페어 엽서 SET 2",
+      "startDate": "2026-10-11",
+      "endDate": "2026-10-11",
+      "color": "#C9921A",
+      "times": [
+        "18:00"
+      ],
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 엽서 4종 1SET (이 회차는 SET 2)",
+      "url": "https://x.com/mbz_anarchist/status/2105885885569069186"
+    },
+    {
+      "name": "생일 축하 카드 증정 위크",
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-18",
+      "color": "#C9921A",
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 카드 1매 (QR로 당일 출연진의 M11. 내게도 생일이 음원·덕형 자경 생일 축하 메시지, 12/6까지)",
+      "url": "https://x.com/mbz_anarchist/status/2108392050504990846"
+    },
+    {
+      "name": "더블 적립 위크",
+      "startDate": "2026-10-13",
+      "endDate": "2026-10-18",
+      "color": "#C9921A",
+      "description": "유료 티켓 1매당 재관람 카드 도장 2개 적립 (당일 회차만, 1개 카드에만 적립)",
+      "url": "https://x.com/mbz_anarchist/status/2108392193362985264"
+    },
+    {
+      "name": "혁명단 비밀 문서 증정",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-25",
+      "color": "#C9921A",
+      "description": "극장 지하 1·2층 비밀 문서 QR로 당일 출연진 아카이빙 콘텐츠 열람 (마이크 테스트·미공개 사진·셀카·비하인드 컷, 12/6까지)",
+      "url": "https://x.com/mbz_anarchist/status/2112407735707078997"
+    },
+    {
+      "name": "셀카 포토카드 증정",
+      "startDate": "2026-10-27",
+      "endDate": "2026-11-01",
+      "color": "#C9921A",
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 당일 출연진 셀카 포토카드 3종 SET (같은 캐스트도 회차마다 다름)",
+      "url": "https://x.com/mbz_anarchist/status/2114932674465018300"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-03",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M19. 나는 돌멩이 Rep. · M20. 내 안에 나라를 세워 · 이지연 정우연 홍나현",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#C9921A",
+      "times": [
+        "16:00"
+      ],
+      "description": "M3. 불어오는 바람에 말을 걸어 · 김도빈 정재환 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M5. 정의로운 은행강도 · 김도빈 박좌헌 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-05",
+      "endDate": "2026-11-05",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M19. 나는 돌멩이 Rep. · M20. 내 안에 나라를 세워 · 최호승 김재한 박주혁",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "M13. 우리만의 이상촌 · 정재환 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#C9921A",
+      "times": [
+        "15:00"
+      ],
+      "description": "M8. 언제까지 이러고 · 이지연 홍나현",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-07",
+      "color": "#C9921A",
+      "times": [
+        "19:00"
+      ],
+      "description": "M7. 하나도 없어 · 이지연 정우연 홍나현",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#C9921A",
+      "times": [
+        "14:00"
+      ],
+      "description": "M3. 불어오는 바람에 말을 걸어 · 최호승 박좌헌 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "2차 스페셜 커튼콜",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#C9921A",
+      "times": [
+        "18:00"
+      ],
+      "description": "M19. 나는 돌멩이 Rep. · M20. 내 안에 나라를 세워 · 이진혁 정재환 박준형",
+      "url": "https://x.com/mbz_anarchist/status/2116109192943812832"
+    },
+    {
+      "name": "더블 적립 위크",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-08",
+      "color": "#C9921A",
+      "description": "유료 티켓 1매당 재관람 카드 도장 2개 적립 (당일 회차만)",
+      "url": "https://x.com/mbz_anarchist/status/2116109257737384142"
+    },
+    {
+      "name": "재관람 6회 혜택 폴라로이드 수령",
+      "startDate": "2026-11-06",
+      "endDate": "2026-12-06",
+      "color": "#C9921A",
+      "description": "6회 관람 혜택인 지정 폴라로이드 1매 수령 (11/6 20시 공연부터 폐막일까지, 각 배우의 마지막 공연까지)",
+      "url": "https://x.com/mbz_anarchist/status/2117179956719653058"
+    },
+    {
+      "name": "페어 폴라로이드 증정",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-15",
+      "color": "#C9921A",
+      "description": "당일 회차 유료 티켓 1매당 페어 폴라로이드 1매 (출연진 2인 이상 페어컷, 11/11 20시·11/12 20시 전관 행사에도 동일)",
+      "url": "https://x.com/mbz_anarchist/status/2117422859341697113"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "단체 전관 공연 — 일반 예매 회차가 아님 (3차 캐스팅 스케줄표 표기)",
+      "url": "https://x.com/mbz_anarchist/status/2105501561715917131"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#C9921A",
+      "times": [
+        "20:00"
+      ],
+      "description": "단체 전관 공연 — 일반 예매 회차가 아님 (3차 캐스팅 스케줄표 표기)",
+      "url": "https://x.com/mbz_anarchist/status/2105501561715917131"
+    },
+    {
+      "name": "럭키드로우 & 막공 무대인사",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-06",
+      "color": "#C9921A",
+      "description": "막공 주간 럭키드로우와 배우별 막공 무대인사 (스케줄표 표기, 상세 공지 전)",
+      "url": "https://x.com/mbz_anarchist/status/2115623967004479627"
+    }
+  ]
+}
