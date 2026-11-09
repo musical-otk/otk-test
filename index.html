@@ -253,7 +253,7 @@
     .ev-item-hd { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .ev-item-name { font-weight: 700; font-size: 14px; }
     .ev-item-when { font-size: 12px; color: var(--text3); }
-    .ev-item-desc { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.5; white-space: pre-line; }
+    .ev-item-desc { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.6; white-space: pre-line; }
     .ev-link { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--custom); text-decoration: none; }
     .ev-sess { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 13px; }
     .ev-sess-when { flex: none; font-weight: 600; min-width: 92px; }
@@ -3245,9 +3245,13 @@
   const evWorkOf = id => catalog('all').works.find(w => w.id === id);
   const evMd = d => d.slice(5).replace('-', '/');
   const evWhenTxt = e => evMd(e.startDate) + (e.endDate && e.endDate !== e.startDate ? '~' + evMd(e.endDate) : '') + (e.times && e.times.length ? ' ' + e.times.join('·') : '');
+  // 설명은 한 줄로 길게 적혀 있다 — 문장 끝('다.'·'요.'·'가능).' 등)과 ' — ' · ' / ' 에서 줄을 바꾼다.
+  // 'M4. 이름이 필요해' 처럼 숫자 뒤 점은 그대로 둔다
+  const evDescLines = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')   // '<이끼숲>' 이 태그로 사라지지 않게
+    .replace(/([가-힣)])\. +/g, '$1.\n').replace(/ — /g, ' —\n').replace(/ \/ /g, '\n').trim();
   const evItem = (e, noWhen) => `<div class="ev-item">
       <div class="ev-item-hd"><span class="ev-item-name">${e.name}</span>${noWhen ? '' : `<span class="ev-item-when">${evWhenTxt(e)}</span>`}</div>
-      ${e.description ? `<div class="ev-item-desc">${e.description}</div>` : ''}
+      ${e.description ? `<div class="ev-item-desc">${evDescLines(e.description)}</div>` : ''}
       ${e.url ? `<a class="ev-link" href="${e.url}" target="_blank" rel="noopener">원문 보기 ↗</a>` : ''}
     </div>`;
   const evRecOf = (w, s) => (getAttended()[s.date] || []).find(x => recHit(x, w.id, s));
