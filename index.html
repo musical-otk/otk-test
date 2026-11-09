@@ -2966,14 +2966,16 @@
   function openEvGroup(gi) {
     const g = _evGroups[gi]; if (!g) return;
     const { w, name, list } = g;
+    // 지난 회차는 숨긴다 — 내 기록이 있는 지난 회차만 남긴다
     const rows = rowsOf(w).filter(s => list.some(e => evAt(e, s.date, s.time)))
+      .filter(s => s.date >= todayStr || evRecOf(w, s))
       .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
     const sess = rows.map(s => {
-      const d = new Date(s.date + 'T00:00:00'), past = s.date < todayStr, r = evRecOf(w, s);
+      const d = new Date(s.date + 'T00:00:00'), past = s.date < todayStr;
       return `<div class="ev-sess${past ? ' past' : ''}">
         <span class="ev-sess-when">${evMd(s.date)}(${DOW[d.getDay()]}) ${s.time || ''}</span>
         <span class="ev-sess-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
-        ${past && !r ? '<span class="ev-item-when">지난 회차</span>' : evRecBtn(w, s)}
+        ${evRecBtn(w, s)}
       </div>`;
     }).join('');
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${name} · ${w.name}`,
