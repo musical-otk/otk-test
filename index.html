@@ -195,6 +195,8 @@
                border: 1px solid var(--border); border-radius: 10px; background: var(--bg3); color: var(--text1); font-size: 13px; cursor: pointer; }
     .flt-hit.on { opacity: 0.6; }
     .flt-hit-name { font-weight: 700; flex-shrink: 0; }
+    .srch-past-btns { display: flex; gap: 12px; }
+    .srch-past-n { font-variant-numeric: tabular-nums; opacity: .7; }
     .flt-hit-bk { margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--text3); }
     .flt-hit-bk .n { display: inline-block; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
     .flt-hit-sub { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -3210,11 +3212,11 @@
 
   // ── 정보 검색 ── 앱 추가와 따로. 달력에 없는 공연도 찾고, 정보만 작품은 여기서 넣고 뺀다
   let _srchSel = null;   // 자세히 보는 것 { type: 'work' | 'actor', key }
-  let _srchPastOpen = false;
+  let _srchPastOpen = 0;   // 펼친 지난 회차 수 — 누를 때마다 10개씩
   const _srchActors = new Set();   // 공연 자세히에서 좁혀 보는 배우
   function toggleSrchActor(n) { if (_srchActors.has(n)) _srchActors.delete(n); else _srchActors.add(n); renderSearch(); }
   function pickSearch(type, key) {
-    _srchSel = { type, key }; _srchPastOpen = false; _srchActors.clear();
+    _srchSel = { type, key }; _srchPastOpen = 0; _srchActors.clear();
     const q = document.getElementById('srch-q');
     _srchBackQ = q ? q.value : '';   // '‹ 목록'은 들어오기 전 화면으로 — 빈 칸에서 왔으면 전체 목록
     pushRecentQ(_srchBackQ);
@@ -3399,10 +3401,15 @@
     if (!q && !_srchSel) {
       const all = works.filter(w => w.kind !== 'extra').sort((a, b) => (a.fullName || a.name).localeCompare(b.fullName || b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
       const on = all.filter(live), ended = all.filter(w => !live(w));   // 끝난 공연은 접어 둔다
+      // 공연 중 = 이미 막을 올림, 예정 = 첫 회차가 아직(회차가 없으면 예정). 예정은 개막이 빠른 순
+      const first = w => rowsOf(w).reduce((m, r) => (!m || r.date < m ? r.date : m), '');
+      const playing = on.filter(w => first(w) && first(w) <= todayStr);
+      const soon = on.filter(w => !playing.includes(w)).sort((a, b) => (first(a) || '9999').localeCompare(first(b) || '9999'));
       const rq = getRecentQ();
       box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연·배우·이벤트 이름이나 날짜(11/21)로 찾아요</div>' +
         (rq.length ? `<div class="srch-recent">${rq.map((t, i) => `<button class="srch-chip" onclick="useRecentQ(${i})">${t}<span class="x" onclick="event.stopPropagation();dropRecentQ(${i})">✕</span></button>`).join('')}<button class="clr" onclick="dropRecentQ(-1)">전체 삭제</button></div>` : '') +
-        (all.length ? `<div class="flt-sec">공연 ${on.length}</div>` + on.map(workHit).join('') +
+        (all.length ? (playing.length ? `<div class="flt-sec">공연 중 ${playing.length}</div>` + playing.map(workHit).join('') : '') +
+          (soon.length ? `<div class="flt-sec">공연 예정 ${soon.length}</div>` + soon.map(workHit).join('') : '') +
           (ended.length ? `<button class="srch-back" onclick="_srchEndedOpen=!_srchEndedOpen;renderSearch()">${_srchEndedOpen ? '지난 공연 접기 ▴' : `지난 공연 ${ended.length}개 ▾`}</button>` +
             (_srchEndedOpen ? ended.map(workHit).join('') : '') : '')
           : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '불러오는 중…' : '올라온 공연이 없어요'}</div>`);
@@ -3496,11 +3503,12 @@
       const att = getAttended();
       const sorted = [...items].sort((a, b) => (a.s.date + (a.s.time || '')).localeCompare(b.s.date + (b.s.time || '')));
       const past = sorted.filter(x => x.s.date < todayStr);
-      const open = _srchPastOpen;
-      const show = open ? sorted : sorted.filter(x => x.s.date >= todayStr);
+      // 지난 회차는 오늘에 가까운 것부터 10개씩 더 펼친다
+      const nPast = Math.min(_srchPastOpen, past.length), more = past.length - nPast;
+      const show = past.slice(past.length - nPast).concat(sorted.filter(x => x.s.date >= todayStr));
       const evOn = (w, ds, time) => eventsOf(w).filter(e => evAt(e, ds, time)).map(e => e.name);
       return `<div class="srch-sess">
-        ${past.length ? `<button class="srch-back" onclick="_srchPastOpen=!_srchPastOpen;renderSearch()">${open ? '지난 회차 접기 ▴' : `지난 회차 ${past.length}개 ▾`}</button>` : ''}
+        ${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `${Math.min(10, more)}개 더 보기 ▾ <span class="srch-past-n">남은 ${more}</span>` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}
         ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => recHit(x, w.id, s));
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
