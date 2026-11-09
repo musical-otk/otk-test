@@ -243,6 +243,28 @@
     .srch-open { background: none; border: none; font-size: 12px; color: var(--text2); cursor: pointer; }
     .srch-time.sat { color: var(--sat); }
     .srch-time.sun { color: #c06060; }
+    .srch-tag.ev { cursor: pointer; }
+    .ev-item { padding: 10px 16px; border-top: 1px solid var(--border); }
+    .ev-item:first-child { border-top: none; }
+    .ev-item-hd { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .ev-item-name { font-weight: 700; font-size: 14px; }
+    .ev-item-when { font-size: 12px; color: var(--text3); }
+    .ev-item-desc { font-size: 13px; color: var(--text2); margin-top: 4px; line-height: 1.5; white-space: pre-line; }
+    .ev-link { display: inline-block; margin-top: 6px; font-size: 12px; color: var(--custom); text-decoration: none; }
+    .ev-sess { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 13px; }
+    .ev-sess-when { flex: none; font-weight: 600; min-width: 92px; }
+    .ev-sess-cast { flex: 1; color: var(--text2); font-size: 12px; min-width: 0; }
+    .ev-sess.past { opacity: .55; }
+    .ev-btn { flex: none; font-size: 12px; padding: 5px 10px; border-radius: 12px; border: 1px solid var(--custom); background: none; color: var(--custom); cursor: pointer; }
+    .ev-btn.mine { background: var(--custom); color: #fff; }
+    .ev-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 10px 16px 16px; border-top: 1px solid var(--border); }
+    .ev-foot:empty { display: none; }
+    .ev-foot .ev-btn { font-size: 13px; padding: 7px 14px; }
+    .ev-foot .ev-plain { border-color: var(--border); color: var(--text2); }
+    .srch-recent { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 0 2px 10px; }
+    .srch-recent .srch-chip { display: inline-flex; align-items: center; gap: 4px; }
+    .srch-recent .x { color: var(--text3); font-size: 11px; padding-left: 2px; }
+    .srch-recent .clr { background: none; border: none; color: var(--text3); font-size: 11px; cursor: pointer; }
     .srch-tag.mine { color: var(--custom); border-color: var(--custom); font-weight: 700; }
     .srch-back { background: none; border: none; color: var(--text2); font-size: 13px; padding: 4px 2px 8px; cursor: pointer; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
@@ -890,6 +912,18 @@
       <button class="btn-primary" onclick="saveAppForm()">추가</button>
     </div>
     </div>
+  </div>
+</div>
+
+<!-- 이벤트 자세히 — 회차 칩·검색 이벤트에서 -->
+<div class="overlay" id="ov-ev" onclick="closeOnBg(event,'ov-ev')">
+  <div class="sheet" style="max-height:80vh;overflow-y:auto">
+    <div class="sheet-handle"></div>
+    <div class="custom-hd">
+      <div class="custom-title" id="ev-sheet-title">이벤트</div>
+      <button class="custom-close" onclick="closeEvSheet()">✕</button>
+    </div>
+    <div id="ev-sheet-body"></div>
   </div>
 </div>
 
@@ -2875,6 +2909,7 @@
     _srchSel = { type, key }; _srchPastOpen = false; _srchActors.clear();
     const q = document.getElementById('srch-q');
     _srchBackQ = q ? q.value : '';   // '‹ 목록'은 들어오기 전 화면으로 — 빈 칸에서 왔으면 전체 목록
+    pushRecentQ(_srchBackQ);
     if (q && !q.value) {   // 관심 페이지에서 넘어오면 검색어가 비어 있다 — 이름을 넣어 둔다
       const w = type === 'work' && (catalog('all').works.find(x => x.id === key) || {});
       q.value = type === 'work' ? (w.name || '') : key;
@@ -2883,6 +2918,71 @@
   }
   let _srchEndedOpen = false;
   let _srchBackQ = '';
+  // 최근 검색어 — 결과를 눌렀을 때의 검색어를 5개까지 (기기마다 따로)
+  const RECENT_Q_KEY = 'otk_recent_q';
+  function getRecentQ() { try { return JSON.parse(localStorage.getItem(RECENT_Q_KEY) || '[]'); } catch (e) { return []; } }
+  function saveRecentQ(a) { try { localStorage.setItem(RECENT_Q_KEY, JSON.stringify(a)); } catch (e) {} }
+  function pushRecentQ(t) {
+    t = (t || '').trim();
+    if (t) saveRecentQ([t, ...getRecentQ().filter(x => x !== t)].slice(0, 5));
+  }
+  function useRecentQ(i) { const q = document.getElementById('srch-q'); q.value = getRecentQ()[i] || ''; renderSearch(); }
+  function dropRecentQ(i) { saveRecentQ(i < 0 ? [] : getRecentQ().filter((_, k) => k !== i)); renderSearch(); }
+
+  // 이벤트 자세히 — 회차 칩은 그 회차 이벤트 전부(누른 것 먼저), 검색 이벤트는 걸린 회차 목록까지
+  let _evGroups = [];
+  const evWorkOf = id => catalog('all').works.find(w => w.id === id);
+  const evMd = d => d.slice(5).replace('-', '/');
+  const evWhenTxt = e => evMd(e.startDate) + (e.endDate && e.endDate !== e.startDate ? '~' + evMd(e.endDate) : '') + (e.times && e.times.length ? ' ' + e.times.join('·') : '');
+  const evItem = (e, noWhen) => `<div class="ev-item">
+      <div class="ev-item-hd"><span class="ev-item-name">${e.name}</span>${noWhen ? '' : `<span class="ev-item-when">${evWhenTxt(e)}</span>`}</div>
+      ${e.description ? `<div class="ev-item-desc">${e.description}</div>` : ''}
+      ${e.url ? `<a class="ev-link" href="${e.url}" target="_blank" rel="noopener">X 원문 보기 ↗</a>` : ''}
+    </div>`;
+  const evRecOf = (w, s) => (getAttended()[s.date] || []).find(x => recHit(x, w.id, s));
+  const evRecBtn = (w, s) => {
+    const r = evRecOf(w, s);
+    return `<button class="ev-btn${r ? ' mine' : ''}" onclick="evRec('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">${r ? '내 기록 보기' : '예매 기록'}</button>`;
+  };
+  function showEvSheet(title, html) {
+    document.getElementById('ev-sheet-title').textContent = title;
+    document.getElementById('ev-sheet-body').innerHTML = html;
+    document.getElementById('ov-ev').classList.add('open');
+  }
+  function closeEvSheet() { document.getElementById('ov-ev').classList.remove('open'); }
+  function evRec(id, ds, time, showId) { closeEvSheet(); sessTap(id, ds, time, showId); }
+  function evToWork(id) { closeEvSheet(); pickSearch('work', id); }
+  function openEvSess(id, ds, time, showId, i) {
+    const w = evWorkOf(id); if (!w) return;
+    const evs = eventsOf(w).filter(e => e.name && evAt(e, ds, time));
+    if (!evs.length) return;
+    const first = evs[i] || evs[0];
+    const s = rowsOf(w).find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId)) || { date: ds, time, _showId: showId };
+    const d = new Date(ds + 'T00:00:00');
+    showEvSheet(`${w.icon ? w.icon + ' ' : ''}${w.name} · ${evMd(ds)}(${DOW[d.getDay()]}) ${time}`,
+      [first, ...evs.filter(e => e !== first)].map(e => evItem(e)).join('') +
+      `<div class="ev-foot">${ds >= todayStr || evRecOf(w, s) ? evRecBtn(w, s) : ''}</div>`);
+  }
+  function openEvGroup(gi) {
+    const g = _evGroups[gi]; if (!g) return;
+    const { w, name, list } = g;
+    const rows = rowsOf(w).filter(s => list.some(e => evAt(e, s.date, s.time)))
+      .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
+    const sess = rows.map(s => {
+      const d = new Date(s.date + 'T00:00:00'), past = s.date < todayStr, r = evRecOf(w, s);
+      return `<div class="ev-sess${past ? ' past' : ''}">
+        <span class="ev-sess-when">${evMd(s.date)}(${DOW[d.getDay()]}) ${s.time || ''}</span>
+        <span class="ev-sess-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+        ${past && !r ? '<span class="ev-item-when">지난 회차</span>' : evRecBtn(w, s)}
+      </div>`;
+    }).join('');
+    showEvSheet(`${w.icon ? w.icon + ' ' : ''}${name} · ${w.name}`,
+      // 회차마다 나뉜 같은 이벤트는 설명·원문이 같으면 한 번만 — 날짜는 아래 회차 목록이 보여 준다
+      list.filter((e, i) => list.findIndex(x => (x.description || '') === (e.description || '') && (x.url || '') === (e.url || '')) === i)
+        .map(e => evItem(e, rows.length > 0)).join('') + sess +
+      `<div class="ev-foot"><button class="ev-btn ev-plain" onclick="evToWork('${w.id}')">작품 상세로 ›</button></div>`);
+    pushRecentQ((document.getElementById('srch-q') || {}).value);
+  }
   function backSearch() { _srchSel = null; const q = document.getElementById('srch-q'); if (q) q.value = _srchBackQ; renderSearch(); }
   // 🔍 는 열고 닫기를 오간다. 다른 탭(앱)에 있으면 달력으로 돌아와서 연다
   function openSearch() {
@@ -2974,7 +3074,9 @@
     if (!q && !_srchSel) {
       const all = works.filter(w => w.kind !== 'extra').sort((a, b) => (a.fullName || a.name).localeCompare(b.fullName || b.name, 'ko'));   // '기타'는 묶음이라 뺀다 (검색으로는 나온다)
       const on = all.filter(live), ended = all.filter(w => !live(w));   // 끝난 공연은 접어 둔다
+      const rq = getRecentQ();
       box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연·배우·이벤트 이름, 날짜(11/21 · 11월 21일)로 찾습니다.</div>' +
+        (rq.length ? `<div class="srch-recent">${rq.map((t, i) => `<button class="srch-chip" onclick="useRecentQ(${i})">${t}<span class="x" onclick="event.stopPropagation();dropRecentQ(${i})">✕</span></button>`).join('')}<button class="clr" onclick="dropRecentQ(-1)">전체 삭제</button></div>` : '') +
         (all.length ? `<div class="flt-sec">공연 ${on.length}</div>` + on.map(workHit).join('') +
           (ended.length ? `<button class="srch-back" onclick="_srchEndedOpen=!_srchEndedOpen;renderSearch()">${_srchEndedOpen ? '지난 공연 접기 ▴' : `지난 공연 ${ended.length}개 ▾`}</button>` +
             (_srchEndedOpen ? ended.map(workHit).join('') : '') : '')
@@ -3087,7 +3189,7 @@
             ${withIcon ? `<span class="srch-icon" title="${w.name}">${w.icon || '•'}</span>` : ''}
             <div class="srch-body">
               <div class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</div>
-              ${ev.length ? `<div class="srch-evs">${ev.map(x => `<span class="srch-tag">${x}</span>`).join('')}</div>` : ''}
+              ${ev.length ? `<div class="srch-evs">${ev.map((x, i) => `<span class="srch-tag ev" onclick="event.stopPropagation();openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',${i})">${x}</span>`).join('')}</div>` : ''}
             </div>
           </div>`;
         }).join('')}
@@ -3135,8 +3237,9 @@
       .forEach(e => { const k = w.id + '|' + e.name; if (!evMap.has(k)) evMap.set(k, { w, name: e.name, list: [] }); evMap.get(k).list.push(e); }));
     const evs = [...evMap.values()].map(g => (g.list.sort((a, b) => evFirst(a).localeCompare(evFirst(b))), g))
       .sort((a, b) => evFirst(a.list[0]).localeCompare(evFirst(b.list[0]))).slice(0, 12);
-    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, name, list }) =>
-      `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
+    _evGroups = evs;
+    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, name, list }, gi) =>
+      `<button class="flt-hit" onclick="openEvGroup(${gi})">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${name}</span>
         <span class="flt-hit-sub">${w.name} · ${list.slice(0, 4).map(evWhen).join(' · ')}${list.length > 4 ? ` 외 ${list.length - 4}회` : ''}</span>
