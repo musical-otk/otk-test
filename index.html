@@ -257,6 +257,11 @@
     .ev-sess.past { opacity: .55; }
     .ev-btn { flex: none; font-size: 12px; padding: 5px 10px; border-radius: 12px; border: 1px solid var(--custom); background: none; color: var(--custom); cursor: pointer; }
     .ev-btn.mine { background: var(--custom); color: #fff; }
+    .ev-cast { padding: 10px 16px; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13px; align-items: baseline; }
+    .ev-cast-row { display: contents; }
+    .ev-cast-row > span:only-child { grid-column: 1 / -1; }
+    .ev-cast-lbl { color: var(--text3); font-size: 12px; }
+    .ev-cast + .ev-item { border-top: 1px solid var(--border); }
     .ev-foot { display: flex; gap: 8px; justify-content: flex-end; padding: 10px 16px 16px; border-top: 1px solid var(--border); }
     .ev-foot:empty { display: none; }
     .ev-foot .ev-btn { font-size: 13px; padding: 7px 14px; }
@@ -2942,7 +2947,20 @@
   const evRecOf = (w, s) => (getAttended()[s.date] || []).find(x => recHit(x, w.id, s));
   const evRecBtn = (w, s) => {
     const r = evRecOf(w, s);
-    return `<button class="ev-btn${r ? ' mine' : ''}" onclick="evRec('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">${r ? '내 기록 보기' : '예매 기록'}</button>`;
+    return `<button class="ev-btn${r ? ' mine' : ''}" onclick="evRec('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">${r ? '내 기록 보기' : s.date < todayStr ? '관람 기록' : '예매 기록'}</button>`;
+  };
+  // 회차 캐스팅 — 배역 이름(정보만 info.roles, 앱 show-info roles)을 붙이고, 이름이 같은 배역 칸은 한 줄로
+  const evCast = (w, s) => {
+    const roles = (infoOf(w) || {}).roles || appInfoOf(w).roles || [];
+    const lines = new Map();
+    getActorFields(s).forEach(k => {
+      if (!s[k]) return;
+      const lbl = (roles.find(r => r.key === k) || {}).label || '';
+      if (!lines.has(lbl || k)) lines.set(lbl || k, { lbl, names: [] });
+      lines.get(lbl || k).names.push(s[k]);
+    });
+    return lines.size ? `<div class="ev-cast">${[...lines.values()].map(g =>
+      `<div class="ev-cast-row">${g.lbl ? `<span class="ev-cast-lbl">${g.lbl}</span>` : ''}<span>${g.names.join(' · ')}</span></div>`).join('')}</div>` : '';
   };
   function showEvSheet(title, html) {
     document.getElementById('ev-sheet-title').textContent = title;
@@ -2952,16 +2970,17 @@
   function closeEvSheet() { document.getElementById('ov-ev').classList.remove('open'); }
   function evRec(id, ds, time, showId) { closeEvSheet(); sessTap(id, ds, time, showId); }
   function evToWork(id) { closeEvSheet(); pickSearch('work', id); }
+  // 회차 자세히 — 회차 줄은 캐스팅 + 그 회차 이벤트 전부, 이벤트 칩은 누른 이벤트를 먼저
   function openEvSess(id, ds, time, showId, i) {
     const w = evWorkOf(id); if (!w) return;
     const evs = eventsOf(w).filter(e => e.name && evAt(e, ds, time));
-    if (!evs.length) return;
     const first = evs[i] || evs[0];
     const s = rowsOf(w).find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId)) || { date: ds, time, _showId: showId };
     const d = new Date(ds + 'T00:00:00');
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${w.name} · ${evMd(ds)}(${DOW[d.getDay()]}) ${time}`,
-      [first, ...evs.filter(e => e !== first)].map(e => evItem(e)).join('') +
-      `<div class="ev-foot">${ds >= todayStr || evRecOf(w, s) ? evRecBtn(w, s) : ''}</div>`);
+      evCast(w, s) +
+      (first ? [first, ...evs.filter(e => e !== first)].map(e => evItem(e)).join('') : '') +
+      `<div class="ev-foot">${evRecBtn(w, s)}</div>`);
   }
   function openEvGroup(gi) {
     const g = _evGroups[gi]; if (!g) return;
@@ -3183,7 +3202,7 @@
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
           const ev = evOn(w, s.date, s.time);
           const dow = new Date(s.date + 'T00:00:00').getDay();
-          return `<div class="srch-row" onclick="sessTap('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">
+          return `<div class="srch-row" onclick="openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',-1)">
             <div class="srch-when">
               <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
               ${mark ? `<span class="srch-mark${r && r.transferred ? ' tr' : ''}">${mark}</span>` : ''}
