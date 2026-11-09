@@ -1,0 +1,728 @@
+{
+  "name": "하트비트: 심폐소생일지",
+  "icon": "🫀",
+  "color": "#9B1C1C",
+  "venue": "링크아트센터드림 드림3관",
+  "startDate": "2026-10-20",
+  "endDate": "2027-01-03",
+  "official": "https://x.com/nangman_b20",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/65738"
+  },
+  "roles": [
+    {
+      "key": "jeyoung",
+      "label": "제영"
+    },
+    {
+      "key": "sinae",
+      "label": "성시내"
+    },
+    {
+      "key": "simjang",
+      "label": "심장"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-20",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "14:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "18:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-10-26",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "14:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "18:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-02",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "16:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-09",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "16:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-16",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "jeyoung": "김이후",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "효은",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "jeyoung": "정우연",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "jeyoung": "이한별",
+      "sinae": "한재아",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-23",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "이채원"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "jeyoung": "이한별",
+      "sinae": "최수진",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "jeyoung": "김이후",
+      "sinae": "효은",
+      "simjang": "임예진"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "jeyoung": "정우연",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "18:00",
+      "jeyoung": "김이후",
+      "sinae": "한재아",
+      "simjang": "전민지"
+    }
+  ],
+  "events": [
+    {
+      "name": "프리뷰 위크",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-26",
+      "color": "#9B1C1C",
+      "description": "전석 35,000원 + 쿠폰팩 4종 증정 + 첫공 무대인사",
+      "url": "https://x.com/nangman_b20/status/2098592445525082158"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-10-20",
+      "endDate": "2026-10-20",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "첫공 무대인사 회차 (무대인사 시에만 플래시 없이 촬영 가능)",
+      "url": "https://x.com/nangman_b20/status/2110944070000603350"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-10-21",
+      "endDate": "2026-10-21",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "첫공 무대인사 회차 (무대인사 시에만 플래시 없이 촬영 가능)",
+      "url": "https://x.com/nangman_b20/status/2110944070000603350"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-10-22",
+      "endDate": "2026-10-22",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "첫공 무대인사 회차 (무대인사 시에만 플래시 없이 촬영 가능)",
+      "url": "https://x.com/nangman_b20/status/2110944070000603350"
+    },
+    {
+      "name": "쿠폰팩 4종 증정",
+      "startDate": "2026-10-20",
+      "endDate": "2026-11-01",
+      "color": "#9B1C1C",
+      "description": "티켓 수령 시 매표소에서 유료 티켓 1매당 쿠폰팩 4종 증정",
+      "url": "https://x.com/nangman_b20/status/2112465296598667365"
+    },
+    {
+      "name": "프로필 포토카드 증정 · 커튼콜 촬영 위크",
+      "startDate": "2026-10-28",
+      "endDate": "2026-11-01",
+      "color": "#9B1C1C",
+      "description": "당일 출연진 3종 세트 포토카드(앞 프로필 사진/뒤 배우 메시지) 증정, 커튼콜 촬영 가능(플래시 없이, 좌석 이동 불가)",
+      "url": "https://x.com/nangman_b20/status/2114703593764966684"
+    },
+    {
+      "name": "더블 적립 위크",
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-08",
+      "color": "#9B1C1C",
+      "description": "유료 티켓 1매당 재관람 카드 도장 2개 적립 (서로 다른 카드에 하나씩 가능)",
+      "url": "https://x.com/nangman_b20/status/2116500435586396540"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-09",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "05. CPR - 김이후 · 최수진 · 전민지 (공연 종료 후 촬영 가능, 중도 퇴장 시 재입장 불가)",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#9B1C1C",
+      "times": [
+        "16:00"
+      ],
+      "description": "05. CPR - 이한별 · 한재아 · 이채원",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "12. 축하파티 - 김이후 · 한재아 · 임예진",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "05. CPR - 정우연 · 효은 · 전민지",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "12. 축하파티 - 정우연 · 최수진 · 이채원",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#9B1C1C",
+      "times": [
+        "15:00"
+      ],
+      "description": "12. 축하파티 - 이한별 · 효은 · 전민지",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-14",
+      "color": "#9B1C1C",
+      "times": [
+        "19:00"
+      ],
+      "description": "14. 침략자 - 이한별 · 임예진",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-15",
+      "color": "#9B1C1C",
+      "times": [
+        "14:00"
+      ],
+      "description": "12. 축하파티 - 김이후 · 최수진 · 이채원 (제영 정우연 → 김이후 캐스팅 변경 반영)",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-15",
+      "endDate": "2026-11-15",
+      "color": "#9B1C1C",
+      "times": [
+        "18:00"
+      ],
+      "description": "14. 침략자 - 김이후 · 전민지",
+      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "야간 공연 관람권",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전석 10,000원 (대학로티켓.com, 10/24 12:00 오픈)",
+      "url": "https://x.com/nangman_b20/status/2113623980015771671"
+    },
+    {
+      "name": "마음문고 투명 책갈피 증정 위크",
+      "startDate": "2026-11-16",
+      "endDate": "2026-11-22",
+      "color": "#9B1C1C",
+      "description": "유료 티켓 1매당 마음문고 투명 책갈피 1개, 티켓 수령 시 매표소에서 수령",
+      "url": "https://x.com/nangman_b20/status/2108120665459212673"
+    },
+    {
+      "name": "더블 적립",
+      "startDate": "2026-11-23",
+      "endDate": "2026-11-23",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "해당 회차 더블 적립 (재관람 카드 도장 2개)",
+      "url": "https://x.com/nangman_b20/status/2108120665459212673"
+    },
+    {
+      "name": "더블 적립",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#9B1C1C",
+      "times": [
+        "16:00",
+        "20:00"
+      ],
+      "description": "해당 회차 더블 적립 (재관람 카드 도장 2개)",
+      "url": "https://x.com/nangman_b20/status/2108120665459212673"
+    },
+    {
+      "name": "심폐소생일지 출판기념회 DAY",
+      "startDate": "2026-11-26",
+      "endDate": "2026-11-26",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 이벤트: 전석 30% 할인(1인 2매), 스페셜 MD 증정, 공연 후 무대인사+Q&A+배우 럭키드로우",
+      "url": "https://x.com/nangman_b20/status/2115322679393759513"
+    },
+    {
+      "name": "심폐소생일지 출판기념회 DAY",
+      "startDate": "2026-11-27",
+      "endDate": "2026-11-27",
+      "color": "#9B1C1C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 이벤트: 전석 30% 할인(1인 2매), 스페셜 MD 증정, 공연 후 무대인사+Q&A+배우 럭키드로우",
+      "url": "https://x.com/nangman_b20/status/2115322679393759513"
+    },
+    {
+      "name": "심폐소생일지 출판기념회 DAY",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#9B1C1C",
+      "times": [
+        "14:00"
+      ],
+      "description": "전관 이벤트: 전석 30% 할인(1인 2매), 스페셜 MD 증정, 공연 후 무대인사+Q&A+배우 럭키드로우",
+      "url": "https://x.com/nangman_b20/status/2115322679393759513"
+    },
+    {
+      "name": "더블 적립",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#9B1C1C",
+      "times": [
+        "15:00",
+        "19:00"
+      ],
+      "description": "해당 회차 더블 적립 (재관람 카드 도장 2개)",
+      "url": "https://x.com/nangman_b20/status/2108120665459212673"
+    },
+    {
+      "name": "더블 적립",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#9B1C1C",
+      "times": [
+        "18:00"
+      ],
+      "description": "해당 회차 더블 적립 (재관람 카드 도장 2개)",
+      "url": "https://x.com/nangman_b20/status/2108120665459212673"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-11-02",
+      "endDate": "2026-11-08",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 1/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-15",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 2/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-11-16",
+      "endDate": "2026-11-22",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 3/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-11-23",
+      "endDate": "2026-11-29",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 4/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-11-30",
+      "endDate": "2026-12-06",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 5/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-12-07",
+      "endDate": "2026-12-13",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 6/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-12-14",
+      "endDate": "2026-12-20",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 7/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-12-21",
+      "endDate": "2026-12-27",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 8/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    },
+    {
+      "name": "시크릿 위클리 카드",
+      "startDate": "2026-12-28",
+      "endDate": "2027-01-03",
+      "color": "#9B1C1C",
+      "description": "주차별 카드 9/9 증정 (유료 티켓 1매당 1장, 티켓 수령 시 함께 수령, 9장을 모으면 숨겨진 이야기 공개)",
+      "url": "https://x.com/nangman_b20/status/2116500683918553529"
+    }
+  ]
+}

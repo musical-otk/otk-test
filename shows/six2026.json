@@ -1,0 +1,426 @@
+{
+  "name": "식스 더 뮤지컬",
+  "icon": "👑",
+  "color": "#6B3FA0",
+  "venue": "홍익대 대학로 아트센터 대극장",
+  "startDate": "2026-12-15",
+  "endDate": "2027-03-01",
+  "official": "https://x.com/Im_culture",
+  "tickets": {
+    "yes24": "https://m.ticket.yes24.com/Perf/60484"
+  },
+  "roles": [
+    {
+      "key": "aragon",
+      "label": "아라곤"
+    },
+    {
+      "key": "boleyn",
+      "label": "불린"
+    },
+    {
+      "key": "seymour",
+      "label": "시모어"
+    },
+    {
+      "key": "cleves",
+      "label": "클레페"
+    },
+    {
+      "key": "howard",
+      "label": "하워드"
+    },
+    {
+      "key": "parr",
+      "label": "파"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:30",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "20:30",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "15:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:30",
+      "aragon": "손승연",
+      "boleyn": "김지우",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "17:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "20:30",
+      "aragon": "장보람",
+      "boleyn": "배수정",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "20:30",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "15:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "김지우",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "김지우",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "주다온"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "배수정",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:30",
+      "aragon": "장보람",
+      "boleyn": "배수정",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "주다온"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "17:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "20:30",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "15:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2027-01-05",
+      "time": "20:00",
+      "aragon": "장보람",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "20:00",
+      "aragon": "손승연",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2027-01-07",
+      "time": "20:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "김려원",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "17:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "20:30",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "효정",
+      "parr": "주다온"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "17:00",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "20:30",
+      "aragon": "장보람",
+      "boleyn": "김지우",
+      "seymour": "이보람",
+      "cleves": "최현선",
+      "howard": "효정",
+      "parr": "유주혜"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "15:00",
+      "aragon": "손승연",
+      "boleyn": "배수정",
+      "seymour": "한재아",
+      "cleves": "김지선",
+      "howard": "김려원",
+      "parr": "주다온"
+    }
+  ],
+  "events": [
+    {
+      "name": "프리뷰 이벤트 · 야광봉 증정",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-17",
+      "color": "#6B3FA0",
+      "description": "프리뷰 기간 전 회차, 객석 입장 시 전 관객에게 야광봉 1개 (공연 시작부터 점등 사용)",
+      "url": "https://x.com/Im_culture/status/2108399570199949551"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-17",
+      "endDate": "2026-12-17",
+      "color": "#6B3FA0",
+      "times": [
+        "20:00"
+      ],
+      "description": "캐스팅 스케줄표에 '싱어롱데이' 표기 회차 (배우와 함께 넘버를 따라 부르는 회차)",
+      "url": "https://x.com/Im_culture/status/2105160758183317566"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-18",
+      "endDate": "2026-12-18",
+      "color": "#6B3FA0",
+      "times": [
+        "17:00"
+      ],
+      "description": "캐스팅 스케줄표에 '싱어롱데이' 표기 회차 (배우와 함께 넘버를 따라 부르는 회차)",
+      "url": "https://x.com/Im_culture/status/2105160758183317566"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-24",
+      "endDate": "2026-12-24",
+      "color": "#6B3FA0",
+      "times": [
+        "17:00",
+        "20:30"
+      ],
+      "description": "캐스팅 스케줄표에 '싱어롱데이' 표기 회차 (배우와 함께 넘버를 따라 부르는 회차)",
+      "url": "https://x.com/Im_culture/status/2105160758183317566"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-25",
+      "endDate": "2026-12-25",
+      "color": "#6B3FA0",
+      "times": [
+        "17:00",
+        "20:30"
+      ],
+      "description": "캐스팅 스케줄표에 '싱어롱데이' 표기 회차 (배우와 함께 넘버를 따라 부르는 회차)",
+      "url": "https://x.com/Im_culture/status/2105160758183317566"
+    }
+  ]
+}

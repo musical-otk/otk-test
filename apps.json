@@ -78,5 +78,25 @@
   {
     "path": "shows/intramuros2026.json",
     "app": false
+  },
+  {
+    "path": "shows/six2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/heartbeat2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/brokennumbers2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/undermoonbow2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/posh2026.json",
+    "app": false
   }
 ]
