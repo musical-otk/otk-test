@@ -132,8 +132,8 @@
     .hp-title { flex: 1; font-size: 16px; font-weight: 800; }
     .hbtn-heart { color: #e0485a; font-size: 18px; }
     .hp-vis { font-size: 11px; padding: 3px 8px; border-radius: 10px; border: 1px solid var(--border); background: none; color: var(--text3); cursor: pointer; flex-shrink: 0; white-space: nowrap; }
-    .hp-vis.mode-show { color: var(--text1); border-color: var(--text3); }
-    .hp-vis.mode-hide { text-decoration: line-through; }
+    .hp-vis { min-width: 40px; font-weight: 700; }
+    .hp-vis.on { background: var(--custom); border-color: var(--custom); color: #fff; }
     .hp-link { display: block; margin: 16px auto 0; background: none; border: none; font-size: 12px; color: var(--text3); cursor: pointer; }
     .hp-row { display: flex; align-items: center; gap: 8px; padding: 10px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
     .hp-name { font-size: 14px; font-weight: 700; flex-shrink: 0; }
@@ -1472,11 +1472,18 @@
     const last = lastShowDate(appId);
     return !!last && last < todayStr;
   }
+  // 자동: 막공 1주 뒤에 위쪽 작품 버튼에서 빠진다 (막공 주 기록·사진 정리할 시간)
+  function autoHidden(appId) {
+    const last = lastShowDate(appId);
+    if (!last) return false;
+    const d = new Date(last + 'T00:00:00'); d.setDate(d.getDate() + 7);
+    return d.toISOString().slice(0, 10) < todayStr;
+  }
   function isTabVisible(app) {
     const mode = getVisibility()[app.id];
     if (mode === 'show') return true;
     if (mode === 'hide') return false;
-    return !isFinished(app.id);          // 자동
+    return !autoHidden(app.id);          // 자동
   }
 
   // ── 배우 필드 자동 감지 (date, time 제외) ──
@@ -3016,10 +3023,11 @@
       live.map(a => appListRow(a, vis)).join('') + doneHtml;
   }
 
-  // 자동 → 항상 표시 → 항상 숨김 → 자동
+  // ON/OFF — 고른 값이 자동 판정과 같으면 자동으로 돌려 둔다 (그래야 막공 1주 뒤 자동으로 꺼진다)
   function cycleVisibility(id) {
-    const cur = getVisibility()[id] || 'auto';
-    setVisibility(id, cur === 'auto' ? 'show' : cur === 'show' ? 'hide' : 'auto');
+    const app = getApps().find(a => a.id === id) || { id };
+    const want = !isTabVisible(app);
+    setVisibility(id, want === !autoHidden(id) ? 'auto' : want ? 'show' : 'hide');
   }
 
   // ── 공연·배우 찾기 (필터 창과 홈 검색이 같이 쓴다) ──
@@ -3169,14 +3177,12 @@
       const rows = rowsW(id), dates = rows.map(s => s.date).sort();
       const left = rows.filter(s => s.date >= todayStr).length;
       const state = !rows.length ? '' : left ? ` · 남은 ${left}회` : ' · 종료';
-      const mode = getVisibility()[id] || 'auto';
-      // '탭'·'자동'은 처음 보는 사람이 모른다 — 맨 위 작품 버튼에 어떻게 보이는지 그대로 적는다
-      const vis = mode === 'show' ? '항상 보임' : mode === 'hide' ? '숨김' : '끝나면 숨김';
+      const on = isTabVisible(getApps().find(a => a.id === id) || { id });
       return `<div class="hp-row" onclick="closeHearts();openSearch();pickSearch('work','${id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="hp-name">${w.icon || ''} ${w.fullName || w.name}</span>
         <span class="hp-sub">${[kind(w), dates.length && `~${dates[dates.length - 1].slice(5).replace('-', '/')}`, state.replace(/^ · /, '')].filter(Boolean).join(' · ')}</span>
-        <button class="hp-vis mode-${mode}" title="위쪽 작품 버튼에 보일지: 끝나면 숨김 / 항상 / 안 보임" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${vis}</button>
+        <button class="hp-vis${on ? ' on' : ''}" title="위쪽 작품 버튼 줄에 보이기" onclick="event.stopPropagation();cycleVisibility('${id}');renderHearts()">${on ? 'ON' : 'OFF'}</button>
         <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('work','${id}')">♥</button>
       </div>`;
     };
