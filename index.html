@@ -617,6 +617,7 @@
     .note-acts { margin-left: auto; display: flex; gap: 14px; align-items: center; }
     .session-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
     .session-evs { display: flex; flex-wrap: wrap; gap: 2px 10px; margin-top: 4px; font-size: 11px; color: var(--text3); }
+    .session-evs .ev-tap { cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
     .session-evs i { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; vertical-align: 1px; }
     .note-add-btn:active { background: var(--bg3); }
     .note-photos-area { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0 4px; }
@@ -2650,7 +2651,7 @@
           <div class="session-name" style="color:${s._app.color}">${s._app.icon ? s._app.icon + ' ' : ''}${sessName(s._app, s)}</div>
           <div class="session-cast">${cast}</div>
           ${attHtml}
-          ${evs.length ? `<div class="session-evs">${evs.map(e => `<span><i style="background:${e.color || s._app.color}"></i>${e.name}</span>`).join('')}</div>` : ''}
+          ${evs.length ? `<div class="session-evs">${evs.map(e => `<span class="ev-tap" onclick="openEvSess('${s._app.id}','${ds}','${s.time || ''}','${s._showId || ''}','${e.name.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')"><i style="background:${e.color || s._app.color}"></i>${e.name}</span>`).join('')}</div>` : ''}
           ${noteRow}
         </div>
       </div>`;
@@ -3279,7 +3280,7 @@
   function openEvSess(id, ds, time, showId, i) {
     const w = evWorkOf(id); if (!w) return;
     const evs = eventsOf(w).filter(e => e.name && evAt(e, ds, time));
-    const first = evs[i] || evs[0];
+    const first = (typeof i === 'string' ? evs.find(e => e.name === i) : evs[i]) || evs[0];   // 날짜 상세에서는 이름으로 넘어온다
     const s = rowsOf(w).find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId)) || { date: ds, time, _showId: showId };
     const d = new Date(ds + 'T00:00:00');
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${w.name} · ${evMd(ds)}(${DOW[d.getDay()]}) ${time}`,
