@@ -38,6 +38,186 @@
   ],
   "schedule": [
     {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "18:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "16:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "16:00",
+      "guest": "선한국",
+      "host": "정민",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "한비",
+      "chorus4": "최민경"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "guest": "김찬종",
+      "host": "온주완",
+      "chorus1": "마이삭",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "guest": "이진혁",
+      "host": "이종석",
+      "chorus1": "김한결",
+      "chorus2": "한비",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "guest": "임예진",
+      "host": "이지연",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "guest": "최재웅",
+      "host": "이율",
+      "chorus1": "김한결",
+      "chorus2": "마이삭",
+      "chorus3": "최민경",
+      "chorus4": "박민주"
+    },
+    {
       "date": "2026-11-17",
       "time": "20:00",
       "guest": "선한국",
@@ -662,6 +842,61 @@
       "color": "#8E55D9",
       "description": "유료 티켓 1매당 도장 2개 날인 (1개 카드에 최대 2개, 새 카드 발급 가능, 티켓 뒷면에 도장 2번. MD부스 공연 시작 1시간 전~10분 전 / 종료 후 10분간)",
       "url": "https://x.com/m_mahagonny/status/2119618477187043627"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-03",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "개막 · 최재웅·이율·김한결·마이삭·최민경·박민주 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/m_mahagonny/status/2100851765122093447"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "이진혁·이종석·한비 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/m_mahagonny/status/2100851765122093447"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "김찬종·온주완 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/m_mahagonny/status/2100851765122093447"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-08",
+      "endDate": "2026-11-08",
+      "color": "#8E55D9",
+      "times": [
+        "14:00"
+      ],
+      "description": "선한국·정민 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/m_mahagonny/status/2100851765122093447"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-10",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "임예진·이지연 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/m_mahagonny/status/2100851765122093447"
     }
   ]
 }
