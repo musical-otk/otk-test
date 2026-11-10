@@ -2396,10 +2396,10 @@
         .map(s => {
           const recs = recsFor(app, s);
           const note = noteOf(app, s);
-          const mine = recs.length > 0 || (note.photoIds || []).length > 0;
+          const mine = recs.length > 0;   // 사진만 있는 회차는 상자로 칠하지 않는다 — 앱에서 기록을 지웠는데 남아 보였다
           return { s, app, recs, note, mine };
         })
-        .filter(x => x.mine || (mode !== 'mine' && matchesFilter(x.s, app, filter))))
+        .filter(x => x.mine || (mode !== 'mine' && ((x.note.photoIds || []).length > 0 || matchesFilter(x.s, app, filter)))))
         .sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
       const customs = custom.filter(e => e.date === ds)
         .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
@@ -2537,7 +2537,7 @@
         const attCnt = recs.filter(r => !r.transferred).length;
         const trans  = attCnt === 0 ? recs.find(r => r.transferred) : null;
         const hasPic = (notes[noteKeyFor(s._app.id, ds, s)]?.photoIds || []).length > 0;
-        (recs.length > 0 || hasPic ? marked : plain).push({ s, attCnt, hasPic, trans });
+        (recs.length > 0 ? marked : plain).push({ s, attCnt, hasPic, trans });
       });
 
       // '내 기록' 에서는 안 간 회차를 아예 그리지 않는다.
@@ -2561,7 +2561,6 @@
           <span class="sess-card-time">${fmtTime(s.time)}</span>
           ${trans ? '<span class="sess-card-icons">↪</span>' : ''}
           ${attCnt >= 2 ? `<span class="sess-card-icons">×${attCnt}</span>` : ''}
-          ${hasPic ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
           <span class="sess-card-name">${sessName(s._app, s)}</span>
         </div>`);
 
