@@ -582,6 +582,13 @@
     .set-btn.set-guide { display: block; text-decoration: none; text-align: center; margin-bottom: 4px; }
     .rs-box { border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; font-size: 12px; color: var(--text2); line-height: 1.6; }
     .rs-box b { color: var(--text1); }
+    .imp-range { display: flex; gap: 4px; margin: 6px 0; align-items: center; flex-wrap: wrap; }
+    .imp-range button { flex: 1; padding: 6px 4px; border-radius: 8px; border: 1px solid var(--border); background: none; color: var(--text2); font-size: 12px; }
+    .imp-range button.on { border-color: var(--custom); color: var(--custom); background: var(--custom-bg); }
+    .imp-range input { flex: 1; min-width: 0; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; color: var(--text1); padding: 5px; }
+    .imp-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; }
+    .imp-row b { margin-left: auto; }
+    .imp-note { font-size: 11px; color: var(--text3); padding-top: 4px; }
     .rs-btns { display: flex; gap: 6px; margin-top: 8px; }
     .rs-btns button { flex: 1; padding: 9px 4px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--text1); font-size: 12px; font-weight: 600; cursor: pointer; }
     .rs-btns button.pri { background: var(--custom); border-color: var(--custom); color: #fff; }
@@ -921,6 +928,9 @@
       <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
       <button class="set-btn" onclick="document.getElementById('restore-file').click()">📂 백업 파일에서 복원</button>
       <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
+      <button class="set-btn" onclick="document.getElementById('play-file').click()">📥 다른 앱 기록 가져오기 (Pl@y)</button>
+      <input type="file" id="play-file" accept=".csv,text/csv" hidden onchange="pickPlay(this)">
+      <div id="set-import"></div>
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
@@ -2996,6 +3006,145 @@
         <div class="rs-btns"><button class="pri" onclick="applyRestore('merge')">합치기</button><button onclick="applyRestore('overwrite')">덮어쓰기</button><button onclick="_restoreData=null;renderRestoreBox()">취소</button></div></div>`;
     };
     rd.readAsText(f);
+  }
+  // ── 다른 앱 기록 가져오기 (Pl@y CSV: 제목,일시,캘린더,출연,장소,좌석,금액,구매처,리뷰/메모) ──
+  // 줄마다: ① mu:di 작품 + 같은 날짜·시간 회차 → 그 회차 예매 기록  ② 그 밖(다른 시즌·없는 작품) → 🎭 공연 내 일정
+  // 가져온 줄은 키(제목|일시)로 기억한다 — 다시 가져와도 겹치지 않고, 지운 것은 저절로 되살리지 않는다
+  const IMPORT_KEY = HUB_NS + 'import_play';
+  const APP_IMPORT_OK = ['app_ikkisup'];   // 전용 앱 기록에 바로 넣기 — 앱마다 기록 모양을 확인한 것만
+  let _imp = null;
+  function parseCsv(text) {
+    const rows = [], t = text.replace(/^\uFEFF/, '');
+    let row = [], cell = '', q = false;
+    for (let i = 0; i < t.length; i++) {
+      const c = t[i];
+      if (q) { if (c === '"') { if (t[i + 1] === '"') { cell += '"'; i++; } else q = false; } else cell += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { row.push(cell); cell = ''; }
+      else if (c === '\n' || c === '\r') { if (c === '\r' && t[i + 1] === '\n') i++; row.push(cell); rows.push(row); row = []; cell = ''; }
+      else cell += c;
+    }
+    if (cell || row.length) { row.push(cell); rows.push(row); }
+    return rows;
+  }
+  const impNorm = t => (t || '').normalize('NFKC').replace(/^뮤지컬\s*/, '').replace(/[〈〉<>《》「」\[\]()\s.,:·!?'"-]/g, '').toLowerCase();
+  // 좌석: 'A16' → A열 16번, '1층 B구역 2열 7번' → 구역·열·번, 못 읽으면 null (원문은 메모에)
+  function impSeat(raw) {
+    const t = (raw || '').trim(); if (!t) return null;
+    let m = t.match(/^([A-Za-z]{1,2})\s*(\d{1,3})$/);
+    if (m) return { seatZone: m[1].toUpperCase(), seatNumber: +m[2] };
+    m = t.match(/(?:(\d+)층\s*)?([A-Za-z가-힣]+)구역\s*(\d+)열\s*(\d+)번?$/);
+    if (m) return { ...(m[1] ? { seatFloor: m[1] } : {}), seatZone: m[2], seatRow: m[3], seatNumber: +m[4] };
+    m = t.match(/^([A-Za-z]|\d+)열\s*(\d+)번?$/);
+    if (m) return { seatZone: m[1], seatNumber: +m[2] };
+    return null;
+  }
+  function pickPlay(input) {
+    const f = input.files && input.files[0]; input.value = '';
+    if (!f) return;
+    const rd = new FileReader();
+    rd.onload = async () => {
+      const rows = parseCsv(rd.result), head = rows[0] || [];
+      const col = n => head.indexOf(n);
+      if (col('제목') < 0 || col('일시') < 0) { toast('Pl@y 기록 파일이 아니에요'); return; }
+      toast('공연 정보를 맞춰 보는 중…');
+      await ensureCatalog();
+      _imp = { rows: rows.slice(1).filter(r => r.length > 1).map(r => Object.fromEntries(head.map((h, i) => [h, (r[i] || '').trim()]))),
+        range: 'year', from: '', to: '', take: { match: true, show: true, again: false } };
+      renderImport();
+    };
+    rd.readAsText(f, 'utf-8');
+  }
+  // 한 줄을 어디에 넣을지 정한다 — 넣지는 않는다
+  function impPlan() {
+    const led = jget(IMPORT_KEY, {}), works = catalog('all').works.filter(w => w.kind !== 'extra');
+    const byName = works.map(w => [impNorm(w.fullName || w.name), w]).concat(works.map(w => [impNorm(w.name), w]));
+    const custom = getCustom(), att = getAttended();
+    const out = { empty: 0, out: 0, list: [] };
+    const y0 = todayStr.slice(0, 4);
+    for (const r of _imp.rows) {
+      if (!r['제목']) { out.empty++; continue; }
+      const m = (r['일시'] || '').match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일.*?(\d{1,2}):(\d{2})/);
+      if (!m) { out.empty++; continue; }
+      const ds = `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`, time = `${m[4].padStart(2, '0')}:${m[5]}`;
+      const R = _imp.range;
+      if ((R === 'future' && ds < todayStr) || (R === 'year' && ds.slice(0, 4) < y0) ||
+          (R === 'custom' && ((_imp.from && ds.slice(0, 7) < _imp.from) || (_imp.to && ds.slice(0, 7) > _imp.to)))) { out.out++; continue; }
+      const key = r['제목'] + '|' + r['일시'];
+      const n = impNorm(r['제목']);
+      let w = (byName.find(([k]) => k === n) || [])[1];
+      if (!w) { const c = [...new Set(byName.filter(([k]) => k && (k.includes(n) || n.includes(k))).map(x => x[1]))]; if (c.length === 1) w = c[0]; }
+      const s = w ? rowsOf(w).find(x => x.date === ds && (x.time || '') === time) : null;
+      let kind = s ? 'match' : 'show';
+      if (s && w.kind !== 'data' && !APP_IMPORT_OK.includes(w.id)) kind = 'show';   // 아직 확인 안 한 전용 앱은 공연 일정으로
+      const item = { r, key, ds, time, w, s, kind };
+      if (led[key]) item.state = 'again';                                  // 예전에 가져온 줄
+      else if (kind === 'match' && (att[ds] || []).some(x => recHit(x, w.id, s))) item.state = 'have';
+      else if (kind === 'show' && custom.some(e => e.date === ds && (e.time || '') === time && impNorm(e.name) === n)) item.state = 'have';
+      else item.state = 'new';
+      out.list.push(item);
+    }
+    return out;
+  }
+  function renderImport() {
+    const box = document.getElementById('set-import'); if (!box || !_imp) return;
+    const P = impPlan(), L = P.list;
+    const cnt = (k, st) => L.filter(x => x.kind === k && x.state === st).length;
+    const again = L.filter(x => x.state === 'again').length, have = L.filter(x => x.state === 'have').length;
+    const chk = (k, label, n) => `<label class="imp-row"><input type="checkbox" ${_imp.take[k] ? 'checked' : ''} onchange="_imp.take.${k}=this.checked;renderImport()"> ${label} <b>${n}</b></label>`;
+    const R = _imp.range, rb = (v, l) => `<button class="${R === v ? 'on' : ''}" onclick="_imp.range='${v}';renderImport()">${l}</button>`;
+    box.innerHTML = `<div class="rs-box imp">
+      <b>Pl@y 기록 ${_imp.rows.length}줄</b>
+      <div class="imp-range">${rb('future', '오늘 이후')}${rb('year', '올해부터')}${rb('all', '전체')}${rb('custom', '직접')}</div>
+      ${R === 'custom' ? `<div class="imp-range"><input type="month" value="${_imp.from}" onchange="_imp.from=this.value;renderImport()"> ~ <input type="month" value="${_imp.to}" onchange="_imp.to=this.value;renderImport()"></div>` : ''}
+      ${chk('match', 'mu:di 회차에 예매 기록으로', cnt('match', 'new'))}
+      ${chk('show', '🎭 공연 일정으로 (다른 시즌·없는 작품)', cnt('show', 'new'))}
+      ${again ? chk('again', '예전에 가져온 것 다시 넣기', again) : ''}
+      <div class="imp-note">이미 기록 있음 ${have} · 기간 밖 ${P.out} · 빈 줄 ${P.empty} — 넣지 않아요</div>
+      <div class="rs-btns"><button class="pri" onclick="applyImport()">가져오기</button><button onclick="_imp=null;document.getElementById('set-import').innerHTML=''">취소</button></div></div>`;
+  }
+  async function applyImport() {
+    const P = impPlan(), led = jget(IMPORT_KEY, {});
+    const go = P.list.filter(x => (x.state === 'new' && _imp.take[x.kind]) || (x.state === 'again' && _imp.take.again && _imp.take[x.kind]));
+    if (!go.length) { toast('넣을 게 없어요'); return; }
+    // 되돌리기 — 복원과 같은 자리(직전 상태 한 번)
+    const before = {}; backupKeys().forEach(k => { before[k] = localStorage.getItem(k); });
+    const custom = getCustom(), notes = getNotes();
+    let nMatch = 0, nShow = 0;
+    for (const x of go) {
+      const r = x.r, seat = impSeat(r['좌석']), price = Math.round(parseFloat(r['금액'])) || null;
+      const memo = [r['구매처'], r['리뷰/메모'], seat || !r['좌석'] ? '' : '좌석 ' + r['좌석']].filter(Boolean).join(' · ');
+      if (x.kind === 'match') {
+        if (!(await addPresetById(x.w.id, true))) continue;
+        const app = getApps().find(a => a.id === x.w.id);
+        const list = extraRecords(app.recordsKey), id = 'p' + Date.now().toString(36) + nMatch;
+        if (x.w.kind === 'data') {
+          list.push({ id, date: x.ds, time: x.time, ...(seat || {}), price, status: '', transferTo: '', importKey: x.key });
+          if (memo) { const nk = noteKeyFor(x.w.id, x.ds, x.s); notes[nk] = { ...(notes[nk] || {}), memo: [(notes[nk] || {}).memo, memo].filter(Boolean).join('\n') }; }
+        } else {   // 전용 앱 기록 모양 (이끼숲 기준)
+          const cast = Object.fromEntries(getActorFields(x.s).map(k => [k, x.s[k]]));
+          list.push({ id, date: x.ds, time: x.time, ...cast, isBooked: true, castManual: false, status: '관람', transferTo: '',
+            // 앱 좌석은 '층 + 열 + 번'(구역 없음) — 구역이 있으면 열을 열 칸에, 구역은 메모에
+            seatFloor: seat && seat.seatFloor ? seat.seatFloor + '층' : null,
+            seatZone: seat ? (seat.seatRow || seat.seatZone || null) : null, seatNumber: (seat || {}).seatNumber ?? null,
+            price, rating: 0, comment: '', memo: [memo, seat && seat.seatRow ? seat.seatZone + '구역' : ''].filter(Boolean).join(' · '),
+            createdAt: new Date().toISOString(), importKey: x.key });
+        }
+        saveExtraRecords(list, app.recordsKey); nMatch++;
+      } else {
+        custom.push({ id: Date.now() + nShow, kind: 'show', date: x.ds, time: x.time, name: r['제목'].replace(/^뮤지컬\s*/, '').replace(/[〈〉]/g, ''),
+          comment: [r['장소'], r['출연'], price ? price.toLocaleString() + '원' : '', memo].filter(Boolean).join(' · '),
+          color: COLOR_PALETTE[0], photoIds: [], ...(seat || {}), importKey: x.key });
+        nShow++;
+      }
+      led[x.key] = 1;
+    }
+    saveCustom(custom); saveNotes(notes);
+    localStorage.setItem(IMPORT_KEY, JSON.stringify(led));
+    localStorage.setItem(UNDO_KEY, JSON.stringify({ at: new Date().toISOString(), keys: before }));
+    _imp = null;
+    toast(`가져왔어요 · 예매 기록 ${nMatch} · 공연 일정 ${nShow}`);
+    setTimeout(() => location.reload(), 700);
   }
   function renderRestoreBox() {
     const box = document.getElementById('set-restore'); if (!box) return;
