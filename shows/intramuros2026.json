@@ -471,6 +471,14 @@
       ],
       "description": "첫 공연 표기 — 캐스트별 첫공 (스케줄표 '첫공' 표기)",
       "url": "https://x.com/mbz_company/status/2108075248939942205"
+    },
+    {
+      "name": "디자인 티켓 & 봉투 증정",
+      "startDate": "2026-11-10",
+      "endDate": "2027-02-14",
+      "color": "#2F5D8C",
+      "description": "YES24 티켓 2종·봉투 2종(2주 간격 교체), NOL 티켓 1종·봉투 1종",
+      "url": "https://x.com/mbz_company/status/2120089616162377806"
     }
   ]
 }
