@@ -126,7 +126,9 @@ async def main():
         # ── 내 일정: 공연/기타, 아이콘, 기간 ──
         await ev("openCustomForm('2026-12-02')"); await pg.wait_for_timeout(300)
         await pg.click('#cf-k-etc'); await pg.fill('#cf-name', '출장')
-        await pg.click('#cf-icons button >> nth=0'); await pg.fill('#cf-end', '2026-12-04')
+        await pg.click('#cf-icons button >> nth=0')
+        check('내 일정: 기본은 하루(끝나는 날 칸 숨김)', await ev("document.getElementById('cf-end-wrap').hidden"))
+        await pg.click('#cf-multi'); await pg.fill('#cf-end', '2026-12-04')
         await pg.screenshot(path=os.path.join(OUT, 'custom_form.png'))
         await ev("saveCustomEvent()"); await pg.wait_for_timeout(300)
         await ev("openCustomForm('2026-12-05')"); await pg.wait_for_timeout(300)
