@@ -84,6 +84,22 @@ async def main():
             "(()=>{const e=document.querySelector('.flt-hit-bk .n');return !!e && getComputedStyle(e).minWidth!=='0px' && getComputedStyle(e.parentNode).marginLeft!=='0px'})()"))
         await ev("closeSearch()")
 
+        # ── 찾기 작품 상세 '내 달력' ──
+        await ev("openSearch()"); await pg.wait_for_timeout(1500)
+        await ev("""(()=>{const g=getAttended;window._g=g;const s=rowsOf(catalog('all').works.find(w=>w.id==='show_socrates2026')).find(r=>r.date>=todayStr);
+          window._ds=s.date;getAttended=()=>{const a={...g()};a[s.date]=[{appId:'show_turing2026',date:s.date,time:'20:00'}];return a;}})()""")
+        await ev("pickSearch('work','show_socrates2026')"); await pg.wait_for_timeout(300)
+        check('내 달력: 처음엔 접힘', await ev("!document.querySelector('.mycal') && !!document.querySelector('.mycal-btn')"))
+        await pg.click('.mycal-btn'); await pg.wait_for_timeout(300)
+        check('내 달력: 펼치면 이 작품 회차 날에 테두리', await ev("document.querySelectorAll('.mycal .mc-day.on').length>0"))
+        check('내 달력: 내 일정 있는 날에 점', await ev("[...document.querySelectorAll('.mycal .mc-day')].some(d=>d.querySelector('b i'))"))
+        await pg.screenshot(path=os.path.join(OUT, 'mycal.png'))
+        await pg.click('.mycal .mc-day.on:not(.past) >> nth=0'); await pg.wait_for_timeout(500)
+        check('내 달력: 날짜 누르면 그날 회차로', await ev("!!document.querySelector('.srch-row.flash')"))
+        await ev("pickSearch('work','show_turing2026')"); await pg.wait_for_timeout(300)
+        check('내 달력: 다른 작품에서도 펼친 채', await ev("!!document.querySelector('.mycal')"))
+        await ev("toggleMyCal(); getAttended=_g; closeSearch()")
+
         # ── 관심함 ON/OFF ──
         await ev("heartWork('show_turing2026')"); await pg.wait_for_timeout(2000)
         await ev("openHearts()"); await pg.wait_for_timeout(400)

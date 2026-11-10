@@ -197,6 +197,24 @@
     .flt-hit.on { opacity: 0.6; }
     .flt-hit-name { font-weight: 700; flex-shrink: 0; }
     .srch-past-btns { display: flex; gap: 12px; }
+    .mycal-btn { margin-top: 6px; }
+    .mycal { border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin: 4px 0 8px; }
+    .mc-hd { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 700; padding: 0 2px 6px; }
+    .mc-hd button { background: none; border: none; color: var(--text2); font-size: 16px; padding: 2px 10px; cursor: pointer; }
+    .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+    .mc-grid em { font-style: normal; font-size: 10px; color: var(--text3); text-align: center; }
+    .mc-day { border: 1.5px solid transparent; border-radius: 7px; background: none; padding: 3px 0 2px; min-height: 34px;
+      display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text2); font-size: 11px; font-family: inherit; }
+    .mc-day.on { border-color: var(--custom); color: var(--text1); font-weight: 700; cursor: pointer; }
+    .mc-day.past { opacity: .45; }
+    .mc-day.today span { text-decoration: underline; }
+    .mc-day.sun span { color: #e06070; } .mc-day.sat span { color: var(--sat); }
+    .mc-day b { display: flex; gap: 2px; min-height: 5px; }
+    .mc-day b i, .mc-legend i { width: 6px; height: 6px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
+    .mc-legend { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text3); padding: 6px 2px 0; }
+    .mc-key { width: 11px; height: 11px; border: 1.5px solid var(--custom); border-radius: 3px; display: inline-block; }
+    .mc-legend i { margin-left: 8px; }
+    .srch-row.flash { background: var(--custom-bg); transition: background .3s; }
     .srch-past-n { font-variant-numeric: tabular-nums; opacity: .7; }
     .flt-hit-bk { margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--text3); }
     .flt-hit-bk .n { display: inline-block; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
@@ -3243,8 +3261,55 @@
   let _srchPastOpen = 0;   // 펼친 지난 회차 수 — 누를 때마다 10개씩
   const _srchActors = new Set();   // 공연 자세히에서 좁혀 보는 배우
   function toggleSrchActor(n) { if (_srchActors.has(n)) _srchActors.delete(n); else _srchActors.add(n); renderSearch(); }
+  // ── 찾기 작품 상세의 '내 달력' — 회차를 고를 때 내가 비는 날을 본다 ──
+  // 점 = 내 일정(예매·관람 기록, + 내 일정), 테두리 = 이 작품 회차가 있는 날. 테두리만 있고 점이 없는 날이 빈 날
+  const MYCAL_KEY = HUB_NS + 'mycal_open';
+  let _myCalYM = null;   // 보고 있는 달 'YYYY-MM' — 작품을 바꾸면 그 작품의 다음 회차 달로
+  function toggleMyCal() {
+    try { localStorage.setItem(MYCAL_KEY, localStorage.getItem(MYCAL_KEY) ? '' : '1'); } catch (e) {}
+    renderSearch();
+  }
+  function myCalMove(d) {
+    const [y, m] = _myCalYM.split('-').map(Number), t = new Date(y, m - 1 + d, 1);
+    _myCalYM = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; renderSearch();
+  }
+  function myCalBox(w, rows) {
+    const open = (() => { try { return !!localStorage.getItem(MYCAL_KEY); } catch (e) { return false; } })();
+    const btn = `<button class="srch-back mycal-btn" onclick="toggleMyCal()">📅 내 달력 ${open ? '▴' : '▾'}</button>`;
+    if (!open) return btn;
+    const days = new Set(rows.map(r => r.date));
+    if (!_myCalYM) { const nx = rows.map(r => r.date).filter(d => d >= todayStr).sort()[0]; _myCalYM = (nx || todayStr).slice(0, 7); }
+    const [y, m] = _myCalYM.split('-').map(Number);
+    const att = getAttended(), custom = getCustom(), works = catalog('all').works;
+    const colorOf = id => (works.find(x => x.id === id) || {}).color || '#888';
+    const first = new Date(y, m - 1, 1), lead = (first.getDay() + 6) % 7, last = new Date(y, m, 0).getDate();
+    let cells = '<i></i>'.repeat(lead);
+    for (let d = 1; d <= last; d++) {
+      const ds = `${_myCalYM}-${String(d).padStart(2, '0')}`;
+      const dots = (att[ds] || []).filter(r => !r.transferred).map(r => colorOf(r.appId))
+        .concat(custom.filter(e => e.date === ds).map(e => e.color || COLOR_PALETTE[0])).slice(0, 4);
+      const on = days.has(ds), dow = new Date(y, m - 1, d).getDay();
+      cells += `<button class="mc-day${on ? ' on' : ''}${ds < todayStr ? ' past' : ''}${ds === todayStr ? ' today' : ''}${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}"
+        ${on ? `onclick="myCalJump('${ds}')"` : ''}><span>${d}</span><b>${dots.map(c => `<i style="background:${c}"></i>`).join('')}</b></button>`;
+    }
+    return btn + `<div class="mycal">
+      <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
+      <div class="mc-grid">${['월', '화', '수', '목', '금', '토', '일'].map(x => `<em>${x}</em>`).join('')}${cells}</div>
+      <div class="mc-legend"><span class="mc-key on"></span>이 작품 회차 <i style="background:var(--custom)"></i>내 일정</div>
+    </div>`;
+  }
+  // 날짜를 누르면 아래 회차 목록에서 그날로 — 지난 날이면 접힌 지난 회차를 그만큼 펼친다
+  function myCalJump(ds) {
+    if (ds < todayStr) {
+      const w = catalog('all').works.find(x => x.id === _srchSel.key);
+      _srchPastOpen = Math.max(_srchPastOpen, rowsOf(w).filter(r => r.date >= ds && r.date < todayStr).length);
+      renderSearch();
+    }
+    const el = document.querySelector(`.srch-row[data-ds="${ds}"]`);
+    if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); }
+  }
   function pickSearch(type, key) {
-    _srchSel = { type, key }; _srchPastOpen = 0; _srchActors.clear();
+    _srchSel = { type, key }; _srchPastOpen = 0; _srchActors.clear(); _myCalYM = null;
     const q = document.getElementById('srch-q');
     _srchBackQ = q ? q.value : '';   // '‹ 목록'은 들어오기 전 화면으로 — 빈 칸에서 왔으면 전체 목록
     pushRecentQ(_srchBackQ);
@@ -3496,6 +3561,7 @@
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
+        ${myCalBox(w, rows)}
         ${sessList(rows.filter(castPick(rows, { roles: info.roles || ai.roles })).map(s => ({ w, s })), false)}
       </div>`;
     };
@@ -3546,7 +3612,7 @@
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
           const ev = evOn(w, s.date, s.time);
           const dow = new Date(s.date + 'T00:00:00').getDay();
-          return `<div class="srch-row" onclick="openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',-1)">
+          return `<div class="srch-row" data-ds="${s.date}" onclick="openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',-1)">
             <div class="srch-when">
               <span class="srch-time${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}">${when(s)}</span>
               ${mark ? `<span class="srch-mark${r && r.transferred ? ' tr' : ''}">${mark}</span>` : ''}
