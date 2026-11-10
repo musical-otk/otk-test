@@ -3,11 +3,6 @@
     "path": "ever2026/"
   },
   {
-    "path": "extras/hwinter2026.json",
-    "app": false,
-    "group": "extra"
-  },
-  {
     "path": "shows/socrates2026.json",
     "app": false
   },
@@ -105,6 +100,14 @@
   },
   {
     "path": "shows/nof2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/hwinter2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/jc2026.json",
     "app": false
   }
 ]

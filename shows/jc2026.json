@@ -1,0 +1,71 @@
+{
+  "name": "정찬콘 vol.1 [쓰다]",
+  "icon": "🎤",
+  "color": "#F2468C",
+  "venue": "브릭스씨어터",
+  "startDate": "2026-11-12",
+  "endDate": "2026-11-14",
+  "url": "https://booking.naver.com/booking/12/bizes/1757484",
+  "official": "https://x.com/JCconcert_",
+  "roles": [
+    {
+      "key": "guest1",
+      "label": "게스트"
+    },
+    {
+      "key": "guest2",
+      "label": "게스트"
+    },
+    {
+      "key": "guest3",
+      "label": "게스트"
+    },
+    {
+      "key": "guest4",
+      "label": "게스트"
+    },
+    {
+      "key": "guest5",
+      "label": "게스트"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "guest1": "김대현",
+      "guest2": "김준식",
+      "guest3": "박선영",
+      "guest4": "이아진",
+      "guest5": "전하영"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "guest1": "문경초",
+      "guest2": "임준혁",
+      "guest3": "윤승우",
+      "guest4": "황민수",
+      "guest5": "이휘종"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "guest1": "김종구",
+      "guest2": "김찬호",
+      "guest3": "조성윤",
+      "guest4": "김도하",
+      "guest5": "박상준"
+    }
+  ],
+  "events": [
+    {
+      "name": "스페셜 이벤트",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-14",
+      "color": "#F2468C",
+      "description": "포토타임(무대 위 배우들과 사진) · 스페셜 스테이지(셋리스트 너머의 특별 무대) · 럭키드로우(콘서트 폴라로이드, 싸인 포스터, 차기작 초대권 등)",
+      "url": "https://x.com/JCconcert_/status/2119286126687179123"
+    }
+  ]
+}
