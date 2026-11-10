@@ -1202,15 +1202,16 @@
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.json();
   }
-  // 기타 공연이 하나라도 올라와 있으면 '기타'를 기본으로 켠다
+  // '기타'는 기본으로 켜지 않는다 — 찾기에서 ♡ 하거나 기타 공연을 예매 기록하면 들어온다 (사용자 결정 2026-11-10)
+  // 예전에 저절로 들어온 '기타'는 한 번만 정리한다: 기타 예매 기록이 없으면 탭·관심에서 뺀다
+  const EXTRA_TIDY_KEY = HUB_NS + 'extra_tidied';
   async function ensureExtraApp() {
-    if (localStorage.getItem(EXTRA_OFF_KEY)) return;
-    const apps = getApps();
-    if (apps.some(a => a.id === EXTRA_ID)) return;
-    if (!(await extraEntries()).length) return;
-    apps.push({ ...EXTRA_APP });
-    saveApps(apps);
-    const h = getHearts(); if (!h.works.includes(EXTRA_ID)) saveHearts({ ...h, works: [...h.works, EXTRA_ID] });
+    if (localStorage.getItem(EXTRA_TIDY_KEY)) return;
+    localStorage.setItem(EXTRA_TIDY_KEY, '1');
+    if (!getApps().some(a => a.id === EXTRA_ID)) return;
+    if (extraRecords(EXTRA_APP.recordsKey).length) return;
+    saveApps(getApps().filter(a => a.id !== EXTRA_ID));
+    const h = getHearts(); saveHearts({ ...h, works: h.works.filter(x => x !== EXTRA_ID) });
   }
   function addExtraApp() {
     localStorage.removeItem(EXTRA_OFF_KEY);
