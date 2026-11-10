@@ -203,17 +203,28 @@
     .mc-hd button { background: none; border: none; color: var(--text2); font-size: 16px; padding: 2px 10px; cursor: pointer; }
     .mc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
     .mc-grid em { font-style: normal; font-size: 10px; color: var(--text3); text-align: center; }
-    .mc-day { border: 1.5px solid transparent; border-radius: 7px; background: none; padding: 3px 0 2px; min-height: 34px;
-      display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text2); font-size: 11px; font-family: inherit; }
-    .mc-day.on { border-color: var(--custom); color: var(--text1); font-weight: 700; cursor: pointer; }
-    .mc-day.past { opacity: .45; }
+    .mc-day { border: 1.5px solid transparent; border-radius: 7px; background: none; padding: 3px 0 2px; min-height: 38px;
+      display: flex; flex-direction: column; align-items: center; gap: 1px; color: var(--text1); font-size: 11px; font-family: inherit; cursor: pointer; }
+    .mc-day.off { opacity: .28; }
+    .mc-day.past span { color: var(--text3); }
     .mc-day.today span { text-decoration: underline; }
+    .mc-day.sel { border-color: var(--custom); background: var(--custom-bg); }
     .mc-day.sun span { color: #e06070; } .mc-day.sat span { color: var(--sat); }
-    .mc-day b { display: flex; gap: 2px; min-height: 5px; }
-    .mc-day b i, .mc-legend i { width: 6px; height: 6px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
-    .mc-legend { display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--text3); padding: 6px 2px 0; }
-    .mc-key { width: 11px; height: 11px; border: 1.5px solid var(--custom); border-radius: 3px; display: inline-block; }
-    .mc-legend i { margin-left: 8px; }
+    .mc-day b { font-weight: 400; font-size: 11px; line-height: 1.1; min-height: 12px; white-space: nowrap; }
+    .mc-day b small { font-size: 8px; color: var(--text3); }
+    .mc-hint { font-size: 10px; color: var(--text3); text-align: center; padding: 8px 0 2px; }
+    .mc-day-box { border-top: 1px solid var(--border); margin-top: 8px; padding: 8px 2px 0; font-size: 12px; }
+    .mc-day-hd { font-weight: 700; margin-bottom: 4px; }
+    .mc-mine { color: var(--text2); margin-bottom: 6px; }
+    .mc-lbl { color: var(--text3); font-size: 11px; margin-right: 8px; }
+    .mc-none { color: var(--text3); font-size: 11px; }
+    .mc-sess { display: grid; grid-template-columns: 40px 1fr; gap: 1px 8px; padding: 5px 0; border-top: 1px dashed var(--border); cursor: pointer; }
+    .mc-time { font-weight: 700; }
+    .mc-cast { color: var(--text1); }
+    .mc-ev { grid-column: 2; font-size: 11px; color: var(--custom); }
+    .mycal.ellip .mc-sess { grid-template-columns: 40px auto 1fr; }
+    .mycal.ellip .mc-ev { grid-column: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .mc-go { display: block; margin: 6px 0 0 auto; background: none; border: none; color: var(--custom); font-size: 12px; font-weight: 600; cursor: pointer; }
     .srch-row.flash { background: var(--custom-bg); transition: background .3s; }
     .srch-past-n { font-variant-numeric: tabular-nums; opacity: .7; }
     .flt-hit-bk { margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--text3); }
@@ -3262,9 +3273,10 @@
   const _srchActors = new Set();   // 공연 자세히에서 좁혀 보는 배우
   function toggleSrchActor(n) { if (_srchActors.has(n)) _srchActors.delete(n); else _srchActors.add(n); renderSearch(); }
   // ── 찾기 작품 상세의 '내 달력' — 회차를 고를 때 내가 비는 날을 본다 ──
-  // 점 = 내 일정(예매·관람 기록, + 내 일정), 테두리 = 이 작품 회차가 있는 날. 테두리만 있고 점이 없는 날이 빈 날
+  // 칸 = 내 일정(예매·관람 기록은 작품 아이콘, + 내 일정은 📌). 이 작품 회차가 없는 날(배우 필터를 걸면 그 배우 회차가 없는 날)은 흐리게.
+  // 날짜를 누르면 달력 아래에 그날 정리 — 내 일정, 이 작품 회차(캐스팅·이벤트), 목록에서 보기
   const MYCAL_KEY = HUB_NS + 'mycal_open';
-  let _myCalYM = null;   // 보고 있는 달 'YYYY-MM' — 작품을 바꾸면 그 작품의 다음 회차 달로
+  let _myCalYM = null, _myCalSel = null;   // 보고 있는 달 'YYYY-MM', 고른 날 — 작품을 바꾸면 비운다
   function toggleMyCal() {
     try { localStorage.setItem(MYCAL_KEY, localStorage.getItem(MYCAL_KEY) ? '' : '1'); } catch (e) {}
     renderSearch();
@@ -3273,29 +3285,54 @@
     const [y, m] = _myCalYM.split('-').map(Number), t = new Date(y, m - 1 + d, 1);
     _myCalYM = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; renderSearch();
   }
-  function myCalBox(w, rows) {
+  function myCalPick(ds) { _myCalSel = _myCalSel === ds ? null : ds; renderSearch(); }
+  // 그날 내 일정 — [아이콘, 이름, 시각]
+  function myDayItems(ds) {
+    const works = catalog('all').works;
+    return (getAttended()[ds] || []).filter(r => !r.transferred).map(r => {
+      const w = works.find(x => x.id === r.appId) || {};
+      return [w.icon || '🎭', w.name || '', r.time || ''];
+    }).concat(getCustom().filter(e => e.date === ds).map(e => ['📌', e.name || '', e.time || '']))
+      .sort((a, b) => a[2].localeCompare(b[2]));
+  }
+  function myCalBox(w, rows, shown) {
     const open = (() => { try { return !!localStorage.getItem(MYCAL_KEY); } catch (e) { return false; } })();
     const btn = `<button class="srch-back mycal-btn" onclick="toggleMyCal()">📅 내 달력 ${open ? '▴' : '▾'}</button>`;
     if (!open) return btn;
-    const days = new Set(rows.map(r => r.date));
-    if (!_myCalYM) { const nx = rows.map(r => r.date).filter(d => d >= todayStr).sort()[0]; _myCalYM = (nx || todayStr).slice(0, 7); }
+    const days = new Set(shown.map(r => r.date));
+    if (!_myCalYM) { const nx = shown.map(r => r.date).filter(d => d >= todayStr).sort()[0]; _myCalYM = (nx || todayStr).slice(0, 7); }
     const [y, m] = _myCalYM.split('-').map(Number);
-    const att = getAttended(), custom = getCustom(), works = catalog('all').works;
-    const colorOf = id => (works.find(x => x.id === id) || {}).color || '#888';
     const first = new Date(y, m - 1, 1), lead = (first.getDay() + 6) % 7, last = new Date(y, m, 0).getDate();
     let cells = '<i></i>'.repeat(lead);
     for (let d = 1; d <= last; d++) {
-      const ds = `${_myCalYM}-${String(d).padStart(2, '0')}`;
-      const dots = (att[ds] || []).filter(r => !r.transferred).map(r => colorOf(r.appId))
-        .concat(custom.filter(e => e.date === ds).map(e => e.color || COLOR_PALETTE[0])).slice(0, 4);
-      const on = days.has(ds), dow = new Date(y, m - 1, d).getDay();
-      cells += `<button class="mc-day${on ? ' on' : ''}${ds < todayStr ? ' past' : ''}${ds === todayStr ? ' today' : ''}${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}"
-        ${on ? `onclick="myCalJump('${ds}')"` : ''}><span>${d}</span><b>${dots.map(c => `<i style="background:${c}"></i>`).join('')}</b></button>`;
+      const ds = `${_myCalYM}-${String(d).padStart(2, '0')}`, dow = new Date(y, m - 1, d).getDay();
+      const mine = myDayItems(ds), icons = mine.slice(0, 2).map(x => x[0]).join('') + (mine.length > 2 ? `<small>+${mine.length - 2}</small>` : '');
+      cells += `<button class="mc-day${days.has(ds) ? '' : ' off'}${ds < todayStr ? ' past' : ''}${ds === todayStr ? ' today' : ''}${ds === _myCalSel ? ' sel' : ''}${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}"
+        onclick="myCalPick('${ds}')"><span>${d}</span><b>${icons}</b></button>`;
     }
     return btn + `<div class="mycal">
       <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
       <div class="mc-grid">${['월', '화', '수', '목', '금', '토', '일'].map(x => `<em>${x}</em>`).join('')}${cells}</div>
-      <div class="mc-legend"><span class="mc-key on"></span>이 작품 회차 <i style="background:var(--custom)"></i>내 일정</div>
+      ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : '<div class="mc-hint">날짜를 누르면 그날 내 일정과 이 작품 회차가 보여요</div>'}
+    </div>`;
+  }
+  function myCalDay(w, rows, shown, ds) {
+    const d = new Date(ds + 'T00:00:00'), mine = myDayItems(ds);
+    const sess = shown.filter(r => r.date === ds).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    const hidden = rows.filter(r => r.date === ds).length - sess.length;
+    return `<div class="mc-day-box">
+      <div class="mc-day-hd">${evMd(ds)}(${DOW[d.getDay()]})</div>
+      <div class="mc-mine"><span class="mc-lbl">내 일정</span>${mine.length ? mine.map(x => `${x[0]} ${x[1]}${x[2] ? ' ' + x[2] : ''}`).join(' · ') : '<span class="mc-none">없음</span>'}</div>
+      ${sess.map(s => {
+        const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => e.name);
+        return `<div class="mc-sess" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
+          <span class="mc-time">${s.time || ''}</span>
+          <span class="mc-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+          ${ev.length ? `<span class="mc-ev">${ev.join(' · ')}</span>` : ''}
+        </div>`;
+      }).join('') || (hidden ? '' : '<div class="mc-none">이 작품 회차 없음</div>')}
+      ${hidden ? `<div class="mc-none">배우 필터로 숨긴 회차 ${hidden}개</div>` : ''}
+      ${sess.length ? `<button class="mc-go" onclick="myCalJump('${ds}')">목록에서 보기 ›</button>` : ''}
     </div>`;
   }
   // 날짜를 누르면 아래 회차 목록에서 그날로 — 지난 날이면 접힌 지난 회차를 그만큼 펼친다
@@ -3309,7 +3346,7 @@
     if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1200); }
   }
   function pickSearch(type, key) {
-    _srchSel = { type, key }; _srchPastOpen = 0; _srchActors.clear(); _myCalYM = null;
+    _srchSel = { type, key }; _srchPastOpen = 0; _srchActors.clear(); _myCalYM = null; _myCalSel = null;
     const q = document.getElementById('srch-q');
     _srchBackQ = q ? q.value : '';   // '‹ 목록'은 들어오기 전 화면으로 — 빈 칸에서 왔으면 전체 목록
     pushRecentQ(_srchBackQ);
@@ -3561,8 +3598,8 @@
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
-        ${myCalBox(w, rows)}
-        ${sessList(rows.filter(castPick(rows, { roles: info.roles || ai.roles })).map(s => ({ w, s })), false)}
+        ${(() => { const shown = rows.filter(castPick(rows, { roles: info.roles || ai.roles }));
+          return myCalBox(w, rows, shown) + sessList(shown.map(s => ({ w, s })), false); })()}
       </div>`;
     };
     // 고른 배우로 회차 거르기 — 같은 배역끼리는 '또는', 다른 배역끼리는 '그리고'.
