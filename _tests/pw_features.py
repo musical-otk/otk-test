@@ -98,6 +98,9 @@ async def main():
         await ev("myCalPick(_ds)"); await pg.wait_for_timeout(300)
         await pg.screenshot(path=os.path.join(OUT, 'mycal.png'))
         check('내 달력: 날짜 누르면 그날 정리(내 일정·회차 캐스팅)', await ev("!!document.querySelector('.mc-day-box .mc-lbl') && !!document.querySelector('.mc-day-box .mc-sess .mc-cast')"))
+        await pg.click('.mc-sess.mine >> nth=0'); await pg.wait_for_timeout(400)
+        check('내 달력: 내 일정 줄 누르면 그 회차만(날짜 상세 아님)', await ev("document.getElementById('ov-ev').classList.contains('open') && !document.getElementById('ov-detail').classList.contains('open')"))
+        await ev("closeEvSheet()")
         await pg.click('.mc-go'); await pg.wait_for_timeout(500)
         check('내 달력: 목록에서 보기 → 그날 회차로', await ev("!!document.querySelector('.srch-row.flash')"))
         await ev("""(()=>{const w=catalog('all').works.find(x=>x.id==='show_socrates2026'),rows=rowsOf(w);

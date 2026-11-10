@@ -3306,10 +3306,10 @@
     return (getAttended()[ds] || []).filter(r => !r.transferred).map(r => {
       const w = works.find(x => x.id === r.appId) || {};
       const s = w.id ? rowsOf(w).find(x => x.date === ds && (x.time || '') === (r.time || '') && (!r.showId || x._showId === r.showId)) : null;
-      return { icon: w.icon || '🎭', name: w.name || '', time: r.time || '',
+      return { icon: w.icon || '🎭', name: w.name || '', time: r.time || '', appId: r.appId, showId: r.showId || '',
         cast: s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ') : '',
         ev: w.id ? eventsOf(w).filter(e => e.name && evAt(e, ds, r.time)).map(e => evShort(e.name)) : [] };
-    }).concat(getCustom().filter(e => e.date === ds).map(e => ({ icon: '📌', name: e.name || '', time: e.time || '', cast: '', ev: [] })))
+    }).concat(getCustom().filter(e => e.date === ds).map(e => ({ icon: '📌', name: e.name || '', time: e.time || '', cast: '', ev: [], customId: e.id })))
       .sort((a, b) => a.time.localeCompare(b.time));
   }
   function myCalBox(w, rows, shown) {
@@ -3340,7 +3340,7 @@
     return `<div class="mc-day-box">
       <div class="mc-day-hd">${evMd(ds)}(${DOW[d.getDay()]})</div>
       <div class="mc-lbl">내 일정</div>
-      ${mine.length ? mine.map(x => `<div class="mc-sess mine" onclick="openDay('${ds}')">
+      ${mine.length ? mine.map(x => `<div class="mc-sess mine" onclick="${x.customId !== undefined ? `openCustomForm('${ds}',${x.customId})` : `openEvSess('${x.appId}','${ds}','${x.time}','${x.showId}',-1)`}">
           <span class="mc-time">${x.time}</span>
           <span class="mc-cast">${x.icon} ${x.name}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}${x.ev.length ? ` <span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}</span>
         </div>`).join('') : '<div class="mc-none">없음</div>'}
