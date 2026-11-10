@@ -222,9 +222,7 @@
     .mc-sess { display: grid; grid-template-columns: 40px 1fr; gap: 1px 8px; padding: 5px 0; border-top: 1px dashed var(--border); cursor: pointer; }
     .mc-time { font-weight: 700; }
     .mc-cast { color: var(--text1); }
-    .mc-ev { grid-column: 2; font-size: 11px; color: var(--custom); }
-    .mycal.ellip .mc-sess { grid-template-columns: 40px auto 1fr; }
-    .mycal.ellip .mc-ev { grid-column: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .mc-ev { font-size: 11px; color: var(--custom); margin-left: 4px; }
     .mc-go { display: block; margin: 6px 0 0 auto; background: none; border: none; color: var(--custom); font-size: 12px; font-weight: 600; cursor: pointer; }
     .srch-row.flash { background: var(--custom-bg); transition: background .3s; }
     .srch-past-n { font-variant-numeric: tabular-nums; opacity: .7; }
@@ -3344,16 +3342,14 @@
       <div class="mc-lbl">내 일정</div>
       ${mine.length ? mine.map(x => `<div class="mc-sess mine" onclick="openDay('${ds}')">
           <span class="mc-time">${x.time}</span>
-          <span class="mc-cast">${x.icon} ${x.name}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}</span>
-          ${x.ev.length ? `<span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}
+          <span class="mc-cast">${x.icon} ${x.name}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}${x.ev.length ? ` <span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}</span>
         </div>`).join('') : '<div class="mc-none">없음</div>'}
       <div class="mc-lbl" style="margin-top:6px">이 작품</div>
       ${sess.map(s => {
         const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name));
         return `<div class="mc-sess" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
           <span class="mc-time">${s.time || ''}</span>
-          <span class="mc-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
-          ${ev.length ? `<span class="mc-ev">${ev.join(' · ')}</span>` : ''}
+          <span class="mc-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
         </div>`;
       }).join('') || (hidden ? '' : '<div class="mc-none">이 작품 회차 없음</div>')}
       ${hidden ? `<div class="mc-none">배우 필터로 숨긴 회차 ${hidden}개</div>` : ''}
