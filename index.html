@@ -1203,21 +1203,23 @@
     return r.json();
   }
   // '기타'는 기본으로 켜지 않는다 — 찾기에서 ♡ 하거나 기타 공연을 예매 기록하면 들어온다 (사용자 결정 2026-11-10)
-  // 예전에 저절로 들어온 '기타'는 한 번만 정리한다: 기타 예매 기록이 없으면 탭·관심에서 뺀다
+  // 예전에 저절로(♥ 까지) 들어온 '기타'는 한 번만 정리한다 — 예매 기록이 있으면 다른 작품처럼 ♥ 없이 예매 회차만, 없으면 뺀다
   const EXTRA_TIDY_KEY = HUB_NS + 'extra_tidied';
   async function ensureExtraApp() {
     if (localStorage.getItem(EXTRA_TIDY_KEY)) return;
     localStorage.setItem(EXTRA_TIDY_KEY, '1');
-    if (!getApps().some(a => a.id === EXTRA_ID)) return;
-    if (extraRecords(EXTRA_APP.recordsKey).length) return;
-    saveApps(getApps().filter(a => a.id !== EXTRA_ID));
+    const apps = getApps(), app = apps.find(a => a.id === EXTRA_ID);
+    if (!app) return;
     const h = getHearts(); saveHearts({ ...h, works: h.works.filter(x => x !== EXTRA_ID) });
+    if (extraRecords(EXTRA_APP.recordsKey).length) { app.viaActor = true; saveApps(apps); }
+    else saveApps(apps.filter(a => a.id !== EXTRA_ID));
   }
-  function addExtraApp() {
+  // viaActor: 예매만 저장할 때 — 다른 작품처럼 ♥ 없이, 탭 없이 예매한 회차만 달력에
+  function addExtraApp(viaActor) {
     localStorage.removeItem(EXTRA_OFF_KEY);
     const apps = getApps();
-    if (!apps.some(a => a.id === EXTRA_ID)) { apps.push({ ...EXTRA_APP }); saveApps(apps); }
-    const h = getHearts(); if (!h.works.includes(EXTRA_ID)) saveHearts({ ...h, works: [...h.works, EXTRA_ID] });
+    if (!apps.some(a => a.id === EXTRA_ID)) { apps.push(viaActor ? { ...EXTRA_APP, viaActor: true } : { ...EXTRA_APP }); saveApps(apps); }
+    if (!viaActor) { const h = getHearts(); if (!h.works.includes(EXTRA_ID)) saveHearts({ ...h, works: [...h.works, EXTRA_ID] }); }
     loadSchedule(EXTRA_APP).then(rows => {
       schedules[EXTRA_ID] = rows;
       renderTabs(); renderFrames(); renderCalendar(); renderPresetList();
@@ -1823,7 +1825,7 @@
   async function saveExtraRec() {
     // 예매만으로는 ♥ 를 누르지 않는다 — 탭 없이 들어와 예매한 회차만 달력에 남는다
     if (!getApps().some(a => a.id === _xr.appId)) {
-      const ok = _xr.appId === EXTRA_ID ? (addExtraApp(), true) : await addPresetById(_xr.appId, true);
+      const ok = _xr.appId === EXTRA_ID ? (addExtraApp(true), true) : await addPresetById(_xr.appId, true);
       if (!ok) { toast('이 작품을 넣지 못했어요 · ⚙️ 설정에서 공연 정보를 새로 받은 뒤 다시 해 주세요'); return; }
     }
     await saveXrNote();
@@ -1992,7 +1994,7 @@
   const futureWith = (rows, name) => (rows || []).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === name));
   // 이 작품이 ♥ 없이도 달력에 있어야 하나 — 관심 배우가 나오거나, 내가 예매한 회차가 있으면
   function neededByActor(id) {
-    if (id !== EXTRA_ID && extraRecords(recKeyOf(id)).length) return true;
+    if (extraRecords(recKeyOf(id)).length) return true;
     const rows = (schedules[id] && schedules[id].length ? schedules[id] : _catalogRows[id]) || [];
     if (!rows.length && getHearts().actors.length) return true;   // 스케줄을 못 받았으면 함부로 지우지 않는다
     return getHearts().actors.some(n => futureWith(rows, n));
