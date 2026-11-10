@@ -124,7 +124,7 @@
     .app-group-caret { font-size: 11px; }
     .preset-date { font-size: 10px; color: var(--text3); margin-right: 6px; flex-shrink: 0; }
 
-    #view-cal { flex: 1; }
+    #view-cal { flex: 1; overflow-x: clip; }   /* 달력이 미끄러질 때 옆으로 스크롤이 생기지 않게 */
     #view-cal.hidden { display: none; }
     /* 찾는 중에는 달력을 숨기고 결과만 */
     #view-cal.searching > :not(#home-search) { display: none !important; }
@@ -712,9 +712,9 @@
       <button class="srch-btn on" onclick="openSearch()">🔍 공연·배우 찾기</button>
     </div>
     <div class="cal-nav">
-      <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
+      <button class="nav-btn" onclick="slideCal(-1)">‹</button>
       <div class="cal-month" id="cal-month-label"></div>
-      <button class="nav-btn" onclick="changeMonth(1)">›</button>
+      <button class="nav-btn" onclick="slideCal(1)">›</button>
     </div>
     <div class="cal-seg">
       <div class="seg-view">
@@ -4227,9 +4227,17 @@
       const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
       x0 = null;
       if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5 || Date.now() - t0 > 700) return;
-      changeMonth(dx < 0 ? 1 : -1);
+      slideCal(dx < 0 ? 1 : -1);
     }, { passive: true });
   });
+  // 넘긴 쪽에서 새 달력이 미끄러져 들어온다. 움직임 줄이기 설정이면 그냥 바꾼다
+  function slideCal(d) {
+    changeMonth(d);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const el = document.getElementById(getCalView() === 'week' ? 'cal-week' : 'cal-grid');
+    el.animate && el.animate([{ transform: `translateX(${d * 48}px)`, opacity: 0.25 }, { transform: 'none', opacity: 1 }],
+      { duration: 220, easing: 'cubic-bezier(.2,.7,.3,1)' });
+  }
 
   init();
 </script>
