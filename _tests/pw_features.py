@@ -64,6 +64,8 @@ async def main():
         d = await ev("evDescLines('적립. 분할 불가(단 새 카드 가능). 운영 시간 내에만 — 시작 전 / 종료 후. M4. 노래 · <이끼숲>')")
         check('이벤트 설명 줄바꿈(문장 끝·—·/), 숫자 뒤 점은 그대로', d.count('\n') == 5 and 'M4. 노래' in d, d.replace('\n', '⏎'))
         check('설명 속 꺾쇠가 보이게', '&lt;이끼숲&gt;' in d)
+        sh = await ev("['재관람카드 스페셜 더블 적립','2차 스페셜 커튼콜 위크','럭키드로우 & 막공 무대인사','하이터치 배웅회','관객과의 대화','쿠폰팩 증정 위크','멜로디카드 증정','2차 페어 폴라로이드 증정 데이','프로필 폴라로이드 데이','페어 폴라데이','전관 회차','셀카 포토카드 증정 위크'].map(evShort)")
+        check('이벤트 줄임말(내 달력용)', sh == ['덥적', '2차 스콜', '럭드 & 막공 무인', '배웅회', '관대', '쿠폰팩', '멜로디카드', '2차 페폴데', '프로필 폴데', '페폴데', '전관', '셀포'], sh)
         n = await ev("getNotes()"); await ev("unheartWork('show_socrates2026')")
 
         # ── 찾기 ──
@@ -95,7 +97,7 @@ async def main():
         check('내 달력: 내 일정 있는 날에 작품 아이콘', await ev("[...document.querySelectorAll('.mycal .mc-day b')].some(b=>b.textContent.trim())"))
         await ev("myCalPick(_ds)"); await pg.wait_for_timeout(300)
         await pg.screenshot(path=os.path.join(OUT, 'mycal.png'))
-        check('내 달력: 날짜 누르면 그날 정리(내 일정·회차 캐스팅)', await ev("!!document.querySelector('.mc-day-box .mc-mine') && !!document.querySelector('.mc-day-box .mc-sess .mc-cast')"))
+        check('내 달력: 날짜 누르면 그날 정리(내 일정·회차 캐스팅)', await ev("!!document.querySelector('.mc-day-box .mc-lbl') && !!document.querySelector('.mc-day-box .mc-sess .mc-cast')"))
         await pg.click('.mc-go'); await pg.wait_for_timeout(500)
         check('내 달력: 목록에서 보기 → 그날 회차로', await ev("!!document.querySelector('.srch-row.flash')"))
         await ev("""(()=>{const w=catalog('all').works.find(x=>x.id==='show_socrates2026'),rows=rowsOf(w);

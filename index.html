@@ -215,7 +215,8 @@
     .mc-hint { font-size: 10px; color: var(--text3); text-align: center; padding: 4px 0 0; }
     .mc-day-box { border-top: 1px solid var(--border); margin-top: 8px; padding: 8px 2px 0; font-size: 12px; }
     .mc-day-hd { font-weight: 700; margin-bottom: 4px; }
-    .mc-mine { color: var(--text2); margin-bottom: 6px; }
+    .mc-sub { color: var(--text3); font-size: 11px; }
+    .mc-sess.mine .mc-cast { color: var(--text2); }
     .mc-lbl { color: var(--text3); font-size: 11px; margin-right: 8px; }
     .mc-none { color: var(--text3); font-size: 11px; }
     .mc-sess { display: grid; grid-template-columns: 40px 1fr; gap: 1px 8px; padding: 5px 0; border-top: 1px dashed var(--border); cursor: pointer; }
@@ -3286,14 +3287,32 @@
     _myCalYM = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`; renderSearch();
   }
   function myCalPick(ds) { _myCalSel = _myCalSel === ds ? null : ds; renderSearch(); }
-  // 그날 내 일정 — [아이콘, 이름, 시각]
+  // 이벤트 줄임말 — 내 달력 그날 정리에서만 쓴다(다른 곳은 원래 이름). 사용자와 정한 규칙 2026-11-11
+  const EV_SHORT = [
+    [/스페셜\s*커튼콜/g, '스콜'], [/커튼콜\s*(촬영\s*)?(위크|데이|WEEK)/g, '컷콜'],
+    [/럭키\s*드로우/g, '럭드'], [/(재관람\s*카드\s*)?(스페셜\s*)?더블\s*적립/g, '덥적'], [/(재관람\s*카드\s*)?트리플\s*적립/g, '트적'],
+    [/페어\s*폴라(로이드)?\s*(증정\s*)?데이/g, '페폴데'], [/폴라(로이드)?\s*(증정\s*)?데이/g, '폴데'],
+    [/셀카\s*포토\s*카드/g, '셀포'], [/포토\s*카드/g, '포카'], [/폴라로이드/g, '폴라'], [/무대\s*인사/g, '무인'],
+    [/하이터치\s*배웅회/g, '배웅회'], [/싱어롱\s*데이|SING-ALONG\s*WEEK/gi, '싱어롱'], [/관객과의\s*대화/g, '관대'], [/전관\s*회차/g, '전관'],
+    [/실황\s*음원\s*뮤직\s*카드/g, '뮤직카드'],
+  ];
+  function evShort(name) {
+    let t = name.includes(' — ') ? name.split(' — ').pop() : name;
+    EV_SHORT.forEach(([re, to]) => { t = t.replace(re, to); });
+    t = t.replace(/(^|\s)(증정|위크|WEEK|데이|DAY|이벤트|수령)(?=\s|$)/g, ' ').replace(/\s+/g, ' ').trim();
+    return t || name;
+  }
+  // 그날 내 일정 — { icon, name, time, cast, ev }
   function myDayItems(ds) {
     const works = catalog('all').works;
     return (getAttended()[ds] || []).filter(r => !r.transferred).map(r => {
       const w = works.find(x => x.id === r.appId) || {};
-      return [w.icon || '🎭', w.name || '', r.time || ''];
-    }).concat(getCustom().filter(e => e.date === ds).map(e => ['📌', e.name || '', e.time || '']))
-      .sort((a, b) => a[2].localeCompare(b[2]));
+      const s = w.id ? rowsOf(w).find(x => x.date === ds && (x.time || '') === (r.time || '') && (!r.showId || x._showId === r.showId)) : null;
+      return { icon: w.icon || '🎭', name: w.name || '', time: r.time || '',
+        cast: s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ') : '',
+        ev: w.id ? eventsOf(w).filter(e => e.name && evAt(e, ds, r.time)).map(e => evShort(e.name)) : [] };
+    }).concat(getCustom().filter(e => e.date === ds).map(e => ({ icon: '📌', name: e.name || '', time: e.time || '', cast: '', ev: [] })))
+      .sort((a, b) => a.time.localeCompare(b.time));
   }
   function myCalBox(w, rows, shown) {
     const open = (() => { try { return !!localStorage.getItem(MYCAL_KEY); } catch (e) { return false; } })();
@@ -3306,7 +3325,7 @@
     let cells = '<i></i>'.repeat(lead);
     for (let d = 1; d <= last; d++) {
       const ds = `${_myCalYM}-${String(d).padStart(2, '0')}`, dow = new Date(y, m - 1, d).getDay();
-      const mine = myDayItems(ds), icons = mine.slice(0, 2).map(x => x[0]).join('') + (mine.length > 2 ? `<small>+${mine.length - 2}</small>` : '');
+      const mine = myDayItems(ds), icons = mine.slice(0, 2).map(x => x.icon).join('') + (mine.length > 2 ? `<small>+${mine.length - 2}</small>` : '');
       cells += `<button class="mc-day${days.has(ds) ? '' : ' off'}${ds < todayStr ? ' past' : ''}${ds === todayStr ? ' today' : ''}${ds === _myCalSel ? ' sel' : ''}${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}"
         onclick="myCalPick('${ds}')"><span>${d}</span><b>${icons}</b></button>`;
     }
@@ -3322,9 +3341,15 @@
     const hidden = rows.filter(r => r.date === ds).length - sess.length;
     return `<div class="mc-day-box">
       <div class="mc-day-hd">${evMd(ds)}(${DOW[d.getDay()]})</div>
-      <div class="mc-mine"><span class="mc-lbl">내 일정</span>${mine.length ? mine.map(x => `${x[0]} ${x[1]}${x[2] ? ' ' + x[2] : ''}`).join(' · ') : '<span class="mc-none">없음</span>'}</div>
+      <div class="mc-lbl">내 일정</div>
+      ${mine.length ? mine.map(x => `<div class="mc-sess mine" onclick="openDay('${ds}')">
+          <span class="mc-time">${x.time}</span>
+          <span class="mc-cast">${x.icon} ${x.name}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}</span>
+          ${x.ev.length ? `<span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}
+        </div>`).join('') : '<div class="mc-none">없음</div>'}
+      <div class="mc-lbl" style="margin-top:6px">이 작품</div>
       ${sess.map(s => {
-        const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => e.name);
+        const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name));
         return `<div class="mc-sess" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
           <span class="mc-time">${s.time || ''}</span>
           <span class="mc-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
