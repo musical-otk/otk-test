@@ -3540,7 +3540,7 @@
       const show = past.slice(past.length - nPast).concat(sorted.filter(x => x.s.date >= todayStr));
       const evOn = (w, ds, time) => eventsOf(w).filter(e => evAt(e, ds, time)).map(e => e.name);
       return `<div class="srch-sess">
-        ${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `${Math.min(10, more)}개 더 보기 ▾ <span class="srch-past-n">남은 ${more}</span>` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}
+        ${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `지난 회차 ${more}개 더 보기 <span class="srch-past-n">(${Math.min(10, more)}개)</span> ▾` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}
         ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => recHit(x, w.id, s));
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
