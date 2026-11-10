@@ -226,6 +226,15 @@
     .mc-go { display: block; margin: 6px 0 0 auto; background: none; border: none; color: var(--custom); font-size: 12px; font-weight: 600; cursor: pointer; }
     .srch-row.flash { background: var(--custom-bg); transition: background .3s; }
     .srch-past-n { font-variant-numeric: tabular-nums; opacity: .7; }
+    .cf-kind { display: flex; gap: 6px; padding: 0 16px 10px; }
+    .cf-kind button { flex: 1; padding: 9px; border-radius: 10px; border: 1.5px solid var(--border); background: none; color: var(--text2); font-size: 13px; font-weight: 600; cursor: pointer; }
+    .cf-kind button.on { border-color: var(--custom); background: var(--custom-bg); color: var(--custom); }
+    #ov-custom[data-kind="show"] .cf-etc, #ov-custom[data-kind="etc"] .cf-show { display: none; }
+    .cf-tilde { display: flex; align-items: center; gap: 6px; flex: 1; color: var(--text3); }
+    .cf-icons { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .cf-icons button { width: 38px; height: 38px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--bg3); font-size: 18px; cursor: pointer; }
+    .cf-icons button.on { border-color: var(--custom); background: var(--custom-bg); }
+    .cf-icons input { width: 64px; height: 38px; text-align: center; font-size: 18px; border-radius: 10px; border: 1.5px dashed var(--border); background: none; color: var(--text1); }
     .flt-hit-bk { margin-left: auto; flex-shrink: 0; font-size: 11px; color: var(--text3); }
     .flt-hit-bk .n { display: inline-block; min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
     .flt-hit-sub { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -794,17 +803,36 @@
       <div class="custom-title" id="custom-form-title">내 일정 추가</div>
       <button class="custom-close" onclick="closeCustomForm()">✕</button>
     </div>
+    <div class="cf-kind">
+      <button id="cf-k-show" onclick="setCfKind('show')">🎭 공연</button>
+      <button id="cf-k-etc" onclick="setCfKind('etc')">📌 기타</button>
+    </div>
+    <div class="form-row">
+      <div class="form-label" id="cf-name-lbl">공연명</div>
+      <input class="form-input" type="text" id="cf-name" placeholder="공연 이름">
+    </div>
+    <div class="form-row cf-etc">
+      <div class="form-label">아이콘</div>
+      <div class="cf-icons" id="cf-icons"></div>
+    </div>
     <div class="form-row">
       <div class="form-label">날짜</div>
-      <input class="form-input" type="date" id="cf-date">
+      <div style="display:flex;gap:6px;align-items:center">
+        <input class="form-input" type="date" id="cf-date" style="flex:1">
+        <span class="cf-etc cf-tilde" id="cf-end-wrap">~ <input class="form-input" type="date" id="cf-end" style="flex:1"></span>
+      </div>
+      <div class="hint cf-etc" style="padding-top:4px">여러 날이면 끝나는 날도 넣어 주세요 (출장·시험 기간)</div>
     </div>
     <div class="form-row">
       <div class="form-label">시간 (선택)</div>
       <input class="form-input" type="time" id="cf-time">
     </div>
-    <div class="form-row">
-      <div class="form-label">공연명</div>
-      <input class="form-input" type="text" id="cf-name" placeholder="공연 이름">
+    <div class="form-row cf-show">
+      <div class="form-label">좌석 (선택)</div>
+      <div style="display:flex;gap:6px">
+        <input class="form-input" type="text" id="cf-seat-zone" placeholder="열 (예: B)" style="flex:1">
+        <input class="form-input" type="number" id="cf-seat-num" placeholder="번호" style="flex:1">
+      </div>
     </div>
     <div class="form-row">
       <div class="form-label">메모 (선택)</div>
@@ -2143,6 +2171,27 @@
   let _customEditId = null, _customFormDs = '';
   let _customPendingPhotos = []; // base64[] in memory during editing
 
+  // 내 일정 — kind: 'show'(허브에 없는 공연, 좌석) | 'etc'(출장·운동… 아이콘, 기간). 옛 일정은 kind 가 없다 → 공연
+  const CF_ICONS = ['✈️', '🏃', '📝', '🍽️', '💼', '🎂', '🏥', '📌'];
+  const customKind = e => e.kind === 'etc' ? 'etc' : 'show';
+  const customIcon = e => customKind(e) === 'etc' ? (e.icon || '📌') : '🎭';
+  // 그날 걸린 내 일정 — 기간 일정은 시작~끝 사이 모든 날
+  const customOn = (list, ds) => list.filter(e => e.date <= ds && ds <= (e.endDate || e.date));
+  let _cfIcon = '📌';
+  function setCfKind(k) {
+    document.getElementById('ov-custom').dataset.kind = k;
+    document.getElementById('cf-k-show').classList.toggle('on', k === 'show');
+    document.getElementById('cf-k-etc').classList.toggle('on', k === 'etc');
+    document.getElementById('cf-name-lbl').textContent = k === 'show' ? '공연명' : '이름';
+    document.getElementById('cf-name').placeholder = k === 'show' ? '공연 이름' : '예: 출장, 운동, 시험, 약속';
+    if (!_customEditId) document.getElementById('cf-time').value = k === 'show' ? '20:00' : '';   // 기타는 하루 종일인 게 많다
+  }
+  function renderCfIcons() {
+    const custom = CF_ICONS.includes(_cfIcon) ? '' : _cfIcon;
+    document.getElementById('cf-icons').innerHTML = CF_ICONS.map(i =>
+      `<button class="${i === _cfIcon ? 'on' : ''}" onclick="_cfIcon='${i}';renderCfIcons()">${i}</button>`).join('') +
+      `<input id="cf-icon-own" maxlength="4" placeholder="직접" value="${custom}" oninput="if(this.value.trim()){_cfIcon=this.value.trim();document.querySelectorAll('#cf-icons button').forEach(b=>b.classList.remove('on'))}">`;
+  }
   async function openCustomForm(ds, editId) {
     _customEditId = editId || null;
     _customFormDs = ds || todayStr;
@@ -2152,6 +2201,11 @@
     document.getElementById('cf-time').value    = ev ? ev.time    : '20:00';
     document.getElementById('cf-name').value    = ev ? ev.name    : '';
     document.getElementById('cf-comment').value = ev ? ev.comment : '';
+    document.getElementById('cf-end').value = ev && ev.endDate ? ev.endDate : '';
+    document.getElementById('cf-seat-zone').value = ev && ev.seatZone ? ev.seatZone : '';
+    document.getElementById('cf-seat-num').value = ev && ev.seatNumber != null ? ev.seatNumber : '';
+    _cfIcon = ev && ev.icon ? ev.icon : '📌'; renderCfIcons();
+    setCfKind(ev ? customKind(ev) : 'show');
     renderColorPicker('cf-colors', ev ? ev.color : COLOR_PALETTE[0]);
     const photoMap = await PhotoDB.getMany(ev?.photoIds || []);
     _customPendingPhotos = (ev?.photoIds || []).map(id => photoMap[id]).filter(Boolean);
@@ -2197,7 +2251,15 @@
   async function saveCustomEvent() {
     const date = document.getElementById('cf-date').value;
     const name = document.getElementById('cf-name').value.trim();
-    if (!date || !name) { alert('날짜와 공연명을 입력해 주세요'); return; }
+    const kind = document.getElementById('ov-custom').dataset.kind || 'show';
+    if (!date || !name) { alert(kind === 'show' ? '날짜와 공연명을 입력해 주세요' : '날짜와 이름을 입력해 주세요'); return; }
+    let endDate = kind === 'etc' ? document.getElementById('cf-end').value : '';
+    if (endDate && endDate < date) { alert('끝나는 날이 시작하는 날보다 앞이에요'); return; }
+    if (endDate === date) endDate = '';
+    const seatZone = kind === 'show' ? document.getElementById('cf-seat-zone').value.trim() : '';
+    const seatNum = kind === 'show' ? document.getElementById('cf-seat-num').value : '';
+    const extra = kind === 'etc' ? { kind, icon: _cfIcon || '📌', ...(endDate ? { endDate } : {}) }
+      : { kind, ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}) };
     const time    = document.getElementById('cf-time').value;
     const comment = document.getElementById('cf-comment').value.trim();
     const color   = document.querySelector('#cf-colors .color-swatch.selected')?.dataset.hex || COLOR_PALETTE[0];
@@ -2210,9 +2272,9 @@
     const photoIds = await Promise.all(_customPendingPhotos.map(src => PhotoDB.put(src)));
     if (_customEditId) {
       const idx = list.findIndex(e => e.id === _customEditId);
-      if (idx !== -1) list[idx] = { id: _customEditId, date, time, name, comment, color, photoIds };
+      if (idx !== -1) list[idx] = { id: _customEditId, date, time, name, comment, color, photoIds, ...extra };
     } else {
-      list.push({ id: Date.now(), date, time, name, comment, color, photoIds });
+      list.push({ id: Date.now(), date, time, name, comment, color, photoIds, ...extra });
     }
     saveCustom(list);
     closeCustomForm();
@@ -2429,7 +2491,7 @@
         })
         .filter(x => x.mine || (mode !== 'mine' && ((x.note.photoIds || []).length > 0 || matchesFilter(x.s, app, filter)))))
         .sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
-      const customs = custom.filter(e => e.date === ds)
+      const customs = customOn(custom, ds)
         .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
 
       // '내 기록' 에서는 빈 날을 아예 뺀다
@@ -2472,7 +2534,7 @@
           <div class="wk-bar" style="background:${col}"></div>
           <div class="wk-time">${e.time || '—'}</div>
           <div class="wk-body">
-            <div class="wk-line1"><span class="wk-app" style="color:${col}">${e.name}</span>
+            <div class="wk-line1"><span class="wk-app" style="color:${col}">${customIcon(e)} ${e.name}</span>${fmtSeat(e) ? `<span class="wk-seat">${fmtSeat(e)}</span>` : ''}
               ${(e.photoIds || []).length ? '<span class="wk-note">📷</span>' : ''}</div>
             ${e.comment ? `<div class="wk-cast">${e.comment}</div>` : ''}
           </div>
@@ -2555,7 +2617,7 @@
           .map(s => ({...s, _app: app}));
       }).sort((a,b) => (a.time||'').localeCompare(b.time||''));
 
-      const showC   = custom.filter(e => e.date === ds);
+      const showC   = customOn(custom, ds);
       const isToday = ds === todayStr;
 
       // 내가 기록한 회차(관람/사진)와 그렇지 않은 회차를 가른다.
@@ -2603,9 +2665,8 @@
 
       const customBadges = showC.map(e => `
         <div class="sess-card" style="${appStyle(e.color || COLOR_PALETTE[0])}">
-          <span class="sess-card-time">${fmtTime(e.time)}</span>
-          ${(e.photoIds || []).length ? '<span class="sess-card-pic" title="사진 있음"></span>' : ''}
-          <span class="sess-card-name">${e.name}</span>
+          <span class="sess-card-time">${e.time ? fmtTime(e.time) : customIcon(e)}</span>
+          <span class="sess-card-name">${e.time ? customIcon(e) + ' ' : ''}${e.name}</span>
         </div>`);
 
       html += `<div class="${cls}" onclick="openDay('${ds}')">
@@ -2650,7 +2711,7 @@
         .map(s => ({...s, _app: app}));
     }).sort((a,b) => (a.time||'').localeCompare(b.time||''));
 
-    const customs = getCustom().filter(e => e.date === ds)
+    const customs = customOn(getCustom(), ds)
       .sort((a,b) => (a.time||'').localeCompare(b.time||''));
 
     // IndexedDB에서 이 날의 모든 사진 한번에 로드
@@ -2723,8 +2784,10 @@
       return `<div class="session-row">
         <div class="session-time">${e.time || '—'}</div>
         <div class="session-body">
-          <span class="session-tag" style="${appStyle(col)}">내 일정</span>
+          <span class="session-tag" style="${appStyle(col)}">${customIcon(e)} ${customKind(e) === 'show' ? '공연' : '내 일정'}</span>
           <div class="session-cast">${e.name}</div>
+          ${e.endDate ? `<div class="session-meta">${evMd(e.date)} ~ ${evMd(e.endDate)}</div>` : ''}
+          ${fmtSeat(e) ? `<div class="session-meta">${fmtSeat(e)}</div>` : ''}
           ${e.comment ? `<div class="session-meta">${e.comment}</div>` : ''}
           ${cThumbs ? `<div class="note-row">${cThumbs}</div>` : ''}
         </div>
@@ -3309,7 +3372,7 @@
       return { icon: w.icon || '🎭', name: w.name || '', time: r.time || '', appId: r.appId, showId: r.showId || '',
         cast: s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ') : '',
         ev: w.id ? eventsOf(w).filter(e => e.name && evAt(e, ds, r.time)).map(e => evShort(e.name)) : [] };
-    }).concat(getCustom().filter(e => e.date === ds).map(e => ({ icon: '📌', name: e.name || '', time: e.time || '', cast: '', ev: [], customId: e.id })))
+    }).concat(customOn(getCustom(), ds).map(e => ({ icon: customIcon(e), name: e.name || '', time: e.time || '', cast: '', ev: [], customId: e.id })))
       .sort((a, b) => a.time.localeCompare(b.time));
   }
   function myCalBox(w, rows, shown) {

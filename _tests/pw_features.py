@@ -123,6 +123,22 @@ async def main():
         check('막공 1주 뒤 자동 OFF', await ev("""(()=>{const o=schedules['show_turing2026'];schedules['show_turing2026']=[{date:'2000-01-01',time:'20:00'}];
           const r=autoHidden('show_turing2026');schedules['show_turing2026']=o;return r})()"""))
         await ev("closeHearts();unheartWork('show_turing2026')")
+        # ── 내 일정: 공연/기타, 아이콘, 기간 ──
+        await ev("openCustomForm('2026-12-02')"); await pg.wait_for_timeout(300)
+        await pg.click('#cf-k-etc'); await pg.fill('#cf-name', '출장')
+        await pg.click('#cf-icons button >> nth=0'); await pg.fill('#cf-end', '2026-12-04')
+        await pg.screenshot(path=os.path.join(OUT, 'custom_form.png'))
+        await ev("saveCustomEvent()"); await pg.wait_for_timeout(300)
+        await ev("openCustomForm('2026-12-05')"); await pg.wait_for_timeout(300)
+        await pg.fill('#cf-name', '지방 공연'); await pg.fill('#cf-seat-zone', 'C'); await pg.fill('#cf-seat-num', '7')
+        await ev("saveCustomEvent()"); await pg.wait_for_timeout(300)
+        got = await ev("getCustom().slice(-2).map(e=>[e.kind,e.icon||'',e.endDate||'',e.seatZone||'',e.seatNumber??''])")
+        check('내 일정: 기타(아이콘·기간)와 공연(좌석) 저장', got == [['etc', '✈️', '2026-12-04', '', ''], ['show', '', '', 'C', 7]], got)
+        check('내 일정: 기간 일정은 사이 날마다 걸림', await ev("['2026-12-02','2026-12-03','2026-12-04'].every(d=>customOn(getCustom(),d).some(e=>e.name==='출장')) && !customOn(getCustom(),'2026-12-05').some(e=>e.name==='출장')"))
+        check('내 일정: 내 달력 아이콘(✈️·🎭)', await ev("myDayItems('2026-12-03').some(x=>x.icon==='✈️') && myDayItems('2026-12-05').some(x=>x.icon==='🎭')"))
+        await ev("openCustomForm('2026-12-02', getCustom().slice(-2)[0].id)"); await pg.wait_for_timeout(300)
+        check('내 일정: 고치기 창에 종류·아이콘·끝날 다시 채움', await ev("document.getElementById('ov-custom').dataset.kind==='etc' && document.getElementById('cf-end').value==='2026-12-04' && _cfIcon==='✈️'"))
+        await ev("closeCustomForm(); saveCustom(getCustom().slice(0,-2)); renderCalendar()")
         check('페이지 오류 없음 (1)', not errs, '; '.join(errs)[:200])
 
         # ── 기타 ──
