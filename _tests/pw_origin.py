@@ -25,7 +25,6 @@ async def main():
         check('앱 화면도 지금 주소에서 열림', (await pg.evaluate("(document.getElementById('frame-app_ikkisup')||{}).src")).startswith(B))
         check('옛 주소로 나가는 요청 0', not out, out[:3])
         check('페이지 오류 없음', not errs, '; '.join(errs)[:200])
-        print('
-SUMMARY', sum(R), '/', len(R))
+        print('\nSUMMARY', sum(R), '/', len(R))
         await b.close()
 asyncio.run(main())
