@@ -14,6 +14,8 @@ PYTHONIOENCODING=utf-8 python _tests/pw_backup.py <다운로드폴더>
 PYTHONIOENCODING=utf-8 python _tests/pw_features.py <스크린샷폴더>
 PYTHONIOENCODING=utf-8 python _tests/pw_import.py <스크린샷폴더>   # 다른 앱 기록(CSV) 가져오기 — 가짜 샘플 import_sample.csv, 이끼숲 앱 src 필요
 
+PYTHONIOENCODING=utf-8 python _tests/pw_origin.py   # 다른 주소에서 열기 — 먼저: python -m http.server 8766 --bind 127.0.0.2
+
 # 3) 정적 검사 (deno lint)
 python _tests/lint.py
 #    (require-await 3건은 알고 있는 스타일 지적)
@@ -151,3 +153,14 @@ python _tests/lint.py
 - 띄어쓰기만 다르면 같은 이름(가상 콘서트=가상콘서트)
 - 띄어쓰기 말고 다르면 다른 이름(가상의 연극≠가상의 연극!)
 - 같은 날 같은 이름이라도 시간이 다르면(낮·밤) 다른 공연
+
+### 다른 주소에서 열기 (pw_origin.py)
+
+- 사이트 주소 = 지금 열린 주소
+- 옛 주소로 저장된 앱도 지금 주소로 읽음
+- 작품 목록 주소도 지금 주소
+- 앱 기록 읽음
+- 앱 스케줄 읽음
+- 앱 화면도 지금 주소에서 열림
+- 옛 주소로 나가는 요청 0
+- 페이지 오류 없음

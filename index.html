@@ -1079,6 +1079,11 @@
   // 테스트 사본(/otk-test/)은 같은 주소(origin)라 실제 허브와 저장소를 같이 쓴다.
   // 설정 키만 따로 두어 섞이지 않게 한다. 관람 기록(<작품>_records)은 그대로 같이 읽는다.
   const IS_TEST_HUB = location.pathname.startsWith('/otk-test/');
+  // 사이트 주소 — 지금 열린 주소를 쓴다(github.io 든 다른 주소든 허브·앱이 같은 주소 아래 있어야 기록을 같이 읽는다).
+  // 내 PC 로컬 서버에서만 실제 사이트를 본다(앱 폴더가 로컬에 다 있지 않다)
+  const OLD_SITE = 'https://musical-otk.github.io';
+  const SITE = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? OLD_SITE : location.origin;
+  const siteUrl = u => (typeof u === 'string' && u.startsWith(OLD_SITE + '/')) ? SITE + u.slice(OLD_SITE.length) : u;
   const HUB_NS = IS_TEST_HUB ? 'test_hub_' : 'hub_';
   const APPS_KEY   = HUB_NS + 'apps';
   const PREFS_KEY  = HUB_NS + 'prefs';
@@ -1108,8 +1113,8 @@
       id: 'app_outcasts',
       name: '아웃캐스트',
       icon: '🦌',
-      scheduleUrl: 'https://musical-otk.github.io/outcasts2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/outcasts2026/',
+      scheduleUrl: SITE + '/outcasts2026/schedule.json',
+      appUrl: SITE + '/outcasts2026/',
       color: '#7aacff',
       recordsKey: 'outcasts_records',
       deepLink: false,   // ?date= 처리가 없는 구버전 앱
@@ -1118,8 +1123,8 @@
       id: 'app_eoduk',
       name: '어둑시니',
       icon: '🌕',
-      scheduleUrl: 'https://musical-otk.github.io/sinimuni2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/sinimuni2026/',
+      scheduleUrl: SITE + '/sinimuni2026/schedule.json',
+      appUrl: SITE + '/sinimuni2026/',
       color: '#f06070',
       recordsKey: 'eoduk_records',
       deepLink: false,   // ?date= 처리가 없는 구버전 앱
@@ -1128,8 +1133,8 @@
       id: 'app_widerstand',
       name: '비더슈탄트',
       icon: '⚔️',
-      scheduleUrl: 'https://musical-otk.github.io/widerstand2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/widerstand2026/',
+      scheduleUrl: SITE + '/widerstand2026/schedule.json',
+      appUrl: SITE + '/widerstand2026/',
       color: '#C09870',
       recordsKey: 'wider_records',
     },
@@ -1137,8 +1142,8 @@
       id: 'app_ikkisup',
       name: '이끼숲',
       icon: '🌿',
-      scheduleUrl: 'https://musical-otk.github.io/ikkisup2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/ikkisup2026/',
+      scheduleUrl: SITE + '/ikkisup2026/schedule.json',
+      appUrl: SITE + '/ikkisup2026/',
       color: '#1A6B72',
       recordsKey: 'ikkisup_records',
     },
@@ -1146,8 +1151,8 @@
       id: 'app_dive',
       name: '다이브',
       icon: '🫧',
-      scheduleUrl: 'https://musical-otk.github.io/dive2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/dive2026/',
+      scheduleUrl: SITE + '/dive2026/schedule.json',
+      appUrl: SITE + '/dive2026/',
       color: '#0284c7',
       recordsKey: 'dive_records',
     },
@@ -1155,8 +1160,8 @@
       id: 'app_fated',
       name: 'FATED',
       icon: '🗡️',   // 비더슈탄트가 ⚔️ 를 쓰고 있어 한 자루 검으로 구분 (로고도 검 한 자루)
-      scheduleUrl: 'https://musical-otk.github.io/fated2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/fated2026/',
+      scheduleUrl: SITE + '/fated2026/schedule.json',
+      appUrl: SITE + '/fated2026/',
       color: '#12161F',
       recordsKey: 'fated_records',
     },
@@ -1165,8 +1170,8 @@
       name: '윌리엄들',
       fullName: '윌리엄과 윌리엄의 윌리엄들',   // 탭은 짧은 이름, 찾기·관심함은 정식 제목
       icon: '📜',
-      scheduleUrl: 'https://musical-otk.github.io/william2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/william2026/',
+      scheduleUrl: SITE + '/william2026/schedule.json',
+      appUrl: SITE + '/william2026/',
       color: '#3A2414',
       recordsKey: 'william_records',
     },
@@ -1174,8 +1179,8 @@
       id: 'app_shining',
       name: '샤이닝',
       icon: '✨',
-      scheduleUrl: 'https://musical-otk.github.io/shining2026/schedule.json',
-      appUrl: 'https://musical-otk.github.io/shining2026/',
+      scheduleUrl: SITE + '/shining2026/schedule.json',
+      appUrl: SITE + '/shining2026/',
       color: '#55515F',
       recordsKey: 'shining_records',
     },
@@ -1191,7 +1196,7 @@
   // 실제: musical-otk.github.io 저장소 루트 / 테스트 사본: /otk-test/apps.json
   const APPS_INDEX_URL = IS_TEST_HUB
     ? new URL('apps.json', location.href.replace(/[^/]*$/, '')).href
-    : `https://${ORG}.github.io/apps.json`;
+    : `${SITE}/apps.json`;
   const DISCOVERED_KEY = HUB_NS + 'discovered';
 
   // ── 기타 공연 (콘서트처럼 앱 없이 일정만 있는 공연) ──
@@ -1327,7 +1332,8 @@
     // 저장해 둔 목록에도 뺀 저장소(NON_DIARY)가 남아 있을 수 있다 — 읽을 때 거른다
     // 저장소 앱(/<저장소>/schedule.json)만 본다 — 정보만 작품은 /otk-test/shows/… 라 걸리면 안 된다
     const skip = d => { try { const m = new URL(d.scheduleUrl || '').pathname.match(/^\/([^/]+)\/schedule\.json$/); return !!m && NON_DIARY.includes(m[1]); } catch { return false; } };
-    try { return (JSON.parse(localStorage.getItem(DISCOVERED_KEY)) || []).filter(d => !skip(d)); }
+    try { return (JSON.parse(localStorage.getItem(DISCOVERED_KEY)) || []).filter(d => !skip(d))
+      .map(d => ({ ...d, scheduleUrl: siteUrl(d.scheduleUrl), appUrl: siteUrl(d.appUrl) })); }
     catch { return []; }
   }
 
@@ -1394,7 +1400,7 @@
         return repos
           .map(r => r.name)
           .filter(n => !n.startsWith('_') && !NON_DIARY.includes(n))
-          .map(n => `https://${ORG}.github.io/${n}/`);
+          .map(n => `${SITE}/${n}/`);
       } catch (e) { repoErr = e; return []; }
     })();
     const folderUrls = await folderAppUrls();
@@ -1496,8 +1502,10 @@
   }
 
   function getApps() {
-    try { return JSON.parse(localStorage.getItem(APPS_KEY)) || []; }
-    catch { return []; }
+    try {
+      return (JSON.parse(localStorage.getItem(APPS_KEY)) || [])
+        .map(a => ({ ...a, scheduleUrl: siteUrl(a.scheduleUrl), appUrl: siteUrl(a.appUrl) }));   // 옛 주소로 저장된 것도 지금 주소로
+    } catch { return []; }
   }
   function saveApps(list) { localStorage.setItem(APPS_KEY, JSON.stringify(list)); }
 
