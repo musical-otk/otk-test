@@ -278,6 +278,30 @@
       "color": "#3A86C8",
       "description": "상세 추후 공지",
       "url": "https://x.com/kontentz/status/2114968086298419386"
+    },
+    {
+      "name": "배웅회",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-20",
+      "color": "#3A86C8",
+      "description": "공연 후 퇴장 시 배우 배웅 인사 (소금 PICK 간식 증정). 커튼콜 후 객석에서 대기. 사진·영상 촬영 불가",
+      "url": "https://x.com/kontentz/status/2120449086176600328"
+    },
+    {
+      "name": "크리스마스 컨셉 커튼콜",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-25",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2120449275679433004"
+    },
+    {
+      "name": "크리스마스 스페셜 포토카드 증정",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-25",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2120449275679433004"
     }
   ]
 }

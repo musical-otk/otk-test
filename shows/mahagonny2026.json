@@ -897,6 +897,28 @@
       ],
       "description": "임예진·이지연 첫 공연 (스케줄표 '첫공' 표기)",
       "url": "https://x.com/m_mahagonny/status/2100851765122093447"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-08",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관으로 별도 오픈 예정",
+      "url": "https://x.com/m_mahagonny/status/2120335709739663615"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-09",
+      "color": "#8E55D9",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관으로 별도 오픈 예정",
+      "url": "https://x.com/m_mahagonny/status/2120335709739663615"
     }
   ]
 }
