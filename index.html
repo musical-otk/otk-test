@@ -197,7 +197,8 @@
     .flt-hit.on { opacity: 0.6; }
     .flt-hit-name { font-weight: 700; flex-shrink: 0; }
     .srch-past-btns { display: flex; gap: 12px; }
-    .mycal-btn { margin-top: 6px; }
+    .srch-list-hd { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .mycal-btn { margin-left: auto; color: var(--custom); }
     .mycal { border: 1px solid var(--border); border-radius: 10px; padding: 6px 6px 8px; margin: 4px 0 8px; }
     .mc-hd { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; padding: 0 2px 2px; }
     .mc-hd button { background: none; border: none; color: var(--text2); font-size: 15px; padding: 0 10px; cursor: pointer; }
@@ -3543,8 +3544,8 @@
   }
   function myCalBox(w, rows, shown) {
     const open = (() => { try { return !!localStorage.getItem(MYCAL_KEY); } catch (e) { return false; } })();
-    const btn = `<button class="srch-back mycal-btn" onclick="toggleMyCal()">📅 내 달력 ${open ? '▴' : '▾'}</button>`;
-    if (!open) return btn;
+    const btn = `<button class="srch-back mycal-btn" onclick="toggleMyCal()">📅 내 일정과 비교 ${open ? '▴' : '▾'}</button>`;
+    if (!open) return { btn, box: '' };
     const days = new Set(shown.map(r => r.date));
     if (!_myCalYM) { const nx = shown.map(r => r.date).filter(d => d >= todayStr).sort()[0]; _myCalYM = (nx || todayStr).slice(0, 7); }
     const [y, m] = _myCalYM.split('-').map(Number);
@@ -3556,11 +3557,11 @@
       cells += `<button class="mc-day${days.has(ds) ? '' : ' off'}${ds < todayStr ? ' past' : ''}${ds === todayStr ? ' today' : ''}${ds === _myCalSel ? ' sel' : ''}${dow === 0 ? ' sun' : dow === 6 ? ' sat' : ''}"
         onclick="myCalPick('${ds}')"><span>${d}</span><b>${icons}</b></button>`;
     }
-    return btn + `<div class="mycal">
+    return { btn, box: `<div class="mycal">
       <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
       <div class="mc-grid">${['월', '화', '수', '목', '금', '토', '일'].map(x => `<em>${x}</em>`).join('')}${cells}</div>
       ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : '<div class="mc-hint">날짜를 누르면 그날 내 일정과 이 작품 회차가 보여요</div>'}
-    </div>`;
+    </div>` };
   }
   function myCalDay(w, rows, shown, ds) {
     const d = new Date(ds + 'T00:00:00'), mine = myDayItems(ds);
@@ -3849,7 +3850,7 @@
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
         ${(() => { const shown = rows.filter(castPick(rows, { roles: info.roles || ai.roles }));
-          return myCalBox(w, rows, shown) + sessList(shown.map(s => ({ w, s })), false); })()}
+          return sessList(shown.map(s => ({ w, s })), false, myCalBox(w, rows, shown)); })()}
       </div>`;
     };
     // 고른 배우로 회차 거르기 — 같은 배역끼리는 '또는', 다른 배역끼리는 '그리고'.
@@ -3883,7 +3884,8 @@
         </div>`).join('')}</div>`;
     };
     // 회차 목록 — 달력에 넣지 않아도 본다. 지난 회차는 접어 둔다. withIcon: 여러 작품이 섞이면 작품 아이콘을 붙인다
-    const sessList = (items, withIcon) => {
+    // cal: 작품 상세의 '내 일정과 비교' — 목록 머리줄 오른쪽 버튼 + 펼친 달력
+    const sessList = (items, withIcon, cal) => {
       if (!items.length) return '';
       const att = getAttended();
       const sorted = [...items].sort((a, b) => (a.s.date + (a.s.time || '')).localeCompare(b.s.date + (b.s.time || '')));
@@ -3893,7 +3895,7 @@
       const show = past.slice(past.length - nPast).concat(sorted.filter(x => x.s.date >= todayStr));
       const evOn = (w, ds, time) => eventsOf(w).filter(e => evAt(e, ds, time)).map(e => e.name);
       return `<div class="srch-sess">
-        ${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `지난 회차 ${more}개 더 보기 <span class="srch-past-n">(${Math.min(10, more)}개)</span> ▾` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}
+        ${past.length || cal ? `<div class="srch-list-hd">${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `지난 회차 ${more}개 더 보기 <span class="srch-past-n">(${Math.min(10, more)}개)</span> ▾` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}${cal ? cal.btn : ''}</div>${cal ? cal.box : ''}` : ''}
         ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => recHit(x, w.id, s));
           const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
