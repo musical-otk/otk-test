@@ -3027,6 +3027,8 @@
     if (cell || row.length) { row.push(cell); rows.push(row); }
     return rows;
   }
+  const noSpace = t => (t || '').replace(/\s+/g, '');
+  const impShowName = t => t.replace(/^뮤지컬\s*/, '').replace(/[〈〉]/g, '');   // 🎭 일정에 적는 이름
   const impNorm = t => (t || '').normalize('NFKC').replace(/^뮤지컬\s*/, '').replace(/[〈〉<>《》「」\[\]()\s.,:·!?'"-]/g, '').toLowerCase();
   // 좌석: 'A16' → A열 16번, '1층 B구역 2열 7번' → 구역·열·번, 못 읽으면 null (원문은 메모에)
   function impSeat(raw) {
@@ -3080,7 +3082,8 @@
       const item = { r, key, ds, time, w, s, kind };
       if (led[key]) item.state = 'again';                                  // 예전에 가져온 줄
       else if (kind === 'match' && (att[ds] || []).some(x => recHit(x, w.id, s))) item.state = 'have';
-      else if (kind === 'show' && custom.some(e => e.date === ds && (e.time || '') === time && impNorm(e.name) === n)) item.state = 'have';
+      // 내 일정과 겹치는지 — 같은 날·같은 시간 + 이름이 띄어쓰기만 빼고 같으면 건너뛴다(낮·밤 구분)
+      else if (kind === 'show' && custom.some(e => e.date === ds && (e.time || '') === time && [r['제목'], impShowName(r['제목'])].some(t => noSpace(t) === noSpace(e.name)))) item.state = 'have';
       else item.state = 'new';
       out.list.push(item);
     }
@@ -3132,7 +3135,7 @@
         }
         saveExtraRecords(list, app.recordsKey); nMatch++;
       } else {
-        custom.push({ id: Date.now() + nShow, kind: 'show', date: x.ds, time: x.time, name: r['제목'].replace(/^뮤지컬\s*/, '').replace(/[〈〉]/g, ''),
+        custom.push({ id: Date.now() + nShow, kind: 'show', date: x.ds, time: x.time, name: impShowName(r['제목']),
           comment: [r['장소'], r['출연'], price ? price.toLocaleString() + '원' : '', memo].filter(Boolean).join(' · '),
           color: COLOR_PALETTE[0], photoIds: [], ...(seat || {}), importKey: x.key });
         nShow++;
