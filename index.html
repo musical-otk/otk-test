@@ -831,7 +831,7 @@
       <div style="display:flex;gap:6px;align-items:center">
         <input class="form-input" type="date" id="cf-date" style="flex:1">
         <span class="cf-tilde" id="cf-end-wrap" hidden>~ <input class="form-input" type="date" id="cf-end" style="flex:1"></span>
-        <button class="cf-multi cf-etc" id="cf-multi" onclick="toggleCfMulti()">여러 날</button>
+        <button class="cf-multi cf-etc" id="cf-multi" onclick="toggleCfMulti()">기간</button>
       </div>
     </div>
     <div class="form-row">
@@ -2190,6 +2190,8 @@
   const customKind = e => e.kind === 'etc' ? 'etc' : 'show';
   const customIcon = e => customKind(e) === 'etc' ? (e.icon || '📌') : '🎭';
   // 그날 걸린 내 일정 — 기간 일정은 시작~끝 사이 모든 날
+  // 달력에 쓰는 이름 — 공연은 다른 회차처럼 이름만, 기타만 작은 아이콘을 앞에
+  const customLabel = e => (customKind(e) === 'etc' ? customIcon(e) + ' ' : '') + e.name;
   const customOn = (list, ds) => list.filter(e => e.date <= ds && ds <= (e.endDate || e.date));
   let _cfIcon = '📌';
   function setCfKind(k) {
@@ -2201,7 +2203,7 @@
     document.getElementById('cf-name').placeholder = k === 'show' ? '공연 이름' : '예: 출장, 운동, 시험, 약속';
     if (!_customEditId) document.getElementById('cf-time').value = k === 'show' ? '20:00' : '';   // 기타는 하루 종일인 게 많다
   }
-  // 기본은 하루 — '여러 날' 을 눌렀을 때만 끝나는 날 칸
+  // 기본은 하루 — '기간' 을 눌렀을 때만 끝나는 날 칸
   function toggleCfMulti(on) {
     const w = document.getElementById('cf-end-wrap'), b = document.getElementById('cf-multi');
     on = on === undefined ? w.hidden : on;
@@ -2557,7 +2559,7 @@
           <div class="wk-bar" style="background:${col}"></div>
           <div class="wk-time">${e.time || '—'}</div>
           <div class="wk-body">
-            <div class="wk-line1"><span class="wk-app" style="color:${col}">${customIcon(e)} ${e.name}</span>${fmtSeat(e) ? `<span class="wk-seat">${fmtSeat(e)}</span>` : ''}
+            <div class="wk-line1"><span class="wk-app" style="color:${col}">${customLabel(e)}</span>${fmtSeat(e) ? `<span class="wk-seat">${fmtSeat(e)}</span>` : ''}
               ${(e.photoIds || []).length ? '<span class="wk-note">📷</span>' : ''}</div>
             ${e.comment ? `<div class="wk-cast">${e.comment}</div>` : ''}
           </div>
@@ -2688,8 +2690,8 @@
 
       const customBadges = showC.map(e => `
         <div class="sess-card" style="${appStyle(e.color || COLOR_PALETTE[0])}">
-          <span class="sess-card-time">${e.time ? fmtTime(e.time) : customIcon(e)}</span>
-          <span class="sess-card-name">${e.time ? customIcon(e) + ' ' : ''}${e.name}</span>
+          <span class="sess-card-time">${e.time ? fmtTime(e.time) : ''}</span>
+          <span class="sess-card-name">${customLabel(e)}</span>
         </div>`);
 
       html += `<div class="${cls}" onclick="openDay('${ds}')">
