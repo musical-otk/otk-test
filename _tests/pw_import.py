@@ -1,11 +1,11 @@
-# mu:di 허브 — Pl@y CSV 가져오기 검사. 실행: python _tests/pw_import.py <스크린샷 폴더>
-# 샘플은 가짜 데이터(_tests/play_sample.csv) — 실제 기록 파일은 개인 정보라 저장소에 넣지 않는다.
+# mu:di 허브 — 다른 앱 기록(CSV) 가져오기 검사. 실행: python _tests/pw_import.py <스크린샷 폴더>
+# 샘플은 가짜 데이터(_tests/import_sample.csv) — 실제 기록 파일은 개인 정보라 저장소에 넣지 않는다.
 # 이끼숲 앱 src(D:\workspace\ikkisup2026)를 같은 로컬 서버에서 열어 앱 쪽 기록도 본다.
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else '.'
-CSV = os.path.join(HERE, 'play_sample.csv')
+CSV = os.path.join(HERE, 'import_sample.csv')
 R = []
 def check(n, ok, info=''):
     R.append(ok); print(('PASS ' if ok else 'FAIL ') + n + (f'  [{info}]' if info else ''))
@@ -22,7 +22,7 @@ async def main():
         await pg.goto('http://127.0.0.1:8765/otk-test/'); await pg.wait_for_timeout(1000)
         await ev("localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(4000)
         await ev("openSettings()"); await pg.wait_for_timeout(300)
-        await pg.set_input_files('#play-file', CSV); await pg.wait_for_timeout(6000)
+        await pg.set_input_files('#import-file', CSV); await pg.wait_for_timeout(6000)
         check('기본 기간은 올해부터', await ev("_imp.range") == 'year')
         await ev("_imp.range='all';renderImport()"); await pg.wait_for_timeout(300)
         await (await pg.query_selector('#set-import')).screenshot(path=os.path.join(OUT, 'import_preview.png'))
@@ -50,7 +50,7 @@ async def main():
         check('없는 작품은 🎭 공연 일정(좌석·여러 줄 메모)', g.get('kind') == 'show' and g.get('seatZone') == 'B' and '여러 줄 메모도' in g.get('comment', ''), g)
         check('못 읽는 좌석은 메모에 원문', any(c['name'] == '없는 뮤지컬' and '비지정 3열 중앙' in c.get('comment', '') for c in cu))
         # 다시 가져오기
-        await ev("openSettings()"); await pg.set_input_files('#play-file', CSV); await pg.wait_for_timeout(6000)
+        await ev("openSettings()"); await pg.set_input_files('#import-file', CSV); await pg.wait_for_timeout(6000)
         await ev("_imp.range='all';renderImport()")
         st = await ev("(()=>{const L=impPlan().list;return {nw:L.filter(x=>x.state==='new').length, again:L.filter(x=>x.state==='again').length}})()")
         check('같은 파일 다시 가져오면 새로 넣을 것 0', st['nw'] == 0 and st['again'] > 0, st)

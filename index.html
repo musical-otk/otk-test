@@ -928,8 +928,8 @@
       <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
       <button class="set-btn" onclick="document.getElementById('restore-file').click()">📂 백업 파일에서 복원</button>
       <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
-      <button class="set-btn" onclick="document.getElementById('play-file').click()">📥 다른 앱 기록 가져오기 (Pl@y)</button>
-      <input type="file" id="play-file" accept=".csv,text/csv" hidden onchange="pickPlay(this)">
+      <button class="set-btn" onclick="document.getElementById('import-file').click()">📥 다른 앱 기록 가져오기 (CSV)</button>
+      <input type="file" id="import-file" accept=".csv,text/csv" hidden onchange="pickImport(this)">
       <div id="set-import"></div>
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
@@ -2934,12 +2934,14 @@
     if (!d) { box.innerHTML = ''; return; }
     const t = new Date(d.at), at = `${t.getMonth() + 1}/${t.getDate()} ${String(t.getHours()).padStart(2, '0')}:${String(t.getMinutes()).padStart(2, '0')}`;
     const md = k => k.slice(5, 10).replace('-', '/') + ' ' + k.slice(11);
+    // 새 회차가 많으면(오픈 한 번에 수십 회) 날짜를 늘어놓지 않고 기간으로
+    const span = arr => { if (arr.length <= 4) return few(arr, md); const d = [...arr].sort(); return `${d[0].slice(5, 10).replace('-', '/')} ~ ${d[d.length - 1].slice(5, 10).replace('-', '/')} · ${arr.length}회차`; };
     const few = (arr, f) => arr.slice(0, 4).map(f).join(' · ') + (arr.length > 4 ? ` 외 ${arr.length - 4}` : '');
     const hearts = getHearts().works;
     const works = [...d.works].sort((a, b) => hearts.includes(b.id) - hearts.includes(a.id));
     box.innerHTML = `<div class="sd-when">${at} 받음${d.first ? ' · 다음부터 바뀐 점을 알려 드려요' : works.length ? '' : ' · 바뀐 점 없음'}</div>` +
       works.map(w => `<div class="sd-work"><div class="sd-work-hd">${w.icon} ${w.name}${hearts.includes(w.id) ? ' ♥' : ''}</div>
-        ${w.added.length ? `<div class="sd-line"><span class="sd-tag">새 회차</span>${few(w.added, md)}</div>` : ''}
+        ${w.added.length ? `<div class="sd-line"><span class="sd-tag">새 회차</span>${span(w.added)}</div>` : ''}
         ${w.gone.length ? `<div class="sd-line"><span class="sd-tag">취소</span>${few(w.gone, md)}</div>` : ''}
         ${w.cast.map(c => `<div class="sd-line"><span class="sd-tag">캐스팅</span>${md(c.k)} ${c.t}</div>`).join('')}
         ${w.ev.length ? `<div class="sd-line"><span class="sd-tag">새 이벤트</span>${few(w.ev, x => x)}</div>` : ''}</div>`).join('');
@@ -3007,10 +3009,10 @@
     };
     rd.readAsText(f);
   }
-  // ── 다른 앱 기록 가져오기 (Pl@y CSV: 제목,일시,캘린더,출연,장소,좌석,금액,구매처,리뷰/메모) ──
+  // ── 다른 앱 기록 가져오기 (CSV: 제목,일시,출연,장소,좌석,금액,구매처,리뷰/메모 열) ──
   // 줄마다: ① mu:di 작품 + 같은 날짜·시간 회차 → 그 회차 예매 기록  ② 그 밖(다른 시즌·없는 작품) → 🎭 공연 내 일정
   // 가져온 줄은 키(제목|일시)로 기억한다 — 다시 가져와도 겹치지 않고, 지운 것은 저절로 되살리지 않는다
-  const IMPORT_KEY = HUB_NS + 'import_play';
+  const IMPORT_KEY = HUB_NS + 'import_csv';
   const APP_IMPORT_OK = ['app_ikkisup'];   // 전용 앱 기록에 바로 넣기 — 앱마다 기록 모양을 확인한 것만
   let _imp = null;
   function parseCsv(text) {
@@ -3041,14 +3043,14 @@
     if (m) return { seatZone: m[1], seatNumber: +m[2] };
     return null;
   }
-  function pickPlay(input) {
+  function pickImport(input) {
     const f = input.files && input.files[0]; input.value = '';
     if (!f) return;
     const rd = new FileReader();
     rd.onload = async () => {
       const rows = parseCsv(rd.result), head = rows[0] || [];
       const col = n => head.indexOf(n);
-      if (col('제목') < 0 || col('일시') < 0) { toast('Pl@y 기록 파일이 아니에요'); return; }
+      if (col('제목') < 0 || col('일시') < 0) { toast('가져올 수 없는 파일이에요 · 제목·일시 열이 있는 CSV 가 필요해요'); return; }
       toast('공연 정보를 맞춰 보는 중…');
       await ensureCatalog();
       _imp = { rows: rows.slice(1).filter(r => r.length > 1).map(r => Object.fromEntries(head.map((h, i) => [h, (r[i] || '').trim()]))),
@@ -3097,7 +3099,7 @@
     const chk = (k, label, n) => `<label class="imp-row"><input type="checkbox" ${_imp.take[k] ? 'checked' : ''} onchange="_imp.take.${k}=this.checked;renderImport()"> ${label} <b>${n}</b></label>`;
     const R = _imp.range, rb = (v, l) => `<button class="${R === v ? 'on' : ''}" onclick="_imp.range='${v}';renderImport()">${l}</button>`;
     box.innerHTML = `<div class="rs-box imp">
-      <b>Pl@y 기록 ${_imp.rows.length}줄</b>
+      <b>가져올 기록 ${_imp.rows.length}줄</b>
       <div class="imp-range">${rb('future', '오늘 이후')}${rb('year', '올해부터')}${rb('all', '전체')}${rb('custom', '직접')}</div>
       ${R === 'custom' ? `<div class="imp-range"><input type="month" value="${_imp.from}" onchange="_imp.from=this.value;renderImport()"> ~ <input type="month" value="${_imp.to}" onchange="_imp.to=this.value;renderImport()"></div>` : ''}
       ${chk('match', 'mu:di 회차에 예매 기록으로', cnt('match', 'new'))}

@@ -12,7 +12,7 @@ python -m http.server 8765 --bind 127.0.0.1
 PYTHONIOENCODING=utf-8 python _tests/pw_full.py <스크린샷폴더>
 PYTHONIOENCODING=utf-8 python _tests/pw_backup.py <다운로드폴더>
 PYTHONIOENCODING=utf-8 python _tests/pw_features.py <스크린샷폴더>
-PYTHONIOENCODING=utf-8 python _tests/pw_import.py <스크린샷폴더>   # Pl@y 가져오기 — 가짜 샘플 play_sample.csv, 이끼숲 앱 src 필요
+PYTHONIOENCODING=utf-8 python _tests/pw_import.py <스크린샷폴더>   # 다른 앱 기록(CSV) 가져오기 — 가짜 샘플 import_sample.csv, 이끼숲 앱 src 필요
 
 # 3) 정적 검사 (deno lint)
 python _tests/lint.py
@@ -120,7 +120,9 @@ python _tests/lint.py
 - 내 일정: 고치기 창에 종류·아이콘·끝날 다시 채움
 - 내 일정: 기본은 하루(끝나는 날 칸 숨김)
 
-### Pl@y 가져오기 (pw_import.py)
+- 새 회차가 많으면 기간으로(12/10 ~ 12/21 · 12회차)
+
+### 다른 앱 기록(CSV) 가져오기 (pw_import.py)
 
 실제 기록 파일은 개인 정보라 저장소에 넣지 않는다. 샘플은 가짜 데이터.
 

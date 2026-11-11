@@ -123,6 +123,13 @@ async def main():
         check('막공 1주 뒤 자동 OFF', await ev("""(()=>{const o=schedules['show_turing2026'];schedules['show_turing2026']=[{date:'2000-01-01',time:'20:00'}];
           const r=autoHidden('show_turing2026');schedules['show_turing2026']=o;return r})()"""))
         await ev("closeHearts();unheartWork('show_turing2026')")
+        # ── 공연 정보 새로 받기: 새 회차가 많으면 기간으로 ──
+        await ev("""localStorage.setItem(DIFF_KEY, JSON.stringify({at:Date.now(), works:[{id:'x',name:'가상',icon:'🎭',
+          added:Array.from({length:12},(_,i)=>'2026-12-'+String(10+i).padStart(2,'0')+' 20:00'),gone:[],cast:[],ev:[]}]}));openSettings();""")
+        await pg.wait_for_timeout(300)
+        check('새 회차가 많으면 기간으로(12/10 ~ 12/21 · 12회차)', '12/10 ~ 12/21 · 12회차' in await ev("document.getElementById('set-diff').innerText"))
+        await ev("localStorage.removeItem(DIFF_KEY);closeSettings()")
+
         # ── 내 일정: 공연/기타, 아이콘, 기간 ──
         await ev("openCustomForm('2026-12-02')"); await pg.wait_for_timeout(300)
         await pg.click('#cf-k-etc'); await pg.fill('#cf-name', '출장')
