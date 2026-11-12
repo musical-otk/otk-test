@@ -775,12 +775,7 @@
     </div>
     <div id="cal-week" hidden></div>
     <div class="cal-grid" id="cal-grid">
-      <div class="cal-dow">
-        <div class="dow-cell">월</div><div class="dow-cell">화</div>
-        <div class="dow-cell">수</div><div class="dow-cell">목</div>
-        <div class="dow-cell">금</div><div class="dow-cell sat">토</div>
-        <div class="dow-cell sun">일</div>
-      </div>
+      <div class="cal-dow" id="cal-dow"></div>
       <div class="cal-days" id="cal-days"></div>
       <div class="axis-legend" id="axis-legend" style="display:none"></div>
     </div>
@@ -935,6 +930,7 @@
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
+      <button class="set-btn set-row" onclick="toggleWeekStart()"><span>달력 시작 요일</span><span id="week-start-btn">월요일</span></button>
       <div class="section-title">요청</div>
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
@@ -2464,10 +2460,27 @@
   function getCalView() {
     return localStorage.getItem(CAL_VIEW_KEY) === 'week' ? 'week' : 'month';
   }
-  // 주의 첫날 — 월요일 (예전엔 일요일. 이름은 그대로 둔다)
+  // 달력 시작 요일 — 기본 월요일, 설정에서 일요일로 (요청 폼 11/12). 기기에 저장, 백업에 포함
+  const WEEK_START_KEY = HUB_NS + 'week_start';
+  const sunFirst = () => localStorage.getItem(WEEK_START_KEY) === 'sun';
+  const leadOf = d => sunFirst() ? d.getDay() : (d.getDay() + 6) % 7;   // 그 날 앞에 비울 칸 수
+  const dowOrder = () => sunFirst() ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 0];
+  function renderDowHead() {
+    const el = document.getElementById('cal-dow');
+    if (el) el.innerHTML = dowOrder().map(i => `<div class="dow-cell${i === 0 ? ' sun' : i === 6 ? ' sat' : ''}">${DOW[i]}</div>`).join('');
+    const b = document.getElementById('week-start-btn');
+    if (b) b.textContent = sunFirst() ? '일요일' : '월요일';
+  }
+  function toggleWeekStart() {
+    if (sunFirst()) localStorage.removeItem(WEEK_START_KEY); else localStorage.setItem(WEEK_START_KEY, 'sun');
+    if (weekStart) weekStart = sundayOf(weekStart);
+    renderDowHead(); renderCalendar();
+    if (!document.getElementById('home-search').hidden) renderSearch();
+  }
+  // 주의 첫날 — 설정에 따라 월요일 또는 일요일 (이름은 옛것 그대로)
   function sundayOf(d) {
     const s = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    s.setDate(s.getDate() - (s.getDay() + 6) % 7);
+    s.setDate(s.getDate() - leadOf(s));
     return s;
   }
   function ymd(d) {
@@ -2635,7 +2648,7 @@
     renderCalViewButtons(view);
     if (view === 'week') { renderWeek(); return; }
     document.getElementById('cal-month-label').textContent = `${currentYear}년 ${currentMonth + 1}월`;
-    const first    = (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7;   // 월요일 시작 칸 수
+    const first    = leadOf(new Date(currentYear, currentMonth, 1));   // 1일 앞 빈 칸 수
     const days     = new Date(currentYear, currentMonth + 1, 0).getDate();
     const filter   = getFilter();
     const attended = getAttended();
@@ -2862,7 +2875,7 @@
 
   // ── 설정 ──
   function openSettings() {
-    renderShowDiff(); renderNewWorks(); renderRestoreBox();
+    renderShowDiff(); renderNewWorks(); renderRestoreBox(); renderDowHead();
     document.getElementById('ov-settings').classList.add('open');
     // 버전은 sw.js 의 CACHE_NAME 을 읽는다 — 올릴 때마다 손으로 맞출 일이 없게
     fetch('sw.js', { cache: 'no-cache' }).then(r => r.text())
@@ -3579,7 +3592,7 @@
     const days = new Set(shown.map(r => r.date));
     if (!_myCalYM) { const nx = shown.map(r => r.date).filter(d => d >= todayStr).sort()[0]; _myCalYM = (nx || todayStr).slice(0, 7); }
     const [y, m] = _myCalYM.split('-').map(Number);
-    const first = new Date(y, m - 1, 1), lead = (first.getDay() + 6) % 7, last = new Date(y, m, 0).getDate();
+    const first = new Date(y, m - 1, 1), lead = leadOf(first), last = new Date(y, m, 0).getDate();
     let cells = '<i></i>'.repeat(lead);
     for (let d = 1; d <= last; d++) {
       const ds = `${_myCalYM}-${String(d).padStart(2, '0')}`, dow = new Date(y, m - 1, d).getDay();
@@ -3589,7 +3602,7 @@
     }
     return { btn, box: `<div class="mycal">
       <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
-      <div class="mc-grid">${['월', '화', '수', '목', '금', '토', '일'].map(x => `<em>${x}</em>`).join('')}${cells}</div>
+      <div class="mc-grid">${dowOrder().map(i => `<em>${DOW[i]}</em>`).join('')}${cells}</div>
       ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : '<div class="mc-hint">날짜를 누르면 그날 내 일정과 이 작품 회차가 보여요</div>'}
     </div>` };
   }
@@ -4557,6 +4570,7 @@
 
   async function init() {
     applyTheme(getTheme());
+    renderDowHead();
     const t = new Date();
     currentYear = t.getFullYear(); currentMonth = t.getMonth();
     syncPresetIcons();

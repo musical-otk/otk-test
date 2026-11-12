@@ -157,6 +157,11 @@ async def main():
         evn = await ev("_evGroups.length")
         check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 마하고니도)', evn > 12 and await ev("_evGroups.some(g=>g.w.name==='마하고니')"), evn)
         await ev("closeSearch()")
+        # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
+        dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
+        mon = await ev(dq); await ev("toggleWeekStart()"); sun = await ev(dq)
+        check('달력 시작 요일: 기본 월요일, 설정으로 일요일', mon == ['월화수목금토일', 6] and sun == ['일월화수목금토', 0], [mon, sun])
+        await ev("toggleWeekStart()")
         check('페이지 오류 없음 (1)', not errs, '; '.join(errs)[:200])
 
         # ── 기타 ──
