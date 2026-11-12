@@ -3,6 +3,9 @@
     "path": "ever2026/"
   },
   {
+    "path": "ripley2026/"
+  },
+  {
     "path": "shows/socrates2026.json",
     "app": false
   },
@@ -108,10 +111,6 @@
   },
   {
     "path": "shows/jc2026.json",
-    "app": false
-  },
-  {
-    "path": "shows/ripley2026.json",
     "app": false
   }
 ]

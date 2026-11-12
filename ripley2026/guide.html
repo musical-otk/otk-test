@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리플리 관극 다이어리 — 사용 가이드</title>
+<!-- 아이콘을 명시하지 않으면 브라우저가 오리진 루트(/favicon.ico, /apple-touch-icon.png)로
+     폴백한다. 작품 앱이 전부 musical-otk.github.io 한 오리진이라, 다른 작품을
+     설치·방문했던 기기에서 그 작품 아이콘이 그대로 나온다. -->
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=1">
+<link rel="shortcut icon" href="favicon.ico?v=1">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=1">
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="apple-touch-icon.png?v=1">
+<style>
+  :root{--bg:#EDEAE3;--bg2:#FBFAF7;--border:#D2CBBE;--text:#1F1A17;--text2:#4A413B;--text3:#8A8178;--accent:#7A1E1E;--accent2:#5A4636;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);max-width:480px;margin:0 auto;}
+  .hero{background:linear-gradient(135deg,#3A2E27 0%,#2A211C 100%);color:#fff;padding:36px 24px 28px;text-align:center;}
+  .hero h1{font-size:20px;font-weight:800;margin-bottom:4px;}
+  .hero p{font-size:12px;opacity:0.8;}
+  .section{padding:24px 20px 0;}
+  .section-title{font-size:16px;font-weight:700;margin-bottom:14px;}
+  .screen-card{background:var(--bg2);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;box-shadow:0 2px 10px rgba(31,26,23,0.10);}
+  .screen-card img{width:100%;display:block;}
+  .screen-desc{padding:14px 16px;}
+  .screen-desc ul{list-style:none;}
+  .screen-desc li{font-size:12px;color:var(--text2);padding:3px 0 3px 12px;position:relative;line-height:1.6;}
+  .screen-desc li::before{content:'·';position:absolute;left:2px;color:var(--accent);font-weight:700;}
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
+  .feature-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 10px;}
+  .feature-icon{font-size:20px;margin-bottom:5px;}
+  .feature-name{font-size:12px;font-weight:700;margin-bottom:3px;}
+  .feature-desc{font-size:11px;color:var(--text3);line-height:1.5;}
+  .tip{background:var(--bg2);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 12px;margin-bottom:8px;font-size:12px;color:var(--text2);line-height:1.6;}
+  .tip b{color:var(--accent2);}
+  .install-box{background:var(--accent);color:#fff;border-radius:12px;padding:14px;margin-bottom:16px;text-align:center;}
+  .install-box .url{font-size:12px;font-weight:700;opacity:0.9;margin-top:5px;word-break:break-all;}
+  .footer{padding:28px 20px 40px;text-align:center;color:var(--text3);font-size:11px;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>✒️ 리플리 관극 다이어리</h1>
+  <p>뮤지컬 〈리플리〉 2026-2027 관람 기록 앱</p>
+</div>
+<div class="section">
+  <div class="section-title">주요 기능</div>
+  <div class="feature-grid">
+    <div class="feature-item"><div class="feature-icon">📅</div><div class="feature-name">관람 기록</div><div class="feature-desc">캐스팅·좌석·별점·메모·사진</div></div>
+    <div class="feature-item"><div class="feature-icon">🗓</div><div class="feature-name">스케줄 캘린더</div><div class="feature-desc">전체 회차 + 배역별 필터</div></div>
+    <div class="feature-item"><div class="feature-icon">🎫</div><div class="feature-name">재관람 카드</div><div class="feature-desc">7칸 도장판, 3·5·7회 혜택</div></div>
+    <div class="feature-item"><div class="feature-icon">📊</div><div class="feature-name">통계</div><div class="feature-desc">히트맵·배우별·조합별·지출</div></div>
+  </div>
+</div>
+<div class="section">
+  <div class="section-title">홈</div>
+  <div class="screen-card"><img src="sc_01_home.png" alt="홈" onerror="this.closest('.screen-card').style.display='none'">
+  <div class="screen-desc"><ul>
+    <li>다음 공연 D-day, 캐스팅, 좌석</li>
+    <li>예정 일정 목록 (설정에서 표시할 배역 선택)</li>
+    <li>재관람 카드와 할인권 현황</li>
+  </ul></div></div>
+</div>
+<div class="section">
+  <div class="section-title">캘린더</div>
+  <div class="screen-card"><img src="sc_02_calendar.png" alt="캘린더" onerror="this.closest('.screen-card').style.display='none'">
+  <div class="screen-desc"><ul>
+    <li>박재이·강우영 탭에서 배우를 고르면 그 배우 회차만 표시</li>
+    <li>✅ 는 기록한 회차</li>
+    <li>날짜를 누르면 회차 목록, 기록 추가·상세</li>
+  </ul></div></div>
+</div>
+<div class="section">
+  <div class="section-title">재관람 카드</div>
+  <div class="screen-card"><img src="sc_03_coupon.png" alt="재관람 카드" onerror="this.closest('.screen-card').style.display='none'">
+  <div class="screen-desc"><ul>
+    <li>7칸 도장판, 관람 1회당 도장 1개</li>
+    <li>3회 40% 할인권 · 5회 &lsquo;우영 등단 기념&rsquo; 스페셜 기프트 + 50% 할인권 · 7회 지정 폴라로이드 1매</li>
+    <li>할인권 사용 기간 12/29 ~ 2/21. 이 기간 회차에서만 고를 수 있고, 고르면 1장 차감</li>
+    <li>5회 기프트 내용은 공식 안내가 나오면 반영</li>
+  </ul></div></div>
+</div>
+<div class="section">
+  <div class="section-title">통계</div>
+  <div class="screen-card"><img src="sc_04_stats.png" alt="통계" onerror="this.closest('.screen-card').style.display='none'">
+  <div class="screen-desc"><ul>
+    <li><b>히트맵</b> 좌석별 방문 횟수 (1층 A~I열, 124석)</li>
+    <li><b>배우별</b> 배역별 관람 횟수</li>
+    <li><b>조합별</b> 재이×우영 전체 조합, 행을 누르면 날짜 목록</li>
+    <li><b>지출</b> 총 지출과 평균 티켓가</li>
+  </ul></div></div>
+</div>
+<div class="section">
+  <div class="section-title">팁</div>
+  <div class="tip"><b>스케줄 연동</b> 날짜를 누르고 회차 옆 &ldquo;+ 기록&rdquo;을 누르면 캐스팅이 자동으로 들어갑니다</div>
+  <div class="tip"><b>재관람 카드</b> 기록을 저장할 때 도장판을 고르면 도장이 찍힙니다. 7칸을 넘으면 새 카드가 만들어지고, 기존 카드에는 합산되지 않습니다</div>
+  <div class="tip"><b>현장 규칙</b> MD부스에서 공연 시작 1시간 전 ~ 10분 전, 종료 후 10분까지. 지난 회차 적립은 불가</div>
+  <div class="tip"><b>양도</b> 표는 있었지만 못 본 회차는 &ldquo;양도&rdquo;로 표시하면 도장·통계·지출에서 빠집니다</div>
+  <div class="tip"><b>사진</b> 원본 화질로 저장됩니다. 한 번 탭하면 전체화면, 두 번 탭하면 가로 꽉 채움</div>
+  <div class="tip"><b>백업</b> 설정에서 JSON 내보내기·가져오기 (사진 포함 선택 가능)</div>
+</div>
+<div class="section">
+  <div class="section-title">앱 설치</div>
+  <div class="install-box">
+    <div style="font-size:13px;font-weight:700;">Safari / Chrome 에서 열고 공유 &rarr; &ldquo;홈 화면에 추가&rdquo;</div>
+    <div class="url">musical-otk.github.io/ripley2026/</div>
+  </div>
+  <div class="tip">설치하면 앱처럼 전체화면으로 열립니다. 기록은 이 기기에만 저장되고, 오프라인에서도 쓸 수 있습니다</div>
+</div>
+<div class="footer">
+  ✒️ 리플리 · 홍익대 대학로 아트센터 소극장<br>
+  2026.12.23 ~ 2027.03.01<br><br>
+  문의·피드백 &rarr; <a href="https://x.com/zen__ym" style="color:var(--accent);">𝕏 @zen__ym</a>
+</div>
+</body>
+</html>
