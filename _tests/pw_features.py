@@ -176,6 +176,16 @@ async def main():
         got = await e2("""({extra:extraRecords().length, show:extraRecords(recKeyOf('show_hwinter2026')).map(r=>r.seat),
            note:(getNotes()[noteKeyFor('show_hwinter2026','2026-12-18',{time:'20:00'})]||{}).memo, hasExtra:getApps().some(a=>a.id===EXTRA_ID)})""")
         check('기타 → 작품으로 옮긴 공연(H.WINTER): 예매·좌석·메모가 따라옴', got == {'extra': 0, 'show': ['B열 3번'], 'note': '메모', 'hasExtra': False}, got)
+        # 정보만 → 전용 앱으로 바뀐 작품(리플리): 예전 항목을 빼고 ♥·필터를 앱으로. 허브 예매 기록이 있으면 그대로 둔다
+        old = "({id:'show_ripley2026',kind:'data',name:'리플리',icon:'✒️',color:'#8A5A5A',scheduleUrl:location.origin+'/otk-test/shows/ripley2026.json',appUrl:'',deepLink:false,recordsKey:HUB_NS+'rec_ripley2026'})"
+        for recs, label in (([], '정보만 → 앱: 예전 항목 빼고 ♥·필터를 앱으로'), ([{'date': '2026-12-23', 'time': '20:00'}], '정보만 → 앱: 허브 예매 기록이 있으면 그대로 둠')):
+            await e2("localStorage.clear()")
+            await e2(f"""r=>{{localStorage.setItem(APPS_KEY,JSON.stringify([{old}]));saveHearts({{...getHearts(),works:['show_ripley2026']}});
+              saveFilter({{v:3,offWorks:['show_ripley2026'],offActors:[],off:[]}});saveExtraRecords(r,HUB_NS+'rec_ripley2026');}}""", recs)
+            await pg2.reload(); await pg2.wait_for_timeout(7000)
+            got = await e2("[getApps().map(a=>a.id).sort(), getHearts().works, getFilter().offWorks]")
+            want = [['app_ripley2026'], ['app_ripley2026'], ['app_ripley2026']] if not recs else [['show_ripley2026'], ['show_ripley2026'], ['show_ripley2026']]
+            check(label, got == want, got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

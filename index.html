@@ -1314,6 +1314,24 @@
     if (!extraRecords().length && !getHearts().works.includes(EXTRA_ID)) dropApp(EXTRA_ID);   // 기타에 남은 게 없으면 뺀다
     renderTabs(); renderCalendar();
   }
+  // 정보만 작품이 전용 앱으로 바뀌면(shows/<id>.json → <id>/) 예전 항목이 내 목록에 남아 찾기에 두 번 나온다(리플리 11/13).
+  // ♥·필터를 앱으로 옮기고 예전 항목을 뺀다. 허브에 예매 기록이 남아 있으면 잃지 않게 그대로 둔다.
+  async function migrateDataToApps() {
+    const found = getDiscovered();
+    for (const a of getApps().filter(x => x.kind === 'data')) {
+      const appId = 'app_' + a.id.replace(/^show_/, '');
+      if (found.some(d => d.id === a.id) || !found.some(d => d.id === appId)) continue;
+      if (extraRecords(a.recordsKey).length) continue;
+      const hearted = getHearts().works.includes(a.id);
+      const off = getFilter().offWorks.includes(a.id);
+      if (hearted && !(await addPresetById(appId, false))) continue;
+      dropApp(a.id);
+      const h = getHearts();
+      saveHearts({ ...h, works: [...new Set(h.works.map(x => x === a.id ? appId : x))].filter(x => hearted || x !== a.id) });
+      if (off) { const f = getFilter(); if (!f.offWorks.includes(appId)) f.offWorks.push(appId); saveFilter(f); }
+    }
+    renderTabs(); renderCalendar();
+  }
   // viaActor: 예매만 저장할 때 — 다른 작품처럼 ♥ 없이, 탭 없이 예매한 회차만 달력에
   function addExtraApp(viaActor) {
     localStorage.removeItem(EXTRA_OFF_KEY);
@@ -4547,7 +4565,7 @@
     renderFrames();
     await migratePhotosToIndexedDB();
     const apps = getApps();
-    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(syncActorWorks, syncActorWorks); return; }
+    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(syncActorWorks, syncActorWorks); return; }
     // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
     const failed = [];
     await Promise.all(apps.map(async app => {
@@ -4565,7 +4583,7 @@
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
     // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
-    discoverApps(true).then(migrateExtraShows).then(syncActorWorks, syncActorWorks);
+    discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(syncActorWorks, syncActorWorks);
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
