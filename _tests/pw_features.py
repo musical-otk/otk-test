@@ -161,6 +161,11 @@ async def main():
         sp = await ev("""(()=>{const mk=(t,x)=>({name:'책갈피',startDate:'2026-11-16',endDate:'2026-11-16',times:[t],description:`유료 1매당 1개, 이 회차 책갈피: ${x} (총 3종), 매표소에서 수령`});
           const r=evSplitDesc([mk('20:00','공범이 된 목격자'),mk('16:00','심폐소생일지')]);return r&&[r.head,r.mid(mk('','고자질하는 심장').description)]})()""")
         check('이벤트: 회차마다 다른 설명은 공통 한 번 + 회차 줄에 다른 부분', sp == ['유료 1매당 1개, 이 회차 책갈피: 회차마다 다름 (아래) (총 3종), 매표소에서 수령', '고자질하는 심장'], sp)
+        # 공연 정보 비교: 이름이 같은 배역 칸(게스트 여러 칸)은 묶어서 — 한 명 빠지면 그 한 명만
+        cd = await ev("""(()=>{const w=catalog('all').works.find(x=>/정찬콘/.test(x.name)); if(!w) return 'no-work'; const ks=((infoOf(w)||{}).roles||[]).map(r=>r.key).slice(0,4);
+          const mk=a=>ks.slice(0,a.length).map((k,i)=>k+'='+a[i]).join('|'), K='2026-12-31 20:00';
+          return diffSnapshots({[w.id]:{sess:{[K]:mk(['가','나','다','라'])},ev:{}}},{[w.id]:{sess:{[K]:mk(['나','다','라'])},ev:{}}}).works.map(x=>x.cast.map(c=>c.t))})()""")
+        check('공연 정보 비교: 같은 배역 칸은 묶어서 (게스트 한 명 빠짐)', cd == [['게스트 빠짐 가']], cd)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

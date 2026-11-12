@@ -2942,10 +2942,18 @@
       const parse = v => Object.fromEntries((v || '').split('|').filter(Boolean).map(x => x.split('=')));
       const added = Object.keys(b.sess).filter(k => !(k in a.sess));
       const gone = Object.keys(a.sess).filter(k => !(k in b.sess) && k.slice(0, 10) >= todayStr);
+      // 이름이 같은 배역 칸(게스트 1~4 등)은 묶어서 견준다 — 칸 순서로 견주면 한 명 빠질 때 뒤가 다 당겨져 전부 바뀐 걸로 보였다(정찬콘 11/13)
       const cast = Object.keys(b.sess).filter(k => k in a.sess && a.sess[k] !== b.sess[k]).map(k => {
-        const o = parse(a.sess[k]), n = parse(b.sess[k]);
-        return { k, t: [...new Set([...Object.keys(o), ...Object.keys(n)])].filter(r => o[r] !== n[r]).map(r => `${lbl(r)} ${o[r] || '-'}→${n[r] || '-'}`).join(', ') };
-      });
+        const o = parse(a.sess[k]), n = parse(b.sess[k]), byLbl = {};
+        [...new Set([...Object.keys(o), ...Object.keys(n)])].forEach(r => (byLbl[lbl(r)] = byLbl[lbl(r)] || []).push(r));
+        return { k, t: Object.entries(byLbl).map(([L, ks]) => {
+          const ov = ks.map(r => o[r]).filter(Boolean), nv = ks.map(r => n[r]).filter(Boolean);
+          const out = ov.filter(x => !nv.includes(x)), inn = nv.filter(x => !ov.includes(x));
+          if (!out.length && !inn.length) return '';
+          if (out.length === 1 && inn.length === 1) return `${L} ${out[0]}→${inn[0]}`;
+          return `${L} ${[...out.map(x => '빠짐 ' + x), ...inn.map(x => '추가 ' + x)].join(' · ')}`;
+        }).filter(Boolean).join(', ') };
+      }).filter(c => c.t);
       const ev = Object.keys(b.ev).filter(k => !(k in a.ev)).map(k => k.split('|')[0]);
       if (added.length || gone.length || cast.length || ev.length) works.push({ id, ...nameOf(id), added, gone, cast, ev });
     });
@@ -2989,6 +2997,8 @@
     // 새 회차가 많으면(오픈 한 번에 수십 회) 날짜를 늘어놓지 않고 기간으로
     const span = arr => { if (arr.length <= 4) return few(arr, md); const d = [...arr].sort(); return `${d[0].slice(5, 10).replace('-', '/')} ~ ${d[d.length - 1].slice(5, 10).replace('-', '/')} · ${arr.length}회차`; };
     const few = (arr, f) => arr.slice(0, 4).map(f).join(' · ') + (arr.length > 4 ? ` 외 ${arr.length - 4}` : '');
+    // 회차마다 나뉜 같은 이벤트는 한 번만 — 몇 회차인지 붙인다
+    const evNames = arr => { const c = {}; arr.forEach(x => { c[x] = (c[x] || 0) + 1; }); return Object.entries(c).map(([n, k]) => k > 1 ? `${n} (${k}회차)` : n); };
     const hearts = getHearts().works;
     const works = [...d.works].sort((a, b) => hearts.includes(b.id) - hearts.includes(a.id));
     box.innerHTML = `<div class="sd-when">${at} 받음${d.first ? ' · 다음부터 바뀐 점을 알려 드려요' : works.length ? '' : ' · 바뀐 점 없음'}</div>` +
@@ -2996,7 +3006,7 @@
         ${w.added.length ? `<div class="sd-line"><span class="sd-tag">새 회차</span>${span(w.added)}</div>` : ''}
         ${w.gone.length ? `<div class="sd-line"><span class="sd-tag">취소</span>${few(w.gone, md)}</div>` : ''}
         ${w.cast.map(c => `<div class="sd-line"><span class="sd-tag">캐스팅</span>${md(c.k)} ${c.t}</div>`).join('')}
-        ${w.ev.length ? `<div class="sd-line"><span class="sd-tag">새 이벤트</span>${few(w.ev, x => x)}</div>` : ''}</div>`).join('');
+        ${w.ev.length ? `<div class="sd-line"><span class="sd-tag">새 이벤트</span>${few(evNames(w.ev), x => x)}</div>` : ''}</div>`).join('');
   }
   // 새로 올라온 작품 — 설정 안에서만. ♡ 하거나 7일 지나면 빠진다
   function renderNewWorks() {
