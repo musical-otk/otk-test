@@ -2501,6 +2501,9 @@ function renderHome() {
 // ============================================================
 let calYear, calMonth, calSelectedDs = null;
 let calFilter = { jaei:null, wooyoung:null };
+// 배역마다 여러 명을 고를 수 있다 — 같은 배역은 그중 한 명이라도(OR), 다른 배역끼리는 모두 맞아야(AND).
+// 예전에 저장된 값은 배우 이름 하나라 배열로 읽는다.
+const cfList = v => Array.isArray(v) ? v : (v ? [v] : []);
 const calExpandedRoles = new Set(); // 펼쳐진 배역 탭들 (복수 동시 가능)
 
 function initCal() {
@@ -2551,11 +2554,11 @@ function renderAllActorChips() {
   container.innerHTML = ROLES
     .filter(r => calExpandedRoles.has(r.key))
     .map(roleData => {
-      const cur = calFilter[roleData.key];
+      const cur = cfList(calFilter[roleData.key]);
       const chips =
-        `<button class="cal-chip${!cur?' active':''}" onclick="setCalFilterFromTab('${roleData.key}',null)">전체</button>` +
+        `<button class="cal-chip${!cur.length?' active':''}" onclick="setCalFilterFromTab('${roleData.key}',null)">전체</button>` +
         roleData.actors.map(a =>
-          `<button class="cal-chip${cur===a?' active':''}" onclick="setCalFilterFromTab('${roleData.key}','${a}')">${a}</button>`
+          `<button class="cal-chip${cur.includes(a)?' active':''}" onclick="setCalFilterFromTab('${roleData.key}','${a}')">${a}</button>`
         ).join('');
       return `<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border);">
         <span style="font-size:11px;color:var(--accent);font-weight:700;width:${roleLabelWidth()};flex-shrink:0;">${roleData.label}</span>
@@ -2566,7 +2569,9 @@ function renderAllActorChips() {
 
 // 배우 선택
 function setCalFilterFromTab(role, actor) {
-  calFilter[role] = actor;
+  const cur = cfList(calFilter[role]);
+  const next = actor === null ? [] : cur.includes(actor) ? cur.filter(x => x !== actor) : [...cur, actor];
+  calFilter[role] = next.length ? next : null;
   renderAllActorChips();
   updateRoleTabIndicators();
   updateCalFilterHint();
@@ -2589,7 +2594,7 @@ function updateCalFilterHint() {
   if (!el) return;
   const active = Object.entries(calFilter).filter(([,v]) => v).map(([k,v]) => {
     const role = ROLES.find(r => r.key === k);
-    return `${role?.label||k} ${v}`;
+    return `${role?.label||k} ${cfList(v).join('·')}`;
   });
   el.textContent = active.length ? '· ' + active.join(' · ') + ' 필터 중' : '· 전체 회차 표시 중';
 }
@@ -2656,7 +2661,7 @@ function renderCalendar() {
       const dow2    = new Date(calYear, calMonth, day).getDay();
       const daySch  = schByDate[ds] || [];
       const filtered = daySch.filter(s =>
-        Object.entries(calFilter).every(([k,v]) => !v || s[k] === v)
+        Object.entries(calFilter).every(([k,v]) => !v || cfList(v).includes(s[k]))
       );
       let cls = 'cal-day';
       if (ds === todayStr)      cls += ' today';

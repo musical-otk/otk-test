@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ever2026-v5';
+const CACHE_NAME = 'ever2026-v7';
 // 폴더 배포라 주소가 /ever2026/ (실서비스) 또는 /otk-test/ever2026/ (테스트) — sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
