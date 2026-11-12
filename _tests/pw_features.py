@@ -153,6 +153,9 @@ async def main():
         await ev("closeCustomForm(); saveCustom(getCustom().slice(0,-2)); renderCalendar()")
         await ev("openSearch()"); await pg.fill('#srch-q', '페이티드'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
         check('찾기: 영어 제목 작품을 한글로도 찾음 (페이티드 → FATED)', 'FATED' in ' '.join(await ev("[...document.querySelectorAll('.flt-hit-name')].map(e=>e.textContent)")))
+        await pg.fill('#srch-q', '커튼콜'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
+        evn = await ev("_evGroups.length")
+        check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 마하고니도)', evn > 12 and await ev("_evGroups.some(g=>g.w.name==='마하고니')"), evn)
         await ev("closeSearch()")
         check('페이지 오류 없음 (1)', not errs, '; '.join(errs)[:200])
 

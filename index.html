@@ -3968,7 +3968,7 @@
       .filter(e => e.name && (e.endDate || e.startDate) >= todayStr && norm(e.name + ' ' + (e.description || '')).includes(q))
       .forEach(e => { const k = w.id + '|' + e.name; if (!evMap.has(k)) evMap.set(k, { w, name: e.name, list: [] }); evMap.get(k).list.push(e); }));
     const evs = [...evMap.values()].map(g => (g.list.sort((a, b) => evFirst(a).localeCompare(evFirst(b))), g))
-      .sort((a, b) => evFirst(a.list[0]).localeCompare(evFirst(b.list[0]))).slice(0, 12);
+      .sort((a, b) => evFirst(a.list[0]).localeCompare(evFirst(b.list[0])));   // 자르지 않는다 — 12개에서 잘려 마하고니 커튼콜이 빠졌었다
     _evGroups = evs;
     if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, name, list }, gi) =>
       `<button class="flt-hit" onclick="openEvGroup(${gi})">
