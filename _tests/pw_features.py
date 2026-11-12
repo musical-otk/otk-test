@@ -157,6 +157,10 @@ async def main():
         evn = await ev("_evGroups.length")
         check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 마하고니도)', evn > 12 and await ev("_evGroups.some(g=>g.w.name==='마하고니')"), evn)
         await ev("closeSearch()")
+        # 회차마다 설명 한 군데만 다른 같은 이벤트(하트비트 책갈피) — 공통 설명은 한 번, 다른 부분은 회차 줄에
+        sp = await ev("""(()=>{const mk=(t,x)=>({name:'책갈피',startDate:'2026-11-16',endDate:'2026-11-16',times:[t],description:`유료 1매당 1개, 이 회차 책갈피: ${x} (총 3종), 매표소에서 수령`});
+          const r=evSplitDesc([mk('20:00','공범이 된 목격자'),mk('16:00','심폐소생일지')]);return r&&[r.head,r.mid(mk('','고자질하는 심장').description)]})()""")
+        check('이벤트: 회차마다 다른 설명은 공통 한 번 + 회차 줄에 다른 부분', sp == ['유료 1매당 1개, 이 회차 책갈피: 회차마다 다름 (아래) (총 3종), 매표소에서 수령', '고자질하는 심장'], sp)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

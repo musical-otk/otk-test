@@ -300,6 +300,7 @@
     .ev-sess { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 13px; }
     .ev-sess-when { flex: none; font-weight: 600; min-width: 92px; }
     .ev-sess-cast { flex: 1; color: var(--text2); font-size: 12px; min-width: 0; }
+    .ev-sess-note { display: block; color: var(--custom); font-size: 11px; margin-top: 2px; }
     .ev-sess.past { opacity: .55; }
     .ev-btn { flex: none; font-size: 12px; padding: 5px 10px; border-radius: 12px; border: 1px solid var(--custom); background: none; color: var(--custom); cursor: pointer; }
     .ev-btn.mine { background: var(--custom); color: #fff; }
@@ -3685,6 +3686,20 @@
       ${e.description ? `<div class="ev-item-desc">${evDescLines(e.description)}</div>` : ''}
       ${e.url ? `<a class="ev-link" href="${e.url}" target="_blank" rel="noopener">원문 보기 ↗</a>` : ''}
     </div>`;
+  // 같은 이벤트가 회차마다 설명 한 군데만 다를 때(하트비트 책갈피 종류) — 공통 앞뒤와 회차별 부분으로 나눈다.
+  // 앞뒤는 낱말 경계까지 물린다. 다른 부분이 길거나 비면 null (설명을 따로따로 보여 준다)
+  function evSplitDesc(list) {
+    const ds = [...new Set(list.map(e => e.description || ''))];
+    if (ds.length < 2) return null;
+    const cut = /[\s:,(·]/;
+    let a = 0; while (ds.every(d => d[a] === ds[0][a]) && a < ds[0].length) a++;
+    while (a > 0 && !cut.test(ds[0][a - 1])) a--;
+    let z = 0; while (ds.every(d => d[d.length - 1 - z] === ds[0][ds[0].length - 1 - z]) && z < ds[0].length - a) z++;
+    while (z > 0 && !/[\s,()·]/.test(ds[0][ds[0].length - z])) z--;
+    const mid = d => d.slice(a, d.length - z).trim();
+    if (!a || ds.some(d => !mid(d) || mid(d).length > 30)) return null;
+    return { head: ds[0].slice(0, a).trimEnd() + ' 회차마다 다름 (아래)' + ds[0].slice(ds[0].length - z), mid };
+  }
   const evRecOf = (w, s) => (getAttended()[s.date] || []).find(x => recHit(x, w.id, s));
   const evRecBtn = (w, s) => {
     const r = evRecOf(w, s);
@@ -3730,18 +3745,21 @@
     const rows = rowsOf(w).filter(s => list.some(e => evAt(e, s.date, s.time)))
       .filter(s => s.date >= todayStr || evRecOf(w, s))
       .sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
+    const split = evSplitDesc(list);
     const sess = rows.map(s => {
       const d = new Date(s.date + 'T00:00:00'), past = s.date < todayStr;
+      const own = split && list.find(e => evAt(e, s.date, s.time));
       return `<div class="ev-sess${past ? ' past' : ''}">
         <span class="ev-sess-when">${evMd(s.date)}(${DOW[d.getDay()]}) ${s.time || ''}</span>
-        <span class="ev-sess-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+        <span class="ev-sess-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}${own ? `<span class="ev-sess-note">${split.mid(own.description || '')}</span>` : ''}</span>
         ${evRecBtn(w, s)}
       </div>`;
     }).join('');
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${name} · ${w.name}`,
       // 회차마다 나뉜 같은 이벤트는 설명·원문이 같으면 한 번만 — 날짜는 아래 회차 목록이 보여 준다
-      list.filter((e, i) => list.findIndex(x => (x.description || '') === (e.description || '') && (x.url || '') === (e.url || '')) === i)
-        .map(e => evItem(e, rows.length > 0)).join('') + sess +
+      (split ? evItem({ ...list[0], description: split.head }, rows.length > 0)
+        : list.filter((e, i) => list.findIndex(x => (x.description || '') === (e.description || '') && (x.url || '') === (e.url || '')) === i)
+        .map(e => evItem(e, rows.length > 0)).join('')) + sess +
       `<div class="ev-foot"><button class="ev-btn ev-plain" onclick="evToWork('${w.id}')">작품 보기 ›</button></div>`);
     pushRecentQ((document.getElementById('srch-q') || {}).value);
   }
