@@ -120,8 +120,9 @@ async def main():
         t1 = await pg.inner_text(btn); await pg.click(btn); await pg.wait_for_timeout(200); t2 = await pg.inner_text(btn)
         check('관심함 ON/OFF 토글', (t0, t1, t2) == ('ON', 'OFF', 'ON'), f'{t0} {t1} {t2}')
         check('같은 값이면 자동으로 되돌림(저장 없음)', await ev("Object.keys(getVisibility()).length") == 0)
-        check('막공 1주 뒤 자동 OFF', await ev("""(()=>{const o=schedules['show_turing2026'];schedules['show_turing2026']=[{date:'2000-01-01',time:'20:00'}];
-          const r=autoHidden('show_turing2026');schedules['show_turing2026']=o;return r})()"""))
+        check('막공 3일 뒤 자동 OFF (3일째까지는 보임)', await ev("""(()=>{const o=schedules['show_turing2026'];const ago=n=>{const d=new Date(todayStr+'T00:00:00');d.setDate(d.getDate()-n);return ymd(d)};
+          const at=n=>{schedules['show_turing2026']=[{date:ago(n),time:'20:00'}];return autoHidden('show_turing2026')};
+          const r=[at(3),at(4)];schedules['show_turing2026']=o;return r[0]===false&&r[1]===true})()"""))
         await ev("closeHearts();unheartWork('show_turing2026')")
         # ── 공연 정보 새로 받기: 새 회차가 많으면 기간으로 ──
         await ev("""localStorage.setItem(DIFF_KEY, JSON.stringify({at:Date.now(), works:[{id:'x',name:'가상',icon:'🎭',

@@ -1601,12 +1601,12 @@
     const last = lastShowDate(appId);
     return !!last && last < todayStr;
   }
-  // 자동: 막공 1주 뒤에 위쪽 작품 버튼에서 빠진다 (막공 주 기록·사진 정리할 시간)
+  // 자동: 막공 3일 뒤에 위쪽 작품 버튼에서 빠진다 (기록·사진 정리할 시간 — 11/13 1주 → 3일)
   function autoHidden(appId) {
     const last = lastShowDate(appId);
     if (!last) return false;
-    const d = new Date(last + 'T00:00:00'); d.setDate(d.getDate() + 7);
-    return d.toISOString().slice(0, 10) < todayStr;
+    const d = new Date(last + 'T00:00:00'); d.setDate(d.getDate() + 3);
+    return ymd(d) < todayStr;
   }
   function isTabVisible(app) {
     const mode = getVisibility()[app.id];
@@ -3372,7 +3372,7 @@
       live.map(a => appListRow(a, vis)).join('') + doneHtml;
   }
 
-  // ON/OFF — 고른 값이 자동 판정과 같으면 자동으로 돌려 둔다 (그래야 막공 1주 뒤 자동으로 꺼진다)
+  // ON/OFF — 고른 값이 자동 판정과 같으면 자동으로 돌려 둔다 (그래야 막공 3일 뒤 자동으로 꺼진다)
   function cycleVisibility(id) {
     const app = getApps().find(a => a.id === id) || { id };
     const want = !isTabVisible(app);
