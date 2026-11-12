@@ -109,5 +109,9 @@
   {
     "path": "shows/jc2026.json",
     "app": false
+  },
+  {
+    "path": "shows/ripley2026.json",
+    "app": false
   }
 ]
