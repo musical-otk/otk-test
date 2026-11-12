@@ -83,7 +83,7 @@
       flex-shrink: 0; transition: background 0.15s;
     }
     .hbtn:active { background: var(--bg3); }
-    #app-tabs { display: flex; gap: 6px; flex-shrink: 0; }
+    #app-tabs { display: flex; gap: 6px; flex-shrink: 0; position: relative; }   /* 탭 끌기가 offsetLeft 를 이 줄 기준으로 잰다 */
     .app-btn {
       padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
       white-space: nowrap; flex-shrink: 0; cursor: pointer;
@@ -94,7 +94,7 @@
     .app-btn-more { color: var(--text3); border-style: dashed; }
     /* 탭 길게 눌러 옮기기 — 누르는 동안 글자 선택·메뉴가 뜨지 않게 */
     .app-btn { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
-    .app-btn.tab-drag { opacity: 1; transform: scale(1.08); box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; }
+    .app-btn.tab-drag { opacity: 1; box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; }
     .tab-order-row { display: flex; align-items: center; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 14px; }
     .tab-order-row:last-child { border-bottom: none; }
     .tab-order-row .to-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -1677,39 +1677,65 @@
         <button onclick="moveTab('${a.id}',1)" ${i < list.length - 1 ? '' : 'disabled'} aria-label="아래로">▼</button>
       </div>`).join('') : '<div class="hint" style="padding:6px 0">탭이 있는 작품이 없어요</div>';
   }
-  // 길게(0.45초) 누르면 탭이 떠오르고, 손을 떼지 않고 좌우로 끌면 자리를 바꾼다. 떼면 저장
+  // 길게(0.45초) 누르면 탭이 떠오르고, 손을 떼지 않고 좌우로 끌면 손가락을 따라온다. 옆 탭은 비켜나고, 떼면 그 자리에 저장
   (function tabDrag() {
-    let timer = null, drag = null, startX = 0, startY = 0, skipClick = false;
+    let timer = null, drag = null, startX = 0, startY = 0, grabDx = 0, lastX = 0, skipClick = false;
     const strip = () => document.getElementById('app-tabs');
     const scroller = () => document.querySelector('.header');
+    const tabs = () => [...strip().querySelectorAll('.app-btn[id^="btn-"]')];
+    // 끄는 탭을 손가락 위치에 둔다 — offsetLeft 는 transform 과 상관없는 제자리라 기준으로 쓴다
+    const follow = x => {
+      const left = x - strip().getBoundingClientRect().left - grabDx;
+      drag.style.transform = `translateX(${left - drag.offsetLeft}px) scale(1.08)`;
+    };
+    // 자리가 바뀐 옆 탭은 옛 자리에서 새 자리로 미끄러지게 (FLIP)
+    const slide = (els, before) => els.forEach(b => {
+      const d = before.get(b) - b.offsetLeft; if (!d) return;
+      b.style.transition = 'none'; b.style.transform = `translateX(${d}px)`;
+      requestAnimationFrame(() => { b.style.transition = 'transform .16s ease'; b.style.transform = ''; });
+    });
     const end = () => {
       clearTimeout(timer); timer = null;
       if (!drag) return;
-      drag.classList.remove('tab-drag');
-      const ids = [...strip().querySelectorAll('.app-btn[id^="btn-"]')].map(b => b.id.slice(4));
-      drag = null; skipClick = true; setTimeout(() => { skipClick = false; }, 400);
-      // 숨긴 탭(OFF)은 화면에 없으니 보이는 탭끼리만 자리를 바꾼다
-      const all = tabApps().map(a => a.id), vis = all.filter(id => ids.includes(id));
-      let k = 0; applyTabOrder(all.map(id => vis.includes(id) ? ids[k++] : id));
-      renderTabs(); highlightTab(currentView);
-      if (document.getElementById('ov-settings').classList.contains('open')) renderTabOrder();
+      const d = drag; drag = null;
+      d.style.transition = 'transform .14s ease'; d.style.transform = '';
+      skipClick = true; setTimeout(() => { skipClick = false; }, 400);
+      setTimeout(() => {
+        d.classList.remove('tab-drag');
+        const ids = tabs().map(b => b.id.slice(4));
+        // 숨긴 탭(OFF)은 화면에 없으니 보이는 탭끼리만 자리를 바꾼다
+        const all = tabApps().map(a => a.id), vis = all.filter(id => ids.includes(id));
+        let k = 0; applyTabOrder(all.map(id => vis.includes(id) ? ids[k++] : id));
+        renderTabs(); highlightTab(currentView);
+        if (document.getElementById('ov-settings').classList.contains('open')) renderTabOrder();
+      }, 150);
     };
     document.addEventListener('pointerdown', e => {
       const btn = e.target.closest && e.target.closest('#app-tabs .app-btn[id^="btn-"]');
       if (!btn) return;
-      startX = e.clientX; startY = e.clientY;
-      timer = setTimeout(() => { drag = btn; btn.classList.add('tab-drag'); if (navigator.vibrate) navigator.vibrate(15); }, 450);
+      startX = lastX = e.clientX; startY = e.clientY;
+      timer = setTimeout(() => {
+        drag = btn; grabDx = startX - btn.getBoundingClientRect().left;
+        btn.classList.add('tab-drag'); btn.style.transition = 'none'; follow(lastX);
+        if (navigator.vibrate) navigator.vibrate(15);
+      }, 450);
     });
     document.addEventListener('pointermove', e => {
+      lastX = e.clientX;
       if (timer && !drag && (Math.abs(e.clientX - startX) > 8 || Math.abs(e.clientY - startY) > 8)) { clearTimeout(timer); timer = null; return; }
       if (!drag) return;
       const sc = scroller(), r = sc.getBoundingClientRect();
       if (e.clientX < r.left + 30) sc.scrollLeft -= 8; else if (e.clientX > r.right - 30) sc.scrollLeft += 8;
-      const others = [...strip().querySelectorAll('.app-btn[id^="btn-"]')].filter(b => b !== drag);
-      const over = others.find(b => { const q = b.getBoundingClientRect(); return e.clientX >= q.left && e.clientX <= q.right; });
-      if (!over) return;
-      const q = over.getBoundingClientRect();
-      if (e.clientX < q.left + q.width / 2) strip().insertBefore(drag, over); else strip().insertBefore(drag, over.nextSibling);
+      // 끄는 탭의 가운데가 옆 탭의 가운데를 넘으면 자리를 바꾼다
+      const sl = strip().getBoundingClientRect().left, mid = e.clientX - sl - grabDx + drag.offsetWidth / 2;
+      const others = tabs().filter(b => b !== drag);
+      const before = new Map(others.map(b => [b, b.offsetLeft]));
+      const next = others.find(b => b.offsetLeft > drag.offsetLeft && mid > b.offsetLeft + b.offsetWidth / 2);
+      const prev = [...others].reverse().find(b => b.offsetLeft < drag.offsetLeft && mid < b.offsetLeft + b.offsetWidth / 2);
+      if (next) strip().insertBefore(drag, next.nextSibling);
+      else if (prev) strip().insertBefore(drag, prev);
+      if (next || prev) slide(others, before);
+      follow(e.clientX);
     });
     // 끄는 동안 화면이 같이 밀리지 않게 (iOS 는 touchmove 를 막아야 한다)
     document.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive: false });
