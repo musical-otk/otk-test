@@ -99,8 +99,10 @@
     .tab-order-row:last-child { border-bottom: none; }
     .tab-order-row .to-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .tab-order-row .to-off { font-size: 11px; color: var(--text3); margin-left: 4px; }
-    .tab-order-row button { background: none; border: 1px solid var(--border); color: var(--text2); border-radius: 8px; width: 34px; height: 30px; font-size: 13px; cursor: pointer; }
-    .tab-order-row button:disabled { opacity: 0.3; cursor: default; }
+    .tab-order-row { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+    .to-grip { color: var(--text3); font-size: 20px; padding: 2px 6px; cursor: grab; touch-action: none; }
+    .tab-order-row.tab-drag { background: inherit; box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; border-radius: 8px; }
+    #set-taborder { position: relative; }
 
     .app-list-note { font-size: 10px; color: var(--text3); font-weight: 500; margin-top: 2px; }
     .app-list-eye, .app-list-mini {
@@ -945,7 +947,7 @@
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
       <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
       <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
-      <div class="hint" style="padding:6px 2px 2px">탭 순서 — 위쪽 탭을 길게 눌러 옆으로 끌어도 돼요</div>
+      <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
       <div class="set-btn" id="set-taborder" style="cursor:default;padding:4px 10px"></div>
       <div class="section-title">요청</div>
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
@@ -1671,10 +1673,9 @@
   function renderTabOrder() {
     const box = document.getElementById('set-taborder'); if (!box) return;
     const list = tabApps();
-    box.innerHTML = list.length ? list.map((a, i) => `<div class="tab-order-row">
+    box.innerHTML = list.length ? list.map(a => `<div class="tab-order-row" data-id="${a.id}">
         <span class="to-name">${a.icon ? a.icon + ' ' : ''}${a.name}${isTabVisible(a) ? '' : '<span class="to-off">OFF</span>'}</span>
-        <button onclick="moveTab('${a.id}',-1)" ${i ? '' : 'disabled'} aria-label="위로">▲</button>
-        <button onclick="moveTab('${a.id}',1)" ${i < list.length - 1 ? '' : 'disabled'} aria-label="아래로">▼</button>
+        <span class="to-grip" aria-label="끌어서 순서 바꾸기">≡</span>
       </div>`).join('') : '<div class="hint" style="padding:6px 0">탭이 있는 작품이 없어요</div>';
   }
   // 길게(0.45초) 누르면 탭이 떠오르고, 손을 떼지 않고 좌우로 끌면 손가락을 따라온다. 옆 탭은 비켜나고, 떼면 그 자리에 저장
@@ -1743,6 +1744,57 @@
     document.addEventListener('pointercancel', end);
     document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest('#app-tabs')) e.preventDefault(); });
     document.addEventListener('click', e => { if (skipClick && e.target.closest && e.target.closest('#app-tabs')) { e.stopPropagation(); e.preventDefault(); } }, true);
+  })();
+
+  // 설정 탭 순서 목록 — ≡ 는 바로, 줄은 길게(0.45초) 눌러 위아래로 끈다. 위쪽 탭 끌기와 같은 느낌으로
+  (function listDrag() {
+    let timer = null, drag = null, startX = 0, startY = 0, grabDy = 0, lastY = 0;
+    const box = () => document.getElementById('set-taborder');
+    const rows = () => [...box().querySelectorAll('.tab-order-row')];
+    const follow = y => { const top = y - box().getBoundingClientRect().top - grabDy; drag.style.transform = `translateY(${top - drag.offsetTop}px) scale(1.02)`; };
+    const slide = (els, before) => els.forEach(r => {
+      const d = before.get(r) - r.offsetTop; if (!d) return;
+      r.style.transition = 'none'; r.style.transform = `translateY(${d}px)`;
+      requestAnimationFrame(() => { r.style.transition = 'transform .16s ease'; r.style.transform = ''; });
+    });
+    const start = row => {
+      drag = row; grabDy = lastY - row.getBoundingClientRect().top;
+      row.classList.add('tab-drag'); row.style.transition = 'none'; follow(lastY);
+      if (navigator.vibrate) navigator.vibrate(15);
+    };
+    const end = () => {
+      clearTimeout(timer); timer = null;
+      if (!drag) return;
+      const d = drag; drag = null;
+      d.style.transition = 'transform .14s ease'; d.style.transform = '';
+      setTimeout(() => {
+        d.classList.remove('tab-drag');
+        applyTabOrder(rows().map(r => r.dataset.id));
+        renderTabs(); highlightTab(currentView); renderTabOrder();
+      }, 150);
+    };
+    document.addEventListener('pointerdown', e => {
+      const row = e.target.closest && e.target.closest('#set-taborder .tab-order-row');
+      if (!row) return;
+      startX = e.clientX; startY = lastY = e.clientY;
+      if (e.target.closest('.to-grip')) { e.preventDefault(); start(row); return; }
+      timer = setTimeout(() => start(row), 450);
+    });
+    document.addEventListener('pointermove', e => {
+      lastY = e.clientY;
+      if (timer && !drag && (Math.abs(e.clientX - startX) > 8 || Math.abs(e.clientY - startY) > 8)) { clearTimeout(timer); timer = null; return; }
+      if (!drag) return;
+      const mid = e.clientY - box().getBoundingClientRect().top - grabDy + drag.offsetHeight / 2;
+      const others = rows().filter(r => r !== drag), before = new Map(others.map(r => [r, r.offsetTop]));
+      const next = others.find(r => r.offsetTop > drag.offsetTop && mid > r.offsetTop + r.offsetHeight / 2);
+      const prev = [...others].reverse().find(r => r.offsetTop < drag.offsetTop && mid < r.offsetTop + r.offsetHeight / 2);
+      if (next) box().insertBefore(drag, next.nextSibling); else if (prev) box().insertBefore(drag, prev);
+      if (next || prev) slide(others, before);
+      follow(e.clientY);
+    });
+    document.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive: false });
+    document.addEventListener('pointerup', end);
+    document.addEventListener('pointercancel', end);
   })();
 
   // ── iframe 렌더링 ──

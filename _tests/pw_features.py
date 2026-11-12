@@ -171,7 +171,7 @@ async def main():
         to = await ev("""(()=>{const keep=localStorage.getItem(APPS_KEY);const mk=(id,v)=>({id,name:id,icon:'',color:'#888',scheduleUrl:'x'+id,appUrl:'',kind:'data',recordsKey:'k'+id,...(v?{viaActor:true}:{})});
           saveApps([mk('a'),mk('b'),mk('v',1),mk('c')]);moveTab('c',-1);const r1=getApps().map(a=>a.id).join('');
           applyTabOrder(['b','c','a']);const r2=getApps().map(a=>a.id).join('');localStorage.setItem(APPS_KEY,keep);return [r1,r2]})()""")
-        check('탭 순서: ▲▼·끌기로 바꾸고 탭 없는 작품은 제자리', to == ['acvb', 'bcva'], to)
+        check('탭 순서: 끌기로 바꾸고 탭 없는 작품은 제자리', to == ['acvb', 'bcva'], to)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)
