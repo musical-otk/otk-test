@@ -167,6 +167,11 @@ async def main():
           const mk=a=>ks.slice(0,a.length).map((k,i)=>k+'='+a[i]).join('|'), K='2026-12-31 20:00';
           return diffSnapshots({[w.id]:{sess:{[K]:mk(['가','나','다','라'])},ev:{}}},{[w.id]:{sess:{[K]:mk(['나','다','라'])},ev:{}}}).works.map(x=>x.cast.map(c=>c.t))})()""")
         check('공연 정보 비교: 같은 배역 칸은 묶어서 (게스트 한 명 빠짐)', cd == [['게스트 빠짐 가']], cd)
+        # 탭 순서 — ▲▼ 로 바꾸고, 탭 없는 작품(배우 ♡로만 들어온 것)은 제자리
+        to = await ev("""(()=>{const keep=localStorage.getItem(APPS_KEY);const mk=(id,v)=>({id,name:id,icon:'',color:'#888',scheduleUrl:'x'+id,appUrl:'',kind:'data',recordsKey:'k'+id,...(v?{viaActor:true}:{})});
+          saveApps([mk('a'),mk('b'),mk('v',1),mk('c')]);moveTab('c',-1);const r1=getApps().map(a=>a.id).join('');
+          applyTabOrder(['b','c','a']);const r2=getApps().map(a=>a.id).join('');localStorage.setItem(APPS_KEY,keep);return [r1,r2]})()""")
+        check('탭 순서: ▲▼·끌기로 바꾸고 탭 없는 작품은 제자리', to == ['acvb', 'bcva'], to)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

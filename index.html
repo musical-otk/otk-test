@@ -92,6 +92,15 @@
     }
     .app-btn:active { opacity: 0.7; }
     .app-btn-more { color: var(--text3); border-style: dashed; }
+    /* 탭 길게 눌러 옮기기 — 누르는 동안 글자 선택·메뉴가 뜨지 않게 */
+    .app-btn { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+    .app-btn.tab-drag { opacity: 1; transform: scale(1.08); box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; }
+    .tab-order-row { display: flex; align-items: center; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .tab-order-row:last-child { border-bottom: none; }
+    .tab-order-row .to-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tab-order-row .to-off { font-size: 11px; color: var(--text3); margin-left: 4px; }
+    .tab-order-row button { background: none; border: 1px solid var(--border); color: var(--text2); border-radius: 8px; width: 34px; height: 30px; font-size: 13px; cursor: pointer; }
+    .tab-order-row button:disabled { opacity: 0.3; cursor: default; }
 
     .app-list-note { font-size: 10px; color: var(--text3); font-weight: 500; margin-top: 2px; }
     .app-list-eye, .app-list-mini {
@@ -936,6 +945,8 @@
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
       <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
       <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
+      <div class="hint" style="padding:6px 2px 2px">탭 순서 — 위쪽 탭을 길게 눌러 옆으로 끌어도 돼요</div>
+      <div class="set-btn" id="set-taborder" style="cursor:default;padding:4px 10px"></div>
       <div class="section-title">요청</div>
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
@@ -1634,6 +1645,79 @@
       ).join('') +
       (hiddenCount ? `<button class="app-btn app-btn-more" onclick="openHiddenApps()" title="숨겨진 공연 열기">+${hiddenCount}</button>` : '');
   }
+
+  // ── 탭 순서 ── 내 작품 목록(APPS_KEY) 순서가 곧 탭 순서. 탭이 없는 작품(배우 ♡·예매만)은 제자리에 둔다
+  const tabApps = () => getApps().filter(a => !a.viaActor);
+  // 탭을 다시 그리면 색이 빠진다 — 보고 있던 작품 탭을 다시 칠한다
+  function highlightTab(view) {
+    getApps().forEach(app => {
+      const btn = document.getElementById(`btn-${app.id}`);
+      if (btn) btn.style.cssText = view === app.id ? `background:${hexToRgba(app.color,0.16)};color:${app.color};border-color:${hexToRgba(app.color,0.36)}` : '';
+    });
+  }
+  function applyTabOrder(ids) {
+    const apps = getApps(), slots = [];
+    apps.forEach((a, i) => { if (ids.includes(a.id)) slots.push(i); });
+    const byId = Object.fromEntries(apps.map(a => [a.id, a]));
+    slots.forEach((slot, k) => { apps[slot] = byId[ids[k]]; });
+    saveApps(apps);
+  }
+  function moveTab(id, dir) {
+    const ids = tabApps().map(a => a.id), i = ids.indexOf(id), j = i + dir;
+    if (i < 0 || j < 0 || j >= ids.length) return;
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+    applyTabOrder(ids); renderTabs(); renderTabOrder(); highlightTab(currentView);
+  }
+  function renderTabOrder() {
+    const box = document.getElementById('set-taborder'); if (!box) return;
+    const list = tabApps();
+    box.innerHTML = list.length ? list.map((a, i) => `<div class="tab-order-row">
+        <span class="to-name">${a.icon ? a.icon + ' ' : ''}${a.name}${isTabVisible(a) ? '' : '<span class="to-off">OFF</span>'}</span>
+        <button onclick="moveTab('${a.id}',-1)" ${i ? '' : 'disabled'} aria-label="위로">▲</button>
+        <button onclick="moveTab('${a.id}',1)" ${i < list.length - 1 ? '' : 'disabled'} aria-label="아래로">▼</button>
+      </div>`).join('') : '<div class="hint" style="padding:6px 0">탭이 있는 작품이 없어요</div>';
+  }
+  // 길게(0.45초) 누르면 탭이 떠오르고, 손을 떼지 않고 좌우로 끌면 자리를 바꾼다. 떼면 저장
+  (function tabDrag() {
+    let timer = null, drag = null, startX = 0, startY = 0, skipClick = false;
+    const strip = () => document.getElementById('app-tabs');
+    const scroller = () => document.querySelector('.header');
+    const end = () => {
+      clearTimeout(timer); timer = null;
+      if (!drag) return;
+      drag.classList.remove('tab-drag');
+      const ids = [...strip().querySelectorAll('.app-btn[id^="btn-"]')].map(b => b.id.slice(4));
+      drag = null; skipClick = true; setTimeout(() => { skipClick = false; }, 400);
+      // 숨긴 탭(OFF)은 화면에 없으니 보이는 탭끼리만 자리를 바꾼다
+      const all = tabApps().map(a => a.id), vis = all.filter(id => ids.includes(id));
+      let k = 0; applyTabOrder(all.map(id => vis.includes(id) ? ids[k++] : id));
+      renderTabs(); highlightTab(currentView);
+      if (document.getElementById('ov-settings').classList.contains('open')) renderTabOrder();
+    };
+    document.addEventListener('pointerdown', e => {
+      const btn = e.target.closest && e.target.closest('#app-tabs .app-btn[id^="btn-"]');
+      if (!btn) return;
+      startX = e.clientX; startY = e.clientY;
+      timer = setTimeout(() => { drag = btn; btn.classList.add('tab-drag'); if (navigator.vibrate) navigator.vibrate(15); }, 450);
+    });
+    document.addEventListener('pointermove', e => {
+      if (timer && !drag && (Math.abs(e.clientX - startX) > 8 || Math.abs(e.clientY - startY) > 8)) { clearTimeout(timer); timer = null; return; }
+      if (!drag) return;
+      const sc = scroller(), r = sc.getBoundingClientRect();
+      if (e.clientX < r.left + 30) sc.scrollLeft -= 8; else if (e.clientX > r.right - 30) sc.scrollLeft += 8;
+      const others = [...strip().querySelectorAll('.app-btn[id^="btn-"]')].filter(b => b !== drag);
+      const over = others.find(b => { const q = b.getBoundingClientRect(); return e.clientX >= q.left && e.clientX <= q.right; });
+      if (!over) return;
+      const q = over.getBoundingClientRect();
+      if (e.clientX < q.left + q.width / 2) strip().insertBefore(drag, over); else strip().insertBefore(drag, over.nextSibling);
+    });
+    // 끄는 동안 화면이 같이 밀리지 않게 (iOS 는 touchmove 를 막아야 한다)
+    document.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive: false });
+    document.addEventListener('pointerup', end);
+    document.addEventListener('pointercancel', end);
+    document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest('#app-tabs')) e.preventDefault(); });
+    document.addEventListener('click', e => { if (skipClick && e.target.closest && e.target.closest('#app-tabs')) { e.stopPropagation(); e.preventDefault(); } }, true);
+  })();
 
   // ── iframe 렌더링 ──
   function renderFrames() {
@@ -2884,7 +2968,7 @@
 
   // ── 설정 ──
   function openSettings() {
-    renderShowDiff(); renderNewWorks(); renderRestoreBox(); renderDowHead();
+    renderShowDiff(); renderNewWorks(); renderRestoreBox(); renderDowHead(); renderTabOrder();
     document.getElementById('ov-settings').classList.add('open');
     // 버전은 sw.js 의 CACHE_NAME 을 읽는다 — 올릴 때마다 손으로 맞출 일이 없게
     fetch('sw.js', { cache: 'no-cache' }).then(r => r.text())
