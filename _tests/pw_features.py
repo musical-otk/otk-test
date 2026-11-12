@@ -159,9 +159,10 @@ async def main():
         await ev("closeSearch()")
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
-        mon = await ev(dq); await ev("toggleWeekStart()"); sun = await ev(dq)
-        check('달력 시작 요일: 기본 월요일, 설정으로 일요일', mon == ['월화수목금토일', 6] and sun == ['일월화수목금토', 0], [mon, sun])
-        await ev("toggleWeekStart()")
+        mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)
+        wk = await ev("()=>{setCalView('week');weekStart=null;renderCalendar();const a=weekStart.getDay();setWeekStart('week','sun');const b=weekStart.getDay();setCalView('month');return [a,b]}")
+        check('달력 시작 요일: 월간·주간 따로, 기본 월요일', mon == ['월화수목금토일', 6] and sun == ['일월화수목금토', 0] and wk == [1, 0], [mon, sun, wk])
+        await ev("setWeekStart('month','mon');setWeekStart('week','mon')")
         check('페이지 오류 없음 (1)', not errs, '; '.join(errs)[:200])
 
         # ── 기타 ──

@@ -323,6 +323,8 @@
     .seg-view .seg-btn { flex: 0 0 auto; padding: 7px 10px; }
     .seg-view .seg-btn:first-child { border-radius: 9px 0 0 9px; }
     .seg-view .seg-btn:last-child  { border-radius: 0 9px 9px 0; margin-left: -1px; }
+    .set-dow { cursor: default; padding-top: 7px; padding-bottom: 7px; }
+    .set-dow .seg-btn { padding: 5px 12px; font-size: 13px; }
 
     /* ── 주간 보기 — 하루씩 세로로, 회차마다 캐스팅·좌석까지 펼친다 ── */
     #cal-week { padding: 0 12px 88px; }
@@ -930,7 +932,8 @@
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
       <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
-      <button class="set-btn set-row" onclick="toggleWeekStart()"><span>달력 시작 요일</span><span id="week-start-btn">월요일</span></button>
+      <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
+      <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
       <div class="section-title">요청</div>
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
@@ -2460,19 +2463,23 @@
   function getCalView() {
     return localStorage.getItem(CAL_VIEW_KEY) === 'week' ? 'week' : 'month';
   }
-  // 달력 시작 요일 — 기본 월요일, 설정에서 일요일로 (요청 폼 11/12). 기기에 저장, 백업에 포함
-  const WEEK_START_KEY = HUB_NS + 'week_start';
-  const sunFirst = () => localStorage.getItem(WEEK_START_KEY) === 'sun';
-  const leadOf = d => sunFirst() ? d.getDay() : (d.getDay() + 6) % 7;   // 그 날 앞에 비울 칸 수
-  const dowOrder = () => sunFirst() ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 0];
+  // 달력 시작 요일 — 월간·주간 따로, 기본 월요일 (요청 폼 11/12). 기기에 저장, 백업에 포함
+  // '내 일정과 비교' 작은 달력은 월간을 따른다
+  const WS_KEYS = { month: HUB_NS + 'week_start', week: HUB_NS + 'week_start_w' };
+  const sunFirst = (kind = 'month') => localStorage.getItem(WS_KEYS[kind]) === 'sun';
+  const leadOf = (d, kind = 'month') => sunFirst(kind) ? d.getDay() : (d.getDay() + 6) % 7;   // 그 날 앞에 비울 칸 수
+  const dowOrder = (kind = 'month') => sunFirst(kind) ? [0, 1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 0];
   function renderDowHead() {
     const el = document.getElementById('cal-dow');
     if (el) el.innerHTML = dowOrder().map(i => `<div class="dow-cell${i === 0 ? ' sun' : i === 6 ? ' sat' : ''}">${DOW[i]}</div>`).join('');
-    const b = document.getElementById('week-start-btn');
-    if (b) b.textContent = sunFirst() ? '일요일' : '월요일';
+    ['month', 'week'].forEach(kind => {
+      const box = document.getElementById('ws-' + kind);
+      if (box) box.innerHTML = [['mon', '월요일'], ['sun', '일요일']].map(([v, t]) =>
+        `<button class="seg-btn${(v === 'sun') === sunFirst(kind) ? ' on' : ''}" onclick="setWeekStart('${kind}','${v}')">${t}</button>`).join('');
+    });
   }
-  function toggleWeekStart() {
-    if (sunFirst()) localStorage.removeItem(WEEK_START_KEY); else localStorage.setItem(WEEK_START_KEY, 'sun');
+  function setWeekStart(kind, v) {
+    if (v === 'sun') localStorage.setItem(WS_KEYS[kind], 'sun'); else localStorage.removeItem(WS_KEYS[kind]);
     if (weekStart) weekStart = sundayOf(weekStart);
     renderDowHead(); renderCalendar();
     if (!document.getElementById('home-search').hidden) renderSearch();
@@ -2480,7 +2487,7 @@
   // 주의 첫날 — 설정에 따라 월요일 또는 일요일 (이름은 옛것 그대로)
   function sundayOf(d) {
     const s = new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    s.setDate(s.getDate() - leadOf(s));
+    s.setDate(s.getDate() - leadOf(s, 'week'));
     return s;
   }
   function ymd(d) {
