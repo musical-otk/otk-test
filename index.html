@@ -1159,6 +1159,7 @@
     {
       id: 'app_fated',
       name: 'FATED',
+      alias: '페이티드',   // 찾기에서 한글로도 나오게
       icon: '🗡️',   // 비더슈탄트가 ⚔️ 를 쓰고 있어 한 자루 검으로 구분 (로고도 검 한 자루)
       scheduleUrl: SITE + '/fated2026/schedule.json',
       appUrl: SITE + '/fated2026/',
@@ -3364,12 +3365,13 @@
   function catalog(scope) {
     const apps = getApps();
     const fullOf = id => (allPresets().find(p => p.id === id) || {}).fullName;
-    const works = apps.map(a => ({ id: a.id, name: a.name, fullName: fullOf(a.id), icon: a.icon, color: a.color, added: true, kind: a.kind || 'app' }));
+    const aliasOf = id => (allPresets().find(p => p.id === id) || {}).alias;
+    const works = apps.map(a => ({ id: a.id, name: a.name, fullName: fullOf(a.id), alias: aliasOf(a.id), icon: a.icon, color: a.color, added: true, kind: a.kind || 'app' }));
     allPresets().forEach(p => {
       if (apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl)) return;
       // 필터에서는 앱 작품을 넣지 않는다(앱 추가로). 정보만 작품은 필터에서도 바로 넣을 수 있다
       if (scope === 'filter' && p.kind !== 'data') return;
-      works.push({ id: p.id, name: p.name, fullName: p.fullName, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate, kind: p.kind || 'app' });
+      works.push({ id: p.id, name: p.name, fullName: p.fullName, alias: p.alias, icon: p.icon, color: p.color, added: false, lastDate: p.lastDate, kind: p.kind || 'app' });
     });
     const actors = new Map();
     works.forEach(w => {
@@ -3947,7 +3949,7 @@
     }
 
     // 목록 — 이름만 한 줄씩
-    const ws = works.filter(w => norm(w.name).includes(q) || norm(w.fullName).includes(q)).slice(0, 6);
+    const ws = works.filter(w => norm(w.name).includes(q) || norm(w.fullName).includes(q) || norm(w.alias).includes(q)).slice(0, 6);
     if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(workHit).join('');
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>

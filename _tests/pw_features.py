@@ -151,6 +151,9 @@ async def main():
         check('달력: 공연 일정은 이모지 없이, 기타는 이름 앞 아이콘', any('✈️ 출장' in c for c in cards) and any('지방 공연' in c and '🎭' not in c for c in cards), cards[:4])
         check('내 일정: 고치기 창에 종류·아이콘·끝날 다시 채움', await ev("document.getElementById('ov-custom').dataset.kind==='etc' && document.getElementById('cf-end').value==='2026-12-04' && _cfIcon==='✈️'"))
         await ev("closeCustomForm(); saveCustom(getCustom().slice(0,-2)); renderCalendar()")
+        await ev("openSearch()"); await pg.fill('#srch-q', '페이티드'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
+        check('찾기: 영어 제목 작품을 한글로도 찾음 (페이티드 → FATED)', 'FATED' in ' '.join(await ev("[...document.querySelectorAll('.flt-hit-name')].map(e=>e.textContent)")))
+        await ev("closeSearch()")
         check('페이지 오류 없음 (1)', not errs, '; '.join(errs)[:200])
 
         # ── 기타 ──
