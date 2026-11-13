@@ -112,5 +112,13 @@
   {
     "path": "shows/jc2026.json",
     "app": false
+  },
+  {
+    "path": "shows/stolenbook2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/closer2026.json",
+    "app": false
   }
 ]

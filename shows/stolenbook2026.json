@@ -1,0 +1,242 @@
+{
+  "name": "도둑맞은 책",
+  "icon": "📖",
+  "color": "#4F5FA8",
+  "venue": "세우아트센터 1관",
+  "startDate": "2026-12-19",
+  "endDate": "2027-02-28",
+  "official": "https://x.com/mhicon_musical",
+  "roles": [
+    {
+      "key": "dongyoon",
+      "label": "서동윤"
+    },
+    {
+      "key": "youngrak",
+      "label": "조영락"
+    },
+    {
+      "key": "vocalist",
+      "label": "보컬리스트"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "dongyoon": "백인태",
+      "youngrak": "이휘종",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "dongyoon": "이창용",
+      "youngrak": "최민우",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "dongyoon": "임강성",
+      "youngrak": "니엘",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "19:30",
+      "dongyoon": "백인태",
+      "youngrak": "신수빈",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "19:30",
+      "dongyoon": "임강성",
+      "youngrak": "니엘",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "19:30",
+      "dongyoon": "임강성",
+      "youngrak": "이휘종",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "dongyoon": "백인태",
+      "youngrak": "최민우",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "dongyoon": "이창용",
+      "youngrak": "니엘",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "dongyoon": "임강성",
+      "youngrak": "최민우",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "dongyoon": "이창용",
+      "youngrak": "이휘종",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "dongyoon": "임강성",
+      "youngrak": "신수빈",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "dongyoon": "백인태",
+      "youngrak": "니엘",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "19:30",
+      "dongyoon": "백인태",
+      "youngrak": "이휘종",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "19:30",
+      "dongyoon": "이창용",
+      "youngrak": "최민우",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "19:30",
+      "dongyoon": "이창용",
+      "youngrak": "신수빈",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "15:00",
+      "dongyoon": "백인태",
+      "youngrak": "이휘종",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "15:00",
+      "dongyoon": "임강성",
+      "youngrak": "최민우",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "dongyoon": "이창용",
+      "youngrak": "이휘종",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "dongyoon": "백인태",
+      "youngrak": "신수빈",
+      "vocalist": "오희선"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "dongyoon": "이창용",
+      "youngrak": "니엘",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2027-01-05",
+      "time": "19:30",
+      "dongyoon": "이형훈",
+      "youngrak": "최민우",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "19:30",
+      "dongyoon": "임강성",
+      "youngrak": "신수빈",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2027-01-07",
+      "time": "19:30",
+      "dongyoon": "이창용",
+      "youngrak": "이휘종",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "19:30",
+      "dongyoon": "백인태",
+      "youngrak": "니엘",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "15:00",
+      "dongyoon": "이창용",
+      "youngrak": "최민우",
+      "vocalist": "이다정"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "19:00",
+      "dongyoon": "이형훈",
+      "youngrak": "니엘",
+      "vocalist": "이민정"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "14:00",
+      "dongyoon": "임강성",
+      "youngrak": "이휘종",
+      "vocalist": "이바다"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "18:00",
+      "dongyoon": "이형훈",
+      "youngrak": "신수빈",
+      "vocalist": "오희선"
+    }
+  ],
+  "events": [
+    {
+      "name": "배우별 첫공",
+      "startDate": "2026-12-19",
+      "endDate": "2027-01-05",
+      "color": "#4F5FA8",
+      "description": "12/19 19:00 서동윤 백인태·조영락 이휘종·보컬리스트 이다정 / 12/20 14:00 이창용·최민우·오희선 / 12/20 18:00 임강성·니엘·이바다 / 12/22 신수빈·이민정 / 1/5 이형훈",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+    },
+    {
+      "name": "공연실황 촬영",
+      "startDate": "2026-12-26",
+      "endDate": "2026-12-26",
+      "color": "#4F5FA8",
+      "times": [
+        "15:00"
+      ],
+      "description": "공연 실황 촬영 회차 — R석 예매 불가",
+      "url": "https://x.com/mhicon_musical/status/2120800756605632572"
+    }
+  ]
+}
