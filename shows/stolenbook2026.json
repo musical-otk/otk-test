@@ -220,14 +220,6 @@
   ],
   "events": [
     {
-      "name": "배우별 첫공",
-      "startDate": "2026-12-19",
-      "endDate": "2027-01-05",
-      "color": "#4F5FA8",
-      "description": "12/19 19:00 서동윤 백인태·조영락 이휘종·보컬리스트 이다정 / 12/20 14:00 이창용·최민우·오희선 / 12/20 18:00 임강성·니엘·이바다 / 12/22 신수빈·이민정 / 1/5 이형훈",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
-    },
-    {
       "name": "공연실황 촬영",
       "startDate": "2026-12-26",
       "endDate": "2026-12-26",
@@ -237,6 +229,61 @@
       ],
       "description": "공연 실황 촬영 회차 — R석 예매 불가",
       "url": "https://x.com/mhicon_musical/status/2120800756605632572"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-19",
+      "endDate": "2026-12-19",
+      "color": "#4F5FA8",
+      "times": [
+        "19:00"
+      ],
+      "description": "백인태·이휘종·이다정 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-20",
+      "endDate": "2026-12-20",
+      "color": "#4F5FA8",
+      "times": [
+        "14:00"
+      ],
+      "description": "이창용·최민우·오희선 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-20",
+      "endDate": "2026-12-20",
+      "color": "#4F5FA8",
+      "times": [
+        "18:00"
+      ],
+      "description": "임강성·니엘·이바다 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-22",
+      "color": "#4F5FA8",
+      "times": [
+        "19:30"
+      ],
+      "description": "신수빈·이민정 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2027-01-05",
+      "endDate": "2027-01-05",
+      "color": "#4F5FA8",
+      "times": [
+        "19:30"
+      ],
+      "description": "이형훈 첫 공연 (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
     }
   ]
 }
