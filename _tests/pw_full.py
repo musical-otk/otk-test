@@ -83,7 +83,7 @@ async def main():
         # 6. 앱 딥링크
         await ev(f"jumpToApp({pid('V에버애프터')}, '2026-11-14', '15:00')"); await pg.wait_for_timeout(500)
         src = await ev(f"document.getElementById('frame-'+{pid('V에버애프터')}).src")
-        check('앱에서 보기: 그 회차 주소로 열림', 'date=2026-11-14' in src and 'time=15' in src, src[-40:])
+        check('전용 페이지에서 보기: 그 회차 주소로 열림', 'date=2026-11-14' in src and 'time=15' in src, src[-40:])
         await pg.click('.header-title'); await pg.wait_for_timeout(300)
         check('m.diary → 달력', await ev("currentView==='cal'"))
 

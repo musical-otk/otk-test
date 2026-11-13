@@ -2151,7 +2151,7 @@
       const last = lastShowDate(app.id);
       const date = last ? `<div class="preset-date">${last < todayStr ? '종료 ' : '~'}${last}</div>` : '';
       const can  = app.appUrl || app.kind === 'data' || app.kind === 'extra';
-      const open = can ? '열기 ›' : '앱 주소 없음';
+      const open = can ? '열기 ›' : '페이지 주소 없음';
       return `<div class="preset-item${can ? '' : ' added'}" onclick="peekApp('${app.id}')">
         <div class="preset-dot" style="background:${app.color}"></div>
         <div class="preset-name">${app.icon ? app.icon + ' ' : ''}${app.name}</div>
@@ -2983,7 +2983,7 @@
       // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
       // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
       const jumpBtn = canJump(s._app)
-        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">앱에서 보기 ›</button>`
+        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">전용 페이지에서 보기 ›</button>`
         : (s._app.kind === 'extra' || s._app.kind === 'data')
           ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}','${s._app.id}','${s._showId || ''}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
           : '';
@@ -3069,7 +3069,7 @@
   }
   // 허브 데이터만 지운다(hub_ 로 시작하는 것) — 각 앱의 기록과 사진은 건드리지 않는다
   function wipeHubData() {
-    if (!confirm('관심·필터와 여기서 입력한 예매 기록·메모를 모두 지울까요?\n작품 앱의 기록은 남아요.')) return;
+    if (!confirm('관심·필터와 여기서 입력한 예매 기록·메모를 모두 지울까요?\n전용 페이지의 기록은 남아요.')) return;
     if (!confirm('정말 지울까요? 되돌릴 수 없어요.')) return;
     Object.keys(localStorage).filter(k => k.startsWith(HUB_NS)).forEach(k => localStorage.removeItem(k));
     location.reload();
@@ -3681,7 +3681,7 @@
     const H = getHearts();
     const { works, actors } = catalog('all');
     const esc = s => s.replace(/'/g, "\\'");
-    const kind = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '앱';   // 찾기와 같게 — 정보만은 표시 없음
+    const kind = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '전용 페이지';   // 찾기와 같게 — 정보만은 표시 없음
     const rowsW = id => (schedules[id] && schedules[id].length ? schedules[id] : _catalogRows[id]) || [];
     const wRow = id => {
       const w = works.find(x => x.id === id) || getApps().find(a => a.id === id);
@@ -4010,8 +4010,8 @@
     const live = w => { const r = rowsOf(w); return !r.length || r.some(s => s.date >= todayStr); };
     const works = cat.works;
     const actors = new Map([...cat.actors.entries()].map(([n, ws]) => [n, ws.filter(live)]));
-    // 상세 앱이 있는 작품만 '앱' 표시 — 정보만 작품은 따로 붙이지 않는다
-    const kindTag = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '전용 앱';
+    // 전용 페이지가 있는 작품만 '전용 페이지' 표시 — 정보만 작품은 따로 붙이지 않는다
+    const kindTag = w => w.kind === 'data' ? '' : w.kind === 'extra' ? '기타' : '전용 페이지';
     // ♥ 없이 예매만 해서 달력에 들어온 작품 — 몇 회 예매했는지 (양도 제외)
     const att0 = Object.values(getAttended()).flat();
     const bookedOnly = w => getHearts().works.includes(w.id) ? 0 : att0.filter(r => r.appId === w.id && !r.transferred).length;
