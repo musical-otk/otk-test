@@ -207,6 +207,12 @@ async def main():
             got = await e2("[getApps().map(a=>a.id).sort(), getHearts().works, getFilter().offWorks]")
             want = [['app_ripley2026'], ['app_ripley2026'], ['app_ripley2026']] if not recs else [['show_ripley2026'], ['show_ripley2026'], ['show_ripley2026']]
             check(label, got == want, got)
+        # 전용 페이지에만 예매 기록이 있고 허브에 안 넣은 작품 → ♥ 없이 '예매만'으로 들어와 달력에 (요청 폼 11/13 FATED)
+        await e2("localStorage.clear()")
+        await e2("localStorage.setItem('fated_records', JSON.stringify([{id:'x1',date:'2026-12-01',time:'20:00',isBooked:true}]))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        got = await e2("[getApps().map(a=>[a.id,!!a.viaActor]), getHearts().works, (getAttended()['2026-12-01']||[]).length]")
+        check('예매 기록만 있는 전용 페이지 작품도 달력에 (♥ 없이)', got == [[['app_fated', True]], [], 1], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

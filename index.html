@@ -2275,6 +2275,16 @@
   // ── ♡ 넣고 빼기 ──
   // 배우 ♡ 때문에 들어오는 작품 — 탭 없이 그 배우 회차만
   function addViaActor(id) { return addPresetById(id, true); }
+  // 전용 페이지에서만 예매를 기록하고 허브에 그 작품을 안 넣었으면 기록이 달력에 안 떴다(요청 폼 11/13, FATED).
+  // 기록이 있는 작품은 ♥ 없이 '예매만'으로 넣는다 — 탭은 없고 예매한 회차만 달력에
+  async function adoptBookedApps() {
+    const apps = getApps();
+    const todo = allPresets().filter(p => p.recordsKey && p.kind !== 'data' && p.kind !== 'extra'
+      && !apps.some(a => a.id === p.id || a.scheduleUrl === p.scheduleUrl || a.recordsKey === p.recordsKey)
+      && extraRecords(p.recordsKey).length);
+    for (const p of todo) await addViaActor(p.id);
+    if (todo.length) { renderTabs(); renderCalendar(); }
+  }
   const futureWith = (rows, name) => (rows || []).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === name));
   // 이 작품이 ♥ 없이도 달력에 있어야 하나 — 관심 배우가 나오거나, 내가 예매한 회차가 있으면
   function neededByActor(id) {
@@ -4777,7 +4787,7 @@
     renderFrames();
     await migratePhotosToIndexedDB();
     const apps = getApps();
-    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(syncActorWorks, syncActorWorks); return; }
+    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks); return; }
     // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
     const failed = [];
     await Promise.all(apps.map(async app => {
@@ -4795,7 +4805,7 @@
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
     // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
-    discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(syncActorWorks, syncActorWorks);
+    discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks);
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
