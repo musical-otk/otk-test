@@ -421,6 +421,144 @@
       ],
       "description": "캐스팅 스케줄표에 '싱어롱데이' 표기 회차 (배우와 함께 넘버를 따라 부르는 회차)",
       "url": "https://x.com/Im_culture/status/2105160758183317566"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-30",
+      "endDate": "2026-12-30",
+      "color": "#6B3FA0",
+      "times": [
+        "20:00"
+      ],
+      "description": "배우와 함께 모든 넘버를 따라 부르는 회차 (입장 시 주요 넘버 가사지 배부)",
+      "url": "https://x.com/Im_culture/status/2121060487420842111"
+    },
+    {
+      "name": "싱어롱데이",
+      "startDate": "2026-12-31",
+      "endDate": "2026-12-31",
+      "color": "#6B3FA0",
+      "times": [
+        "20:30"
+      ],
+      "description": "배우와 함께 모든 넘버를 따라 부르는 회차 (입장 시 주요 넘버 가사지 배부)",
+      "url": "https://x.com/Im_culture/status/2121060487420842111"
+    },
+    {
+      "name": "SLOGAN EVENT",
+      "startDate": "2026-12-18",
+      "endDate": "2026-12-20",
+      "color": "#6B3FA0",
+      "description": "오프닝 위크 전 회차 · 객석 입장 시 전 관객 슬로건 1장 (2종 중 1종 선택, 소진 시 나머지 종 배부, 커튼콜부터 사용)",
+      "url": "https://x.com/Im_culture/status/2121060482798772389"
+    },
+    {
+      "name": "DRESS CODE EVENT · GOLD",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-22",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 GOLD · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "DRESS CODE EVENT · GREEN",
+      "startDate": "2026-12-23",
+      "endDate": "2026-12-23",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 GREEN · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "DRESS CODE EVENT · WHITE",
+      "startDate": "2026-12-24",
+      "endDate": "2026-12-24",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 WHITE · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "DRESS CODE EVENT · RED",
+      "startDate": "2026-12-25",
+      "endDate": "2026-12-25",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 RED · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "DRESS CODE EVENT · PINK",
+      "startDate": "2026-12-26",
+      "endDate": "2026-12-26",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 PINK · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "DRESS CODE EVENT · BLUE",
+      "startDate": "2026-12-27",
+      "endDate": "2026-12-27",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 BLUE · 드레스코드 참여 시 MD부스 인증하면 해당 컬러 캔디 증정 (할인은 별도)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "드레스코드 인증샷 이벤트",
+      "startDate": "2026-12-21",
+      "endDate": "2026-12-27",
+      "color": "#6B3FA0",
+      "description": "시그니처 컬러 아이템 일상 인증샷 + #식스더뮤지컬 #SIXTHEMUSICAL #오늘도식스와함께 (@sixthemusical_kr 팔로우·태그), 6명 추첨 R석 초대권 1인 2매 (당첨 발표 12/29, 1/5~1/31 공연 중 선택)",
+      "url": "https://x.com/Im_culture/status/2121060485151744388"
+    },
+    {
+      "name": "2027 달력 포토카드 증정 위크",
+      "startDate": "2026-12-29",
+      "endDate": "2027-01-03",
+      "color": "#6B3FA0",
+      "description": "유료 티켓 1매당 달력 포토카드 1세트 (12종, 공연 당일 매표소 티켓 수령 시)",
+      "url": "https://x.com/Im_culture/status/2121060478667657697"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2027-01-05",
+      "endDate": "2027-01-05",
+      "color": "#6B3FA0",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 객석 1층 로비 · 장보람 배수정 한재아 김지선 김려원 유주혜 · 해당 회차 유료 관객 30명 (MD부스 당첨권 추첨)",
+      "url": "https://x.com/Im_culture/status/2121060478734786814"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2027-01-06",
+      "endDate": "2027-01-06",
+      "color": "#6B3FA0",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 객석 1층 로비 · 손승연 김지우 이보람 최현선 효정 주다온 · 해당 회차 유료 관객 30명 (MD부스 당첨권 추첨)",
+      "url": "https://x.com/Im_culture/status/2121060478734786814"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2027-01-09",
+      "endDate": "2027-01-09",
+      "color": "#6B3FA0",
+      "times": [
+        "20:30"
+      ],
+      "description": "공연 종료 후 객석 1층 로비 · 장보람 김지우 이보람 최현선 효정 유주혜 · 해당 회차 유료 관객 30명 (MD부스 당첨권 추첨)",
+      "url": "https://x.com/Im_culture/status/2121060478734786814"
+    },
+    {
+      "name": "사인회",
+      "startDate": "2027-01-10",
+      "endDate": "2027-01-10",
+      "color": "#6B3FA0",
+      "times": [
+        "15:00"
+      ],
+      "description": "공연 종료 후 객석 1층 로비 · 손승연 배수정 한재아 김지선 김려원 주다온 · 해당 회차 유료 관객 30명 (MD부스 당첨권 추첨)",
+      "url": "https://x.com/Im_culture/status/2121060478734786814"
     }
   ]
 }

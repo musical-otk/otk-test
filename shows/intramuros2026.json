@@ -471,6 +471,22 @@
       ],
       "description": "첫 공연 표기 — 캐스트별 첫공 (스케줄표 '첫공' 표기)",
       "url": "https://x.com/mbz_company/status/2108075248939942205"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#2F5D8C",
+      "description": "공연 종료 후 커튼콜 촬영 가능 (플래시 없이 사진·영상, 자리 이동·삼각대·모노포트·보조광 불가, 중간 퇴장 시 재입장 불가)",
+      "url": "https://x.com/mbz_company/status/2121123090159800696"
+    },
+    {
+      "name": "트리플 적립 주간",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#2F5D8C",
+      "description": "유료 티켓 1매당 재관람 카드 도장 3개 적립 (당일 회차만, 한 카드에만, MD 부스 운영 시간 중)",
+      "url": "https://x.com/mbz_company/status/2121123275854213187"
     }
   ]
 }
