@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'otk-schedule-v148';
+﻿const CACHE_NAME = 'otk-schedule-v149';
 // 테스트 사본(/otk-test/)에서도 그대로 돌게 sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
@@ -35,6 +35,8 @@ self.addEventListener('fetch', event => {
   const url = new URL(req.url);
   // 교차 origin(api.github.com 등)은 손대지 않는다 — 캐시 우선에 빠지면 갱신이 안 된다
   if (url.origin !== location.origin) return;
+  // 맨 위 주소에 놓이면(mu-di.vercel.app/) 사이트 전체가 내 범위가 된다 — 작품 페이지 폴더는 그쪽 sw 에 맡긴다
+  if (BASE === '' && /^\/[^/]+\//.test(url.pathname) && !url.pathname.startsWith('/shows/')) return;
 
   // HTML · JSON(작품 목록·스케줄·정보만 작품·show-info) — 네트워크 우선, 끊기면 캐시.
   // JSON 을 캐시 우선으로 두면 apps.json · shows/*.json 이 허브 버전을 올리기 전까지 안 바뀐다.
