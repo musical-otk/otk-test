@@ -246,7 +246,7 @@
       "time": "19:00",
       "jeyoung": "이한별",
       "sinae": "효은",
-      "simjang": "임예진"
+      "simjang": "전민지"
     },
     {
       "date": "2026-11-15",
@@ -719,8 +719,8 @@
       "times": [
         "19:00"
       ],
-      "description": "14. 침략자 - 이한별 · 임예진",
-      "url": "https://x.com/nangman_b20/status/2117481900587491392"
+      "description": "14. 침략자 - 이한별 · 전민지 (심장 임예진 → 전민지 캐스팅 변경 반영)",
+      "url": "https://x.com/nangman_b20/status/2121437981403668541"
     },
     {
       "name": "스페셜 커튼콜 (장면시연)",
@@ -743,6 +743,17 @@
       ],
       "description": "14. 침략자 - 김이후 · 전민지",
       "url": "https://x.com/nangman_b20/status/2117481900587491392"
+    },
+    {
+      "name": "스페셜 커튼콜 (장면시연)",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#9B1C1C",
+      "times": [
+        "14:00"
+      ],
+      "description": "14. 침략자 - 이한별 · 임예진 (추가 진행)",
+      "url": "https://x.com/nangman_b20/status/2121437981403668541"
     },
     {
       "name": "야간 공연 관람권",
