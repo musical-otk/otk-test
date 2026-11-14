@@ -1,0 +1,730 @@
+{
+  "name": "시카고",
+  "icon": "💃",
+  "color": "#C8102E",
+  "venue": "LG아트센터 서울 LG SIGNATURE 홀",
+  "startDate": "2026-12-05",
+  "endDate": "2027-03-14",
+  "official": "https://x.com/i_seensee",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/L0000150",
+    "ticketlink": "https://www.ticketlink.co.kr/product/65846"
+  },
+  "roles": [
+    {
+      "key": "velma",
+      "label": "벨마"
+    },
+    {
+      "key": "roxie",
+      "label": "록시"
+    },
+    {
+      "key": "billy",
+      "label": "빌리"
+    },
+    {
+      "key": "mama",
+      "label": "마마"
+    },
+    {
+      "key": "mary",
+      "label": "메리 선샤인"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-05",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "18:30",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "18:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-08",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "15:00",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "14:00",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "18:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "15:00",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "18:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:30",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "18:30",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "18:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "18:30",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-05",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "15:00",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-07",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "15:00",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "18:30",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-12",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-13",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-14",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-15",
+      "time": "15:00",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-15",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-16",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-16",
+      "time": "18:30",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-17",
+      "time": "14:00",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-19",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-20",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-21",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-22",
+      "time": "15:00",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-22",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-23",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-23",
+      "time": "18:30",
+      "velma": "윤공주",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-24",
+      "time": "14:00",
+      "velma": "최정원",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-26",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-27",
+      "time": "19:30",
+      "velma": "린아",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-28",
+      "time": "19:30",
+      "velma": "윤공주",
+      "roxie": "아이비",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-29",
+      "time": "15:00",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-29",
+      "time": "19:30",
+      "velma": "최정원",
+      "roxie": "김수하",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    },
+    {
+      "date": "2027-01-30",
+      "time": "14:00",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-30",
+      "time": "18:30",
+      "velma": "린아",
+      "roxie": "티파니영",
+      "billy": "에녹",
+      "mama": "김경선",
+      "mary": "H.J.Jeon"
+    },
+    {
+      "date": "2027-01-31",
+      "time": "14:00",
+      "velma": "윤공주",
+      "roxie": "티파니영",
+      "billy": "박건형",
+      "mama": "김영주",
+      "mary": "S.J.Kim"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-06",
+      "color": "#C8102E",
+      "times": [
+        "18:30"
+      ],
+      "description": "스케줄표 '첫공' 표기",
+      "url": "https://x.com/i_seensee/status/2104813425721553042"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-08",
+      "color": "#C8102E",
+      "times": [
+        "19:30"
+      ],
+      "description": "스케줄표 '전관' 표기 — 아코디언 엽서 증정 제외 회차",
+      "url": "https://x.com/i_seensee/status/2104813425721553042"
+    },
+    {
+      "name": "아코디언 엽서 증정",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-06",
+      "color": "#C8102E",
+      "times": [
+        "18:30"
+      ],
+      "description": "파파라치컷 아코디언 엽서 10매 1세트, 유료 티켓 1매당 1세트 (12/6 18:30~12/12, 전관 회차 제외)",
+      "url": "https://x.com/i_seensee/status/2104866928212992251"
+    },
+    {
+      "name": "아코디언 엽서 증정",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-09",
+      "color": "#C8102E",
+      "times": [
+        "19:30"
+      ],
+      "description": "파파라치컷 아코디언 엽서 10매 1세트, 유료 티켓 1매당 1세트 (12/6 18:30~12/12, 전관 회차 제외)",
+      "url": "https://x.com/i_seensee/status/2104866928212992251"
+    },
+    {
+      "name": "아코디언 엽서 증정",
+      "startDate": "2026-12-10",
+      "endDate": "2026-12-10",
+      "color": "#C8102E",
+      "times": [
+        "19:30"
+      ],
+      "description": "파파라치컷 아코디언 엽서 10매 1세트, 유료 티켓 1매당 1세트 (12/6 18:30~12/12, 전관 회차 제외)",
+      "url": "https://x.com/i_seensee/status/2104866928212992251"
+    },
+    {
+      "name": "아코디언 엽서 증정",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-11",
+      "color": "#C8102E",
+      "times": [
+        "15:00",
+        "19:30"
+      ],
+      "description": "파파라치컷 아코디언 엽서 10매 1세트, 유료 티켓 1매당 1세트 (12/6 18:30~12/12, 전관 회차 제외)",
+      "url": "https://x.com/i_seensee/status/2104866928212992251"
+    },
+    {
+      "name": "아코디언 엽서 증정",
+      "startDate": "2026-12-12",
+      "endDate": "2026-12-12",
+      "color": "#C8102E",
+      "times": [
+        "14:00",
+        "18:30"
+      ],
+      "description": "파파라치컷 아코디언 엽서 10매 1세트, 유료 티켓 1매당 1세트 (12/6 18:30~12/12, 전관 회차 제외)",
+      "url": "https://x.com/i_seensee/status/2104866928212992251"
+    }
+  ]
+}

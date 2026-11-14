@@ -124,5 +124,13 @@
   {
     "path": "shows/rwanda2026.json",
     "app": false
+  },
+  {
+    "path": "shows/choirofman2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/chicago2026.json",
+    "app": false
   }
 ]
