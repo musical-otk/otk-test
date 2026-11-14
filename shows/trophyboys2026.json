@@ -1,0 +1,654 @@
+{
+  "name": "트로피 보이즈",
+  "icon": "🏆",
+  "color": "#E67E00",
+  "venue": "링크아트센터드림 드림4관",
+  "startDate": "2026-10-27",
+  "endDate": "2026-12-06",
+  "official": "https://x.com/TrophyBoys_KR",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/65690"
+  },
+  "roles": [
+    {
+      "key": "owen",
+      "label": "오웬"
+    },
+    {
+      "key": "jared",
+      "label": "재러드"
+    },
+    {
+      "key": "scott",
+      "label": "스콧"
+    },
+    {
+      "key": "david",
+      "label": "데이비드"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-27",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "16:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "16:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "16:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "16:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "16:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "15:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "16:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "20:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "20:00",
+      "owen": "권소현",
+      "jared": "고은영",
+      "scott": "김별",
+      "david": "이아진"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "정가희",
+      "scott": "전해주",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "owen": "권소현",
+      "jared": "정가희",
+      "scott": "김별",
+      "david": "권슬아"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "15:00",
+      "owen": "제이민",
+      "jared": "고은영",
+      "scott": "전해주",
+      "david": "이아진"
+    }
+  ],
+  "events": [
+    {
+      "name": "배우 첫공 인사",
+      "startDate": "2026-10-27",
+      "endDate": "2026-10-27",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "권소현·정가희·김별·권슬아 (커튼콜 후 인사, 촬영 불가)",
+      "url": "https://x.com/TrophyBoys_KR/status/2114933922739978591"
+    },
+    {
+      "name": "배우 첫공 인사",
+      "startDate": "2026-10-28",
+      "endDate": "2026-10-28",
+      "color": "#E67E00",
+      "times": [
+        "16:00"
+      ],
+      "description": "제이민·고은영·전해주·이아진 (커튼콜 후 인사, 촬영 불가)",
+      "url": "https://x.com/TrophyBoys_KR/status/2114933922739978591"
+    },
+    {
+      "name": "커튼콜 데이",
+      "startDate": "2026-10-29",
+      "endDate": "2026-11-01",
+      "color": "#E67E00",
+      "description": "커튼콜 사진·영상 촬영 가능",
+      "url": "https://x.com/TrophyBoys_KR/status/2115609597000233043"
+    },
+    {
+      "name": "첫 콰트로 막공",
+      "startDate": "2026-11-06",
+      "endDate": "2026-11-06",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "제이민·정가희·김별·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118559471433871456"
+    },
+    {
+      "name": "랜덤 페어 폴라로이드 증정",
+      "startDate": "2026-11-10",
+      "endDate": "2026-11-13",
+      "color": "#E67E00",
+      "description": "유료 티켓 1매당 1장",
+      "url": "https://x.com/TrophyBoys_KR/status/2119626118370402354"
+    },
+    {
+      "name": "슝고데이",
+      "startDate": "2026-11-18",
+      "endDate": "2026-11-18",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "티켓링크 주관 · 무대인사, 럭키드로우, 포토촬영",
+      "url": "https://x.com/TrophyBoys_KR/status/2117821270427685225"
+    },
+    {
+      "name": "슝고데이",
+      "startDate": "2026-11-19",
+      "endDate": "2026-11-19",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "티켓링크 주관 · 무대인사, 럭키드로우, 포토촬영",
+      "url": "https://x.com/TrophyBoys_KR/status/2117821270427685225"
+    },
+    {
+      "name": "관객과의 대화",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-24",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "원작자 엠마뉴엘 마타나 내한, 공연 종료 후 약 40분",
+      "url": "https://x.com/TrophyBoys_KR/status/2119263461788246473"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-24",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "제이민·정가희·전해주·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#E67E00",
+      "times": [
+        "16:00"
+      ],
+      "description": "권소현·고은영·전해주·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "제이민·고은영·김별·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-26",
+      "endDate": "2026-11-26",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "권소현·정가희·전해주·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-27",
+      "endDate": "2026-11-27",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "제이민·정가희·김별·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#E67E00",
+      "times": [
+        "15:00"
+      ],
+      "description": "권소현·고은영·전해주·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#E67E00",
+      "times": [
+        "19:00"
+      ],
+      "description": "제이민·고은영·김별·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#E67E00",
+      "times": [
+        "15:00"
+      ],
+      "description": "권소현·정가희·김별·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-01",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "권소현·정가희·전해주·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-12-02",
+      "endDate": "2026-12-02",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "권소현·고은영·김별·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-12-04",
+      "endDate": "2026-12-04",
+      "color": "#E67E00",
+      "times": [
+        "20:00"
+      ],
+      "description": "권소현·고은영·김별·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "콰트로 막공",
+      "startDate": "2026-12-05",
+      "endDate": "2026-12-05",
+      "color": "#E67E00",
+      "times": [
+        "15:00"
+      ],
+      "description": "제이민·정가희·전해주·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "배우 막공",
+      "startDate": "2026-12-05",
+      "endDate": "2026-12-05",
+      "color": "#E67E00",
+      "times": [
+        "19:00"
+      ],
+      "description": "권소현·정가희·김별·권슬아",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    },
+    {
+      "name": "총 막공",
+      "startDate": "2026-12-06",
+      "endDate": "2026-12-06",
+      "color": "#E67E00",
+      "times": [
+        "15:00"
+      ],
+      "description": "제이민·고은영·전해주·이아진",
+      "url": "https://x.com/TrophyBoys_KR/status/2118964721307242775"
+    }
+  ]
+}

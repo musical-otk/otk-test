@@ -132,5 +132,13 @@
   {
     "path": "shows/chicago2026.json",
     "app": false
+  },
+  {
+    "path": "shows/menchika2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/trophyboys2026.json",
+    "app": false
   }
 ]
