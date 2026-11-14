@@ -207,6 +207,16 @@ async def main():
             got = await e2("[getApps().map(a=>a.id).sort(), getHearts().works, getFilter().offWorks]")
             want = [['app_ripley2026'], ['app_ripley2026'], ['app_ripley2026']] if not recs else [['show_ripley2026'], ['show_ripley2026'], ['show_ripley2026']]
             check(label, got == want, got)
+        # ♥ 이전 방식(탭만 있고 ♥ 비어 있음)으로 복원된 기기 — 탭 작품을 ♥ 로 옮긴다
+        await e2("localStorage.clear()")
+        await e2("""()=>{const mk=(id)=>({id,name:id,icon:'',color:'#888',scheduleUrl:'x'+id,appUrl:'',kind:'data',recordsKey:'k'+id});
+          localStorage.setItem(APPS_KEY,JSON.stringify([mk('show_a'),{...mk('show_b'),viaActor:true}]));localStorage.setItem(HEARTS_KEY,JSON.stringify({works:[],actors:[]}));_hearts=null}""")
+        check('♥ 비고 탭만 있는 옛 데이터 → 탭 작품을 ♥ 로', await e2("getHearts().works.join()") == 'show_a')
+        # ♥ 없이 예매 기록만 있어도 '아직 달력에 넣은 공연이 없어요' 안내는 숨긴다 (♥ 이전 백업 복원, 11/14)
+        await e2("localStorage.clear()")
+        await e2("localStorage.setItem('ikkisup_records', JSON.stringify([{id:'x',date:'2026-12-01',time:'20:00',isBooked:true}]))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        check('♥ 없이 기록만 있어도 빈 안내 숨김', await e2("getHearts().works.length===0 && document.getElementById('hub-empty').hidden"))
         # 전용 페이지에만 예매 기록이 있고 허브에 안 넣은 작품 → ♥ 없이 '예매만'으로 들어와 달력에 (요청 폼 11/13 FATED)
         await e2("localStorage.clear()")
         await e2("localStorage.setItem('fated_records', JSON.stringify([{id:'x1',date:'2026-12-01',time:'20:00',isBooked:true}]))")

@@ -2223,6 +2223,10 @@
     if (_hearts) return _hearts;
     try {
       const h = JSON.parse(localStorage.getItem(HEARTS_KEY));
+      // ♥ 가 비었는데 탭 있는 작품이 있으면 ♥ 이전 방식으로 넣은 것 — 옮긴다.
+      // 빈 ♥ 가 먼저 생긴 기기에 옛 백업을 복원하면 옮기기가 다시 안 돌아 관심함이 비었다(11/14)
+      if (h && Array.isArray(h.works) && Array.isArray(h.actors) && !h.works.length && !h.actors.length
+          && getApps().some(a => !a.viaActor && a.id !== EXTRA_ID)) return (_hearts = migrateHearts());
       if (h && Array.isArray(h.works) && Array.isArray(h.actors)) return (_hearts = h);
     } catch {}
     return (_hearts = migrateHearts());
@@ -2823,8 +2827,10 @@
   function renderCalendar() {
     const H0 = getHearts();
     const empty = document.getElementById('hub-empty');
-    // '기타'는 저절로 들어오므로 그것만 있으면 아직 아무것도 고르지 않은 것
-    if (empty) empty.hidden = !!(H0.works.some(id => id !== EXTRA_ID) || H0.actors.length);
+    // '기타'는 저절로 들어오므로 그것만 있으면 아직 아무것도 고르지 않은 것.
+    // ♥ 가 없어도 탭 있는 작품·예매 기록·내 일정이 있으면 숨긴다 — ♥ 이전에 앱 추가로 넣은 백업을 복원하면 안내가 남았다(11/14)
+    if (empty) empty.hidden = !!(H0.works.some(id => id !== EXTRA_ID) || H0.actors.length
+      || getApps().some(a => a.id !== EXTRA_ID && !a.viaActor) || Object.keys(getAttended()).length || getCustom().length);
     const view = getCalView();
     renderCalViewButtons(view);
     if (view === 'week') { renderWeek(); return; }
