@@ -1,0 +1,300 @@
+{
+  "name": "프로젝트 르완다",
+  "icon": "🕊️",
+  "color": "#9B1C1C",
+  "venue": "소극장 산울림",
+  "startDate": "2026-11-11",
+  "endDate": "2026-11-26",
+  "url": "https://x.com/AllThat_PLAY/status/2109510849404756377",
+  "official": "https://x.com/AllThat_PLAY",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26014625"
+  },
+  "roles": [
+    {
+      "key": "hyunsu",
+      "label": "박현수"
+    },
+    {
+      "key": "seungho",
+      "label": "박승호"
+    },
+    {
+      "key": "seoeun",
+      "label": "유서은"
+    },
+    {
+      "key": "inho",
+      "label": "정인호"
+    },
+    {
+      "key": "minchul",
+      "label": "한민철"
+    },
+    {
+      "key": "giyeon",
+      "label": "강기연"
+    },
+    {
+      "key": "prosecutor",
+      "label": "검사 외"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-11",
+      "time": "19:30",
+      "hyunsu": "이시형",
+      "seungho": "강기혁",
+      "seoeun": "정아람",
+      "inho": "김창일",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "19:30",
+      "hyunsu": "류제윤",
+      "seungho": "강기혁",
+      "seoeun": "홍수주",
+      "inho": "민태홍",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "hyunsu": "박도하",
+      "seungho": "김지웅",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "15:00",
+      "hyunsu": "류제윤",
+      "seungho": "김지웅",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "hyunsu": "이시형",
+      "seungho": "김지웅",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "hyunsu": "이시형",
+      "seungho": "강기혁",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "18:00",
+      "hyunsu": "류제윤",
+      "seungho": "김지웅",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-16",
+      "time": "19:30",
+      "hyunsu": "류제윤",
+      "seungho": "김지웅",
+      "seoeun": "정아람",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "19:30",
+      "hyunsu": "이시형",
+      "seungho": "강기혁",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "19:30",
+      "hyunsu": "류제윤",
+      "seungho": "강기혁",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "19:30",
+      "hyunsu": "박도하",
+      "seungho": "강기혁",
+      "seoeun": "홍수주",
+      "inho": "민태홍",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "19:30",
+      "hyunsu": "류제윤",
+      "seungho": "김지웅",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "15:00",
+      "hyunsu": "이시형",
+      "seungho": "김지웅",
+      "seoeun": "홍수주",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "hyunsu": "류제윤",
+      "seungho": "강기혁",
+      "seoeun": "정아람",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "hyunsu": "이시형",
+      "seungho": "강기혁",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "18:00",
+      "hyunsu": "박도하",
+      "seungho": "김지웅",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-23",
+      "time": "19:30",
+      "hyunsu": "박도하",
+      "seungho": "김지웅",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "19:30",
+      "hyunsu": "박도하",
+      "seungho": "강기혁",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "19:30",
+      "hyunsu": "이시형",
+      "seungho": "김지웅",
+      "seoeun": "홍수주",
+      "inho": "김창일",
+      "minchul": "임진구",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "19:30",
+      "hyunsu": "박도하",
+      "seungho": "강기혁",
+      "seoeun": "정아람",
+      "inho": "민태홍",
+      "minchul": "강승우",
+      "giyeon": "하나리",
+      "prosecutor": "조수빈"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#9B1C1C",
+      "times": [
+        "19:30"
+      ],
+      "description": "이시형(박현수)·강기혁(박승호)·정아람(유서은)·김창일(정인호)·임진구(한민철)·하나리(강기연)·조수빈(검사 외) (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/AllThat_PLAY/status/2119656227332641163"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#9B1C1C",
+      "times": [
+        "19:30"
+      ],
+      "description": "류제윤(박현수)·홍수주(유서은)·민태홍(정인호)·강승우(한민철) (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/AllThat_PLAY/status/2119656227332641163"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#9B1C1C",
+      "times": [
+        "19:30"
+      ],
+      "description": "박도하(박현수)·김지웅(박승호) (스케줄표 '첫공' 표기)",
+      "url": "https://x.com/AllThat_PLAY/status/2119656227332641163"
+    }
+  ]
+}

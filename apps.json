@@ -120,5 +120,9 @@
   {
     "path": "shows/closer2026.json",
     "app": false
+  },
+  {
+    "path": "shows/rwanda2026.json",
+    "app": false
   }
 ]
