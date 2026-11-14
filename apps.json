@@ -140,5 +140,9 @@
   {
     "path": "shows/trophyboys2026.json",
     "app": false
+  },
+  {
+    "path": "shows/goodmorning2026.json",
+    "app": false
   }
 ]

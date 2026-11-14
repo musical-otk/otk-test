@@ -1,0 +1,296 @@
+{
+  "name": "정신병동에도 아침이 와요",
+  "icon": "☀️",
+  "color": "#00A096",
+  "venue": "이화여자대학교 삼성홀",
+  "startDate": "2026-10-31",
+  "endDate": "2026-11-22",
+  "official": "https://x.com/GmorningMusical",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/65821"
+  },
+  "roles": [
+    {
+      "key": "sina",
+      "label": "정시나"
+    },
+    {
+      "key": "dohyeon",
+      "label": "김도현"
+    },
+    {
+      "key": "bugi",
+      "label": "고부기"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-31",
+      "time": "14:00",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "18:30",
+      "sina": "최태이",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "15:00",
+      "sina": "유주연",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-03",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "14:00",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "18:30",
+      "sina": "유주연",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "15:00",
+      "sina": "최태이",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-10",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "14:00",
+      "sina": "유주연",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "18:30",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "15:00",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "성연",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "조성태"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "19:30",
+      "sina": "최태이",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "19:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "sina": "최태이",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "18:30",
+      "sina": "유주연",
+      "dohyeon": "정동화",
+      "bugi": "최민우"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "15:00",
+      "sina": "최태이",
+      "dohyeon": "성연",
+      "bugi": "조성태"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "color": "#00A096",
+      "times": [
+        "14:00"
+      ],
+      "description": "정시나 유주연 · 김도현 정동화 · 고부기 조성태",
+      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "color": "#00A096",
+      "times": [
+        "18:30"
+      ],
+      "description": "정시나 최태이",
+      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-01",
+      "color": "#00A096",
+      "times": [
+        "15:00"
+      ],
+      "description": "김도현 성연 · 고부기 최민우",
+      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+    },
+    {
+      "name": "커튼콜 데이",
+      "startDate": "2026-11-03",
+      "endDate": "2026-11-06",
+      "color": "#00A096",
+      "description": "커튼콜 사진 및 영상 촬영 가능 (플래시 불가, 좌석 이동·삼각대 불가)",
+      "url": "https://x.com/GmorningMusical/status/2113446641164582932"
+    },
+    {
+      "name": "기대평 이벤트",
+      "startDate": "2026-11-04",
+      "endDate": "2026-11-04",
+      "color": "#00A096",
+      "times": [
+        "19:30"
+      ],
+      "description": "11.04(수) 19시30분 VIP석 초대권 (1인 2매 / 5명 추첨, 티켓링크 기대평 참여 9/29~10/16)",
+      "url": "https://x.com/GmorningMusical/status/2105214264432808122"
+    },
+    {
+      "name": "공연 하이라이트 무료 중계",
+      "startDate": "2026-11-09",
+      "endDate": "2026-11-09",
+      "color": "#00A096",
+      "description": "19시30분~21시00분 유튜브 링크픽 채널 (공연 없는 날)",
+      "url": "https://x.com/GmorningMusical/status/2119681638435291516"
+    },
+    {
+      "name": "커튼콜 데이",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-15",
+      "color": "#00A096",
+      "description": "커튼콜 사진 및 영상 촬영 가능 (플래시 불가, 좌석 이동·삼각대 불가)",
+      "url": "https://x.com/GmorningMusical/status/2120691944989032694"
+    },
+    {
+      "name": "커튼콜 인증 이벤트",
+      "startDate": "2026-11-14",
+      "endDate": "2026-11-15",
+      "color": "#00A096",
+      "description": "커튼콜 사진·영상 SNS 업로드 인증 시 마이락토 유산균 증정 (MD부스, 선착순 80명)",
+      "url": "https://x.com/GmorningMusical/status/2121491860791414901"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#00A096",
+      "times": [
+        "18:30"
+      ],
+      "description": "정시나 유주연 · 김도현 정동화 · 고부기 최민우",
+      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#00A096",
+      "times": [
+        "15:00"
+      ],
+      "description": "정시나 최태이 · 김도현 성연 · 고부기 조성태",
+      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+    }
+  ]
+}
