@@ -184,6 +184,15 @@ async def main():
           const w={id:'show_lstest',kind:'data'}; schedules[w.id]=rows; dataInfo[w.id]={endDate:'2026-12-31',lastShows:{'나':'2026-12-02 20:00'}};
           const out=rows.map(r=>castHtml(w,r)); delete schedules[w.id]; delete dataInfo[w.id]; return out})()""")
         check('공지된 막공(lastShows)은 스케줄이 덜 열려도 굵게', ls == ['<b>가</b> · <b>나</b>', '<b>다</b> · <b>나</b>', '가 · 다'], ls)
+        # 관심함: 끝난 작품은 '종료된 작품 n개'로 접고, 누르면 펼친다
+        hp = await ev("""(()=>{const keep=localStorage.getItem(APPS_KEY), kh=localStorage.getItem(HEARTS_KEY);
+          const mk=(id,d)=>({id,name:id,icon:'',color:'#888',scheduleUrl:'x'+id,appUrl:'',kind:'data',recordsKey:'k'+id});
+          saveApps([mk('show_live'),mk('show_done')]); schedules.show_live=[{date:'2099-01-01',time:'20:00'}]; schedules.show_done=[{date:'2000-01-01',time:'20:00'}];
+          saveHearts({works:['show_done','show_live'],actors:[]}); _hpEndedOpen=false; document.getElementById('home-hearts').hidden=false; renderHearts();
+          const t1=document.getElementById('hearts-body').innerText; _hpEndedOpen=true; renderHearts(); const t2=document.getElementById('hearts-body').innerText;
+          _hpEndedOpen=false; document.getElementById('home-hearts').hidden=true; localStorage.setItem(APPS_KEY,keep||'[]'); if(kh) localStorage.setItem(HEARTS_KEY,kh); _hearts=null;
+          return [t1.includes('show_live') && !t1.includes('show_done') && t1.includes('종료된 작품 1개'), t2.includes('show_done')]})()""")
+        check('관심함: 끝난 작품은 접어 두고 펼치기', hp == [True, True], hp)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

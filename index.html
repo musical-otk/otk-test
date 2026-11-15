@@ -149,6 +149,7 @@
     .hp-link { display: block; margin: 16px auto 0; background: none; border: none; font-size: 12px; color: var(--text3); cursor: pointer; }
     .hp-row { display: flex; align-items: center; gap: 8px; padding: 10px 2px; border-bottom: 1px solid var(--border); cursor: pointer; }
     .hp-name { font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .hp-ended { display: block; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--border); padding: 12px 2px; font-size: 13px; color: var(--text3); cursor: pointer; font-family: inherit; }
     .hp-sub { font-size: 12px; color: var(--text3); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     #home-search { padding: 4px 16px 12px; }
     .hs-bar { display: flex; gap: 6px; align-items: center; position: sticky; top: 0; z-index: 3; background: var(--bg1); padding: 6px 0; }
@@ -3693,6 +3694,7 @@
     document.getElementById('home-hearts').hidden = true;
     document.getElementById('view-cal').classList.remove('hearting');
   }
+  let _hpEndedOpen = false;   // 관심함 — 종료된 작품 펼침
   function renderHearts() {
     const body = document.getElementById('hearts-body');
     if (!body || document.getElementById('home-hearts').hidden) return;
@@ -3727,7 +3729,14 @@
     body.innerHTML = (!H.works.length && !H.actors.length)
       ? '<div class="hint" style="padding:12px 2px">아직 관심이 없어요. [+ 찾아서 추가]에서 ♡를 눌러 주세요.</div>'
       : `<div class="flt-sec">관심 작품 ${H.works.length}</div>
-         ${H.works.map(wRow).join('') || '<div class="hint">없음</div>'}
+         ${(() => {
+           // 끝난 작품은 아래로 접는다 — 공연 중인 작품이 먼저 보이게
+           const ended = id => { const r = rowsW(id); return r.length > 0 && !r.some(s => s.date >= todayStr); };
+           const live = H.works.filter(id => !ended(id)), done = H.works.filter(ended);
+           return (live.map(wRow).join('') || (done.length ? '' : '<div class="hint">없음</div>')) +
+             (done.length ? `<button class="hp-ended" onclick="_hpEndedOpen=!_hpEndedOpen;renderHearts()">종료된 작품 ${done.length}개 ${_hpEndedOpen ? '▴' : '▾'}</button>` +
+               (_hpEndedOpen ? done.map(wRow).join('') : '') : '');
+         })()}
          <div class="flt-sec" style="margin-top:10px">관심 배우 ${H.actors.length}</div>${H.actors.map(aRow).join('') || '<div class="hint">없음</div>'}`;
   }
   // 관심함에서 빼기는 한 번 묻는다 — 줄 전체가 눌리는 곳이라 잘못 누르기 쉽다
