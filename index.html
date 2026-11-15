@@ -4003,7 +4003,7 @@
   }
   // 방금 넣은 작품은 스케줄을 다시 받는 중일 수 있다 — 받아 둔 것으로 메운다
   // 그 회차가 배우의 첫 회차(첫공)·마지막 회차(막공)면 이름을 굵게 — 이벤트 설명에 이름을 적는 대신(사용자 결정 11/15).
-  // 회차 출연진 전원이 해당하면(개막·전체 막공) 굵게 하지 않는다. 막공은 공연 끝날까지 회차가 다 열렸을 때만
+  // 출연진 전원이 해당하면(개막·전체 막공) 전원 굵게(사용자 결정). 막공은 공연 끝날까지 회차가 다 열렸을 때만
   const _flCache = new WeakMap();
   const flKey = r => r.date + ' ' + (r.time || '') + ' ' + (r._showId || '');
   function firstLastBold(w, s) {
@@ -4019,7 +4019,6 @@
       const add = (r, n) => { const k = flKey(r); if (!m.has(k)) m.set(k, new Set()); m.get(k).add(n); };
       first.forEach((r, n) => add(r, n));
       if (end && sorted[sorted.length - 1].date >= end) last.forEach((r, n) => add(r, n));
-      sorted.forEach(r => { const set = m.get(flKey(r)); if (set && getActorFields(r).map(k => r[k]).filter(Boolean).every(n => set.has(n))) set.clear(); });
       if (end) _flCache.set(rows, m);   // 앱 정보(끝날)를 아직 못 받았으면 다음에 다시 센다
     }
     return m.get(flKey(s)) || null;
