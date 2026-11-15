@@ -160,5 +160,9 @@
   {
     "path": "shows/fanlettertour2026.json",
     "app": false
+  },
+  {
+    "path": "shows/seom2026.json",
+    "app": false
   }
 ]
