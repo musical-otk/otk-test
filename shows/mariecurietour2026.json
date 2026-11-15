@@ -1,0 +1,191 @@
+{
+  "name": "마리 퀴리 (지방 투어)",
+  "icon": "🧪",
+  "color": "#4F7F6A",
+  "venue": "지방 투어",
+  "startDate": "2026-11-21",
+  "endDate": "2027-01-24",
+  "official": "https://x.com/livecorp2011",
+  "roles": [
+    {
+      "key": "marie",
+      "label": "마리 퀴리"
+    },
+    {
+      "key": "anne",
+      "label": "안느"
+    },
+    {
+      "key": "pierre",
+      "label": "피에르"
+    },
+    {
+      "key": "ruben",
+      "label": "루벤"
+    },
+    {
+      "key": "josh",
+      "label": "조쉬/이렌"
+    },
+    {
+      "key": "paul",
+      "label": "폴/병원장"
+    },
+    {
+      "key": "amelia",
+      "label": "아멜리아/루이스"
+    },
+    {
+      "key": "marcin",
+      "label": "마르친/닥터 샤갈"
+    },
+    {
+      "key": "alicia",
+      "label": "알리샤"
+    },
+    {
+      "key": "lech",
+      "label": "레흐"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "marie": "이정화",
+      "anne": "전민지",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "옥경민",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "장준우",
+      "alicia": "윤수아",
+      "lech": "김보근"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "18:30",
+      "marie": "이정화",
+      "anne": "전민지",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "옥경민",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "장준우",
+      "alicia": "윤수아",
+      "lech": "김보근"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "marie": "김려원",
+      "anne": "전민지",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "옥경민",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "장준우",
+      "alicia": "윤수아",
+      "lech": "김보근"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "19:00",
+      "marie": "김소향",
+      "anne": "강혜인",
+      "pierre": "임별",
+      "ruben": "박시원",
+      "josh": "금보미",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "김지욱",
+      "alicia": "장희원",
+      "lech": "송정훈"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "14:00",
+      "marie": "이정화",
+      "anne": "강혜인",
+      "pierre": "임별",
+      "ruben": "박시원",
+      "josh": "금보미",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "김지욱",
+      "alicia": "장희원",
+      "lech": "송정훈"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "19:30",
+      "marie": "김소향",
+      "anne": "전민지",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "금보미",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "김지욱",
+      "alicia": "윤수아",
+      "lech": "송정훈"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "marie": "이정화",
+      "anne": "강혜인",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "금보미",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "김지욱",
+      "alicia": "윤수아",
+      "lech": "송정훈"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "marie": "이정화",
+      "anne": "강혜인",
+      "pierre": "임별",
+      "ruben": "강태을",
+      "josh": "금보미",
+      "paul": "박영빈",
+      "amelia": "홍산하",
+      "marcin": "김지욱",
+      "alicia": "윤수아",
+      "lech": "송정훈"
+    }
+  ],
+  "events": [
+    {
+      "name": "공연장: 창원성산아트홀",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-22",
+      "color": "#4F7F6A",
+      "description": "창원",
+      "url": "https://x.com/livecorp2011/status/2101959624190472551"
+    },
+    {
+      "name": "공연장: 포항문화예술회관",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-12",
+      "color": "#4F7F6A",
+      "description": "포항",
+      "url": "https://x.com/livecorp2011/status/2100872473436664221"
+    },
+    {
+      "name": "공연장: 익산예술의전당",
+      "startDate": "2026-12-18",
+      "endDate": "2026-12-19",
+      "color": "#4F7F6A",
+      "description": "익산",
+      "url": "https://x.com/livecorp2011/status/2108075250202091631"
+    }
+  ]
+}

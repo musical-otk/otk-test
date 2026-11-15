@@ -1,4 +1,6 @@
-const CACHE_NAME = 'ever2026-v8';
+const CACHE_NAME = 'ever2026-v9';
+const CACHE_PREFIX = 'ever2026-';   // 같은 origin 의 다른 앱 캐시는 건드리지 않는다
+const NO_CACHE = /[?&]t=\d+/;   // 스케줄·이벤트 json 은 매번 새 주소라 캐시에 쌓지 않는다
 // 폴더 배포라 주소가 /ever2026/ (실서비스) 또는 /otk-test/ever2026/ (테스트) — sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 
@@ -21,7 +23,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+      Promise.all(keys.filter(k => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   );
   self.clients.claim();
@@ -32,7 +34,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     fetch(event.request)
       .then(response => {
-        if (response && response.status === 200) {
+        if (response && response.status === 200 && event.request.method === 'GET' && !NO_CACHE.test(event.request.url)) {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }

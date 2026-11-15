@@ -1,0 +1,416 @@
+{
+  "name": "유리동물원",
+  "icon": "🦄",
+  "color": "#E0607A",
+  "venue": "예술의전당 CJ 토월극장",
+  "startDate": "2026-10-17",
+  "endDate": "2026-11-22",
+  "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392",
+  "official": "https://x.com/I_Love_SAC",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26011438"
+  },
+  "roles": [
+    {
+      "key": "amanda",
+      "label": "아만다"
+    },
+    {
+      "key": "tom",
+      "label": "톰"
+    },
+    {
+      "key": "laura",
+      "label": "로라"
+    },
+    {
+      "key": "jim",
+      "label": "짐"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-10-17",
+      "time": "19:00",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "정운선",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-10-18",
+      "time": "15:00",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "임세미",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "정새별",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-10-22",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "장승조",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "14:30",
+      "amanda": "김성령",
+      "tom": "권율",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "14:00",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "임세미",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:00",
+      "amanda": "최정원",
+      "tom": "장승조",
+      "laura": "정새별",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "15:00",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "임세미",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-10-28",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "권율",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "임세미",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "14:30",
+      "amanda": "최정원",
+      "tom": "장승조",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "14:00",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "정새별",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "19:00",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "임세미",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-11-01",
+      "time": "15:00",
+      "amanda": "최정원",
+      "tom": "장승조",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-04",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "권율",
+      "laura": "정운선",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-05",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "임세미",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "14:30",
+      "amanda": "김성령",
+      "tom": "권율",
+      "laura": "정새별",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-11-06",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "정운선",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "14:00",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "임세미",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "15:00",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "임세미",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-11-11",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "14:30",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "임세미",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "정운선",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "14:00",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "정새별",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "amanda": "김성령",
+      "tom": "김경남",
+      "laura": "임세미",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "15:00",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "14:30",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "임세미",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "장승조",
+      "laura": "정운선",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "19:30",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "정새별",
+      "jim": "문유강"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "14:30",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "정운선",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "19:30",
+      "amanda": "최정원",
+      "tom": "김경남",
+      "laura": "정운선",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "amanda": "김성령",
+      "tom": "권율",
+      "laura": "정새별",
+      "jim": "최정우"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "amanda": "김성령",
+      "tom": "장승조",
+      "laura": "임세미",
+      "jim": "배훈"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "15:00",
+      "amanda": "최정원",
+      "tom": "권율",
+      "laura": "정새별",
+      "jim": "문유강"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공",
+      "startDate": "2026-10-17",
+      "endDate": "2026-10-17",
+      "color": "#E0607A",
+      "times": [
+        "19:00"
+      ],
+      "description": "첫 공연 (스케줄표 첫공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-10-18",
+      "endDate": "2026-10-18",
+      "color": "#E0607A",
+      "times": [
+        "15:00"
+      ],
+      "description": "첫 공연 (스케줄표 첫공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-10-21",
+      "endDate": "2026-10-21",
+      "color": "#E0607A",
+      "times": [
+        "19:30"
+      ],
+      "description": "첫 공연 (스케줄표 첫공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-20",
+      "endDate": "2026-11-20",
+      "color": "#E0607A",
+      "times": [
+        "19:30"
+      ],
+      "description": "마지막 공연 (스케줄표 막공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#E0607A",
+      "times": [
+        "14:00"
+      ],
+      "description": "마지막 공연 (스케줄표 막공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#E0607A",
+      "times": [
+        "19:00"
+      ],
+      "description": "마지막 공연 (스케줄표 막공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    },
+    {
+      "name": "막공",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#E0607A",
+      "times": [
+        "15:00"
+      ],
+      "description": "마지막 공연 (스케줄표 막공 표기)",
+      "url": "https://www.sac.or.kr/site/main/show/show_view?SN=83392"
+    }
+  ]
+}

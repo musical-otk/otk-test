@@ -24,6 +24,9 @@ async def main():
         await pg.evaluate("switchView('app_ikkisup')"); await pg.wait_for_timeout(2500)
         check('앱 화면도 지금 주소에서 열림', (await pg.evaluate("(document.getElementById('frame-app_ikkisup')||{}).src")).startswith(B))
         check('옛 주소로 나가는 요청 0', not out, out[:3])
+        # vercel 주소에서 받은 백업을 여기 복원한 상황 — 그 주소의 앱을 열면 기록이 두 주소로 갈라진다
+        await pg.evaluate("""localStorage.setItem(APPS_KEY, JSON.stringify([{id:'app_ikkisup',name:'이끼숲',icon:'🌿',color:'#1A6B72',kind:'app',scheduleUrl:'https://mu-di.vercel.app/ikkisup2026/schedule.json',appUrl:'https://mu-di.vercel.app/ikkisup2026/',recordsKey:'ikkisup_records',deepLink:true}]))""")
+        check('vercel 주소로 저장된 앱도 지금 주소로', all(u.startswith(B) for u in await pg.evaluate("getApps().flatMap(a=>[a.scheduleUrl,a.appUrl])")))
         check('페이지 오류 없음', not errs, '; '.join(errs)[:200])
         print('\nSUMMARY', sum(R), '/', len(R))
         await b.close()

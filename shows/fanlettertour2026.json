@@ -1,0 +1,481 @@
+{
+  "name": "팬레터 (지방 투어)",
+  "icon": "💌",
+  "color": "#8a6f5a",
+  "venue": "지방 투어",
+  "startDate": "2026-09-18",
+  "endDate": "2026-12-25",
+  "official": "https://x.com/livecorp2011",
+  "roles": [
+    {
+      "key": "haejin",
+      "label": "김해진"
+    },
+    {
+      "key": "sehun",
+      "label": "정세훈"
+    },
+    {
+      "key": "hikaru",
+      "label": "히카루"
+    },
+    {
+      "key": "yoon",
+      "label": "이윤"
+    },
+    {
+      "key": "taejun",
+      "label": "이태준"
+    },
+    {
+      "key": "sunam",
+      "label": "김수남"
+    },
+    {
+      "key": "hwantae",
+      "label": "김환태"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-09-18",
+      "time": "19:30",
+      "haejin": "이규형",
+      "sehun": "문성일",
+      "hikaru": "허윤슬",
+      "yoon": "안창용",
+      "taejun": "김지욱",
+      "sunam": "장민수",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "14:00",
+      "haejin": "김종구",
+      "sehun": "문태유",
+      "hikaru": "이봄소리",
+      "yoon": "안창용",
+      "taejun": "김지욱",
+      "sunam": "장민수",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-09-19",
+      "time": "19:00",
+      "haejin": "이규형",
+      "sehun": "문태유",
+      "hikaru": "허윤슬",
+      "yoon": "안창용",
+      "taejun": "김지욱",
+      "sunam": "장민수",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-10-08",
+      "time": "19:30",
+      "haejin": "강필석",
+      "sehun": "홍기범",
+      "hikaru": "이봄소리",
+      "yoon": "박정표",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-10-09",
+      "time": "15:00",
+      "haejin": "강필석",
+      "sehun": "원태민",
+      "hikaru": "이봄소리",
+      "yoon": "박정표",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-10-23",
+      "time": "19:30",
+      "haejin": "이규형",
+      "sehun": "원태민",
+      "hikaru": "이봄소리",
+      "yoon": "박정표",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "14:00",
+      "haejin": "이규형",
+      "sehun": "원태민",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-10-24",
+      "time": "19:00",
+      "haejin": "김경수",
+      "sehun": "문성일",
+      "hikaru": "이봄소리",
+      "yoon": "박정표",
+      "taejun": "이한밀",
+      "sunam": "이승현",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-10-29",
+      "time": "19:30",
+      "haejin": "김종구",
+      "sehun": "문성일",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "이한밀",
+      "sunam": "김태인",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-10-30",
+      "time": "19:30",
+      "haejin": "이규형",
+      "sehun": "김리현",
+      "hikaru": "강혜인",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "손유동",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "14:00",
+      "haejin": "이규형",
+      "sehun": "윤소호",
+      "hikaru": "김히어라",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "손유동",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-10-31",
+      "time": "18:30",
+      "haejin": "이규형",
+      "sehun": "김리현",
+      "hikaru": "강혜인",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "손유동",
+      "hwantae": "송상훈"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "14:00",
+      "haejin": "김경수",
+      "sehun": "문태유",
+      "hikaru": "강혜인",
+      "yoon": "김지철",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-11-07",
+      "time": "19:00",
+      "haejin": "김경수",
+      "sehun": "윤소호",
+      "hikaru": "강혜인",
+      "yoon": "김지철",
+      "taejun": "김지욱",
+      "sunam": "이승현",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "14:00",
+      "haejin": "김재범",
+      "sehun": "문태유",
+      "hikaru": "허윤슬",
+      "yoon": "박정표",
+      "taejun": "이한밀",
+      "sunam": "김태인",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-11-08",
+      "time": "19:00",
+      "haejin": "이규형",
+      "sehun": "홍기범",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "이한밀",
+      "sunam": "김태인",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "haejin": "이규형",
+      "sehun": "홍기범",
+      "hikaru": "강혜인",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "김태인",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "haejin": "김경수",
+      "sehun": "문태유",
+      "hikaru": "강혜인",
+      "yoon": "김지철",
+      "taejun": "김지욱",
+      "sunam": "김태인",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "haejin": "이규형",
+      "sehun": "문태유",
+      "hikaru": "강혜인",
+      "yoon": "김지철",
+      "taejun": "김지욱",
+      "sunam": "김태인",
+      "hwantae": "김효성"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "haejin": "김종구",
+      "sehun": "윤소호",
+      "hikaru": "김히어라",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "손유동",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "19:00",
+      "haejin": "이규형",
+      "sehun": "윤소호",
+      "hikaru": "김히어라",
+      "yoon": "이형훈",
+      "taejun": "이한밀",
+      "sunam": "손유동",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "19:30",
+      "haejin": "이규형",
+      "sehun": "문성일",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "김승용",
+      "sunam": "김태인",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "haejin": "김종구",
+      "sehun": "원태민",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "김승용",
+      "sunam": "김태인",
+      "hwantae": "김보현"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "19:00",
+      "haejin": "이규형",
+      "sehun": "문성일",
+      "hikaru": "김히어라",
+      "yoon": "박정표",
+      "taejun": "김승용",
+      "sunam": "김태인",
+      "hwantae": "김보현"
+    }
+  ],
+  "events": [
+    {
+      "name": "공연장: 경남문화예술회관 대공연장",
+      "startDate": "2026-09-18",
+      "endDate": "2026-09-19",
+      "color": "#8a6f5a",
+      "description": "진주",
+      "url": "https://x.com/livecorp2011/status/2079023537881514050"
+    },
+    {
+      "name": "공연장: 김천문화예술회관 대공연장",
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-09",
+      "color": "#8a6f5a",
+      "description": "김천",
+      "url": "https://x.com/livecorp2011/status/2090265061134602470"
+    },
+    {
+      "name": "공연장: 김해문화의전당 마루홀",
+      "startDate": "2026-10-23",
+      "endDate": "2026-10-24",
+      "color": "#8a6f5a",
+      "description": "김해",
+      "url": "https://x.com/livecorp2011/status/2089578033003086050"
+    },
+    {
+      "name": "공연장: 울산 HD아트센터 대공연장",
+      "startDate": "2026-10-29",
+      "endDate": "2026-10-31",
+      "color": "#8a6f5a",
+      "description": "울산",
+      "url": "https://x.com/livecorp2011/status/2079491611650916550"
+    },
+    {
+      "name": "공연장: 성남아트센터 오페라하우스",
+      "startDate": "2026-11-07",
+      "endDate": "2026-11-08",
+      "color": "#8a6f5a",
+      "description": "성남",
+      "url": "https://x.com/livecorp2011/status/2088188893308838077"
+    },
+    {
+      "name": "공연장: 안동문화예술의전당 웅부홀",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#8a6f5a",
+      "description": "안동",
+      "url": "https://x.com/livecorp2011/status/2091793566339399684"
+    },
+    {
+      "name": "공연장: 인천문화예술회관 대공연장",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-22",
+      "color": "#8a6f5a",
+      "description": "인천",
+      "url": "https://x.com/livecorp2011/status/2087715046835249366"
+    },
+    {
+      "name": "공연장: 진해아트홀",
+      "startDate": "2026-12-24",
+      "endDate": "2026-12-25",
+      "color": "#8a6f5a",
+      "description": "진해",
+      "url": "https://x.com/livecorp2011/status/2109917104669622414"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-09-19",
+      "endDate": "2026-09-19",
+      "color": "#8a6f5a",
+      "times": [
+        "19:00"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:00 · 경남문화예술회관 대공연장 로비 포토존 앞",
+      "url": "https://x.com/livecorp2011/status/2100374173927498016"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-08",
+      "color": "#8a6f5a",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:30",
+      "url": "https://x.com/livecorp2011/status/2107720077340741706"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-10-24",
+      "endDate": "2026-10-24",
+      "color": "#8a6f5a",
+      "times": [
+        "19:00"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:00",
+      "url": "https://x.com/livecorp2011/status/2109841561697866085"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-10-30",
+      "endDate": "2026-10-30",
+      "color": "#8a6f5a",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:30 (18:00에서 시간 변경)",
+      "url": "https://x.com/livecorp2011/status/2109841561697866085"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-10-31",
+      "endDate": "2026-10-31",
+      "color": "#8a6f5a",
+      "times": [
+        "18:30"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 17:30",
+      "url": "https://x.com/livecorp2011/status/2109841561697866085"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#8a6f5a",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:30",
+      "url": "https://x.com/livecorp2011/status/2120335706107297793"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#8a6f5a",
+      "times": [
+        "19:00"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:00",
+      "url": "https://x.com/livecorp2011/status/2120335706107297793"
+    },
+    {
+      "name": "투어 공연 로비 연주회",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#8a6f5a",
+      "times": [
+        "19:00"
+      ],
+      "description": "공연 전 로비 피아노 라이브 연주 · 18:00",
+      "url": "https://x.com/livecorp2011/status/2120335706107297793"
+    },
+    {
+      "name": "첫공연 10주년 기념 감사 이벤트",
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-08",
+      "color": "#8a6f5a",
+      "times": [
+        "19:30"
+      ],
+      "description": "초연 포스터 2종 증정(1인 1세트) · 유료 티켓 소지자 · 김천문화예술회관 MD부스 · 공연 시작 1시간 전 ~ 공연 종료 후 10분",
+      "url": "https://x.com/livecorp2011/status/2106338723965370777"
+    },
+    {
+      "name": "첫공연 10주년 기념 감사 이벤트",
+      "startDate": "2026-10-09",
+      "endDate": "2026-10-09",
+      "color": "#8a6f5a",
+      "times": [
+        "15:00"
+      ],
+      "description": "초연 포스터 2종 증정(1인 1세트) · 유료 티켓 소지자 · 김천문화예술회관 MD부스 · 공연 시작 1시간 전 ~ 공연 종료 후 10분",
+      "url": "https://x.com/livecorp2011/status/2106338723965370777"
+    }
+  ]
+}

@@ -244,6 +244,16 @@ async def main():
         await pg2.reload(); await pg2.wait_for_timeout(8000)
         got = await e2("[getApps().map(a=>[a.id,!!a.viaActor]), getHearts().works, (getAttended()['2026-12-01']||[]).length]")
         check('예매 기록만 있는 전용 페이지 작품도 달력에 (♥ 없이)', got == [[['app_fated', True]], [], 1], got)
+        # 정보만 작품이 전용 페이지로 바뀔 때 — 사진·메모만 남긴 회차가 있으면 예전 항목을 지우지 않는다 (리뷰 11/15)
+        rip = "localStorage.setItem(HUB_NS+'apps', JSON.stringify([{id:'show_ripley2026',name:'리플리',icon:'🎭',color:'#888',kind:'data',scheduleUrl:SITE+'/shows/ripley2026.json',appUrl:'',recordsKey:HUB_NS+'rec_ripley2026'}]))"
+        await e2("localStorage.clear()"); await e2(rip)
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        dropped = await e2("!getApps().some(a=>a.id==='show_ripley2026')")
+        await e2("localStorage.clear()"); await e2(rip)
+        await e2("localStorage.setItem(HUB_NS+'notes', JSON.stringify({'show_ripley2026__2026-12-23__19:30':{memo:'사진만',photoIds:[]}}))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        kept = await e2("getApps().some(a=>a.id==='show_ripley2026')")
+        check('정보만→전용 페이지: 메모만 있는 작품은 남김 (메모 없으면 옮김)', dropped and kept, [dropped, kept])
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
