@@ -144,5 +144,9 @@
   {
     "path": "shows/goodmorning2026.json",
     "app": false
+  },
+  {
+    "path": "shows/yeonletter2026.json",
+    "app": false
   }
 ]
