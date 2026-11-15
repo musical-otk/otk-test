@@ -6,6 +6,7 @@
   "startDate": "2026-11-21",
   "endDate": "2027-01-24",
   "official": "https://x.com/livecorp2011",
+  "noFirstLast": true,
   "roles": [
     {
       "key": "marie",

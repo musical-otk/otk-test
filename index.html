@@ -4086,6 +4086,7 @@
     if (!w || !w.id || w.kind === 'extra' || w.id === EXTRA_ID) return null;
     const rows = rowsOf(w); if (!rows.length) return null;
     const info = (w.kind === 'data' ? infoOf(w) : appInfoOf(w)) || {}, end = info.endDate || '';
+    if (info.noFirstLast) return null;   // 지방 투어 — 도시마다 첫·막이라 굵게 하지 않는다 (사용자 11/15)
     const ck = end + '|' + JSON.stringify(info.lastShows || {});   // 앱 정보가 늦게 오면 그때 다시 센다
     const c = _flCache.get(rows);
     let m = c && c.k === ck ? c.m : null;
