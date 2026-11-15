@@ -560,12 +560,20 @@
       "url": "https://x.com/welcomefunny_/status/2118584162533904426"
     },
     {
-      "name": "페어 프로필 포토카드 증정",
+      "name": "미공개 페어컷 포토카드 증정 이벤트",
       "startDate": "2026-11-24",
       "endDate": "2026-11-29",
       "color": "#4A6FB5",
-      "description": "상세 추후 공지",
-      "url": "https://x.com/welcomefunny_/status/2104798327233769767"
+      "description": "매표소 유료 티켓 수령 시, 당일 캐스트 1종",
+      "url": "https://x.com/welcomefunny_/status/2121779269785583805"
+    },
+    {
+      "name": "앵콜 데이",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-29",
+      "color": "#4A6FB5",
+      "description": "커튼콜 종료 후 총 2곡 앵콜, 플래시 없이 사진·동영상 촬영 가능",
+      "url": "https://x.com/welcomefunny_/status/2121779484739424711"
     },
     {
       "name": "스페셜 커튼콜 위크",

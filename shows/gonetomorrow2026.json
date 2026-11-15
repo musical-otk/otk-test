@@ -584,6 +584,61 @@
       "color": "#8B1A2B",
       "description": "유료 티켓 1매당 1개 (티켓 수령 시, 소진 시 마감)",
       "url": "https://x.com/page1company/status/2121090679115817193"
+    },
+    {
+      "name": "마지막 공연 무대인사",
+      "startDate": "2026-11-27",
+      "endDate": "2026-11-27",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
+      "url": "https://x.com/page1company/status/2121965013573288263"
+    },
+    {
+      "name": "마지막 공연 무대인사",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#8B1A2B",
+      "times": [
+        "15:00"
+      ],
+      "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
+      "url": "https://x.com/page1company/status/2121965013573288263"
+    },
+    {
+      "name": "마지막 공연 무대인사",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
+      "url": "https://x.com/page1company/status/2121965013573288263"
+    },
+    {
+      "name": "마지막 공연 무대인사",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#8B1A2B",
+      "times": [
+        "14:00"
+      ],
+      "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
+      "url": "https://x.com/page1company/status/2121965013573288263"
+    },
+    {
+      "name": "마지막 공연 무대인사",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#8B1A2B",
+      "times": [
+        "18:30"
+      ],
+      "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
+      "url": "https://x.com/page1company/status/2121965013573288263"
     }
   ]
 }
