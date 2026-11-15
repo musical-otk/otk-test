@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ripley2026-v4';
+const CACHE_NAME = 'ripley2026-v5';
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');   // 어느 폴더에 두어도 동작 (otk-test 사본 포함)
 
 const PRECACHE_URLS = [
