@@ -172,6 +172,12 @@ async def main():
           saveApps([mk('a'),mk('b'),mk('v',1),mk('c')]);moveTab('c',-1);const r1=getApps().map(a=>a.id).join('');
           applyTabOrder(['b','c','a']);const r2=getApps().map(a=>a.id).join('');localStorage.setItem(APPS_KEY,keep);return [r1,r2]})()""")
         check('탭 순서: 끌기로 바꾸고 탭 없는 작품은 제자리', to == ['acvb', 'bcva'], to)
+        # 첫공·막공 배우 굵게 — 일부만 해당하면 그 배우만, 전원이면 아무도(개막·전체 막공)
+        fl = await ev("""(async()=>{await ensureCatalog();const mk=(d,t,a,b)=>({date:d,time:t,r1:a,r2:b});
+          const rows=[mk('2026-12-01','20:00','가','나'),mk('2026-12-02','20:00','다','나'),mk('2026-12-03','20:00','가','다'),mk('2026-12-04','20:00','가','나')];
+          const w={id:'show_fltest',kind:'data'}; schedules[w.id]=rows; dataInfo[w.id]={endDate:'2026-12-04',roles:[{key:'r1'},{key:'r2'}]};
+          const out=rows.map(r=>castHtml(w,r)); delete schedules[w.id]; delete dataInfo[w.id]; return out})()""")
+        check('첫공·막공 배우 굵게 (일부만, 전원이면 없음)', fl == ['가 · 나', '<b>다</b> · 나', '가 · <b>다</b>', '가 · 나'], fl)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

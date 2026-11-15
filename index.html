@@ -311,6 +311,8 @@
     .ev-sess { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border-top: 1px solid var(--border); font-size: 13px; }
     .ev-sess-when { flex: none; font-weight: 600; min-width: 92px; }
     .ev-sess-cast { flex: 1; color: var(--text2); font-size: 12px; min-width: 0; }
+    /* 그 회차가 첫공·막공인 배우 */
+    .ev-sess-cast b, .srch-sub b, .mc-cast b, .xp-sess b, .ev-cast b { color: var(--text1); font-weight: 800; }
     .ev-sess-note { display: block; color: var(--custom); font-size: 11px; margin-top: 2px; }
     .ev-sess.past { opacity: .55; }
     .ev-btn { flex: none; font-size: 12px; padding: 5px 10px; border-radius: 12px; border: 1px solid var(--custom); background: none; color: var(--custom); cursor: pointer; }
@@ -2002,7 +2004,7 @@
         const tr   = !mine && recs.find(r => r.transferred);
         const mark = mine ? (s.date < todayStr ? '✓ 관람' : '🎫 예매') : tr ? '↪ 양도' : '';
         const seat = mine ? fmtSeat(mine) : '';
-        const cast = getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ');
+        const cast = castHtml(getApps().find(a => a.id === appId) || { id: appId }, s);
         return `<div class="xp-sess${mine ? ' mine' : ''}" onclick="openDay('${s.date}')">
           <span class="xp-when">${s.date.slice(5).replace('-', '.')}(${DOW[d.getDay()]}) ${s.time || ''}</span>
           <span class="xp-cast">${cast}</span>
@@ -2976,7 +2978,7 @@
 
     _dayNotePhotos = {};
     const regularHtml = sessions.map(s => {
-      const cast = getActorFields(s).map(f => s[f]).filter(Boolean).join(' · ');
+      const cast = castHtml(s._app, s);
       const attRecs = dayAtt.filter(r => recHit(r, s._app.id, s));
       const attHtml = attRecs.map(r => {
         const seat = fmtSeat(r);
@@ -3819,7 +3821,7 @@
         const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name));
         return `<div class="mc-sess" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
           <span class="mc-time">${s.time || ''}</span>
-          <span class="mc-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
+          <span class="mc-cast">${castHtml(w, s)}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
         </div>`;
       }).join('') || (hidden ? '' : '<div class="mc-none">이 작품 회차 없음</div>')}
       ${hidden ? `<div class="mc-none">배우 필터로 숨긴 회차 ${hidden}개</div>` : ''}
@@ -3902,6 +3904,7 @@
   };
   // 회차 캐스팅 — 배역 이름(정보만 info.roles, 앱 show-info roles)을 붙이고, 이름이 같은 배역 칸은 한 줄로
   const evCast = (w, s) => {
+    const fl = firstLastBold(w, s);
     const roles = (infoOf(w) || {}).roles || appInfoOf(w).roles || [];
     const lines = new Map();
     getActorFields(s).forEach(k => {
@@ -3911,7 +3914,7 @@
       lines.get(lbl || k).names.push(s[k]);
     });
     return lines.size ? `<div class="ev-cast">${[...lines.values()].map(g =>
-      `<div class="ev-cast-row">${g.lbl ? `<span class="ev-cast-lbl">${g.lbl}</span>` : ''}<span>${g.names.join(' · ')}</span></div>`).join('')}</div>` : '';
+      `<div class="ev-cast-row">${g.lbl ? `<span class="ev-cast-lbl">${g.lbl}</span>` : ''}<span>${g.names.map(n => fl && fl.has(n) ? `<b>${n}</b>` : n).join(' · ')}</span></div>`).join('')}</div>` : '';
   };
   function showEvSheet(title, html) {
     document.getElementById('ev-sheet-title').textContent = title;
@@ -3946,7 +3949,7 @@
       const own = split && list.find(e => evAt(e, s.date, s.time));
       return `<div class="ev-sess${past ? ' past' : ''}">
         <span class="ev-sess-when">${evMd(s.date)}(${DOW[d.getDay()]}) ${s.time || ''}</span>
-        <span class="ev-sess-cast">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}${own ? `<span class="ev-sess-note">${split.mid(own.description || '')}</span>` : ''}</span>
+        <span class="ev-sess-cast">${castHtml(w, s)}${own ? `<span class="ev-sess-note">${split.mid(own.description || '')}</span>` : ''}</span>
         ${evRecBtn(w, s)}
       </div>`;
     }).join('');
@@ -3999,6 +4002,32 @@
     return `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
   }
   // 방금 넣은 작품은 스케줄을 다시 받는 중일 수 있다 — 받아 둔 것으로 메운다
+  // 그 회차가 배우의 첫 회차(첫공)·마지막 회차(막공)면 이름을 굵게 — 이벤트 설명에 이름을 적는 대신(사용자 결정 11/15).
+  // 회차 출연진 전원이 해당하면(개막·전체 막공) 굵게 하지 않는다. 막공은 공연 끝날까지 회차가 다 열렸을 때만
+  const _flCache = new WeakMap();
+  const flKey = r => r.date + ' ' + (r.time || '') + ' ' + (r._showId || '');
+  function firstLastBold(w, s) {
+    if (!w || !w.id || w.kind === 'extra' || w.id === EXTRA_ID) return null;
+    const rows = rowsOf(w); if (!rows.length) return null;
+    let m = _flCache.get(rows);
+    if (!m) {
+      const sorted = [...rows].sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
+      const end = ((w.kind === 'data' ? infoOf(w) : appInfoOf(w)) || {}).endDate || '';
+      const first = new Map(), last = new Map();
+      sorted.forEach(r => getActorFields(r).forEach(k => { const n = r[k]; if (!n) return; if (!first.has(n)) first.set(n, r); last.set(n, r); }));
+      m = new Map();
+      const add = (r, n) => { const k = flKey(r); if (!m.has(k)) m.set(k, new Set()); m.get(k).add(n); };
+      first.forEach((r, n) => add(r, n));
+      if (end && sorted[sorted.length - 1].date >= end) last.forEach((r, n) => add(r, n));
+      sorted.forEach(r => { const set = m.get(flKey(r)); if (set && getActorFields(r).map(k => r[k]).filter(Boolean).every(n => set.has(n))) set.clear(); });
+      if (end) _flCache.set(rows, m);   // 앱 정보(끝날)를 아직 못 받았으면 다음에 다시 센다
+    }
+    return m.get(flKey(s)) || null;
+  }
+  function castHtml(w, s, sep = ' · ') {
+    const b = firstLastBold(w, s);
+    return getActorFields(s).map(k => s[k]).filter(Boolean).map(n => b && b.has(n) ? `<b>${n}</b>` : n).join(sep);
+  }
   function rowsOf(w) { return (w.added && (schedules[w.id] || []).length ? schedules[w.id] : _catalogRows[w.id] || schedules[w.id]) || []; }
   function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
   const _appInfo = {};   // 앱 작품 id → show-info.json ({} = 받는 중이거나 없음)
@@ -4078,7 +4107,7 @@
             <span class="filter-group-dot" style="background:${w.color}"></span>
             <span class="srch-time">${s.time || ''}</span>
             <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
-            <span class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</span>
+            <span class="srch-sub">${castHtml(w, s)}</span>
             ${(r => r ? `<span class="srch-tag mine">${r.transferred ? '↪ 양도' : ds < todayStr ? '✓ 관람' : '🎫 예매'}</span>` : '')(
               att.find(r => recHit(r, w.id, s)))}
           </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없어요</div>');
@@ -4172,7 +4201,7 @@
             </div>
             ${withIcon ? `<span class="srch-icon" title="${w.name}">${w.icon || '•'}</span>` : ''}
             <div class="srch-body">
-              <div class="srch-sub">${getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ')}</div>
+              <div class="srch-sub">${castHtml(w, s)}</div>
               ${ev.length ? `<div class="srch-evs">${ev.map((x, i) => `<span class="srch-tag ev" onclick="event.stopPropagation();openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',${i})">${x}</span>`).join('')}</div>` : ''}
             </div>
           </div>`;
