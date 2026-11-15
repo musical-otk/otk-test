@@ -178,6 +178,12 @@ async def main():
           const w={id:'show_fltest',kind:'data'}; schedules[w.id]=rows; dataInfo[w.id]={endDate:'2026-12-04',roles:[{key:'r1'},{key:'r2'}]};
           const out=rows.map(r=>castHtml(w,r)); delete schedules[w.id]; delete dataInfo[w.id]; return out})()""")
         check('첫공·막공 배우 굵게 (전원이면 전원)', fl == ['<b>가</b> · <b>나</b>', '<b>다</b> · 나', '가 · <b>다</b>', '<b>가</b> · <b>나</b>'], fl)
+        # 공지로 먼저 알려진 막공(lastShows) — 스케줄이 끝까지 안 열려도 그 회차에서 굵게
+        ls = await ev("""(async()=>{const mk=(d,t,a,b)=>({date:d,time:t,r1:a,r2:b});
+          const rows=[mk('2026-12-01','20:00','가','나'),mk('2026-12-02','20:00','다','나'),mk('2026-12-03','20:00','가','다')];
+          const w={id:'show_lstest',kind:'data'}; schedules[w.id]=rows; dataInfo[w.id]={endDate:'2026-12-31',lastShows:{'나':'2026-12-02 20:00'}};
+          const out=rows.map(r=>castHtml(w,r)); delete schedules[w.id]; delete dataInfo[w.id]; return out})()""")
+        check('공지된 막공(lastShows)은 스케줄이 덜 열려도 굵게', ls == ['<b>가</b> · <b>나</b>', '<b>다</b> · <b>나</b>', '가 · 다'], ls)
         # 달력 시작 요일 (요청 폼 11/12) — 2026-11-01 은 일요일
         dq = "()=>{currentYear=2026;currentMonth=10;setCalView('month');renderCalendar();return [[...document.querySelectorAll('#cal-dow .dow-cell')].map(e=>e.textContent).join(''),[...document.querySelector('#cal-days').children].findIndex(c=>c.textContent.trim().startsWith('1'))]}"
         mon = await ev(dq); await ev("setWeekStart('month','sun')"); sun = await ev(dq)

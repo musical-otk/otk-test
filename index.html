@@ -4012,13 +4012,16 @@
     let m = _flCache.get(rows);
     if (!m) {
       const sorted = [...rows].sort((a, b) => (a.date + (a.time || '')).localeCompare(b.date + (b.time || '')));
-      const end = ((w.kind === 'data' ? infoOf(w) : appInfoOf(w)) || {}).endDate || '';
+      const info = (w.kind === 'data' ? infoOf(w) : appInfoOf(w)) || {}, end = info.endDate || '';
       const first = new Map(), last = new Map();
       sorted.forEach(r => getActorFields(r).forEach(k => { const n = r[k]; if (!n) return; if (!first.has(n)) first.set(n, r); last.set(n, r); }));
       m = new Map();
       const add = (r, n) => { const k = flKey(r); if (!m.has(k)) m.set(k, new Set()); m.get(k).add(n); };
       first.forEach((r, n) => add(r, n));
-      if (end && sorted[sorted.length - 1].date >= end) last.forEach((r, n) => add(r, n));
+      // 막공 — 끝날까지 다 열렸으면 스케줄로, 공지로 먼저 알려진 배우는 공지(lastShows)가 우선
+      const lastOf = new Map(end && sorted[sorted.length - 1].date >= end ? last : []);
+      Object.entries(info.lastShows || {}).forEach(([n, when]) => lastOf.set(n, { date: String(when).slice(0, 10), time: String(when).slice(11, 16) }));
+      lastOf.forEach((r, n) => add(r, n));
       if (end) _flCache.set(rows, m);   // 앱 정보(끝날)를 아직 못 받았으면 다음에 다시 센다
     }
     return m.get(flKey(s)) || null;
