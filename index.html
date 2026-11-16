@@ -1494,7 +1494,7 @@
         const sid = url.split('/').pop().replace(/\.json$/, '');
         found.push({
           id: 'show_' + sid.replace(/[^a-z0-9]/gi, '_'), kind: 'data',
-          name: info.name || sid, icon: info.icon || '', color: info.color || PALETTE_FALLBACK[0],
+          name: info.name || sid, icon: info.icon || '', color: info.color || PALETTE_FALLBACK[0], alias: info.alias || '',   // 찾기 별칭(WBB 등)
           scheduleUrl: url, appUrl: '', deepLink: false, recordsKey: HUB_NS + 'rec_' + sid,
           lastDate: sch.reduce((m, x) => (x.date && x.date > m ? x.date : m), ''),
         });

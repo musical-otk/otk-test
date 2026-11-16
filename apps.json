@@ -164,5 +164,9 @@
   {
     "path": "shows/seom2026.json",
     "app": false
+  },
+  {
+    "path": "shows/wbb2026.json",
+    "app": false
   }
 ]

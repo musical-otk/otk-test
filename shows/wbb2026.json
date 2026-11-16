@@ -1,0 +1,342 @@
+{
+  "name": "WE BORROWED BROKENNESS",
+  "icon": "🏃",
+  "color": "#B59A2E",
+  "venue": "링크 더 스페이스 2관",
+  "startDate": "2026-12-11",
+  "endDate": "2027-03-07",
+  "official": "https://x.com/tank_of_fire",
+  "alias": "WBB 위 바로우드 브로큰니스",
+  "roles": [
+    {
+      "key": "HENRY",
+      "label": "헨리"
+    },
+    {
+      "key": "DEREK",
+      "label": "데릭"
+    },
+    {
+      "key": "KRYSTAL",
+      "label": "크리스탈"
+    },
+    {
+      "key": "TRISHA",
+      "label": "트리샤"
+    },
+    {
+      "key": "HOOPER",
+      "label": "후퍼"
+    },
+    {
+      "key": "JEREMY",
+      "label": "제레미"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "HENRY": "이석준",
+      "DEREK": "김바다",
+      "KRYSTAL": "김보정",
+      "TRISHA": "강하나",
+      "HOOPER": "심우성",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "HENRY": "장태민",
+      "DEREK": "강찬",
+      "KRYSTAL": "김서연",
+      "TRISHA": "허순미",
+      "HOOPER": "이정수",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "HENRY": "장태민",
+      "DEREK": "유희제",
+      "KRYSTAL": "김서연",
+      "TRISHA": "허순미",
+      "HOOPER": "이정수",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "HENRY": "이형훈",
+      "DEREK": "유희제",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "이예지",
+      "HOOPER": "정명군",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "HENRY": "이형훈",
+      "DEREK": "유희제",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "이예지",
+      "HOOPER": "정명군",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-14",
+      "time": "20:00",
+      "HENRY": "이석준",
+      "DEREK": "김바다",
+      "KRYSTAL": "김서연",
+      "TRISHA": "강하나",
+      "HOOPER": "심우성",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "HENRY": "장태민",
+      "DEREK": "유희제",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "이예지",
+      "HOOPER": "이정수",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "HENRY": "이형훈",
+      "DEREK": "강찬",
+      "KRYSTAL": "김보정",
+      "TRISHA": "허순미",
+      "HOOPER": "정명군",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "HENRY": "장태민",
+      "DEREK": "유희제",
+      "KRYSTAL": "김서연",
+      "TRISHA": "이예지",
+      "HOOPER": "이정수",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "HENRY": "장태민",
+      "DEREK": "김바다",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "강하나",
+      "HOOPER": "심우성",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "HENRY": "장태민",
+      "DEREK": "김바다",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "강하나",
+      "HOOPER": "심우성",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "HENRY": "이형훈",
+      "DEREK": "강찬",
+      "KRYSTAL": "김보정",
+      "TRISHA": "허순미",
+      "HOOPER": "정명군",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "HENRY": "이형훈",
+      "DEREK": "강찬",
+      "KRYSTAL": "김보정",
+      "TRISHA": "허순미",
+      "HOOPER": "정명군",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-21",
+      "time": "20:00",
+      "HENRY": "이석준",
+      "DEREK": "유희제",
+      "KRYSTAL": "김서연",
+      "TRISHA": "허순미",
+      "HOOPER": "정명군",
+      "JEREMY": "문성일"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "HENRY": "이형훈",
+      "DEREK": "강찬",
+      "KRYSTAL": "김서연",
+      "TRISHA": "강하나",
+      "HOOPER": "심우성",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "HENRY": "장태민",
+      "DEREK": "김바다",
+      "KRYSTAL": "김보정",
+      "TRISHA": "이예지",
+      "HOOPER": "이정수",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "HENRY": "이석준",
+      "DEREK": "강찬",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "강하나",
+      "HOOPER": "이정수",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "HENRY": "이석준",
+      "DEREK": "강찬",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "강하나",
+      "HOOPER": "이정수",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "HENRY": "이형훈",
+      "DEREK": "김바다",
+      "KRYSTAL": "김보정",
+      "TRISHA": "이예지",
+      "HOOPER": "정명군",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "HENRY": "이형훈",
+      "DEREK": "김바다",
+      "KRYSTAL": "김보정",
+      "TRISHA": "이예지",
+      "HOOPER": "정명군",
+      "JEREMY": "정단비"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "HENRY": "이석준",
+      "DEREK": "유희제",
+      "KRYSTAL": "김보정",
+      "TRISHA": "허순미",
+      "HOOPER": "심우성",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "HENRY": "이석준",
+      "DEREK": "유희제",
+      "KRYSTAL": "전혜주",
+      "TRISHA": "허순미",
+      "HOOPER": "심우성",
+      "JEREMY": "도예준"
+    },
+    {
+      "date": "2026-12-28",
+      "time": "20:00",
+      "HENRY": "장태민",
+      "DEREK": "김바다",
+      "KRYSTAL": "김서연",
+      "TRISHA": "이예지",
+      "HOOPER": "심우성",
+      "JEREMY": "문성일"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-11",
+      "color": "#B59A2E",
+      "times": [
+        "20:00"
+      ],
+      "description": "스케줄표 첫공 표시 회차",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-12",
+      "endDate": "2026-12-12",
+      "color": "#B59A2E",
+      "times": [
+        "15:00"
+      ],
+      "description": "스케줄표 첫공 표시 회차",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-12",
+      "endDate": "2026-12-12",
+      "color": "#B59A2E",
+      "times": [
+        "19:00"
+      ],
+      "description": "스케줄표 첫공 표시 회차",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-13",
+      "endDate": "2026-12-13",
+      "color": "#B59A2E",
+      "times": [
+        "14:00"
+      ],
+      "description": "스케줄표 첫공 표시 회차",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "프리뷰 위크",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-14",
+      "color": "#B59A2E",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "오프닝 위크",
+      "startDate": "2026-12-16",
+      "endDate": "2026-12-21",
+      "color": "#B59A2E",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-12-16",
+      "endDate": "2026-12-21",
+      "color": "#B59A2E",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    },
+    {
+      "name": "지정 폴라 위크",
+      "startDate": "2026-12-23",
+      "endDate": "2026-12-28",
+      "color": "#B59A2E",
+      "url": "https://x.com/tank_of_fire/status/2118569063270261139"
+    }
+  ]
+}
