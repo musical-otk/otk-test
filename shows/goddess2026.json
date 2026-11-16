@@ -679,5 +679,14 @@
       "goddess": "강지혜"
     }
   ],
-  "events": []
+  "events": [
+    {
+      "name": "캘린더 증정 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-12-01",
+      "color": "#3E8ED0",
+      "description": "유료 티켓 1매당 2027 탁상달력 1개 (매표소 티켓 수령 시)",
+      "url": "https://x.com/thegoddess_yw/status/2122147646165184623"
+    }
+  ]
 }

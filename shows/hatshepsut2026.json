@@ -1,0 +1,263 @@
+{
+  "name": "하트셉수트",
+  "icon": "🌙",
+  "color": "#C9A227",
+  "venue": "예스24아트원 2관",
+  "startDate": "2026-12-19",
+  "endDate": "2027-03-21",
+  "official": "https://x.com/gleam__company",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/67091",
+    "yes24": "https://m.ticket.yes24.com/Perf/61187"
+  },
+  "alias": "하트셉수트 재연 Hatshepsut 하셉",
+  "roles": [
+    {
+      "key": "HATSHEPSUT",
+      "label": "하트셉수트"
+    },
+    {
+      "key": "AMUN",
+      "label": "아문"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "16:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "18:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "15:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2027-01-05",
+      "time": "20:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "16:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "20:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "유소리"
+    },
+    {
+      "date": "2027-01-07",
+      "time": "20:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "20:00",
+      "HATSHEPSUT": "최수진",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "15:00",
+      "HATSHEPSUT": "전성민",
+      "AMUN": "박소은"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "19:00",
+      "HATSHEPSUT": "이효은",
+      "AMUN": "여은"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "14:00",
+      "HATSHEPSUT": "제이민",
+      "AMUN": "최수현"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "18:00",
+      "HATSHEPSUT": "신의정",
+      "AMUN": "유소리"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-19",
+      "endDate": "2026-12-19",
+      "color": "#C9A227",
+      "times": [
+        "19:00"
+      ],
+      "description": "각 배우의 첫 공연 종료 후 무대인사",
+      "url": "https://x.com/gleam__company/status/2122283601350009226"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-20",
+      "endDate": "2026-12-20",
+      "color": "#C9A227",
+      "times": [
+        "18:00"
+      ],
+      "description": "각 배우의 첫 공연 종료 후 무대인사",
+      "url": "https://x.com/gleam__company/status/2122283601350009226"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-22",
+      "endDate": "2026-12-22",
+      "color": "#C9A227",
+      "times": [
+        "20:00"
+      ],
+      "description": "각 배우의 첫 공연 종료 후 무대인사",
+      "url": "https://x.com/gleam__company/status/2122283601350009226"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2026-12-23",
+      "endDate": "2026-12-23",
+      "color": "#C9A227",
+      "times": [
+        "20:00"
+      ],
+      "description": "각 배우의 첫 공연 종료 후 무대인사",
+      "url": "https://x.com/gleam__company/status/2122283601350009226"
+    },
+    {
+      "name": "첫공 무대인사",
+      "startDate": "2027-01-08",
+      "endDate": "2027-01-08",
+      "color": "#C9A227",
+      "times": [
+        "20:00"
+      ],
+      "description": "각 배우의 첫 공연 종료 후 무대인사",
+      "url": "https://x.com/gleam__company/status/2122283601350009226"
+    }
+  ]
+}

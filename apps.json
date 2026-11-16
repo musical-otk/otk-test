@@ -168,5 +168,9 @@
   {
     "path": "shows/wbb2026.json",
     "app": false
+  },
+  {
+    "path": "shows/hatshepsut2026.json",
+    "app": false
   }
 ]

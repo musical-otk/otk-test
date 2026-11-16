@@ -1230,6 +1230,14 @@
       ],
       "description": "마지막 공연 (스케줄표 '막공' 표기)",
       "url": "https://x.com/thebestplays/status/2115345400559501597"
+    },
+    {
+      "name": "공연사진 책갈피 증정 이벤트",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-22",
+      "color": "#B0195E",
+      "description": "유료 티켓 1매당 책갈피 3종 1세트 (매표소 티켓 수령 시)",
+      "url": "https://x.com/thebestplays/status/2122204382452445509"
     }
   ]
 }

@@ -906,6 +906,110 @@
       "color": "#8A6D3B",
       "description": "유료 티켓 1매당 당일 캐스트 셀카 포토카드(프로필 촬영 ver.) 1SET 증정, 매표소 티켓 수령 시",
       "url": "https://x.com/doublek_ent/status/2118221776782299227"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-24",
+      "color": "#8A6D3B",
+      "times": [
+        "20:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (4장 독백), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#8A6D3B",
+      "times": [
+        "20:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (5장 난장), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-26",
+      "endDate": "2026-11-26",
+      "color": "#8A6D3B",
+      "times": [
+        "20:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (3장 시낭송), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-27",
+      "endDate": "2026-11-27",
+      "color": "#8A6D3B",
+      "times": [
+        "20:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (4장 벌주), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#8A6D3B",
+      "times": [
+        "15:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (5장 난장), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-28",
+      "endDate": "2026-11-28",
+      "color": "#8A6D3B",
+      "times": [
+        "19:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (5장 라이엇경), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#8A6D3B",
+      "times": [
+        "14:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (4장 독백), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "스페셜 장면 시연 위크",
+      "startDate": "2026-11-29",
+      "endDate": "2026-11-29",
+      "color": "#8A6D3B",
+      "times": [
+        "18:00"
+      ],
+      "description": "본 공연·커튼콜 종료 후 무대 정리 뒤 장면 시연 (2장 국가), 촬영 불가",
+      "url": "https://x.com/doublek_ent/status/2122199918542717190"
+    },
+    {
+      "name": "더블 적립",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-06",
+      "color": "#8A6D3B",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/doublek_ent/status/2122192992765395417"
+    },
+    {
+      "name": "오프너 버튼 증정 위크",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-06",
+      "color": "#8A6D3B",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/doublek_ent/status/2122192992765395417"
     }
   ]
 }

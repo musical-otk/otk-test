@@ -639,6 +639,14 @@
       ],
       "description": "본 공연 커튼콜 종료 후 무대인사 진행, 무대인사 멘트 시작 지점부터 촬영 가능",
       "url": "https://x.com/page1company/status/2121965013573288263"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-11-18",
+      "endDate": "2026-11-26",
+      "color": "#8B1A2B",
+      "description": "커튼콜 사진·영상 촬영 가능 (플래시 없이, 좌석 이동·삼각대 제한, 중간 퇴장 시 재입장 불가)",
+      "url": "https://x.com/page1company/status/2122189820655198631"
     }
   ]
 }
