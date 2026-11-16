@@ -1676,14 +1676,6 @@
   ],
   "events": [
     {
-      "name": "촬영 인증 EVENT",
-      "startDate": "2026-09-18",
-      "endDate": "2026-09-27",
-      "color": "#D9482B",
-      "description": "#콰이어오브맨 #콰이어소문내줘요 SNS 공유 추첨 (5명, 10월 공연 초대권)",
-      "url": "https://x.com/i_seensee/status/2076879381704987109"
-    },
-    {
       "name": "소문내줘요! 키트 증정",
       "startDate": "2026-09-18",
       "endDate": "2026-09-18",

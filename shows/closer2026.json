@@ -896,14 +896,6 @@
   ],
   "events": [
     {
-      "name": "티저 영상 공유 이벤트",
-      "startDate": "2026-08-24",
-      "endDate": "2026-08-30",
-      "color": "#C2185B",
-      "description": "티저 영상 리그램·인용(RT)+기대평, 6명 추첨 R석 초대권 1인 2매 (당첨 발표 9/1)",
-      "url": "https://x.com/rnbtheatre_kr/status/2091737512603800033"
-    },
-    {
       "name": "첫공 무대인사",
       "startDate": "2026-09-15",
       "endDate": "2026-09-15",
@@ -935,14 +927,6 @@
       ],
       "description": "첫 공연 종료 후",
       "url": "https://x.com/rnbtheatre_kr/status/2097884512197980527"
-    },
-    {
-      "name": "예매처 관람후기 이벤트",
-      "startDate": "2026-09-21",
-      "endDate": "2026-11-01",
-      "color": "#C2185B",
-      "description": "YES24 5명·NOL 5명 추첨 · 싸인 프로그램북 + 비브리키 밀키스마일 포터블세트 (당첨 발표 11/4)",
-      "url": "https://x.com/rnbtheatre_kr/status/2100451841230373369"
     },
     {
       "name": "커튼콜 위크",

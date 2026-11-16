@@ -368,14 +368,5 @@
       "chorusf": "박혜원"
     }
   ],
-  "events": [
-    {
-      "name": "기대평 이벤트",
-      "startDate": "2026-11-06",
-      "endDate": "2026-11-29",
-      "color": "#7A1F3D",
-      "description": "티켓링크 예매 페이지 기대평 작성 → 추첨 5명, 12/20(일) 18시 공연 초대권(R석 1인 2매). 당첨자 12/1 예매처 개별 발표",
-      "url": "https://x.com/gleam__company/status/2118584167843917949"
-    }
-  ]
+  "events": []
 }
