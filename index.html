@@ -4068,7 +4068,10 @@
     const rows = evWorkOf(id) ? rowsOf(w) : (schedules[id] || []);
     const s = rows.find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId)) || { date: ds, time };
     const r = evRecOf(w, s) || {};
-    const zone = [r.seatFloor, r.seatZone || r.seatRow].filter(Boolean).join(' ');
+    // 전용 페이지 기록: 층(seatFloor)·열(seatZone), 구역이 있는 작품은 구역(seatZone)·열(seatRow) — fmtSeatRaw 와 같은 해석
+    const zone = r.seatZone && r.seatRow
+      ? [r.seatFloor, r.seatZone + '구역', r.seatRow].filter(Boolean).join(' ')
+      : [r.seatFloor, r.seatZone].filter(Boolean).join(' ');
     copyTransferText(buildTransferText(s._show || w.name, ds, time, s, zone, parseInt(r.seatNumber) || 0));
   }
   function openEvGroup(gi) {

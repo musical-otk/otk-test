@@ -277,6 +277,15 @@ async def main():
           copyEvTransfer('show_hatshepsut2026','2026-12-26','19:00','');await new Promise(r=>setTimeout(r,50));
           return [h.includes('📋 양도 정보</button>'), t]})()""")
         check('날짜 상세 양도 정보 버튼', got[0] and got[1].startswith('뮤지컬 하트셉수트 양도') and '전성민 여은' in got[1], got)
+        # 전용 페이지 작품 기록도 허브 창에서 바로 (11/17) — 층·열 그대로, 캐스트는 허브가 받은 스케줄에서
+        await e2("localStorage.clear()")
+        sd = await e2("fetch(SITE+'/ikkisup2026/schedule.json').then(r=>r.json()).then(j=>{const s=(j.schedule||j).find(x=>x.date>='2026-11-20');return [s.date,s.time]})")
+        await e2(f"localStorage.setItem('ikkisup_records', JSON.stringify([{{id:'i1',date:'{sd[0]}',time:'{sd[1]}',isBooked:true,seatFloor:'1층',seatZone:'C',seatNumber:7}}]))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        got = await e2(f"""(async()=>{{todayStr='2026-11-01';await openDay('{sd[0]}');const h=document.body.innerHTML.includes('📋 양도 정보</button>');
+          let t='';try{{Object.defineProperty(navigator,'clipboard',{{value:{{writeText:x=>{{t=x;return Promise.resolve()}}}},configurable:true}});}}catch(e){{}}
+          copyEvTransfer('app_ikkisup','{sd[0]}','{sd[1]}','');await new Promise(r=>setTimeout(r,50));return [h,t]}})()""")
+        check('전용 페이지 작품도 허브에서 양도 정보 복사', got[0] and got[1].startswith('뮤지컬 이끼숲 양도') and re.search(r'1층 C열 \d+-\d+ 중 한자리$', got[1]) and len(got[1].split('\n')) >= 4, got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
