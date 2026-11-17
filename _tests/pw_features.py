@@ -254,6 +254,29 @@ async def main():
         await pg2.reload(); await pg2.wait_for_timeout(8000)
         kept = await e2("getApps().some(a=>a.id==='show_ripley2026')")
         check('정보만→전용 페이지: 메모만 있는 작품은 남김 (메모 없으면 옮김)', dropped and kept, [dropped, kept])
+        # 정보만 작품 예매 기록 → 양도글 복사 (11/17): 제목·날짜·캐스트·좌석 범위, 가격 없음, 지난 회차엔 버튼 없음
+        hat = "localStorage.setItem(HUB_NS+'apps', JSON.stringify([{id:'show_hatshepsut2026',name:'하트셉수트',icon:'🌙',color:'#888',kind:'data',scheduleUrl:SITE+'/shows/hatshepsut2026.json',appUrl:'',recordsKey:HUB_NS+'rec_hatshepsut2026'}]))"
+        await e2("localStorage.clear()"); await e2(hat)
+        await e2("localStorage.setItem(HUB_NS+'rec_hatshepsut2026', JSON.stringify([{id:'h1',date:'2026-12-26',time:'19:00',show:'하트셉수트',seatZone:'B',seatNumber:1,price:77000,status:''}]))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        got = await e2("(()=>{todayStr='2026-12-01';openExtraRec('2026-12-26','19:00','show_hatshepsut2026');const t=buildXrTransferText();const vis=!document.getElementById('xr-copy').hidden;todayStr='2027-01-01';openExtraRec('2026-12-26','19:00','show_hatshepsut2026');return [t,vis,!document.getElementById('xr-copy').hidden]})()")
+        import re
+        ok = (got[0].startswith('뮤지컬 하트셉수트 양도\n\n12/26(토) 19:00\n전성민 여은\n\nB열 1-')
+              and re.search(r'B열 1-[345] 중 한자리$', got[0]) and '77' not in got[0] and got[1] and not got[2])
+        check('정보만 작품 양도글 복사', ok, got)
+        # 회차 자세히 창(내 기록 보기 옆)에도 버튼 — 사용자가 여기서 찾음(11/17). 지난 회차·양도한 표엔 없음
+        got = await e2("""(()=>{closeExtraRec();const has=()=>document.getElementById('ev-sheet-body').innerHTML.includes('양도 정보 복사');
+          todayStr='2026-12-01';openEvSess('show_hatshepsut2026','2026-12-26','19:00','',0);const a=has();
+          todayStr='2027-01-01';openEvSess('show_hatshepsut2026','2026-12-26','19:00','',0);const b=has();
+          todayStr='2026-12-01';openEvSess('show_hatshepsut2026','2026-12-27','14:00','',0);const c=has();return [a,b,c]})()""")
+        check('회차 자세히 창 양도 정보 복사 버튼', got == [True, False, False], got)
+        # 날짜 상세(메모·예매 수정 줄)에도 — 사용자가 여기서도 찾음(11/17)
+        got = await e2("""(async()=>{closeEvSheet();todayStr='2026-12-01';await openDay('2026-12-26');
+          const h=document.body.innerHTML;let t='';const o=navigator.clipboard;
+          try{Object.defineProperty(navigator,'clipboard',{value:{writeText:x=>{t=x;return Promise.resolve()}},configurable:true});}catch(e){}
+          copyEvTransfer('show_hatshepsut2026','2026-12-26','19:00','');await new Promise(r=>setTimeout(r,50));
+          return [h.includes('📋 양도 정보</button>'), t]})()""")
+        check('날짜 상세 양도 정보 버튼', got[0] and got[1].startswith('뮤지컬 하트셉수트 양도') and '전성민 여은' in got[1], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

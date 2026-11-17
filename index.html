@@ -915,6 +915,7 @@
       </label>
       <input class="form-input" type="text" id="xr-trans-to" placeholder="양도 받은 사람 (선택)" hidden style="margin-top:6px">
     </div>
+    <button class="set-btn" id="xr-copy" onclick="copyXrTransfer()" style="margin-top:4px">📋 양도 정보 복사</button>
     <div class="form-actions">
       <button class="btn-cancel" id="xr-del" onclick="deleteExtraRec()">기록 삭제</button>
       <button class="btn-primary" onclick="saveExtraRec()">저장</button>
@@ -2064,6 +2065,9 @@
     document.getElementById('xr-trans-to').hidden = !tr;
     document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
     document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
+    // 양도글 복사 — 이미 예매한, 아직 안 지난 회차만 (개별 앱과 같은 조건)
+    _xr.row = s || null;
+    document.getElementById('xr-copy').hidden = !rec || ds < todayStr;
     // 메모·사진은 날짜 상세의 '📝 메모'와 같은 자리(notes)에 둔다 — 어느 쪽에서 써도 같이 보인다
     _xr.noteKey = noteKeyFor(appId, ds, { time, _showId: showId });
     const note = getNotes()[_xr.noteKey] || {};
@@ -2112,6 +2116,49 @@
     else notes[_xr.noteKey] = { memo, photoIds };
     saveNotes(notes);
     await Promise.all(oldIds.map(id => PhotoDB.remove(id)));
+  }
+  // ── 양도글 복사 ── 개별 앱(이끼숲 등)과 같은 순서: 제목 / 날짜 시간 / 캐스트 / 좌석
+  // 허브는 좌석배치도(통로)를 모르니 번호는 앞뒤 1~2석을 무작위로 넓혀 '11-13 중 한자리'로 쓴다.
+  // 가격·할인은 넣지 않는다 (사용자 결정 11/17)
+  // zone 은 '1층 B' 처럼 층이 붙어 올 수 있다 — 끝이 영문·숫자일 때만 '열'을 붙인다
+  function transferSeatText(zone, num) {
+    if (!zone) return '';
+    const seat = /[A-Za-z0-9]$/.test(zone) ? zone + '열' : zone;
+    if (!num) return seat;
+    const r = () => 1 + Math.floor(Math.random() * 2);
+    let lo = num - r(), hi = num + r();
+    if (lo < 1) { hi += 1 - lo; lo = 1; }
+    return `${seat} ${lo}-${hi} 중 한자리`;
+  }
+  function buildTransferText(name, ds, time, s, zone, num) {
+    const d = new Date(ds + 'T00:00:00');
+    const cast = s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' ') : '';
+    const lines = [`뮤지컬 ${name} 양도`, '',
+      `${parseInt(ds.slice(5, 7))}/${parseInt(ds.slice(8, 10))}(${DOW[d.getDay()]}) ${time || ''}`.trim()];
+    if (cast) lines.push(cast);
+    const seat = transferSeatText(zone, num);
+    if (seat) lines.push('', seat);
+    return lines.join('\n');
+  }
+  function buildXrTransferText() {
+    return buildTransferText(_xr.show, _xr.ds, _xr.time, _xr.row, document.getElementById('xr-zone').value.trim(),
+      parseInt(document.getElementById('xr-num').value) || 0);
+  }
+  function copyXrTransfer() { copyTransferText(buildXrTransferText()); }
+  function copyTransferText(text) {
+    const done = () => toast('📋 양도 정보가 복사됐어요');
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, () => toast('복사하지 못했어요'));
+      return;
+    }
+    // http·구형 브라우저 대비
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    ok ? done() : toast('복사하지 못했어요');
   }
   function closeExtraRec() { document.getElementById('ov-extra-rec').classList.remove('open'); }
   function afterExtraRec() {
@@ -2556,7 +2603,7 @@
           if (!r.date) return;
           (map[r.date] = map[r.date] || []).push({
             appId: app.id, time: r.time, showId: r.showId || null,
-            seatZone: r.seatZone, seatRow: r.seatRow, seatNumber: r.seatNumber,
+            seatZone: r.seatZone, seatRow: r.seatRow, seatNumber: r.seatNumber, seatFloor: r.seatFloor || '',
             // 표는 있었지만 안 본 회차. 관람으로 치지 않되 기록은 남긴다.
             transferred: r.status === '양도',
             transferTo: r.transferTo || '',
@@ -3027,6 +3074,8 @@
         ${memoSnip}
         <span class="note-acts">
           <button class="note-add-btn" onclick="openNoteForm('${noteKey}','${s._app.name.replace(/'/g,'\\\'')}')">${(photos.length||note.memo) ? '📝 메모 수정' : '📝 메모'}</button>
+          ${attRecs.some(r => !r.transferred) && ds >= todayStr
+            ? `<button class="note-add-btn" onclick="copyEvTransfer('${s._app.id}','${ds}','${s.time || ''}','${s._showId || ''}')">📋 양도 정보</button>` : ''}
           ${jumpBtn}
         </span>
       </div>`;
@@ -4005,7 +4054,22 @@
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${w.name} · ${evMd(ds)}(${DOW[d.getDay()]}) ${time}`,
       evCast(w, s) +
       (first ? [first, ...evs.filter(e => e !== first)].map(e => evItem(e, false, evAllWhen(w, e))).join('') : '') +
-      `<div class="ev-foot">${evRecBtn(w, s)}</div>`);
+      `<div class="ev-foot">${evCopyBtn(w, s)}${evRecBtn(w, s)}</div>`);
+  }
+  // 양도글 복사 — 내가 예매한(양도 안 한) 아직 안 지난 회차만. 전용 페이지 작품 기록도 허브가 읽으니 같이 된다
+  const evCopyBtn = (w, s) => {
+    const r = evRecOf(w, s);
+    return r && !r.transferred && s.date >= todayStr
+      ? `<button class="ev-btn ev-plain" onclick="copyEvTransfer('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}')">📋 양도 정보 복사</button>` : '';
+  };
+  function copyEvTransfer(id, ds, time, showId) {
+    // '기타 공연'처럼 카탈로그에 없는 작품은 달력 스케줄에서 찾는다
+    const w = evWorkOf(id) || getApps().find(a => a.id === id); if (!w) return;
+    const rows = evWorkOf(id) ? rowsOf(w) : (schedules[id] || []);
+    const s = rows.find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId)) || { date: ds, time };
+    const r = evRecOf(w, s) || {};
+    const zone = [r.seatFloor, r.seatZone || r.seatRow].filter(Boolean).join(' ');
+    copyTransferText(buildTransferText(s._show || w.name, ds, time, s, zone, parseInt(r.seatNumber) || 0));
   }
   function openEvGroup(gi) {
     const g = _evGroups[gi]; if (!g) return;
