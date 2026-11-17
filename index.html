@@ -245,6 +245,16 @@
     #ov-custom[data-kind="show"] .cf-etc, #ov-custom[data-kind="etc"] .cf-show { display: none; }
     .cf-multi { flex: none; padding: 9px 10px; border-radius: 10px; border: 1.5px solid var(--border); background: none; color: var(--text3); font-size: 12px; cursor: pointer; }
     .cf-multi.on { border-color: var(--custom); color: var(--custom); }
+    /* 공연명 자동완성 — 허브 작품·예전에 쓴 이름. 작품을 고르면 그 작품 회차 예매로 저장 */
+    .cf-sugg { margin-top: 4px; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .cf-sugg[hidden], .cf-sess[hidden] { display: none; }
+    .cf-sugg button { display: block; width: 100%; text-align: left; padding: 9px 12px; background: var(--bg2); border: none; border-top: 1px solid var(--border); color: var(--text1); font-size: 13px; cursor: pointer; }
+    .cf-sugg button:first-child { border-top: none; }
+    .cf-sugg small { color: var(--text3); margin-left: 6px; }
+    .cf-sess { margin-top: 6px; font-size: 12px; color: var(--text2); }
+    .cf-sess .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .cf-sess .chips button { padding: 5px 10px; border-radius: 12px; border: 1px solid var(--border); background: none; color: var(--text2); font-size: 12px; cursor: pointer; }
+    .cf-sess .chips button.on { border-color: var(--custom); background: var(--custom-bg); color: var(--custom); font-weight: 600; }
     .cf-tilde[hidden] { display: none; }
     .cf-tilde { display: flex; align-items: center; gap: 6px; flex: 1; color: var(--text3); }
     .cf-icons { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
@@ -833,7 +843,8 @@
     </div>
     <div class="form-row">
       <div class="form-label" id="cf-name-lbl">공연명</div>
-      <input class="form-input" type="text" id="cf-name" placeholder="공연 이름">
+      <input class="form-input" type="text" id="cf-name" placeholder="공연 이름" autocomplete="off" oninput="cfNameInput()">
+      <div class="cf-sugg cf-show" id="cf-sugg" hidden></div>
     </div>
     <div class="form-row cf-etc">
       <div class="form-label">아이콘</div>
@@ -842,14 +853,15 @@
     <div class="form-row">
       <div class="form-label">날짜</div>
       <div style="display:flex;gap:6px;align-items:center">
-        <input class="form-input" type="date" id="cf-date" style="flex:1">
+        <input class="form-input" type="date" id="cf-date" style="flex:1" onchange="renderCfSess()">
         <span class="cf-tilde" id="cf-end-wrap" hidden>~ <input class="form-input" type="date" id="cf-end" style="flex:1"></span>
         <button class="cf-multi cf-etc" id="cf-multi" onclick="toggleCfMulti()">기간</button>
       </div>
     </div>
     <div class="form-row">
       <div class="form-label">시간 (선택)</div>
-      <input class="form-input" type="time" id="cf-time">
+      <input class="form-input" type="time" id="cf-time" onchange="renderCfSess()">
+      <div class="cf-sess cf-show" id="cf-sess" hidden></div>
     </div>
     <div class="form-row cf-show">
       <div class="form-label">좌석 (선택)</div>
@@ -2489,6 +2501,8 @@
     document.getElementById('cf-seat-zone').value = ev && ev.seatZone ? ev.seatZone : '';
     document.getElementById('cf-seat-num').value = ev && ev.seatNumber != null ? ev.seatNumber : '';
     _cfIcon = ev && ev.icon ? ev.icon : '📌'; renderCfIcons();
+    _cfWork = null; document.getElementById('cf-sugg').hidden = true; renderCfSess();
+    ensureCatalog();   // 아직 안 넣은 작품도 자동완성·회차에 쓰게 미리 받는다
     setCfKind(ev ? customKind(ev) : 'show');
     renderColorPicker('cf-colors', ev ? ev.color : COLOR_PALETTE[0]);
     const photoMap = await PhotoDB.getMany(ev?.photoIds || []);
@@ -2496,6 +2510,101 @@
     renderCustomPhotosArea(_customPendingPhotos);
     document.getElementById('ov-detail').classList.remove('open');
     document.getElementById('ov-custom').classList.add('open');
+  }
+  // ── 공연명 자동완성 (11/17) ──
+  // 허브 작품(이름·전체 이름·별칭)과 예전에 쓴 내 공연 이름을 띄운다.
+  // 허브 작품을 고르고 그날 그 시각 회차가 있으면 내 일정이 아니라 그 작품 예매 기록으로 저장한다 — 캐스트·이벤트·양도 정보 복사가 붙는다
+  let _cfWork = null;
+  function cfNameInput() {
+    const v = document.getElementById('cf-name').value;
+    if (_cfWork && v.trim() !== _cfWork.name) _cfWork = null;   // 이름을 고치면 작품 연결을 푼다
+    const q = norm(v), box = document.getElementById('cf-sugg');
+    if (!q) { box.hidden = true; renderCfSess(); return; }
+    const ws = catalog('all').works.filter(w => w.id !== EXTRA_ID &&
+      [w.name, w.fullName, w.alias].some(t => norm(t).includes(q))).slice(0, 5);
+    const mine = [...new Set(getCustom().filter(e => customKind(e) === 'show').map(e => e.name))]
+      .filter(n => norm(n).includes(q) && norm(n) !== q && !ws.some(w => w.name === n)).slice(0, 3);
+    box.innerHTML = ws.map(w => `<button onclick="pickCfWork('${jsq(w.id)}')">${w.icon ? w.icon + ' ' : ''}${escHtml(w.name)}<small>회차 예매로 저장</small></button>`).join('') +
+      mine.map(n => `<button onclick="pickCfName('${jsq(n)}')">🎭 ${escHtml(n)}<small>내 일정</small></button>`).join('');
+    box.hidden = !(ws.length || mine.length);
+    renderCfSess();
+  }
+  function pickCfName(n) {
+    _cfWork = null;
+    document.getElementById('cf-name').value = n;
+    document.getElementById('cf-sugg').hidden = true; renderCfSess();
+  }
+  async function pickCfWork(id) {
+    const w = catalog('all').works.find(x => x.id === id); if (!w) return;
+    _cfWork = w;
+    document.getElementById('cf-name').value = w.name;
+    document.getElementById('cf-sugg').hidden = true;
+    renderCfSess();
+    if (!rowsOf(w).length) await ensureCatalog();
+    if (_cfWork !== w) return;
+    const day = cfDayRows();
+    if (day.length === 1) document.getElementById('cf-time').value = day[0].time || '';   // 그날 한 회차면 바로 고른다
+    renderCfSess();
+  }
+  function cfDayRows() {
+    if (!_cfWork) return [];
+    const ds = document.getElementById('cf-date').value;
+    return rowsOf(_cfWork).filter(r => r.date === ds).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  }
+  function cfSession() {
+    const t = document.getElementById('cf-time').value;
+    return cfDayRows().find(r => (r.time || '') === t) || null;
+  }
+  function renderCfSess() {
+    const box = document.getElementById('cf-sess');
+    if (!_cfWork || _customEditId) { box.hidden = true; return; }
+    const rows = cfDayRows(), t = document.getElementById('cf-time').value, hit = cfSession();
+    box.hidden = false;
+    box.innerHTML = !rows.length
+      ? '이 날은 이 작품 회차가 없어요 — 내 일정으로 저장돼요'
+      : `${hit ? '🎫 이 회차 예매 기록으로 저장돼요' : '회차를 골라 주세요 (안 고르면 내 일정으로 저장)'}
+        <div class="chips">${rows.map(r => `<button class="${(r.time || '') === t ? 'on' : ''}" onclick="document.getElementById('cf-time').value='${r.time || ''}';renderCfSess()">${r.time || '시간 미정'}</button>`).join('')}</div>`;
+  }
+  async function saveCfAsBooking() {
+    const w = _cfWork, s = cfSession(), ds = s.date, time = s.time || '';
+    if (!getApps().some(a => a.id === w.id) && !(await addPresetById(w.id, true))) {
+      toast('이 작품을 넣지 못했어요 · ⚙️ 설정에서 공연 정보를 새로 받은 뒤 다시 해 주세요'); return;
+    }
+    const app = getApps().find(a => a.id === w.id);
+    if ((getAttended()[ds] || []).some(r => recHit(r, w.id, s))) {
+      toast('이미 이 회차 예매 기록이 있어요'); closeCustomForm(); renderCalendar(); openDay(ds); return;
+    }
+    const zone = document.getElementById('cf-seat-zone').value.trim(), num = document.getElementById('cf-seat-num').value;
+    const memo = document.getElementById('cf-comment').value.trim();
+    if (w.kind !== 'data' && !APP_IMPORT_OK.includes(w.id)) {
+      // 전용 페이지 기록은 앱마다 모양이 달라 허브가 쓰지 않는다 — 그 회차로 보낸다
+      closeCustomForm();
+      if (canJump(app)) { toast('전용 페이지에서 예매를 기록해 주세요'); jumpToApp(w.id, ds, time); }
+      else toast('이 작품은 전용 페이지에서 기록해 주세요');
+      return;
+    }
+    // 메모·사진은 그 회차 메모 자리(notes)에 — 예매 기록 창과 같은 곳
+    const nk = noteKeyFor(w.id, ds, s), notes = getNotes();
+    const photoIds = await Promise.all(_customPendingPhotos.map(src => PhotoDB.put(src)));
+    if (memo || photoIds.length) {
+      const old = notes[nk] || {};
+      notes[nk] = { memo: [old.memo, memo].filter(Boolean).join('\n'), photoIds: [...(old.photoIds || []), ...photoIds] };
+      saveNotes(notes);
+    }
+    const list = extraRecords(app.recordsKey), id = 'c' + Date.now().toString(36);
+    if (w.kind === 'data') {
+      list.push({ id, date: ds, time, show: w.name, showId: s._showId || undefined,
+        seatZone: zone, seatNumber: num === '' ? null : Number(num), price: null, status: '', transferTo: '' });
+    } else {   // 전용 앱 기록 모양 (가져오기와 같은 이끼숲 기준)
+      const cast = Object.fromEntries(getActorFields(s).map(k => [k, s[k]]));
+      list.push({ id, date: ds, time, ...cast, isBooked: true, castManual: false, status: '관람', transferTo: '',
+        seatFloor: null, seatZone: zone || null, seatNumber: num === '' ? null : Number(num),
+        price: null, rating: 0, comment: '', memo: '', createdAt: new Date().toISOString() });
+    }
+    saveExtraRecords(list, app.recordsKey);
+    closeCustomForm();
+    toast('🎫 ' + w.name + ' 예매 기록으로 저장했어요');
+    renderCalendar(); openDay(ds);
   }
   function openCustomFormForDay() { openCustomForm(_customFormDs); }
   function closeCustomForm() { document.getElementById('ov-custom').classList.remove('open'); }
@@ -2537,6 +2646,7 @@
     const name = document.getElementById('cf-name').value.trim();
     const kind = document.getElementById('ov-custom').dataset.kind || 'show';
     if (!date || !name) { alert(kind === 'show' ? '날짜와 공연명을 입력해 주세요' : '날짜와 이름을 입력해 주세요'); return; }
+    if (kind === 'show' && !_customEditId && cfSession()) { await saveCfAsBooking(); return; }
     let endDate = kind === 'etc' && !document.getElementById('cf-end-wrap').hidden ? document.getElementById('cf-end').value : '';
     if (endDate && endDate < date) { alert('끝나는 날이 시작하는 날보다 앞이에요'); return; }
     if (endDate === date) endDate = '';

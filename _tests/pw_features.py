@@ -283,6 +283,28 @@ async def main():
           let t='';try{{Object.defineProperty(navigator,'clipboard',{{value:{{writeText:x=>{{t=x;return Promise.resolve()}}}},configurable:true}});}}catch(e){{}}
           copyEvTransfer('app_ikkisup','{sd[0]}','{sd[1]}','');await new Promise(r=>setTimeout(r,50));return [h,t]}})()""")
         check('전용 페이지 작품도 허브에서 양도 정보 복사', got[0] and got[1].startswith('뮤지컬 이끼숲 양도') and re.search(r'1층 C열 \d+-\d+ 중 한자리$', got[1]) and len(got[1].split('\n')) >= 4, got)
+        # 내 일정 추가 공연명 자동완성 (11/17): 별칭으로 작품이 뜨고, 고르면 회차 칩 → 그 작품 예매 기록으로 저장
+        await e2("localStorage.clear()")
+        await e2("localStorage.setItem(HUB_NS+'custom', JSON.stringify([{id:1,kind:'show',date:'2026-10-01',time:'19:00',name:'레미제라블',color:'#888',photoIds:[]}]))")
+        await pg2.reload(); await pg2.wait_for_timeout(8000)
+        got = await e2("""(async()=>{await openCustomForm('2026-12-26');await ensureCatalog();
+          const n=document.getElementById('cf-name');n.value='하셉';cfNameInput();
+          const sug=document.getElementById('cf-sugg').innerText;
+          n.value='레미';cfNameInput();const mine=document.getElementById('cf-sugg').innerText;
+          n.value='하셉';cfNameInput();await pickCfWork('show_hatshepsut2026');
+          const chips=[...document.querySelectorAll('#cf-sess .chips button')].map(b=>b.textContent);
+          document.getElementById('cf-time').value='19:00';renderCfSess();
+          document.getElementById('cf-seat-zone').value='C';document.getElementById('cf-seat-num').value='4';
+          await saveCustomEvent();await new Promise(r=>setTimeout(r,300));
+          const rec=JSON.parse(localStorage.getItem(HUB_NS+'rec_hatshepsut2026')||'[]');
+          return [sug.includes('하트셉수트'), mine.includes('레미제라블'), chips, rec.map(r=>[r.date,r.time,r.seatZone,r.seatNumber]), getCustom().length]})()""")
+        check('공연명 자동완성 → 작품 회차 예매로 저장', got[:2] == [True, True] and got[2] == ['15:00', '19:00'] and got[3] == [['2026-12-26', '19:00', 'C', 4]] and got[4] == 1, got)
+        # 그날 회차가 없으면 내 일정으로
+        got = await e2("""(async()=>{await openCustomForm('2026-12-21');await ensureCatalog();
+          const n=document.getElementById('cf-name');n.value='하트셉';cfNameInput();await pickCfWork('show_hatshepsut2026');
+          const msg=document.getElementById('cf-sess').innerText;await saveCustomEvent();
+          return [msg.includes('회차가 없어요'), getCustom().filter(e=>e.name==='하트셉수트').length]})()""")
+        check('회차 없는 날은 내 일정으로', got == [True, 1], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
