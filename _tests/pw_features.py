@@ -259,13 +259,9 @@ async def main():
         await e2("localStorage.clear()"); await e2(hat)
         await e2("localStorage.setItem(HUB_NS+'rec_hatshepsut2026', JSON.stringify([{id:'h1',date:'2026-12-26',time:'19:00',show:'하트셉수트',seatZone:'B',seatNumber:1,price:77000,status:''}]))")
         await pg2.reload(); await pg2.wait_for_timeout(8000)
-        got = await e2("(()=>{todayStr='2026-12-01';openExtraRec('2026-12-26','19:00','show_hatshepsut2026');const t=buildXrTransferText();const vis=!document.getElementById('xr-copy').hidden;todayStr='2027-01-01';openExtraRec('2026-12-26','19:00','show_hatshepsut2026');return [t,vis,!document.getElementById('xr-copy').hidden]})()")
         import re
-        ok = (got[0].startswith('뮤지컬 하트셉수트 양도\n\n12/26(토) 19:00\n전성민 여은\n\nB열 1-')
-              and re.search(r'B열 1-[345] 중 한자리$', got[0]) and '77' not in got[0] and got[1] and not got[2])
-        check('정보만 작품 양도글 복사', ok, got)
         # 회차 자세히 창(내 기록 보기 옆)에도 버튼 — 사용자가 여기서 찾음(11/17). 지난 회차·양도한 표엔 없음
-        got = await e2("""(()=>{closeExtraRec();const has=()=>document.getElementById('ev-sheet-body').innerHTML.includes('양도 정보 복사');
+        got = await e2("""(()=>{const has=()=>document.getElementById('ev-sheet-body').innerHTML.includes('양도 정보 복사');
           todayStr='2026-12-01';openEvSess('show_hatshepsut2026','2026-12-26','19:00','',0);const a=has();
           todayStr='2027-01-01';openEvSess('show_hatshepsut2026','2026-12-26','19:00','',0);const b=has();
           todayStr='2026-12-01';openEvSess('show_hatshepsut2026','2026-12-27','14:00','',0);const c=has();return [a,b,c]})()""")
@@ -276,7 +272,8 @@ async def main():
           try{Object.defineProperty(navigator,'clipboard',{value:{writeText:x=>{t=x;return Promise.resolve()}},configurable:true});}catch(e){}
           copyEvTransfer('show_hatshepsut2026','2026-12-26','19:00','');await new Promise(r=>setTimeout(r,50));
           return [h.includes('📋 양도 정보</button>'), t]})()""")
-        check('날짜 상세 양도 정보 버튼', got[0] and got[1].startswith('뮤지컬 하트셉수트 양도') and '전성민 여은' in got[1], got)
+        check('날짜 상세 양도 정보 버튼 (좌석 1번은 1-3~1-5, 가격 없음)', got[0] and got[1].startswith('뮤지컬 하트셉수트 양도\n\n12/26(토) 19:00\n전성민 여은\n\n') and re.search(r'B열 1-[345] 중 한자리$', got[1]) and '77' not in got[1], got)
+        check('예매 기록 창엔 복사 버튼 없음 (11/17)', not await e2("!!document.getElementById('xr-copy')"))
         # 전용 페이지 작품 기록도 허브 창에서 바로 (11/17) — 층·열 그대로, 캐스트는 허브가 받은 스케줄에서
         await e2("localStorage.clear()")
         sd = await e2("fetch(SITE+'/ikkisup2026/schedule.json').then(r=>r.json()).then(j=>{const s=(j.schedule||j).find(x=>x.date>='2026-11-20');return [s.date,s.time]})")

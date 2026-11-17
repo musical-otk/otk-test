@@ -915,7 +915,6 @@
       </label>
       <input class="form-input" type="text" id="xr-trans-to" placeholder="양도 받은 사람 (선택)" hidden style="margin-top:6px">
     </div>
-    <button class="set-btn" id="xr-copy" onclick="copyXrTransfer()" style="margin-top:4px">📋 양도 정보 복사</button>
     <div class="form-actions">
       <button class="btn-cancel" id="xr-del" onclick="deleteExtraRec()">기록 삭제</button>
       <button class="btn-primary" onclick="saveExtraRec()">저장</button>
@@ -2065,9 +2064,6 @@
     document.getElementById('xr-trans-to').hidden = !tr;
     document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
     document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
-    // 양도글 복사 — 이미 예매한, 아직 안 지난 회차만 (개별 앱과 같은 조건)
-    _xr.row = s || null;
-    document.getElementById('xr-copy').hidden = !rec || ds < todayStr;
     // 메모·사진은 날짜 상세의 '📝 메모'와 같은 자리(notes)에 둔다 — 어느 쪽에서 써도 같이 보인다
     _xr.noteKey = noteKeyFor(appId, ds, { time, _showId: showId });
     const note = getNotes()[_xr.noteKey] || {};
@@ -2140,11 +2136,6 @@
     if (seat) lines.push('', seat);
     return lines.join('\n');
   }
-  function buildXrTransferText() {
-    return buildTransferText(_xr.show, _xr.ds, _xr.time, _xr.row, document.getElementById('xr-zone').value.trim(),
-      parseInt(document.getElementById('xr-num').value) || 0);
-  }
-  function copyXrTransfer() { copyTransferText(buildXrTransferText()); }
   function copyTransferText(text) {
     const done = () => toast('📋 양도 정보가 복사됐어요');
     if (navigator.clipboard && window.isSecureContext) {
