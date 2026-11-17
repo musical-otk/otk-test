@@ -172,5 +172,9 @@
   {
     "path": "shows/hatshepsut2026.json",
     "app": false
+  },
+  {
+    "path": "shows/sachanmi2026.json",
+    "app": false
   }
 ]
