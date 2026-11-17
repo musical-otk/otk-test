@@ -723,6 +723,39 @@
       "color": "#8B1E1E",
       "description": "11/28 14시·18시, 11/29 14시",
       "url": "https://x.com/kontentz/status/2109192730563993853"
+    },
+    {
+      "name": "끝맺음 배웅회",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-24",
+      "color": "#8B1E1E",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 관객 퇴장 시 객석 출입구 앞에서 배웅 인사 · 작은 간식 전달 · 커튼콜 후 객석 대기, 촬영 불가",
+      "url": "https://x.com/kontentz/status/2122615743657439726"
+    },
+    {
+      "name": "끝맺음 배웅회",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#8B1E1E",
+      "times": [
+        "16:00"
+      ],
+      "description": "공연 종료 후 관객 퇴장 시 객석 출입구 앞에서 배웅 인사 · 작은 간식 전달 · 커튼콜 후 객석 대기, 촬영 불가",
+      "url": "https://x.com/kontentz/status/2122615743657439726"
+    },
+    {
+      "name": "끝맺음 배웅회",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#8B1E1E",
+      "times": [
+        "20:00"
+      ],
+      "description": "공연 종료 후 관객 퇴장 시 객석 출입구 앞에서 배웅 인사 · 작은 간식 전달 · 커튼콜 후 객석 대기, 촬영 불가",
+      "url": "https://x.com/kontentz/status/2122615743657439726"
     }
   ]
 }
