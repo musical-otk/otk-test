@@ -3066,7 +3066,7 @@
         <span class="note-acts">
           <button class="note-add-btn" onclick="openNoteForm('${noteKey}','${s._app.name.replace(/'/g,'\\\'')}')">${(photos.length||note.memo) ? '📝 메모 수정' : '📝 메모'}</button>
           ${attRecs.some(r => !r.transferred) && ds >= todayStr
-            ? `<button class="note-add-btn" onclick="copyEvTransfer('${s._app.id}','${ds}','${s.time || ''}','${s._showId || ''}')">📋 양도 정보</button>` : ''}
+            ? `<button class="note-add-btn" onclick="copyEvTransfer('${s._app.id}','${ds}','${s.time || ''}','${s._showId || ''}')">📋 양도 정보 복사</button>` : ''}
           ${jumpBtn}
         </span>
       </div>`;
