@@ -23,7 +23,7 @@
     --border:#D6CCBB;--text:#2E261E;--text1:#2E261E;--text2:#54483B;--text3:#8E8273;
     --accent:#9A6A2F;--accent2:#5A3E2B;--accent-light:rgba(154,106,47,0.10);
     --danger:#c43c3c;--success:#3a7a4e;--star:#B07A34;
-    --seat1:#EBD9B4;--seat2:#D9BC85;--seat3:#BE9254;--seat4:#94672E;--seat5:#5E3F1C;
+    --seat1:#EBC57C;--seat2:#D6A350;--seat3:#B57F35;--seat4:#8A5A22;--seat5:#553615;
     --shadow:0 2px 14px rgba(46,38,30,0.10);--radius:12px;--tab-h:64px;
   }
   [data-theme="dark"]{
@@ -32,7 +32,7 @@
     --accent:#D6A75E;--accent2:#C8A27A;--accent-light:#2E2618;
     --danger:#ee6666;--success:#44aa66;--star:#C8A27A;
     --shadow:0 2px 12px rgba(0,0,0,0.55);
-    --seat1:#4A3820;--seat2:#5E4626;--seat3:#8A6634;--seat4:#B98C4C;--seat5:#E3C287;
+    --seat1:#6E5126;--seat2:#8C6834;--seat3:#AD8242;--seat4:#CFA25A;--seat5:#EDCB8E;
   }
   [data-theme="dark"] .next-show-card{background:linear-gradient(135deg,#3A2C1A 0%,#120E09 100%);color:#fff;}
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -160,6 +160,8 @@
   .role-section-title{font-size:12px;font-weight:700;color:var(--text3);padding:6px 8px 2px;}
 
   /* 페어 드롭다운 필터 */
+  .pair-sort{cursor:pointer;white-space:nowrap;}
+  .pair-sort.on{color:var(--accent);font-weight:700;}
   .pair-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
   .pair-filter-item{display:flex;flex-direction:column;gap:3px;}
   .pair-filter-label{font-size:11px;color:var(--text3);font-weight:600;}
@@ -436,7 +438,7 @@
   <div id="stats-section-pairs" style="display:none;">
     <div class="card">
       <div class="card-title">🔗 조합별 통계</div>
-      <div style="font-size:11px;color:var(--text3);text-align:center;margin:0 0 10px;">나르치스×골드문트 — 스케줄에 등장하는 모든 조합. 행을 누르면 회차가 펼쳐집니다.</div>
+      <div style="font-size:11px;color:var(--text3);text-align:center;margin:0 0 10px;">나르치스×골드문트 — 스케줄에 등장하는 모든 조합. 배역 이름을 누르면 그 배역 순으로 모이고, 행을 누르면 회차가 펼쳐집니다.</div>
       <div id="stats-pairs-result"></div>
     </div>
   </div>
@@ -3023,8 +3025,12 @@ function queryPairStats() {
     return;
   }
 
-  // 정렬: 스케줄 0회 최하단 / 관람 많은 순 / 스케줄 많은 순
+  // 정렬: 고른 배역의 배우 순(캐스트 순)으로 묶고, 그 안에서는 스케줄 0회 최하단 / 관람 많은 순 / 스케줄 많은 순
+  // 배역을 안 골랐으면(회차·관람 머리글) 묶지 않고 많은 순만
+  const sortRole = ROLES.find(r => r.key === pairSortRole);
+  const actorPos = c => { const i = sortRole.actors.indexOf(c.casting[sortRole.key] || ''); return i < 0 ? 999 : i; };
   list.sort((a, b) => {
+    if (sortRole && actorPos(a) !== actorPos(b)) return actorPos(a) - actorPos(b);
     if ((a.scheduleCount === 0) !== (b.scheduleCount === 0)) return a.scheduleCount === 0 ? 1 : -1;
     if (b.seenCount !== a.seenCount) return b.seenCount - a.seenCount;
     return b.scheduleCount - a.scheduleCount;
@@ -3033,8 +3039,11 @@ function queryPairStats() {
   const totalSched = list.reduce((s, c) => s + c.scheduleCount, 0);
   const totalSeen  = list.reduce((s, c) => s + c.seenCount, 0);
 
-  const SHORT = { narziss:'나르', goldmund:'골드' };
-  const headers = ROLES.map(r => `<th>${SHORT[r.key]||r.label}</th>`).join('') + '<th style="text-align:right;">회차</th><th style="text-align:center;">관람</th>';
+  // 머리글을 누르면 그 배역으로 줄 세운다 — 배역 이름은 줄이지 않는다(11/18)
+  const SHORT = { narziss:'나르치스', goldmund:'골드문트' };   // 줄임말 안 쓴다 — 검사기(check_html)가 키 정합성을 보니 자리는 둔다
+  const on = k => pairSortRole === k;
+  const headers = ROLES.map(r => `<th class="pair-sort${on(r.key) ? ' on' : ''}" onclick="setPairSort('${r.key}')">${SHORT[r.key]||r.label}${on(r.key) ? ' ▾' : ''}</th>`).join('')
+    + `<th class="pair-sort${on('') ? ' on' : ''}" style="text-align:right;" onclick="setPairSort('')">회차</th><th class="pair-sort${on('') ? ' on' : ''}" style="text-align:center;" onclick="setPairSort('')">관람${on('') ? ' ▾' : ''}</th>`;
   const comboKey = c => ROLES.map(r => c.casting[r.key]||'').join('|');
   const rows = list.map((c, idx) => {
     const isGrey = c.scheduleCount === 0;
@@ -3069,6 +3078,15 @@ function queryPairStats() {
 
   el.innerHTML = `<div style="font-size:12px;color:var(--text3);margin-bottom:8px;">${list.length}가지 조합 · 스케줄 ${totalSched}회 · 내 관람 ${totalSeen}회</div>
     <div style="overflow-x:auto;"><table class="stats-table" style="font-size:11px;"><tr>${headers}</tr>${rows}</table></div>`;
+}
+
+// 조합별 줄 세우기 — 배역 key, '' 이면 많은 순. 기기에 기억한다
+const PAIR_SORT_KEY = 'narcissus_pairSort';
+let pairSortRole = (() => { try { return localStorage.getItem(PAIR_SORT_KEY) || ''; } catch { return ''; } })();
+function setPairSort(k) {
+  pairSortRole = k;
+  try { localStorage.setItem(PAIR_SORT_KEY, k); } catch {}
+  queryPairStats();
 }
 
 function togglePairDates(rowId, tr) {

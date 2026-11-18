@@ -607,6 +607,24 @@ t('V. 이벤트', '12/26 무대인사는 15시에만 걸린다', () => {
   const e = W.getEvents().find(x => x.name === '첫 공연 무대인사' && x.startDate === '2026-12-26');
   eq([W.eventHitsSession(e, '2026-12-26', '15:00'), W.eventHitsSession(e, '2026-12-26', '19:00')], [true, false]);
 });
+t('S. 통계', '조합별: 배역 풀 이름 머리글, 누른 배역의 캐스트 순으로 모인다', () => {
+  const prev = localStorage.getItem('narcissus_pairSort');
+  try {
+    const col = i => [...W.document.querySelectorAll('#stats-pairs-result tr[onclick] td:nth-child(' + i + ')')].map(x => x.textContent);
+    const runs = a => a.filter((x, i) => x !== a[i - 1]);
+    W.setPairSort('goldmund');
+    const th = [...W.document.querySelectorAll('#stats-pairs-result th')].map(x => x.textContent.trim());
+    eq(th.slice(0, 2), ['나르치스', '골드문트 ▾']);
+    eq(runs(col(2)).filter(x => x !== '-'), ['김현진', '동현', '박경호', '김지온'], '골드문트 순');
+    W.setPairSort('narziss');
+    eq(runs(col(1)).filter(x => x !== '-'), ['문성일', '임별', '박유덕', '최호승'], '나르치스 순');
+    W.setPairSort('');
+    const n = col(3).map(Number);
+    ok(n.every((x, i) => !i || x <= n[i - 1]), '안 고르면 회차 많은 순');
+  } finally {
+    if (prev === null) localStorage.removeItem('narcissus_pairSort'); else localStorage.setItem('narcissus_pairSort', prev);
+  }
+});
 t('V. 이벤트', '날짜 패널에 이벤트 시간이 함께 나온다', () => {
   W.renderCalDayPanel('2026-12-26', W.getSchedule().filter(s => s.date === '2026-12-26'), new Set(), new Set(), []);
   const html = W.document.getElementById('cal-day-records').innerHTML;

@@ -1672,7 +1672,8 @@
 
   function renderTabs() {
     const mine = getApps().filter(a => !a.viaActor);   // 배우 ♡ 로만 들어온 작품은 탭이 없다
-    const visible = mine.filter(a => isTabVisible(a) || a.id === _peekApp);
+    // 잠깐 열어 본 작품(숨긴 공연 · ♥ 없이 찾기에서 연 전용 페이지)은 보는 동안만 탭에 끼운다
+    const visible = getApps().filter(a => a.id === _peekApp || (!a.viaActor && isTabVisible(a)));
     const hiddenCount = mine.filter(a => !isTabVisible(a)).length;
     document.getElementById('app-tabs').innerHTML =
       visible.map(app =>
@@ -1964,8 +1965,14 @@
     currentView = view;
 
     // 숨긴 공연에서 다른 화면으로 넘어가면 임시 탭을 거둔다
-    const peek = view !== 'cal' && getApps().some(a => a.id === view && !isTabVisible(a)) ? view : null;
-    if (peek !== _peekApp) { _peekApp = peek; renderTabs(); }
+    const peek = view !== 'cal' && getApps().some(a => a.id === view && (a.viaActor || !isTabVisible(a))) ? view : null;
+    if (peek !== _peekApp) {
+      const left = _peekApp;
+      _peekApp = peek;
+      // ♥ 없이 열어만 본 전용 페이지는 기록을 안 남겼으면 다시 뺀다
+      if (left && getApps().some(a => a.id === left && a.viaActor)) { pruneViaActor(); renderFrames(); }
+      renderTabs();
+    }
 
     setFrameMode(view !== 'cal');
 
@@ -4537,6 +4544,8 @@
     // 정보만·기타는 허브의 예매 창 — 달력에 넣는 건 저장할 때
     if ((app || preset || {}).kind === 'data' || (app || {}).kind === 'extra') { openExtraRec(ds, time, id, showId); return; }
     if (app && canJump(app)) { closeSearch(); jumpToApp(id, ds, time); return; }
+    // 아직 안 넣은 전용 페이지 — 새 창으로 튀지 않게 ♥ 없이 잠깐 넣어 허브 안 탭으로 연다(11/18). 기록을 남기면 예매 회차만 달력에 남는다
+    if (!app && preset && preset.appUrl && preset.deepLink !== false && await addPresetById(id, true)) { renderFrames(); closeSearch(); jumpToApp(id, ds, time); return; }   // 넣은 직후엔 틀(iframe)이 아직 없다
     const url = (app || preset || {}).appUrl;
     if (url) window.open(url + (url.includes('?') ? '&' : '?') + `date=${encodeURIComponent(ds)}&time=${encodeURIComponent(time)}`, '_blank');
   }

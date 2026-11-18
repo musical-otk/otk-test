@@ -306,6 +306,17 @@ async def main():
           return [msg.includes('회차가 없어요'), getCustom().filter(e=>e.name==='하트셉수트').length]})()""")
         check('회차 없는 날은 내 일정으로', got == [True, 1], got)
         await e2("localStorage.clear()")
+        # 안 넣은 전용 페이지 작품의 예매 기록 — 새 창이 아니라 허브 안 임시 탭으로 (11/18)
+        await pg2.reload(); await pg2.wait_for_timeout(1500)
+        got = await e2("""(async()=>{await ensureCatalog();let opened=0;window.open=()=>{opened++};
+          const p=allPresets().find(x=>x.appUrl&&x.deepLink!==false&&!x.kind&&!getApps().some(a=>a.id===x.id));
+          await sessTap(p.id,'2026-12-26','15:00','');await new Promise(r=>setTimeout(r,300));
+          const a=getApps().find(x=>x.id===p.id)||{};const f=document.getElementById('frame-'+p.id);
+          const r=[opened, a.viaActor===true, getHearts().works.includes(p.id), currentView===p.id, !!document.getElementById('btn-'+p.id), !!f&&f.src.includes('date=2026-12-26')];
+          switchView('cal');await new Promise(r=>setTimeout(r,200));
+          return [...r, getApps().some(x=>x.id===p.id), !!document.getElementById('btn-'+p.id)]})()""")
+        check('안 넣은 전용 페이지 예매 기록 → 허브 안 임시 탭 (기록 없이 나오면 빠짐)', got == [0, True, False, True, True, True, False, False], got)
+        await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
         print('\nSUMMARY', sum(1 for r in R if r[1]), '/', len(R))
