@@ -6,6 +6,9 @@
     "path": "ripley2026/"
   },
   {
+    "path": "narcissus2026/"
+  },
+  {
     "path": "shows/socrates2026.json",
     "app": false
   },
@@ -175,10 +178,6 @@
   },
   {
     "path": "shows/sachanmi2026.json",
-    "app": false
-  },
-  {
-    "path": "shows/narcissus2026.json",
     "app": false
   }
 ]

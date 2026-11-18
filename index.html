@@ -1352,8 +1352,13 @@
     for (const a of getApps().filter(x => x.kind === 'data')) {
       const appId = 'app_' + a.id.replace(/^show_/, '');
       if (found.some(d => d.id === a.id) || !found.some(d => d.id === appId)) continue;
-      if (extraRecords(a.recordsKey).length) continue;
-      if (Object.keys(getNotes()).some(k => k.startsWith(a.id + '__'))) continue;   // 사진·메모만 남긴 회차도 잃지 않게
+      // 앱이 허브 기록·메모를 가져갔으면(기록 importedFrom 'hub:<id>', 메모는 app_ 키로 복사) 남아 있어도 옮겨진 것으로 본다 (날골 11/18)
+      const target = found.find(d => d.id === appId);
+      let moved = new Set();
+      try { moved = new Set((JSON.parse(localStorage.getItem(target && target.recordsKey)) || []).map(r => r.importedFrom).filter(Boolean)); } catch {}
+      if (extraRecords(a.recordsKey).some(r => !moved.has('hub:' + r.id))) continue;
+      const notes = getNotes();
+      if (Object.keys(notes).some(k => k.startsWith(a.id + '__') && !notes[appId + k.slice(a.id.length)])) continue;   // 사진·메모만 남긴 회차도 잃지 않게
       const hearted = getHearts().works.includes(a.id);
       const off = getFilter().offWorks.includes(a.id);
       if (hearted && !(await addPresetById(appId, false))) continue;

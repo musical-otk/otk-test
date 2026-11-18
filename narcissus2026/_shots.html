@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>SHOTS</title>
+<style>
+  html,body{margin:0;padding:0;background:#fff;}
+  iframe{width:430px;height:932px;border:0;display:block;}
+</style>
+</head>
+<body>
+<iframe id="app" src="./index.html"></iframe>
+<script>
+/*
+  guide.html 용 스크린샷 촬영 하네스 (개발 도구, 배포 대상 아님).
+    _shots.html?tab=home | calendar | coupon | stats
+  index.html 을 iframe 으로 띄우고 샘플 기록을 심은 뒤 해당 탭으로 전환한다.
+  headless Chrome --screenshot 으로 캡처한다.
+*/
+const Q = new URLSearchParams(location.search);
+const TAB = Q.get('tab') || 'home';
+const THEME = Q.get('theme');
+const EMPTY = Q.get('empty') === '1';   // 기록 없는 빈 상태   // 다크모드 대비는 자동 검사가 못 잡는다 (pitfalls §14)
+
+// 실제 schedule.json 의 캐스팅과 일치시킨 샘플 관람 기록
+// 좌석은 1층 양 끝(A3·C19)·통로 걸친 N열(N5·N18)·휠체어석 옆(J16)·2층 끝(O20·T18)을 넣어 히트맵·미니 좌석도 정렬을 본다
+const SAMPLE = [
+  { date:'2026-12-22', time:'20:00', narziss:'문성일', goldmund:'김현진',
+    seatFloor:'1층', seatZone:'A', seatNumber:3, price:42000, discountType:'프리뷰 할인', rating:5, comment:'첫공. A열 왼쪽 끝.' },
+  { date:'2026-12-23', time:'20:00', narziss:'임별', goldmund:'동현',
+    seatFloor:'1층', seatZone:'C', seatNumber:18, price:42000, discountType:'프리뷰 할인', rating:5, comment:'오른쪽 블록' },
+  { date:'2026-12-26', time:'15:00', narziss:'최호승', goldmund:'김지온',
+    seatFloor:'1층', seatZone:'N', seatNumber:5, price:30000, discountType:'프리뷰 할인', rating:4, comment:'N열 통로 자리' },
+  { date:'2026-12-27', time:'18:00', narziss:'문성일', goldmund:'동현',
+    seatFloor:'1층', seatZone:'N', seatNumber:18, price:30000, discountType:'프리뷰 할인', rating:5, comment:'N열 오른쪽 통로 자리' },
+  { date:'2026-12-30', time:'16:00', narziss:'박유덕', goldmund:'박경호',
+    seatFloor:'2층', seatZone:'O', seatNumber:19, price:30000, discountType:'마티네 할인', rating:4, comment:'마티네' },
+  { date:'2027-01-02', time:'19:00', narziss:'임별', goldmund:'박경호',
+    seatFloor:'2층', seatZone:'T', seatNumber:18, price:24000, discountType:'재관람 카드 40% 할인권', rating:5, comment:'2층 끝' },
+  { date:'2027-01-07', time:'20:00', narziss:'임별', goldmund:'김지온',
+    seatFloor:'1층', seatZone:'J', seatNumber:16, price:49000, discountType:'재관람 할인', rating:5, comment:'더블적립', stampQty:2 }
+];
+
+function seed(W) {
+  // 기존 데이터 정리
+  Object.keys(W.localStorage)
+    .filter(k => k.startsWith('narcissus_') && !['narcissus_schedule','narcissus_events'].includes(k))
+    .forEach(k => W.localStorage.removeItem(k));
+
+  // 도장판 하나 만들고 앱 로직으로 도장을 찍어 카운트·마일스톤 정합성을 맞춘다
+  const board = { id: W.uuid(), name: '1', totalSlots: W.eval('DEFAULT_SLOTS'),
+                  milestones: W.defaultMilestones(), currentCount: 0, history: [] };
+  W.saveStampBoards([board]);
+
+  const now = new Date().toISOString();
+  const records = SAMPLE.map(s => Object.assign({
+    id: W.uuid(), isBooked: true, paidDiff: false, eungBingPassUsed: false,
+    doubleStampUsed: false, stampBoardId: board.id, stampQty: 1,
+    memo: '', createdAt: now, updatedAt: now
+  }, s));
+  W.saveRecords(records);
+
+  records.forEach(r => {
+    W.applyStampToBoard(board.id, r.stampQty || 1, r.date, '관람 연동');
+    if (W.applyStampToBoard._lastOverflow) W.createOverflowBoard(W.applyStampToBoard._lastOverflow, r.date, '관람 연동', '', r.id);
+    W.applyStampToBoard._lastOverflow = 0;
+    const bs = W.getStampBoards();
+    const b  = bs.find(x => x.id === board.id);
+    if (b?.history?.length) {
+      b.history[b.history.length - 1].recordId = r.id;
+      W.saveStampBoards(bs);
+    }
+  });
+}
+
+const frame = document.getElementById('app');
+frame.addEventListener('load', () => {
+  const W = frame.contentWindow;
+  const start = Date.now();
+  (function wait() {
+    const ready = W.getSchedule && W.getSchedule().length > 0;
+    if (!ready && Date.now() - start < 6000) return setTimeout(wait, 150);
+
+    if (EMPTY) {
+      Object.keys(W.localStorage).filter(k => k.startsWith('narcissus_') && !['narcissus_schedule','narcissus_events'].includes(k)).forEach(k => W.localStorage.removeItem(k));
+    } else seed(W);
+    if (THEME) {
+      W.document.documentElement.setAttribute('data-theme', THEME);
+      document.documentElement.setAttribute('data-theme', THEME);
+    }
+
+    // 상세 패널 (미니 좌석도 확인용)
+    if (TAB === 'detail') {
+      const home = W.document.querySelector(`.tab-btn[onclick*="'home'"]`);
+      if (home) W.switchTab('home', home);
+      const target = W.getRecords().find(r => r.seatZone === 'N' && r.seatNumber === 18) || W.getRecords()[0];
+      W.openDetail(target.id);
+      document.title = 'SHOT detail';
+      return;
+    }
+
+    const btn = W.document.querySelector(`.tab-btn[onclick*="'${TAB}'"]`);
+    if (btn) W.switchTab(TAB, btn);
+
+    // 캘린더는 12월을 보여주고, 2회 공연인 날짜를 펼쳐 둔다
+    if (TAB === 'calendar') {
+      W.initCal(); W.renderCalendar(); W.calDayClick('2026-12-26');
+      // ?roles=open — 배역 필터를 펼친 상태로 찍는다 (칩 정렬 확인용)
+      if (Q.get('roles') === 'open') {
+        W.document.querySelectorAll('#cal-role-tabs .cal-role-tab').forEach(b => W.selectCalRole(b.dataset.role, b));
+      }
+    }
+    if (TAB === 'stats')    W.switchStatTab('heatmap', W.document.querySelector('.stats-subtab'));
+
+    document.title = 'SHOT ' + TAB;
+  })();
+});
+</script>
+</body>
+</html>
