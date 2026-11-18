@@ -1401,7 +1401,7 @@
   async function readManifestMeta(appUrl) {
     try {
       const m = await (await fetch(appUrl + 'manifest.json', { cache: 'no-cache' })).json();
-      return { name: m.short_name || m.name || '', color: m.theme_color || '' };
+      return { name: m.short_name || m.name || '', color: m.theme_color || '', alias: m.alias || '' };   // alias: 찾기 별칭(날골)
     } catch { return {}; }
   }
   async function readAppMeta(appUrl) {
@@ -1491,6 +1491,7 @@
           id: 'app_' + name.replace(/[^a-z0-9]/gi, '_'),
           // 저장소 이름(ikkisup2026, stone2026_v2)이 그대로 뜨면 알아보기 어렵다.
           name: meta.name || name,
+          alias: meta.alias || '',
           icon: meta.icon || '',
           scheduleUrl: url,
           appUrl,

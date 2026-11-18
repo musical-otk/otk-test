@@ -1,6 +1,7 @@
 {
   "name": "나르치스와 골드문트 관극 다이어리",
-  "short_name": "날골",
+  "short_name": "나르치스와 골드문트",
+  "alias": "날골 나르치스 골드문트 나르치스와골드문트 Narziss Goldmund",
   "description": "뮤지컬 나르치스와 골드문트 2026-2027 관람 기록 앱",
   "start_url": "./",
   "scope": "./",
