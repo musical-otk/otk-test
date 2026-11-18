@@ -1261,8 +1261,8 @@ function saveStampBoards(s) { DB.set('stamp_boards', s); }
 // 두 층 모두 24칸 격자 위에 놓인다. 각 열은 [시작 칸, 첫 번호, 끝 번호] 묶음의 목록. (V에버애프터 앱과 같은 모델)
 // 1층: 칸 0~3 좌블록 · 4~5 통로 · 6~17 중앙 · 18~19 통로 · 20~23 우블록
 //   N열은 1~16 이 좌블록에서 통로를 지나 중앙까지 이어지고, 17~21 은 중앙-우 통로에 걸친다 (도면에는 'L17~L21' 로 오기)
-//   중앙 11석 열(A·C·E·G)은 도면에서 반 칸 엇갈리지만 정수 칸이라 5번을 B5 아래에 붙였다
-// 2층: 1층 가운데에 맞춰 칸 1~22. O열도 반 칸 엇갈림 → 왼쪽 붙임
+//   중앙 11석 열(A·C·E·G)은 도면처럼 반 칸 오른쪽으로 밀어 지그재그로 그린다 (SEAT_HALF_SHIFT, 11/18 사용자)
+// 2층: 1층 가운데에 맞춰 칸 1~22. O열도 반 칸 엇갈림 → 반 칸 밀기
 // 등급: 1층 A~L R석 · M·N S석 / 2층 O~Q S석 · R~T A석. 보유석 G12~15·H13~16 은 일반 R석으로 둔다 (11/18 결정)
 // 공표 객석수 406석(1층 272·2층 134)과 다르다 — 이번 공연 도면이 기준
 const SEAT_COLS = 24;
@@ -1300,6 +1300,16 @@ const SEAT_PLAN = {
     }
   }
 };
+// 반 칸 밀어 그리는 블록 — 열 → 그 블록이 시작하는 칸. 블록 첫 좌석에 반 칸 왼쪽 여백, 블록 다음 칸에서 되돌린다
+const SEAT_HALF_SHIFT = { '1층': { A:6, C:6, E:6, G:6 }, '2층': { O:2 } };
+function seatShiftStyle(floor, rowKey, i, unit) {
+  const c = (SEAT_HALF_SHIFT[floor] || {})[rowKey];
+  if (c === undefined) return '';
+  const seg = (SEAT_PLAN[floor].def[rowKey] || []).find(x => x[0] === c);
+  if (i === c) return `margin-left:${unit / 2}px;`;
+  if (seg && i === c + seg[2] - seg[1] + 1) return `margin-left:${-unit / 2}px;`;
+  return '';
+}
 // 열 → 등급 (히트맵 라벨용)
 const SEAT_GRADE = { A:'R',B:'R',C:'R',D:'R',E:'R',F:'R',G:'R',H:'R',I:'R',J:'R',K:'R',L:'R',M:'S',N:'S',O:'S',P:'S',Q:'S',R:'A',S:'A',T:'A' };
 
@@ -2211,7 +2221,7 @@ function buildMiniSeat(floor, rowKey, num) {
     html += `<div style="display:flex;align-items:center;gap:0;">${lbl}`;
     seatRowCells(floor, r).forEach((n, i) => {
       const w = aisle[i] ? AW : C;
-      const s = `width:${w}px;height:${C}px;margin-right:${G}px;flex-shrink:0;border-radius:2px;`;
+      const s = `width:${w}px;height:${C}px;margin-right:${G}px;flex-shrink:0;border-radius:2px;${seatShiftStyle(floor, r, i, C + G)}`;
       if (!n) { html += `<div style="${s}"></div>`; return; }
       const hl = (isTarget && n === seatNum);
       const off = !hl && (blocked[r] || []).includes(n);
@@ -3113,7 +3123,7 @@ function renderHeatmap() {
 
     function mkCell(rowKey, n, i) {
       const w = aisle[i] ? AW : C;
-      const base = `width:${w}px;height:${C}px;margin-right:${G}px;flex-shrink:0;border-radius:2px;`;
+      const base = `width:${w}px;height:${C}px;margin-right:${G}px;flex-shrink:0;border-radius:2px;${seatShiftStyle(floor, rowKey, i, C + G)}`;
       if (!n) return `<div style="${base}"></div>`;
       const k = `${floor}-${rowKey}-${n}`, cnt = seatMap[k] || 0;
       if (!cnt && (blocked[rowKey] || []).includes(n))
