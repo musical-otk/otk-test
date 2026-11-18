@@ -1594,6 +1594,8 @@
       // deepLink 도 앱의 능력이라 프리셋 값을 그대로 따라간다.
       if (app.deepLink !== preset.deepLink) { app.deepLink = preset.deepLink; changed = true; }
       if (preset.kind && app.kind !== preset.kind) { app.kind = preset.kind; changed = true; }
+      // 이름도 작품 쪽(manifest)을 따른다 — 이름을 바꾸는 기능이 없어, 추가할 때 저장한 옛 이름('날골')이 탭에 남았다 (11/18)
+      if (preset.name && app.name !== preset.name) { app.name = preset.name; changed = true; }
     });
     if (changed) saveApps(apps);
   }
@@ -5105,7 +5107,7 @@
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
     // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
-    discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks);
+    discoverApps(true).then(() => { syncPresetIcons(); renderTabs(); }).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks);   // 새로 읽은 이름을 바로 탭에
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
