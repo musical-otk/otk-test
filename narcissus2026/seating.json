@@ -368,7 +368,7 @@
           "last": 20,
           "segments": [
             [
-              2,
+              1,
               1,
               20
             ]
@@ -377,7 +377,8 @@
           "unavailable": [
             1,
             20
-          ]
+          ],
+          "note": "P1보다 반 칸 오른쪽 (앱 SEAT_HALF_SHIFT)"
         },
         {
           "row": "P",
