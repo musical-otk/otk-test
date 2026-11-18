@@ -428,6 +428,258 @@
       "alice": "이정화",
       "richard": "오정택",
       "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "최석진",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "16:00",
+      "ange": "오대석",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "김재범",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "20:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "ange": "오대석",
+      "kevin": "정재환",
+      "alice": "이정화",
+      "richard": "안창용",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "18:00",
+      "ange": "오대석",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "15:00",
+      "ange": "이석준",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "ange": "이석준",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "18:00",
+      "ange": "김도빈",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "오정택",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "16:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "유낙원",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "18:00",
+      "ange": "김도빈",
+      "kevin": "최석진",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "오유민"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "15:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "안창용",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "ange": "이석준",
+      "kevin": "정재환",
+      "alice": "홍나현",
+      "richard": "김재범",
+      "jeanne": "한수림"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "이정화",
+      "richard": "오정택",
+      "jeanne": "이서현"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "ange": "오대석",
+      "kevin": "박두호",
+      "alice": "유낙원",
+      "richard": "안창용",
+      "jeanne": "한수림"
     }
   ],
   "events": [
@@ -487,6 +739,61 @@
       "color": "#2F5D8C",
       "description": "유료 티켓 1매당 재관람 카드 도장 3개 적립 (당일 회차만, 한 카드에만, MD 부스 운영 시간 중)",
       "url": "https://x.com/mbz_company/status/2121123275854213187"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-23",
+      "endDate": "2026-12-23",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 행사 회차 (스케줄표 '전관' 표기)",
+      "url": "https://x.com/mbz_company/status/2122968851990343878"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-24",
+      "endDate": "2026-12-24",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 행사 회차 (스케줄표 '전관' 표기)",
+      "url": "https://x.com/mbz_company/status/2122968851990343878"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-30",
+      "endDate": "2026-12-30",
+      "color": "#2F5D8C",
+      "times": [
+        "16:00"
+      ],
+      "description": "전관 행사 회차 (스케줄표 '전관' 표기)",
+      "url": "https://x.com/mbz_company/status/2122968851990343878"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-30",
+      "endDate": "2026-12-30",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 행사 회차 (스케줄표 '전관' 표기)",
+      "url": "https://x.com/mbz_company/status/2122968851990343878"
+    },
+    {
+      "name": "전관 회차",
+      "startDate": "2026-12-31",
+      "endDate": "2026-12-31",
+      "color": "#2F5D8C",
+      "times": [
+        "20:00"
+      ],
+      "description": "전관 행사 회차 (스케줄표 '전관' 표기)",
+      "url": "https://x.com/mbz_company/status/2122968851990343878"
     }
   ]
 }
