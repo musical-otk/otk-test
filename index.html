@@ -312,6 +312,7 @@
     .srch-time.sat { color: var(--sat); }
     .srch-time.sun { color: #c06060; }
     .srch-tag.ev { cursor: pointer; }
+    .srch-tag.go { cursor: pointer; background: none; font-family: inherit; color: var(--text2); }
     .ev-item { padding: 10px 16px; border-top: 1px solid var(--border); }
     .ev-item:first-child { border-top: none; }
     .ev-item-hd { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -4401,7 +4402,7 @@
                      ...ticketLinks(info, off).map(k => `<a class="srch-link" href="${k.url}" target="_blank" rel="noopener">🎟 ${k.label} ›</a>`)].filter(Boolean).join('');
       return `<div class="srch-card">
         <div class="srch-card-hd"><span class="filter-group-dot" style="background:${w.color}"></span>
-          <span class="srch-name">${w.icon || ''} ${w.fullName || w.name}</span>${kindTag(w) ? `<span class="srch-tag">${kindTag(w)}</span>` : ''}
+          <span class="srch-name">${w.icon || ''} ${w.fullName || w.name}</span>${kindTag(w) === '전용 페이지' ? `<button class="srch-tag go" onclick="openAppFromSearch('${w.id}')">전용 페이지 ›</button>` : kindTag(w) ? `<span class="srch-tag">${kindTag(w)}</span>` : ''}
           <span class="srch-hd-right">${getHearts().works.includes(w.id) ? `<button class="srch-open" onclick="closeSearch();switchView('${w.id}')">탭 열기 ›</button>` : ''}${heart(w)}</span></div>
         <div class="srch-sub">${[info.venue || ai.venue, period].filter(Boolean).join(' · ')}</div>
         ${links ? `<div class="srch-links">${links}</div>` : ''}
@@ -4538,6 +4539,12 @@
     renderSearch();
   }
   // 찾기에서 회차를 누르면 바로 예매 입력 — 앱 작품은 그 앱의 회차 화면, 정보만·기타는 허브의 예매 기록 창
+  // 찾기 자세히의 '전용 페이지 ›' — 그 작품 탭으로. 안 넣은 작품은 ♥ 없이 잠깐 넣어 임시 탭으로 연다(11/18)
+  async function openAppFromSearch(id) {
+    if (!getApps().some(a => a.id === id)) { if (!(await addPresetById(id, true))) return; renderFrames(); }
+    closeSearch();
+    if (currentView !== id) switchView(id);
+  }
   async function sessTap(id, ds, time, showId) {
     const app = getApps().find(a => a.id === id);
     const preset = allPresets().find(p => p.id === id);

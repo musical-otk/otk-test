@@ -316,6 +316,13 @@ async def main():
           switchView('cal');await new Promise(r=>setTimeout(r,200));
           return [...r, getApps().some(x=>x.id===p.id), !!document.getElementById('btn-'+p.id)]})()""")
         check('안 넣은 전용 페이지 예매 기록 → 허브 안 임시 탭 (기록 없이 나오면 빠짐)', got == [0, True, False, True, True, True, False, False], got)
+        # 찾기 자세히의 '전용 페이지 ›' 를 누르면 그 작품 탭으로 (11/18)
+        got = await e2("""(async()=>{const p=allPresets().find(x=>x.appUrl&&!x.kind&&!getApps().some(a=>a.id===x.id));
+          openSearch();await pickSearch('work',p.id);await new Promise(r=>setTimeout(r,500));
+          const b=document.querySelector('.srch-tag.go');if(!b)return ['no btn'];b.click();await new Promise(r=>setTimeout(r,600));
+          const f=document.getElementById('frame-'+p.id);
+          return [currentView===p.id, !!f&&f.classList.contains('active')&&f.src!=='about:blank', document.getElementById('home-search').hidden, getHearts().works.includes(p.id)]})()""")
+        check("찾기 '전용 페이지 ›' → 허브 안 그 작품 탭", got == [True, True, True, False], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
