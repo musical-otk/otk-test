@@ -32,7 +32,7 @@ async def main():
         check('이끼숲·소크라테스·사춘기는 회차에 맞춤', {'이끼숲', '소크라테스 패러독스', '뮤지컬 〈사춘기〉'} <= {x[0] for x in m}, m)
         check('같은 작품 다른 시즌(곤 투모로우 2016·2023)은 공연 일정', all(x[2] == 'show' for x in plan if x[0] == '곤 투모로우'))
         check('띄어쓰기 다른 제목도 작품 인식(여신님이 보고계셔)', any(x[0] == '여신님이 보고계셔' and x[4] for x in plan))
-        check('아직 확인 안 한 전용 앱(V에버애프터)은 공연 일정', any(x[0] == 'V 에버 애프터' and x[2] == 'show' for x in plan))
+        check('좌석표 있는 전용 앱(V에버애프터)도 회차에 맞춤', any(x[0] == 'V 에버 애프터' and x[2] == 'match' for x in plan), [x for x in plan if x[0] == 'V 에버 애프터'])
         await ev("_imp.range='year';renderImport()")
         check('올해부터 고르면 지난해 줄은 기간 밖', await ev("impPlan().out") > 0)
         await ev("_imp.range='all';renderImport()")
@@ -40,7 +40,15 @@ async def main():
         ik = await ev("JSON.parse(localStorage.getItem('ikkisup_records')||'[]')")
         check('이끼숲 앱 기록에 들어감(좌석·가격·메모·캐스팅)', any(r['date'] == '2026-12-09' and r.get('seatZone') == 'A' and r.get('seatNumber') == 16
                                                     and r.get('price') == 45000 and '두 번째 관람' in r.get('memo', '') and r.get('marco') for r in ik))
-        check('1층 B구역 2열 7번 → 앱 1층 2열 7번 + 메모 B구역', any(r.get('seatFloor') == '1층' and r.get('seatZone') == '2' and r.get('seatNumber') == 7 and 'B구역' in r.get('memo', '') for r in ik))
+        check('앱에 없는 자리(1층 B구역 2열 7번)는 좌석 칸을 비우고 메모에 원문', any(r.get('seatZone') is None and '1층 B구역 2열 7번' in r.get('memo', '') for r in ik), [(r.get('seatFloor'), r.get('seatZone'), r.get('memo')) for r in ik])
+        check('층을 안 적어도 열로 층을 채움(A열 → 1층)', any(r['date'] == '2026-12-09' and r.get('seatFloor') == '1층' for r in ik))
+        got = await ev("""(async()=>{await ensureCatalog();await loadSeatPlans();const P=id=>_seatPlans[id], S=(t,id)=>{const a=impAppSeat(impSeat(t),P(id));return [a.seatFloor,a.seatZone,a.seatNumber,!!a.bad]};
+          const id=n=>catalog('all').works.find(w=>(w.fullName||w.name).includes(n)).id;
+          return [S('C열 7번',id('나르치스')), S('P열 3번',id('나르치스')), S('C열 7번',id('에버')), S('2층 C열 7번',id('에버')), S('C열 7번',id('리플리')), S('Z열 7번',id('리플리')), S('C열 99번',id('리플리')),
+            S('B구역 3열 5번',id('샤이닝')), S('C열 7번',id('샤이닝'))]})()""")
+        check('앱마다 좌석: 날골 열→층 · 에버 겹치는 열은 층 비움 · 한 층 앱은 1층 · 없는 열·번호는 메모 · 샤이닝은 구역',
+              got == [['1층', 'C', 7, False], ['2층', 'P', 3, False], [None, 'C', 7, False], ['2층', 'C', 7, False], ['1층', 'C', 7, False], [None, None, None, True], [None, None, None, True],
+                      ['B구역', '3', 5, False], [None, None, None, True]], got)
         so = await ev("extraRecords(recKeyOf('show_socrates2026'))")
         check('정보만 작품(소크라테스) 예매 기록 + 메모', any(r['date'] == '2026-11-28' and r.get('seatZone') == 'D' and r.get('seatNumber') == 12 for r in so)
               and '친구 양도' in json.dumps(await ev("getNotes()"), ensure_ascii=False))
