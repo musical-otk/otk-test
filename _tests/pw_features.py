@@ -323,6 +323,29 @@ async def main():
           const f=document.getElementById('frame-'+p.id);
           return [currentView===p.id, !!f&&f.classList.contains('active')&&f.src!=='about:blank', document.getElementById('home-search').hidden, getHearts().works.includes(p.id)]})()""")
         check("찾기 '전용 페이지 ›' → 허브 안 그 작품 탭", got == [True, True, True, False], got)
+        # 설정의 실험실 — 가져오기·붙여넣기는 그 안에 접혀 있다 (11/19)
+        got = await e2("""(()=>{openSettings();const lab=document.getElementById('set-lab');const a=lab.hidden;toggleLab();
+          return [a, lab.hidden, [...lab.querySelectorAll('button')].map(b=>b.textContent.trim())]})()""")
+        check('실험실을 펼치면 CSV 가져오기·일정 붙여넣기', got == [True, False, ['📥 다른 앱 기록 가져오기 (CSV)', '📋 일정 붙여넣기 (JSON)']], got)
+        # 일정 붙여넣기 (JSON 글) — 읽기 (11/19)
+        got = await e2("""(()=>{const P=parsePaste('```json\\n[{“name”:“가상의 공연”,"date":"2026.12.26 오후 3시","seat":"1층 C열 7번","price":"55,000원",},{"이름":"레미","날짜":"2027년 1월 10일","시간":"14:00","출연":["가","나"]},{"name":"날짜없음"},{"date":"2026-12-01"},{"name":"틀린날","date":"2026-02-31"},]\\n```');
+          return [P.rows.map(r=>[r['제목'],r._ds,r._time,r['좌석'],r['금액'],r['출연']]), P.errs.length, !!parsePaste('안녕').fail, parsePaste('{"list":[{"title":"x","date":"2026-12-01T19:30:00"}]}').rows.map(r=>r._ds+' '+r._time)]})()""")
+        check('붙여넣기 읽기: 둥근 따옴표·끝 쉼표·한글 항목·날짜 모양, 못 읽는 항목은 따로',
+              got == [[['가상의 공연', '2026-12-26', '15:00', '1층 C열 7번', '55000', ''], ['레미', '2027-01-10', '14:00', '', '', '가, 나']], 3, True, ['2026-12-01 19:30']], got)
+        # 붙여넣기 → 미리보기 → 넣기: 허브 회차는 예매 기록, 없는 공연은 🎭 내 일정, 다시 붙이면 겹치지 않음
+        await pg2.reload(); await pg2.wait_for_timeout(1500)
+        txt = '[{"name":"하트셉수트","date":"2026-12-26","time":"19:00","seat":"B열 3번","price":66000,"memo":"붙여넣기"},{"name":"가상의 공연","date":"2026-12-27","time":"14:00","place":"어느 극장"},{"name":"빠짐"}]'
+        got = await e2("""async(txt)=>{openSettings();openPaste();document.getElementById('paste-text').value=txt;await readPaste();
+          const L=impPlan().list.map(x=>[x.kind,x.state]);const box=document.getElementById('set-import').innerText;
+          const _r=location.reload;await applyImport();
+          const rec=extraRecords(recKeyOf('show_hatshepsut2026')).map(r=>[r.date,r.time,r.seatZone,r.seatNumber,r.price]);
+          const cu=getCustom().filter(c=>c.name==='가상의 공연').map(c=>[c.kind,c.date,c.time,c.comment]);
+          return [L, box.includes('붙여넣은 일정 2건')&&box.includes('못 읽은 항목 1건'), rec, cu]}""", txt)
+        check('붙여넣기 → 회차 예매 기록 + 🎭 내 일정', got == [[['match', 'new'], ['show', 'new']], True, [['2026-12-26', '19:00', 'B', 3, 66000]], [['show', '2026-12-27', '14:00', '어느 극장']]], got)
+        await pg2.wait_for_timeout(2500)   # 넣은 뒤 새로 고침
+        got = await e2("""async(txt)=>{openSettings();openPaste();document.getElementById('paste-text').value=txt;await readPaste();
+          return impPlan().list.map(x=>x.state)}""", txt)
+        check('같은 글을 다시 붙여도 새로 넣을 것 없음', got and all(x != 'new' for x in got), got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

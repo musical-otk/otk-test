@@ -129,7 +129,7 @@ async def main():
         check('상단 ⚙️ 있고 🔄 없음', await ev("!!document.getElementById('set-btn') && !document.querySelector('.header #sync-btn')"))
         await pg.click('#set-btn'); await pg.wait_for_timeout(300)
         check('설정 시트 열림', await ev("document.getElementById('ov-settings').classList.contains('open')"))
-        t0 = await ev("getTheme()"); await pg.click('#ov-settings .set-row'); await pg.wait_for_timeout(200)
+        t0 = await ev("getTheme()"); await pg.click('#ov-settings .set-row:has(#theme-btn)'); await pg.wait_for_timeout(200)
         check('설정에서 테마 바뀜', await ev("getTheme()") != t0)
         await pg.click('#ov-settings .set-row'); await pg.wait_for_timeout(200)
         await pg.wait_for_timeout(500)

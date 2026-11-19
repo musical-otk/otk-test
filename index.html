@@ -619,6 +619,13 @@
     .imp-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; }
     .imp-row b { margin-left: auto; }
     .imp-note { font-size: 11px; color: var(--text3); padding-top: 4px; }
+    .set-lab { margin: -2px 0 0 14px; padding-left: 10px; border-left: 2px solid var(--border); }
+    .imp-paste { width: 100%; box-sizing: border-box; min-height: 120px; margin-top: 6px; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--text1); font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
+    .imp-ex { margin-top: 6px; font-size: 11px; color: var(--text3); }
+    .imp-ex summary { cursor: pointer; }
+    .imp-ex pre { margin: 6px 0; padding: 8px; border-radius: 8px; background: var(--bg3); color: var(--text2); white-space: pre-wrap; word-break: break-all; font: 11px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+    .imp-ex button { margin-top: 6px; padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); background: none; color: var(--text2); font-size: 11px; }
+    .imp-err { font-size: 11px; color: #d9534f; padding-top: 4px; }
     .rs-btns { display: flex; gap: 6px; margin-top: 8px; }
     .rs-btns button { flex: 1; padding: 9px 4px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--text1); font-size: 12px; font-weight: 600; cursor: pointer; }
     .rs-btns button.pri { background: var(--custom); border-color: var(--custom); color: #fff; }
@@ -955,7 +962,12 @@
       <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
       <button class="set-btn" onclick="document.getElementById('restore-file').click()">📂 백업 파일에서 복원</button>
       <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
-      <button class="set-btn" onclick="document.getElementById('import-file').click()">📥 다른 앱 기록 가져오기 (CSV)</button>
+      <!-- 실험실 — 아직 다듬는 중인 기능을 한데 모은다 (11/19) -->
+      <button class="set-btn set-row" onclick="toggleLab()"><span>🧪 실험실</span><span id="lab-arrow">▾</span></button>
+      <div id="set-lab" class="set-lab" hidden>
+        <button class="set-btn" onclick="document.getElementById('import-file').click()">📥 다른 앱 기록 가져오기 (CSV)</button>
+        <button class="set-btn" onclick="openPaste()">📋 일정 붙여넣기 (JSON)</button>
+      </div>
       <input type="file" id="import-file" accept=".csv,text/csv" hidden onchange="pickImport(this)">
       <div id="set-import"></div>
       <div id="set-restore"></div>
@@ -2164,8 +2176,8 @@
     if (seat) lines.push('', seat);
     return lines.join('\n');
   }
-  function copyTransferText(text) {
-    const done = () => toast('📋 양도 정보가 복사됐어요');
+  function copyTransferText(text, msg) {
+    const done = () => toast(msg || '📋 양도 정보가 복사됐어요');
     if (navigator.clipboard && window.isSecureContext) {
       navigator.clipboard.writeText(text).then(done, () => toast('복사하지 못했어요'));
       return;
@@ -3491,7 +3503,96 @@
     if (m) return { ...(m[1] ? { seatFloor: m[1] } : {}), seatZone: m[2], seatRow: m[3], seatNumber: +m[4] };
     m = t.match(/^([A-Za-z]|\d+)열\s*(\d+)번?$/);
     if (m) return { seatZone: m[1], seatNumber: +m[2] };
+    m = t.match(/^(\d+)층\s*([A-Za-z]|\d+)열\s*(\d+)번?$/);   // '1층 C열 7번'
+    if (m) return { seatFloor: m[1], seatZone: m[2].toUpperCase(), seatNumber: +m[3] };
     return null;
+  }
+  // ── 일정 붙여넣기 (JSON 글) ── 공연 일정만. 읽은 뒤에는 CSV 가져오기와 같은 길(미리보기 → 회차 예매 기록 / 🎭 내 일정)로 넣는다 (11/19)
+  const PASTE_EX = `[
+  { "name": "나르치스와 골드문트", "date": "2026-12-26", "time": "15:00",
+    "place": "예스24스테이지 1관", "seat": "C열 7번", "price": 55000, "memo": "첫공 주간" },
+  { "이름": "레미제라블", "날짜": "2027-01-10", "시간": "14:00" }
+]`;
+  // 항목 이름은 영어·한글 둘 다 받는다
+  const PASTE_F = {
+    name: ['name', 'title', 'show', '제목', '이름', '공연', '공연명', '작품', '작품명'],
+    date: ['date', 'datetime', '날짜', '일자', '일시', '공연일'],
+    time: ['time', '시간', '시각', '공연시간'],
+    place: ['place', 'venue', 'theater', '장소', '극장', '공연장'],
+    seat: ['seat', '좌석', '자리'],
+    price: ['price', 'cost', '금액', '가격', '티켓가'],
+    cast: ['cast', 'actors', '출연', '캐스트', '캐스팅', '배우'],
+    vendor: ['vendor', 'site', '구매처', '예매처'],
+    memo: ['memo', 'note', 'notes', 'comment', '메모', '리뷰', '비고'],
+  };
+  function pasteWhen(dv, tv) {
+    const d = String(dv ?? ''), m = d.match(/(\d{4})\s*[-./년]\s*(\d{1,2})\s*[-./월]\s*(\d{1,2})/);
+    if (!m) return null;
+    const ds = `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`, chk = new Date(ds + 'T00:00:00');
+    if (isNaN(chk) || chk.getMonth() + 1 !== +m[2] || chk.getDate() !== +m[3]) return null;
+    // 시간은 시간 칸 먼저, 없으면 날짜 뒤에 붙은 것('2026-12-26 15:00', '…T15:00')
+    const t = String(tv ?? '').trim() || d.slice(m.index + m[0].length);
+    const tm = t.match(/(\d{1,2})\s*(?::|시)\s*(\d{1,2})?/);
+    if (!tm) return { ds, time: '' };
+    let h = +tm[1]; const mi = +(tm[2] || 0);
+    if (/오후|pm/i.test(t) && h < 12) h += 12;
+    if (/오전|am/i.test(t) && h === 12) h = 0;
+    if (h > 23 || mi > 59) return { ds, time: '' };
+    return { ds, time: String(h).padStart(2, '0') + ':' + String(mi).padStart(2, '0') };
+  }
+  // 글 → 가져오기 줄(CSV 와 같은 열 이름). 못 읽은 항목은 errs 에 몇 번째·왜
+  function parsePaste(text) {
+    let t = (text || '').replace(/^\uFEFF/, '').trim();
+    const f = t.match(/```(?:json)?\s*([\s\S]*?)```/i); if (f) t = f[1].trim();      // AI 가 준 ```json 묶음
+    t = t.replace(/[\u201C\u201D\u201E]/g, '"').replace(/[\u2018\u2019]/g, "'")       // 휴대폰이 바꾼 둥근 따옴표
+         .replace(/,\s*([\]}])/g, '$1');                                              // 끝에 남은 쉼표
+    if (!t) return { fail: '붙여넣은 글이 없어요' };
+    let data;
+    try { data = JSON.parse(t); } catch (e) { return { fail: 'JSON 으로 읽지 못했어요 · 괄호·따옴표·쉼표를 확인해 주세요 (' + e.message + ')' }; }
+    if (isObj(data)) data = Object.values(data).find(Array.isArray) || [data];        // { "schedules": [...] } 또는 한 건
+    if (!Array.isArray(data)) return { fail: '일정 목록( [ … ] )이 아니에요' };
+    const rows = [], errs = [];
+    data.forEach((o, i) => {
+      if (!isObj(o)) { errs.push(`${i + 1}번째: 항목 모양( { … } )이 아니에요`); return; }
+      const low = Object.fromEntries(Object.entries(o).map(([k, v]) => [k.trim().toLowerCase(), v]));
+      const get = f => { const k = PASTE_F[f].find(k => low[k] !== undefined && low[k] !== null && low[k] !== ''); return k === undefined ? '' : low[k]; };
+      const str = v => (Array.isArray(v) ? v.join(', ') : String(v ?? '')).trim();
+      const name = str(get('name'));
+      if (!name) { errs.push(`${i + 1}번째: 이름(name)이 없어요`); return; }
+      const w = pasteWhen(get('date'), get('time'));
+      if (!w) { errs.push(`${i + 1}번째 ${name}: 날짜(date)를 읽지 못했어요 · 2026-12-26 처럼 적어 주세요`); return; }
+      const price = String(get('price')).replace(/[^\d.]/g, '');
+      rows.push({ '제목': name, '일시': w.ds + (w.time ? ' ' + w.time : ''), _ds: w.ds, _time: w.time,
+        '출연': str(get('cast')), '장소': str(get('place')), '좌석': str(get('seat')), '금액': price, '구매처': str(get('vendor')), '리뷰/메모': str(get('memo')) });
+    });
+    return { rows, errs };
+  }
+  function toggleLab() {
+    const box = document.getElementById('set-lab');
+    box.hidden = !box.hidden;
+    document.getElementById('lab-arrow').textContent = box.hidden ? '▾' : '▴';
+    if (box.hidden) { _imp = null; document.getElementById('set-import').innerHTML = ''; }
+  }
+  function openPaste() {
+    _imp = null;
+    document.getElementById('set-import').innerHTML = `<div class="rs-box imp">
+      <b>일정 붙여넣기</b>
+      <div class="imp-note">공연 일정을 JSON 글로 붙여넣어요. 이름·날짜만 있으면 되고, 넣기 전에 한 번 보여 드려요.</div>
+      <textarea class="imp-paste" id="paste-text" placeholder='[ { "name": "공연 이름", "date": "2026-12-26", "time": "15:00" } ]'></textarea>
+      <details class="imp-ex"><summary>형식 보기</summary><pre>${escHtml(PASTE_EX)}</pre>
+        <div>쓸 수 있는 항목 — name 이름 · date 날짜 · time 시간 · place 장소 · seat 좌석 · price 금액 · cast 출연 · memo 메모 (한글 이름도 돼요)</div>
+        <button onclick="copyTransferText(PASTE_EX, '📋 예시를 복사했어요')">예시 복사</button></details>
+      <div class="imp-err" id="paste-err"></div>
+      <div class="rs-btns"><button class="pri" onclick="readPaste()">확인</button><button onclick="document.getElementById('set-import').innerHTML=''">취소</button></div></div>`;
+  }
+  async function readPaste() {
+    const P = parsePaste(document.getElementById('paste-text').value), err = document.getElementById('paste-err');
+    if (P.fail || !P.rows.length) { err.innerHTML = escHtml(P.fail || '넣을 수 있는 일정이 없어요') + (P.errs || []).map(e => '<br>' + escHtml(e)).join(''); return; }
+    toast('공연 정보를 맞춰 보는 중…');
+    await ensureCatalog();
+    // 직접 적은 일정이라 기간은 전체부터
+    _imp = { rows: P.rows, errs: P.errs, paste: true, range: 'all', from: '', to: '', take: { match: true, show: true, again: false } };
+    renderImport();
   }
   function pickImport(input) {
     const f = input.files && input.files[0]; input.value = '';
@@ -3518,9 +3619,12 @@
     const y0 = todayStr.slice(0, 4);
     for (const r of _imp.rows) {
       if (!r['제목']) { out.empty++; continue; }
-      const m = (r['일시'] || '').match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일.*?(\d{1,2}):(\d{2})/);
-      if (!m) { out.empty++; continue; }
-      const ds = `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`, time = `${m[4].padStart(2, '0')}:${m[5]}`;
+      let ds = r._ds, time = r._time || '';   // 붙여넣은 일정은 날짜·시간을 이미 읽어 두었다
+      if (!ds) {
+        const m = (r['일시'] || '').match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일.*?(\d{1,2}):(\d{2})/);
+        if (!m) { out.empty++; continue; }
+        ds = `${m[1]}-${m[2].padStart(2, '0')}-${m[3].padStart(2, '0')}`; time = `${m[4].padStart(2, '0')}:${m[5]}`;
+      }
       const R = _imp.range;
       if ((R === 'future' && ds < todayStr) || (R === 'year' && ds.slice(0, 4) < y0) ||
           (R === 'custom' && ((_imp.from && ds.slice(0, 7) < _imp.from) || (_imp.to && ds.slice(0, 7) > _imp.to)))) { out.out++; continue; }
@@ -3528,7 +3632,10 @@
       const n = impNorm(r['제목']);
       let w = (byName.find(([k]) => k === n) || [])[1];
       if (!w) { const c = [...new Set(byName.filter(([k]) => k && (k.includes(n) || n.includes(k))).map(x => x[1]))]; if (c.length === 1) w = c[0]; }
-      const s = w ? rowsOf(w).find(x => x.date === ds && (x.time || '') === time) : null;
+      // 시간을 안 적었어도 그날 회차가 하나뿐이면 그 회차로
+      const day = w ? rowsOf(w).filter(x => x.date === ds) : [];
+      const s = time ? day.find(x => (x.time || '') === time) || null : day.length === 1 ? day[0] : null;
+      if (s && !time) time = s.time || '';
       let kind = s ? 'match' : 'show';
       if (s && w.kind !== 'data' && !APP_IMPORT_OK.includes(w.id)) kind = 'show';   // 아직 확인 안 한 전용 앱은 공연 일정으로
       const item = { r, key, ds, time, w, s, kind };
@@ -3549,7 +3656,8 @@
     const chk = (k, label, n) => `<label class="imp-row"><input type="checkbox" ${_imp.take[k] ? 'checked' : ''} onchange="_imp.take.${k}=this.checked;renderImport()"> ${label} <b>${n}</b></label>`;
     const R = _imp.range, rb = (v, l) => `<button class="${R === v ? 'on' : ''}" onclick="_imp.range='${v}';renderImport()">${l}</button>`;
     box.innerHTML = `<div class="rs-box imp">
-      <b>가져올 기록 ${_imp.rows.length}줄</b>
+      <b>${_imp.paste ? '붙여넣은 일정' : '가져올 기록'} ${_imp.rows.length}${_imp.paste ? '건' : '줄'}</b>
+      ${(_imp.errs || []).length ? `<div class="imp-err">못 읽은 항목 ${_imp.errs.length}건 — 넣지 않아요<br>${_imp.errs.map(escHtml).join('<br>')}</div>` : ''}
       <div class="imp-range">${rb('future', '오늘 이후')}${rb('year', '올해부터')}${rb('all', '전체')}${rb('custom', '직접')}</div>
       ${R === 'custom' ? `<div class="imp-range"><input type="month" value="${_imp.from}" onchange="_imp.from=this.value;renderImport()"> ~ <input type="month" value="${_imp.to}" onchange="_imp.to=this.value;renderImport()"></div>` : ''}
       ${chk('match', 'mu:di 회차에 예매 기록으로', cnt('match', 'new'))}
