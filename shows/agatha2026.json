@@ -266,6 +266,38 @@
       "color": "#8E1B1B",
       "description": "공연 외 행사 · 11/21(토) 오후 10시(원문 표기) · 서울연극센터 라운지 · 별도 예매",
       "url": "https://x.com/ninestory9/status/2118909016512590253"
+    },
+    {
+      "name": "증빙패스 쿠폰 증정",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-13",
+      "color": "#8E1B1B",
+      "description": "프리뷰 이벤트 · 유료 티켓 1매당 증빙패스 쿠폰 1매 랜덤 증정",
+      "url": "https://x.com/ninestory9/status/2123340507040625060"
+    },
+    {
+      "name": "트리플 적립",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-20",
+      "color": "#8E1B1B",
+      "description": "웰컴 이벤트 · 유료 티켓 1매당 재관람 카드 도장 3개 적립 (1개 카드에만 적립, MD 부스 운영 시간 중, 지난 회차·동일 회차 중복 적립 불가)",
+      "url": "https://x.com/ninestory9/status/2123340507040625060"
+    },
+    {
+      "name": "현장 할인쿠폰 증정",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-20",
+      "color": "#8E1B1B",
+      "description": "웰컴 이벤트 · 유료 티켓 1매당 현장 할인쿠폰 1매 랜덤 증정",
+      "url": "https://x.com/ninestory9/status/2123340507040625060"
+    },
+    {
+      "name": "커튼콜 촬영",
+      "startDate": "2026-12-15",
+      "endDate": "2026-12-20",
+      "color": "#8E1B1B",
+      "description": "웰컴 이벤트 · 공연 종료 후 플래시 없이 커튼콜 촬영 가능 (객석 이동·삼각대 사용 불가)",
+      "url": "https://x.com/ninestory9/status/2123340507040625060"
     }
   ]
 }

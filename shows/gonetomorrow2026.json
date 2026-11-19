@@ -647,6 +647,39 @@
       "color": "#8B1A2B",
       "description": "커튼콜 사진·영상 촬영 가능 (플래시 없이, 좌석 이동·삼각대 제한, 중간 퇴장 시 재입장 불가)",
       "url": "https://x.com/page1company/status/2122189820655198631"
+    },
+    {
+      "name": "LAST SPECIAL CURTAIN CALL",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#8B1A2B",
+      "times": [
+        "15:00"
+      ],
+      "description": "SCENE 18. 어둠의 힘 (M22. 한 세상의 끝) · 본 공연 커튼콜 종료 후 스페셜 커튼콜, 사진·영상 촬영 가능",
+      "url": "https://x.com/page1company/status/2123408452865118632"
+    },
+    {
+      "name": "LAST SPECIAL CURTAIN CALL",
+      "startDate": "2026-11-25",
+      "endDate": "2026-11-25",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "SCENE 8. 유배 (M9. 난 아직도 널 그린다) · 시연 장면은 넘버에 앞서 옥균이 정훈에게 왈츠를 배우는 장면부터 · 사진·영상 촬영 가능",
+      "url": "https://x.com/page1company/status/2123408452865118632"
+    },
+    {
+      "name": "LAST SPECIAL CURTAIN CALL",
+      "startDate": "2026-11-26",
+      "endDate": "2026-11-26",
+      "color": "#8B1A2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "SCENE 16. 선상의 죽음 (M18. 바람에 흩날려 인생) · 본 공연 커튼콜 종료 후 스페셜 커튼콜, 사진·영상 촬영 가능",
+      "url": "https://x.com/page1company/status/2123408452865118632"
     }
   ]
 }

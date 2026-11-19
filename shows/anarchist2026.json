@@ -1175,6 +1175,14 @@
       "color": "#C9921A",
       "description": "막공 주간 럭키드로우와 배우별 막공 무대인사 (스케줄표 표기, 상세 공지 전)",
       "url": "https://x.com/mbz_anarchist/status/2115623967004479627"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-29",
+      "color": "#C9921A",
+      "description": "본 공연 종료 후 커튼콜에서 플래시 없이 사진·영상 촬영 가능 (자리 이동·삼각대·모노포트·보조광 불가, 중간 퇴장 시 재입장 불가)",
+      "url": "https://x.com/mbz_anarchist/status/2123267396308017324"
     }
   ]
 }
