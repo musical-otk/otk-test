@@ -1967,6 +1967,61 @@
       ],
       "description": "The JUNGLE 코스터 19종 1SET, 유료 예매자 회차별 선착순 50세트",
       "url": "https://x.com/i_seensee/status/2120396353096282392"
+    },
+    {
+      "name": "실황 촬영 안내",
+      "startDate": "2026-11-20",
+      "endDate": "2026-11-20",
+      "color": "#D9482B",
+      "times": [
+        "20:00"
+      ],
+      "description": "해당 회차 공연 실황 촬영 진행",
+      "url": "https://x.com/i_seensee/status/2123325410091954436"
+    },
+    {
+      "name": "실황 촬영 안내",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#D9482B",
+      "times": [
+        "14:00"
+      ],
+      "description": "해당 회차 공연 실황 촬영 진행",
+      "url": "https://x.com/i_seensee/status/2123325410091954436"
+    },
+    {
+      "name": "실황 촬영 안내",
+      "startDate": "2026-11-21",
+      "endDate": "2026-11-21",
+      "color": "#D9482B",
+      "times": [
+        "18:00"
+      ],
+      "description": "해당 회차 공연 실황 촬영 진행",
+      "url": "https://x.com/i_seensee/status/2123325410091954436"
+    },
+    {
+      "name": "실황 촬영 안내",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#D9482B",
+      "times": [
+        "14:00"
+      ],
+      "description": "해당 회차 공연 실황 촬영 진행",
+      "url": "https://x.com/i_seensee/status/2123325410091954436"
+    },
+    {
+      "name": "실황 촬영 안내",
+      "startDate": "2026-11-22",
+      "endDate": "2026-11-22",
+      "color": "#D9482B",
+      "times": [
+        "18:00"
+      ],
+      "description": "해당 회차 공연 실황 촬영 진행",
+      "url": "https://x.com/i_seensee/status/2123325410091954436"
     }
   ]
 }
