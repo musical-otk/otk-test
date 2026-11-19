@@ -619,6 +619,14 @@
     .imp-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; }
     .imp-row b { margin-left: auto; }
     .imp-note { font-size: 11px; color: var(--text3); padding-top: 4px; }
+    .imp-list { margin: 8px 0 4px; border-top: 1px solid var(--border); }
+    .imp-item { padding: 7px 0; border-bottom: 1px solid var(--border); }
+    .imp-item.off { opacity: .5; }
+    .imp-item-main { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .imp-item-when { color: var(--text2); white-space: nowrap; }
+    .imp-item-tag { margin-left: auto; font-size: 11px; color: var(--text3); white-space: nowrap; }
+    .imp-item-tag.on { color: var(--custom); font-weight: 700; }
+    .imp-item-sub { font-size: 11px; color: var(--text3); }
     .set-lab { margin: -2px 0 0 14px; padding-left: 10px; border-left: 2px solid var(--border); }
     .imp-paste { width: 100%; box-sizing: border-box; min-height: 120px; margin-top: 6px; padding: 8px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg3); color: var(--text1); font: 12px/1.5 ui-monospace, Menlo, Consolas, monospace; resize: vertical; }
     .imp-ex { margin-top: 6px; font-size: 11px; color: var(--text3); }
@@ -3677,6 +3685,20 @@
     }
     return out;
   }
+  // 붙여넣은·링크로 온 일정은 무엇이 어디로 들어가는지 한 줄씩 보여 준다 — 숫자만으로는 뭔지 알 수 없었다(11/19)
+  function impListHtml(L) {
+    const tag = x => x.state === 'have' ? ['이미 있음', 'off'] : x.state === 'again' ? ['예전에 넣음', 'off']
+      : x.kind === 'match' ? ['🎫 예매 기록', 'on'] : ['🎭 내 일정', ''];
+    const row = x => {
+      const d = new Date(x.ds + 'T00:00:00'), r = x.r, [t, c] = tag(x);
+      const sub = [r['장소'], r['좌석'], r['금액'] ? Number(r['금액']).toLocaleString() + '원' : ''].filter(Boolean).join(' · ');
+      return `<div class="imp-item${c === 'off' ? ' off' : ''}"><div class="imp-item-main"><span class="imp-item-when">${x.ds.slice(0, 4) !== todayStr.slice(0, 4) ? x.ds.slice(2, 4) + '/' : ''}${evMd(x.ds)}(${DOW[d.getDay()]})${x.time ? ' ' + x.time : ''}</span>
+        <b>${escHtml(x.w && x.kind === 'match' ? (x.w.fullName || x.w.name) : impShowName(r['제목']))}</b><span class="imp-item-tag ${c}">${t}</span></div>
+        ${sub ? `<div class="imp-item-sub">${escHtml(sub)}</div>` : ''}</div>`;
+    };
+    const sorted = L.slice().sort((a, b) => (a.ds + a.time).localeCompare(b.ds + b.time)), MAX = 40;
+    return `<div class="imp-list">${sorted.slice(0, MAX).map(row).join('')}${sorted.length > MAX ? `<div class="imp-note">… 외 ${sorted.length - MAX}건</div>` : ''}</div>`;
+  }
   function renderImport() {
     const box = document.getElementById('set-import'); if (!box || !_imp) return;
     const P = impPlan(), L = P.list;
@@ -3689,6 +3711,7 @@
       ${(_imp.errs || []).length ? `<div class="imp-err">못 읽은 항목 ${_imp.errs.length}건 — 넣지 않아요<br>${_imp.errs.map(escHtml).join('<br>')}</div>` : ''}
       <div class="imp-range">${rb('future', '오늘 이후')}${rb('year', '올해부터')}${rb('all', '전체')}${rb('custom', '직접')}</div>
       ${R === 'custom' ? `<div class="imp-range"><input type="month" value="${_imp.from}" onchange="_imp.from=this.value;renderImport()"> ~ <input type="month" value="${_imp.to}" onchange="_imp.to=this.value;renderImport()"></div>` : ''}
+      ${_imp.paste ? impListHtml(L) : ''}
       ${chk('match', 'mu:di 회차에 예매 기록으로', cnt('match', 'new'))}
       ${chk('show', '🎭 공연 일정으로 (다른 시즌·없는 작품)', cnt('show', 'new'))}
       ${again ? chk('again', '예전에 가져온 것 다시 넣기', again) : ''}

@@ -336,12 +336,12 @@ async def main():
         await pg2.reload(); await pg2.wait_for_timeout(1500)
         txt = '[{"name":"하트셉수트","date":"2026-12-26","time":"19:00","seat":"B열 3번","price":66000,"memo":"붙여넣기"},{"name":"가상의 공연","date":"2026-12-27","time":"14:00","place":"어느 극장"},{"name":"빠짐"}]'
         got = await e2("""async(txt)=>{openSettings();openPaste();document.getElementById('paste-text').value=txt;await readPaste();
-          const L=impPlan().list.map(x=>[x.kind,x.state]);const box=document.getElementById('set-import').innerText;
+          const L=impPlan().list.map(x=>[x.kind,x.state]);const box=document.getElementById('set-import').innerText;const items=[...document.querySelectorAll('#set-import .imp-item')].map(e=>e.innerText.replace(/\\s+/g,' ').trim());
           const _r=location.reload;await applyImport();
           const rec=extraRecords(recKeyOf('show_hatshepsut2026')).map(r=>[r.date,r.time,r.seatZone,r.seatNumber,r.price]);
           const cu=getCustom().filter(c=>c.name==='가상의 공연').map(c=>[c.kind,c.date,c.time,c.comment]);
-          return [L, box.includes('붙여넣은 일정 2건')&&box.includes('못 읽은 항목 1건'), rec, cu]}""", txt)
-        check('붙여넣기 → 회차 예매 기록 + 🎭 내 일정', got == [[['match', 'new'], ['show', 'new']], True, [['2026-12-26', '19:00', 'B', 3, 66000]], [['show', '2026-12-27', '14:00', '어느 극장']]], got)
+          return [L, box.includes('붙여넣은 일정 2건')&&box.includes('못 읽은 항목 1건'), rec, cu, items]}""", txt)
+        check('붙여넣기 → 회차 예매 기록 + 🎭 내 일정 (미리보기에 한 줄씩)', got[:4] == [[['match', 'new'], ['show', 'new']], True, [['2026-12-26', '19:00', 'B', 3, 66000]], [['show', '2026-12-27', '14:00', '어느 극장']]] and len(got[4]) == 2 and '하트셉수트' in got[4][0] and '19:00' in got[4][0] and '예매 기록' in got[4][0] and '가상의 공연' in got[4][1] and '내 일정' in got[4][1], got)
         await pg2.wait_for_timeout(2500)   # 넣은 뒤 새로 고침
         got = await e2("""async(txt)=>{openSettings();openPaste();document.getElementById('paste-text').value=txt;await readPaste();
           return impPlan().list.map(x=>x.state)}""", txt)
