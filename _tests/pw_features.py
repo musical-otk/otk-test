@@ -346,6 +346,16 @@ async def main():
         got = await e2("""async(txt)=>{openSettings();openPaste();document.getElementById('paste-text').value=txt;await readPaste();
           return impPlan().list.map(x=>x.state)}""", txt)
         check('같은 글을 다시 붙여도 새로 넣을 것 없음', got and all(x != 'new' for x in got), got)
+        # 링크로 일정 받기 — #add=<JSON> 으로 열면 미리보기만 뜨고(저장 안 함) 주소에서 지운다 (11/19)
+        import urllib.parse, base64
+        js = '[{"name":"링크로 온 공연","date":"2027-02-01","time":"19:30","place":"어느 극장"}]'
+        await e2("localStorage.clear()")
+        await pg2.goto('about:blank'); await pg2.goto(BASE + '#add=' + urllib.parse.quote(js)); await pg2.wait_for_timeout(4000)   # 새로 여는 경우
+        got = await e2("""[location.hash, document.getElementById('ov-settings').classList.contains('open'), !!_imp&&_imp.rows.map(r=>r['제목']+' '+r._ds+' '+r._time), getCustom().length]""")
+        check('#add= 링크 → 미리보기 (저절로 저장 안 함, 주소에서 지움)', got == ['', True, ['링크로 온 공연 2027-02-01 19:30'], 0], got)
+        await e2("location.hash='#add=" + base64.urlsafe_b64encode(js.encode()).decode().rstrip('=') + "'"); await pg2.wait_for_timeout(1500)
+        got = await e2("""[location.hash, !!_imp&&_imp.rows.map(r=>r['제목'])]""")
+        check('열려 있는 중에 온 링크(base64)도 받음', got == ['', ['링크로 온 공연']], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

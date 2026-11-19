@@ -3567,6 +3567,35 @@
     });
     return { rows, errs };
   }
+  // ── 링크로 일정 받기 (숨은 기능) ── 주소 끝 #add=<일정 JSON> 으로 열면 붙여넣기 미리보기를 띄운다 (11/19)
+  // 보내는 쪽: 허브주소 + '#add=' + encodeURIComponent(JSON.stringify(일정목록))  (base64url 도 받는다)
+  // 저절로 저장하지 않는다 — 미리보기에서 '가져오기'를 눌러야 들어간다. 띄운 뒤에는 주소에서 지운다(새로 고침에 다시 안 뜨게)
+  function hashAddText() {
+    const m = location.hash.match(/^#add=(.*)$/s);
+    if (!m) return null;
+    let raw = m[1], t = raw;
+    try { t = decodeURIComponent(raw); } catch (e) {}
+    if (!/^\s*[\[{`]/.test(t)) {   // JSON 으로 시작하지 않으면 base64url 로 본다
+      try {
+        const b = atob(raw.replace(/-/g, '+').replace(/_/g, '/'));
+        t = new TextDecoder().decode(Uint8Array.from(b, c => c.charCodeAt(0)));
+      } catch (e) {}
+    }
+    return t;
+  }
+  async function takeHashAdd() {
+    const t = hashAddText();
+    if (t === null) return;
+    history.replaceState(null, '', location.pathname + location.search);
+    closeOverlays();
+    openSettings();
+    if (document.getElementById('set-lab').hidden) toggleLab();
+    openPaste();
+    document.getElementById('paste-text').value = t;
+    await readPaste();
+    document.getElementById('set-import').scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', takeHashAdd);
   function toggleLab() {
     const box = document.getElementById('set-lab');
     box.hidden = !box.hidden;
@@ -5213,7 +5242,7 @@
     renderFrames();
     await migratePhotosToIndexedDB();
     const apps = getApps();
-    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks); return; }
+    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd); return; }
     // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
     const failed = [];
     await Promise.all(apps.map(async app => {
@@ -5231,7 +5260,7 @@
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
     // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
-    discoverApps(true).then(() => { syncPresetIcons(); renderTabs(); }).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks);   // 새로 읽은 이름을 바로 탭에
+    discoverApps(true).then(() => { syncPresetIcons(); renderTabs(); }).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd);   // 새로 읽은 이름을 바로 탭에
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
