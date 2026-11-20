@@ -617,7 +617,7 @@
     <!-- 미정 -->
     <div class="form-group" style="display:flex;align-items:center;gap:10px;padding:2px 0;">
       <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;color:var(--text2);">
-        <input type="checkbox" id="rec-unconfirmed" style="width:16px;height:16px;accent-color:var(--accent);">
+        <input type="checkbox" id="rec-unconfirmed" style="width:16px;height:16px;accent-color:var(--accent);" onchange="onRecUnconfirmedChange()">
         미정 (예매 미확정)
       </label>
     </div>
@@ -2430,8 +2430,14 @@ function removeStampsForRecord(target) {
   return stampChanged;
 }
 
+// 미정과 양도는 같이 켤 수 없다 — 둘 다 켜져 뜻이 애매했다 (사용자 에이전트 리뷰 11/20)
+function onRecUnconfirmedChange() {
+  const t = document.getElementById('rec-transferred');
+  if (document.getElementById('rec-unconfirmed').checked && t.checked) { t.checked = false; onRecTransferredChange(); }
+}
 function onRecTransferredChange() {
   const on = document.getElementById('rec-transferred').checked;
+  if (on) document.getElementById('rec-unconfirmed').checked = false;
   document.getElementById('rec-transfer-to-group').style.display = on ? '' : 'none';
   // 양도면 도장을 달 수 없다. 고를 수 있게 두면 저장 때 조용히 버려져 혼란스럽다.
   const sel = document.getElementById('rec-stamp-board');
