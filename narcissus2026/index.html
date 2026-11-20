@@ -79,6 +79,7 @@
   /* OVERLAY / PANEL */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:none;align-items:flex-end;justify-content:center;}
   .overlay.open{display:flex;}
+  .rec-actions{position:sticky;bottom:-40px;display:flex;gap:10px;margin:8px -20px -40px;padding:12px 20px calc(12px + env(safe-area-inset-bottom));background:var(--bg2);border-top:1px solid var(--border);z-index:2;}
   .panel{background:var(--bg2);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:92vh;overflow-y:auto;padding:20px 20px 40px;animation:slideUp 0.25s ease;}
   @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
   .panel-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
@@ -714,7 +715,8 @@
       <label class="form-label">감상 메모</label>
       <textarea class="form-control" id="rec-memo" placeholder="자유롭게 기록해보세요..."></textarea>
     </div>
-    <div style="display:flex;gap:10px;margin-top:8px;">
+    <!-- 저장·취소는 수정 창 아래에 늘 떠 있게 — 매번 두 번 스크롤해야 했다 (사용자 에이전트 리뷰 11/20) -->
+    <div class="rec-actions">
       <button class="btn btn-primary" style="flex:1;" onclick="saveRecord()">저장</button>
       <button class="btn btn-outline" onclick="closePanel('overlay-record')">취소</button>
     </div>

@@ -454,7 +454,9 @@
     .sess-card-time { flex: 1; min-width: 0;
                       font-size: 9px; font-weight: 800; line-height: 1.4; letter-spacing: -0.3px;
                       overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    /* ×N·↪ 는 이름 줄 앞에 — 시각 옆에 두면 칸이 좁아 시각이 '1…'로 잘렸다 (11/20) */
+    /* ↪ 는 이름 줄 앞에, 같은 회차 여러 장은 시각 옆 세로 점(최대 3) — ×2 를 시각 옆에 두면 칸이 좁아 시각이 '1…'로 잘렸다 (11/20) */
+    .sess-card-dots { display: flex; flex-direction: column; gap: 1px; flex-shrink: 0; align-self: center; }
+    .sess-card-dots i { display: block; width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
     .sess-card-name b { font-weight: 800; opacity: 1; }
     .sess-card-icons { font-size: 8px; font-weight: 700; line-height: 1; flex-shrink: 0; opacity: 0.75; }
     /* 사진 있음. 🖼️ 이모지는 시각을 밀어내서 칩 색을 그대로 쓰는 점으로 바꿨다. */
@@ -462,6 +464,13 @@
                      background: currentColor; opacity: 0.8; }
     /* 양도 — 표는 있었지만 안 봤다. 관람과 헷갈리지 않게 흐리게. */
     .sess-card.transferred { opacity: 0.5; }
+    .cal-legend { display: flex; justify-content: center; gap: 12px; padding: 8px 0 2px; font-size: 10px; color: var(--text3); }
+    .cal-legend span { display: inline-flex; align-items: center; gap: 4px; }
+    .cal-legend i { display: inline-block; width: 14px; height: 9px; border-radius: 3px; border: 1px solid var(--custom); background: color-mix(in srgb, var(--custom) 18%, transparent); }
+    .cal-legend i.lg-tent { background: transparent; border-style: dashed; border-width: 1.5px; }
+    .cal-legend i.lg-trans { opacity: 0.45; }
+    .cal-legend i.lg-dots { width: auto; height: auto; border: 0; background: none; display: inline-flex; flex-direction: column; gap: 1px; }
+    .cal-legend i.lg-dots b { display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--custom); }
     /* 미정 — 볼지 고민 중. 속을 비우고 점선 (11/20) */
     .sess-card.tentative { background: transparent !important; border-style: dashed !important; border-width: 1.5px !important; border-color: currentColor !important; }
     .wk-sess.tentative { border-style: dashed !important; }
@@ -830,6 +839,8 @@
       <div class="cal-dow" id="cal-dow"></div>
       <div class="cal-days" id="cal-days"></div>
       <div class="axis-legend" id="axis-legend" style="display:none"></div>
+      <!-- 칸 모양 뜻 — 점선이 미정인 걸 짐작으로만 알았다 (사용자 에이전트 리뷰 11/20) -->
+      <div class="cal-legend"><span><i class="lg-booked"></i>예매</span><span><i class="lg-tent"></i>미정</span><span><i class="lg-trans"></i>양도</span><span><i class="lg-dots"><b></b><b></b></i>여러 장</span></div>
     </div>
     <div id="status" class="loading">스케줄 불러오는 중…</div>
     <button class="fab" onclick="openCustomForm('')">+</button>
@@ -2303,7 +2314,9 @@
   }
 
   function goToToday() {
-    // 열린 창·찾기·관심을 모두 닫고 달력으로
+    // 열린 창·찾기·관심을 모두 닫고 달력으로.
+    // 전용 페이지 탭에서 돌아올 때는 보던 달 그대로 — 달력에서 한 번 더 누르면 오늘로 (사용자 에이전트 리뷰 11/20)
+    const fromApp = currentView !== 'cal';
     closeOverlays();
     if (!document.getElementById('home-search').hidden) closeSearch();
     if (!document.getElementById('home-hearts').hidden) closeHearts();
@@ -2317,9 +2330,11 @@
       if (frame) frame.classList.remove('active');
       if (btn) btn.style.cssText = '';
     });
-    const t = new Date();
-    currentYear = t.getFullYear(); currentMonth = t.getMonth();
-    weekStart = sundayOf(t);
+    if (!fromApp) {
+      const t = new Date();
+      currentYear = t.getFullYear(); currentMonth = t.getMonth();
+      weekStart = sundayOf(t);
+    }
     renderCalendar();
   }
 
@@ -3164,7 +3179,8 @@
         <div class="sess-card${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}" style="${appStyle(s._app.color)}"
              ${trans ? `title="양도${trans.transferTo ? ' · ' + escHtml(trans.transferTo) : ''}"` : ''}>
           <span class="sess-card-time">${fmtTime(s.time)}</span>
-          <span class="sess-card-name">${trans ? '<b>↪</b> ' : ''}${attCnt >= 2 ? `<b>×${attCnt}</b> ` : ''}${sessName(s._app, s)}</span>
+          ${attCnt >= 2 ? `<span class="sess-card-dots" title="${attCnt}장">${'<i></i>'.repeat(Math.min(attCnt, 3))}</span>` : ''}
+          <span class="sess-card-name">${trans ? '<b>↪</b> ' : ''}${sessName(s._app, s)}</span>
         </div>`);
 
       // 회차가 적으면 시각을 그대로, 몰린 날만 축으로 접는다.
