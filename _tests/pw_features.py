@@ -388,6 +388,14 @@ async def main():
         check('전용 앱의 미정(예매 미확정) 기록도 허브에서 미정', got in ([True], []), got)
         got = await e2("""parsePaste('[{"name":"x","date":"2026-12-01","status":"미정"},{"name":"y","date":"2026-12-02"}]').rows.map(r=>r._tent)""")
         check('붙여넣기 "status": "미정"', got == [True, False], got)
+        # 전용 페이지 작품도 내 기록이 있으면 [✏️ 수정] → 앱 수정 창(&edit=1) (사용자 에이전트 리뷰 11/20)
+        got = await e2("""async()=>{await ensureCatalog();await addPresetById('app_ikkisup');renderFrames();
+          const a=getApps().find(x=>x.id==='app_ikkisup');const R=(await fetch(a.scheduleUrl).then(r=>r.json())).filter(r=>r.date>=todayStr)[0];
+          localStorage.setItem('ikkisup_records',JSON.stringify([{id:'e1',date:R.date,time:R.time,isBooked:false,status:'관람'}]));
+          await openDay(R.date);const b=[...document.querySelectorAll('#sheet-content .jump-btn')].map(x=>x.textContent.trim());
+          jumpToApp('app_ikkisup',R.date,R.time,true);const src=document.getElementById('frame-app_ikkisup').src;switchView('cal');
+          return [b, /edit=1/.test(src)]}""")
+        check('전용 페이지 작품 내 기록 → [✏️ 수정], 누르면 &edit=1', got and '✏️ 수정' in got[0] and got[1], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

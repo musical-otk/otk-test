@@ -454,6 +454,8 @@
     .sess-card-time { flex: 1; min-width: 0;
                       font-size: 9px; font-weight: 800; line-height: 1.4; letter-spacing: -0.3px;
                       overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* ×N·↪ 는 이름 줄 앞에 — 시각 옆에 두면 칸이 좁아 시각이 '1…'로 잘렸다 (11/20) */
+    .sess-card-name b { font-weight: 800; opacity: 1; }
     .sess-card-icons { font-size: 8px; font-weight: 700; line-height: 1; flex-shrink: 0; opacity: 0.75; }
     /* 사진 있음. 🖼️ 이모지는 시각을 밀어내서 칩 색을 그대로 쓰는 점으로 바꿨다. */
     .sess-card-pic { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0;
@@ -1990,10 +1992,11 @@
     return !!(app && app.appUrl && app.deepLink !== false);
   }
 
-  function jumpToApp(appId, ds, time) {
+  function jumpToApp(appId, ds, time, edit) {
     const app = getApps().find(a => a.id === appId);
     if (!canJump(app)) return;
-    const q = `date=${encodeURIComponent(ds)}` + (time ? `&time=${encodeURIComponent(time)}` : '');
+    // edit — 그 회차 기록의 수정 창을 바로 연다 (앱이 &edit=1 을 모르면 예전처럼 기록 상세)
+    const q = `date=${encodeURIComponent(ds)}` + (time ? `&time=${encodeURIComponent(time)}` : '') + (edit ? '&edit=1' : '');
     const frame = document.getElementById(`frame-${appId}`);
     if (frame) frame.src = app.appUrl + (app.appUrl.includes('?') ? '&' : '?') + q;
     document.getElementById('ov-detail').classList.remove('open');
@@ -3161,9 +3164,7 @@
         <div class="sess-card${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}" style="${appStyle(s._app.color)}"
              ${trans ? `title="양도${trans.transferTo ? ' · ' + escHtml(trans.transferTo) : ''}"` : ''}>
           <span class="sess-card-time">${fmtTime(s.time)}</span>
-          ${trans ? '<span class="sess-card-icons">↪</span>' : ''}
-          ${attCnt >= 2 ? `<span class="sess-card-icons">×${attCnt}</span>` : ''}
-          <span class="sess-card-name">${sessName(s._app, s)}</span>
+          <span class="sess-card-name">${trans ? '<b>↪</b> ' : ''}${attCnt >= 2 ? `<b>×${attCnt}</b> ` : ''}${sessName(s._app, s)}</span>
         </div>`);
 
       // 회차가 적으면 시각을 그대로, 몰린 날만 축으로 접는다.
@@ -3259,8 +3260,11 @@
       const memoSnip = note.memo ? `<span class="note-memo-snip">${escHtml(note.memo.slice(0,40))}</span>` : '';
       // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
       // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
+      // 내 기록이 있으면 [✏️ 수정] — 미정·예매·양도를 바꾸러 가는 길이 안 보였다 (사용자 에이전트 리뷰 11/20)
       const jumpBtn = canJump(s._app)
-        ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">전용 페이지에서 보기 ›</button>`
+        ? (attRecs.length
+          ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}',true)">✏️ 수정</button>`
+          : `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">전용 페이지에서 보기 ›</button>`)
         : (s._app.kind === 'extra' || s._app.kind === 'data')
           ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}','${s._app.id}','${s._showId || ''}')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>`
           : '';
