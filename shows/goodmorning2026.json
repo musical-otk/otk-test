@@ -257,24 +257,26 @@
       "url": "https://x.com/GmorningMusical/status/2121491860791414901"
     },
     {
-      "name": "막공",
+      "name": "마지막 공연 무대인사",
       "startDate": "2026-11-21",
       "endDate": "2026-11-21",
       "color": "#00A096",
       "times": [
         "18:30"
       ],
-      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+      "description": "막공 · 각 출연진 마지막 공연 시 커튼콜 종료 후 무대인사 (무대인사 시작부터 퇴장까지 사진·영상 촬영 가능, 커튼콜 촬영 불가)",
+      "url": "https://x.com/GmorningMusical/status/2123707827218989330"
     },
     {
-      "name": "막공",
+      "name": "마지막 공연 무대인사",
       "startDate": "2026-11-22",
       "endDate": "2026-11-22",
       "color": "#00A096",
       "times": [
         "15:00"
       ],
-      "url": "https://x.com/GmorningMusical/status/2101957041392603221"
+      "description": "막공 · 각 출연진 마지막 공연 시 커튼콜 종료 후 무대인사 (무대인사 시작부터 퇴장까지 사진·영상 촬영 가능, 커튼콜 촬영 불가)",
+      "url": "https://x.com/GmorningMusical/status/2123707827218989330"
     }
   ]
 }

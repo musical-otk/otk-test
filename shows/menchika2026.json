@@ -175,37 +175,45 @@
   ],
   "events": [
     {
-      "name": "첫공",
+      "name": "첫 공연 무대 인사",
       "startDate": "2026-12-22",
       "endDate": "2026-12-22",
       "color": "#B0489E",
       "times": [
         "20:00"
       ],
-      "description": "첫 공연 (스케줄표 돌 아이콘)",
-      "url": "https://x.com/menchika_play/status/2119704458389303657"
+      "description": "첫공 · 각 배우의 첫 공연 종료 후 무대인사 (커튼콜 종료 후 시작, 플래시 없는 사진·영상 촬영 가능, 공연 중 퇴장 시 재입장 불가)",
+      "url": "https://x.com/menchika_play/status/2123587883760255200"
     },
     {
-      "name": "첫공",
+      "name": "첫 공연 무대 인사",
       "startDate": "2026-12-23",
       "endDate": "2026-12-23",
       "color": "#B0489E",
       "times": [
         "17:00"
       ],
-      "description": "첫 공연 (스케줄표 돌 아이콘)",
-      "url": "https://x.com/menchika_play/status/2119704458389303657"
+      "description": "첫공 · 각 배우의 첫 공연 종료 후 무대인사 (커튼콜 종료 후 시작, 플래시 없는 사진·영상 촬영 가능, 공연 중 퇴장 시 재입장 불가)",
+      "url": "https://x.com/menchika_play/status/2123587883760255200"
     },
     {
-      "name": "첫공",
+      "name": "첫 공연 무대 인사",
       "startDate": "2026-12-23",
       "endDate": "2026-12-23",
       "color": "#B0489E",
       "times": [
         "20:00"
       ],
-      "description": "첫 공연 (스케줄표 돌 아이콘)",
-      "url": "https://x.com/menchika_play/status/2119704458389303657"
+      "description": "첫공 · 각 배우의 첫 공연 종료 후 무대인사 (커튼콜 종료 후 시작, 플래시 없는 사진·영상 촬영 가능, 공연 중 퇴장 시 재입장 불가)",
+      "url": "https://x.com/menchika_play/status/2123587883760255200"
+    },
+    {
+      "name": "웰컴 멘치카 키트 증정 이벤트",
+      "startDate": "2026-12-25",
+      "endDate": "2026-12-27",
+      "color": "#B0489E",
+      "description": "매표소 티켓 수령 시 유료 티켓 1매당 쿠폰팩 1세트 증정 (온라인/현장 할인권 1매 · 할인 증빙 프리패스권 1매 · MD 할인권 1매, 사용 기간 ~1/10)",
+      "url": "https://x.com/menchika_play/status/2123618450694418504"
     }
   ]
 }
