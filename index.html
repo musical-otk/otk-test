@@ -460,6 +460,10 @@
                      background: currentColor; opacity: 0.8; }
     /* 양도 — 표는 있었지만 안 봤다. 관람과 헷갈리지 않게 흐리게. */
     .sess-card.transferred { opacity: 0.5; }
+    /* 미정 — 볼지 고민 중. 속을 비우고 점선 (11/20) */
+    .sess-card.tentative { background: transparent !important; border-style: dashed !important; border-width: 1.5px !important; border-color: currentColor !important; }
+    .wk-sess.tentative { border-style: dashed !important; }
+    .mark-tent { font-size: 11px; font-weight: 700; color: var(--text3); border: 1px dashed var(--text3); border-radius: 4px; padding: 0 5px; }
     .sess-card.transferred .sess-card-time { text-decoration: line-through; }
 
     /* 안 가는 회차 — 회차가 적으면 시각을 그대로 적는다. */
@@ -548,6 +552,7 @@
     .session-attended { font-size: 11px; color: var(--attended); }
     .session-transferred { font-size: 11px; color: var(--text3); }
     .session-booked { font-size: 11px; font-weight: 700; color: var(--custom); }
+    .session-meta.cu-info { color: var(--text3); }
     .session-acts { display: flex; flex-direction: column; gap: 4px; align-items: flex-end; flex-shrink: 0; padding-top: 2px; }
     .session-act-btn {
       background: none; border: none; color: var(--text3); font-size: 15px;
@@ -887,9 +892,29 @@
         <input class="form-input" type="number" id="cf-seat-num" placeholder="번호" style="flex:1">
       </div>
     </div>
+    <div class="form-row cf-show">
+      <div class="form-label">출연 (선택)</div>
+      <input class="form-input" type="text" id="cf-cast" placeholder="예: 이재균, 손지윤">
+    </div>
+    <div class="form-row cf-show">
+      <div class="form-label">장소 (선택)</div>
+      <input class="form-input" type="text" id="cf-place" placeholder="공연장">
+    </div>
+    <div class="form-row cf-show">
+      <div class="form-label">금액 · 예매처 (선택)</div>
+      <div style="display:flex;gap:6px">
+        <input class="form-input" type="number" id="cf-price" placeholder="금액" style="flex:1">
+        <input class="form-input" type="text" id="cf-vendor" placeholder="예매처" style="flex:1">
+      </div>
+    </div>
     <div class="form-row">
       <div class="form-label">메모 (선택)</div>
       <input class="form-input" type="text" id="cf-comment" placeholder="메모">
+    </div>
+    <div class="form-row cf-show">
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px">
+        <input type="checkbox" id="cf-tent"> 미정 (볼지 고민 중)
+      </label>
     </div>
     <div class="form-row">
       <div class="form-label">색상</div>
@@ -903,7 +928,8 @@
       <input type="file" id="cf-photo-file" accept="image/*" multiple style="display:none" onchange="handleCustomPhotos(this)">
     </div>
     <div class="form-actions">
-      <button class="btn-cancel" onclick="closeCustomForm()">취소</button>
+      <button class="btn-cancel" id="cf-cancel" onclick="closeCustomForm()">취소</button>
+      <button class="btn-cancel" id="cf-del" onclick="deleteCustomEvent(_customEditId)" hidden>삭제</button>
       <button class="btn-primary" onclick="saveCustomEvent()">저장</button>
     </div>
   </div>
@@ -941,6 +967,9 @@
     <div class="form-row">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px">
         <input type="checkbox" id="xr-trans" onchange="document.getElementById('xr-trans-to').hidden=!this.checked"> 양도
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-top:8px">
+        <input type="checkbox" id="xr-tent"> 미정 (볼지 고민 중)
       </label>
       <input class="form-input" type="text" id="xr-trans-to" placeholder="양도 받은 사람 (선택)" hidden style="margin-top:6px">
     </div>
@@ -2062,7 +2091,7 @@
         const recs = (att[s.date] || []).filter(r => recHit(r, appId, s));
         const mine = recs.find(r => !r.transferred);
         const tr   = !mine && recs.find(r => r.transferred);
-        const mark = mine ? (s.date < todayStr ? '✓ 관람' : '🎫 예매') : tr ? '↪ 양도' : '';
+        const mark = mine ? (mine.tentative ? '미정' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : tr ? '↪ 양도' : '';
         const seat = mine ? fmtSeat(mine) : '';
         const cast = castHtml(getApps().find(a => a.id === appId) || { id: appId }, s);
         return `<div class="xp-sess${mine ? ' mine' : ''}" onclick="openDay('${s.date}')">
@@ -2112,6 +2141,7 @@
     document.getElementById('xr-trans').checked   = tr;
     document.getElementById('xr-trans-to').hidden = !tr;
     document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
+    document.getElementById('xr-tent').checked    = !!rec?.tentative;
     document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
     // 메모·사진은 날짜 상세의 '📝 메모'와 같은 자리(notes)에 둔다 — 어느 쪽에서 써도 같이 보인다
     _xr.noteKey = noteKeyFor(appId, ds, { time, _showId: showId });
@@ -2225,6 +2255,7 @@
       price: Number(document.getElementById('xr-price').value) || null,
       status: tr ? '양도' : '',
       transferTo: tr ? document.getElementById('xr-trans-to').value.trim() : '',
+      ...(document.getElementById('xr-tent').checked ? { tentative: true } : {}),
     };
     const i = list.findIndex(r => r.id === rec.id);
     if (i >= 0) list[i] = rec; else list.push(rec);
@@ -2532,11 +2563,19 @@
     document.getElementById('cf-date').value    = ev ? ev.date    : _customFormDs;
     document.getElementById('cf-time').value    = ev ? ev.time    : '20:00';
     document.getElementById('cf-name').value    = ev ? ev.name    : '';
-    document.getElementById('cf-comment').value = ev ? ev.comment : '';
+    document.getElementById('cf-comment').value = ev ? ev.comment || '' : '';
     document.getElementById('cf-end').value = ev && ev.endDate ? ev.endDate : '';
     toggleCfMulti(!!(ev && ev.endDate));
     document.getElementById('cf-seat-zone').value = ev && ev.seatZone ? ev.seatZone : '';
     document.getElementById('cf-seat-num').value = ev && ev.seatNumber != null ? ev.seatNumber : '';
+    document.getElementById('cf-cast').value   = ev && ev.cast ? ev.cast : '';
+    document.getElementById('cf-place').value  = ev && ev.place ? ev.place : '';
+    document.getElementById('cf-price').value  = ev && ev.price ? ev.price : '';
+    document.getElementById('cf-vendor').value = ev && ev.vendor ? ev.vendor : '';
+    document.getElementById('cf-tent').checked = !!(ev && ev.tentative);
+    // 고칠 때는 [삭제 · 저장], 새로 넣을 때는 [취소 · 저장] — 삭제는 카드가 아니라 여기서 (11/20)
+    document.getElementById('cf-del').hidden = !ev;
+    document.getElementById('cf-cancel').hidden = !!ev;
     _cfIcon = ev && ev.icon ? ev.icon : '📌'; renderCfIcons();
     _cfWork = null; document.getElementById('cf-sugg').hidden = true; renderCfSess();
     ensureCatalog();   // 아직 안 넣은 작품도 자동완성·회차에 쓰게 미리 받는다
@@ -2613,8 +2652,10 @@
     }
     const zone = document.getElementById('cf-seat-zone').value.trim(), num = document.getElementById('cf-seat-num').value;
     const memo = document.getElementById('cf-comment').value.trim();
-    if (w.kind !== 'data' && !APP_IMPORT_OK.includes(w.id)) {
-      // 전용 페이지 기록은 앱마다 모양이 달라 허브가 쓰지 않는다 — 그 회차로 보낸다
+    const tent = document.getElementById('cf-tent').checked;
+    if (w.kind !== 'data') await loadSeatPlans();
+    if (w.kind !== 'data' && !impAppOk(w)) {
+      // 좌석표가 없는 옛 전용 앱은 기록 모양을 몰라 허브가 쓰지 않는다 — 그 회차로 보낸다
       closeCustomForm();
       if (canJump(app)) { toast('전용 페이지에서 예매를 기록해 주세요'); jumpToApp(w.id, ds, time); }
       else toast('이 작품은 전용 페이지에서 기록해 주세요');
@@ -2631,12 +2672,16 @@
     const list = extraRecords(app.recordsKey), id = 'c' + Date.now().toString(36);
     if (w.kind === 'data') {
       list.push({ id, date: ds, time, show: w.name, showId: s._showId || undefined,
-        seatZone: zone, seatNumber: num === '' ? null : Number(num), price: null, status: '', transferTo: '' });
-    } else {   // 전용 앱 기록 모양 (가져오기와 같은 이끼숲 기준)
+        seatZone: zone, seatNumber: num === '' ? null : Number(num), price: Number(document.getElementById('cf-price').value) || null,
+        status: '', transferTo: '', ...(tent ? { tentative: true } : {}) });
+    } else {   // 전용 앱 기록 모양 (가져오기와 같은 길 — 앱 좌석표로 층을 맞춘다)
       const cast = Object.fromEntries(getActorFields(s).map(k => [k, s[k]]));
-      list.push({ id, date: ds, time, ...cast, isBooked: true, castManual: false, status: '관람', transferTo: '',
-        seatFloor: null, seatZone: zone || null, seatNumber: num === '' ? null : Number(num),
-        price: null, rating: 0, comment: '', memo: '', createdAt: new Date().toISOString() });
+      const as = impAppSeat(impSeat(zone + (num !== '' ? ' ' + num : '')) || (zone ? { seatZone: zone, seatNumber: num === '' ? null : +num } : null), _seatPlans[w.id]);
+      const now = new Date().toISOString();
+      list.push({ id, date: ds, time, ...cast, isBooked: !tent, castManual: false, status: '관람', transferTo: '',
+        seatFloor: as.seatFloor, seatZone: as.seatZone, seatNumber: as.seatNumber,
+        price: Number(document.getElementById('cf-price').value) || null, discountType: null, paidDiff: false,
+        rating: 0, comment: '', memo: as.bad ? '좌석 ' + [zone, num].filter(Boolean).join(' ') : '', createdAt: now, updatedAt: now });
     }
     saveExtraRecords(list, app.recordsKey);
     closeCustomForm();
@@ -2689,8 +2734,12 @@
     if (endDate === date) endDate = '';
     const seatZone = kind === 'show' ? document.getElementById('cf-seat-zone').value.trim() : '';
     const seatNum = kind === 'show' ? document.getElementById('cf-seat-num').value : '';
+    const fv = id => document.getElementById(id).value.trim();
     const extra = kind === 'etc' ? { kind, icon: _cfIcon || '📌', ...(endDate ? { endDate } : {}) }
-      : { kind, ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}) };
+      : { kind, ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}),
+          ...(fv('cf-cast') ? { cast: fv('cf-cast') } : {}), ...(fv('cf-place') ? { place: fv('cf-place') } : {}),
+          ...(Number(fv('cf-price')) ? { price: Number(fv('cf-price')) } : {}), ...(fv('cf-vendor') ? { vendor: fv('cf-vendor') } : {}),
+          ...(document.getElementById('cf-tent').checked ? { tentative: true } : {}) };
     const time    = document.getElementById('cf-time').value;
     const comment = document.getElementById('cf-comment').value.trim();
     const color   = document.querySelector('#cf-colors .color-swatch.selected')?.dataset.hex || COLOR_PALETTE[0];
@@ -2702,7 +2751,8 @@
     catch (e) { alert('사진을 저장하지 못했어요 (' + e.message + ')'); return; }
     if (_customEditId) {
       const idx = list.findIndex(e => e.id === _customEditId);
-      if (idx !== -1) list[idx] = { id: _customEditId, date, time, name, comment, color, photoIds, ...extra };
+      const keep = idx !== -1 && list[idx].importKey ? { importKey: list[idx].importKey } : {};
+      if (idx !== -1) list[idx] = { id: _customEditId, date, time, name, comment, color, photoIds, ...keep, ...extra };
     } else {
       list.push({ id: Date.now(), date, time, name, comment, color, photoIds, ...extra });
     }
@@ -2719,6 +2769,7 @@
     await Promise.all((ev?.photoIds || []).map(pid => PhotoDB.remove(pid)));
     saveCustom(getCustom().filter(e => e.id !== id));
     document.getElementById('ov-detail').classList.remove('open');
+    closeCustomForm();
     renderCalendar();
   }
 
@@ -2745,6 +2796,8 @@
             // 표는 있었지만 안 본 회차. 관람으로 치지 않되 기록은 남긴다.
             transferred: r.status === '양도',
             transferTo: r.transferTo || '',
+            // 볼지 말지 고민 중 — 전용 앱은 '미정 (예매 미확정)'(isBooked:false), 허브·내 일정은 tentative
+            tentative: r.isBooked === false || !!r.tentative,
           });
         });
       } catch {}
@@ -2957,7 +3010,9 @@
           .map(n => actorOn(filter, app.id, n) ? `<b>${n}</b>` : n).join(' · ');
         const att   = recs.filter(r => !r.transferred);
         const trans = !att.length && recs.find(r => r.transferred);
-        const mark = att.length
+        const tent = att.length && att.every(r => r.tentative);
+        const mark = tent ? '<span class="mark-tent">미정</span>'
+          : att.length
           ? `<span class="wk-mark ${past ? 'att' : 'booked'}">${past ? '✓ 관람' : '🎫 예매'}${att.length > 1 ? ' ×' + att.length : ''}</span>`
           : trans ? `<span class="wk-mark trans">↪ 양도${trans.transferTo ? ' · ' + escHtml(trans.transferTo) : ''}</span>` : '';
         const seat = att.map(fmtSeat).filter(Boolean).join(', ');
@@ -2966,7 +3021,7 @@
           const c = e.color || app.color;
           return `<span class="wk-ev" style="${appStyle(c)}" ${e.description ? `title="${e.description.replace(/"/g, '&quot;')}"` : ''}>${e.name}</span>`;
         }).join('');
-        return `<div class="wk-sess${mine ? ' mine' : ' plain'}${trans ? ' transferred' : ''}"
+        return `<div class="wk-sess${mine ? ' mine' : ' plain'}${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}"
              ${mine ? `style="${mineStyle(app.color)}"` : ''} onclick="openDay('${ds}')">
           <div class="wk-bar" style="background:${app.color}"></div>
           <div class="wk-time">${s.time || '—'}</div>
@@ -3083,7 +3138,8 @@
         const attCnt = recs.filter(r => !r.transferred).length;
         const trans  = attCnt === 0 ? recs.find(r => r.transferred) : null;
         const hasPic = (notes[noteKeyFor(s._app.id, ds, s)]?.photoIds || []).length > 0;
-        (recs.length > 0 ? marked : plain).push({ s, attCnt, hasPic, trans });
+        const tent = attCnt > 0 && recs.filter(r => !r.transferred).every(r => r.tentative);
+        (recs.length > 0 ? marked : plain).push({ s, attCnt, hasPic, trans, tent });
       });
 
       // '내 기록' 에서는 안 간 회차를 아예 그리지 않는다.
@@ -3101,8 +3157,8 @@
       ].filter(Boolean).join(' ');
 
       // 칩: 윗줄 시각(+양도·×N·사진 표시), 아랫줄 작품 이름. 같은 날 두 번 본 경우만 ×N 을 붙인다.
-      const sessBadges = marked.map(({ s, attCnt, hasPic, trans }) => `
-        <div class="sess-card${trans ? ' transferred' : ''}" style="${appStyle(s._app.color)}"
+      const sessBadges = marked.map(({ s, attCnt, hasPic, trans, tent }) => `
+        <div class="sess-card${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}" style="${appStyle(s._app.color)}"
              ${trans ? `title="양도${trans.transferTo ? ' · ' + escHtml(trans.transferTo) : ''}"` : ''}>
           <span class="sess-card-time">${fmtTime(s.time)}</span>
           ${trans ? '<span class="sess-card-icons">↪</span>' : ''}
@@ -3120,7 +3176,7 @@
               `<i style="left:${axisPos(s.time)}%;background:${s._app.color}"></i>`).join('')}</div>`);
 
       const customBadges = showC.map(e => `
-        <div class="sess-card" style="${appStyle(e.color || COLOR_PALETTE[0])}">
+        <div class="sess-card${e.tentative ? ' tentative' : ''}" style="${appStyle(e.color || COLOR_PALETTE[0])}">
           <span class="sess-card-time">${e.time ? fmtTime(e.time) : ''}</span>
           <span class="sess-card-name">${customLabel(e)}</span>
         </div>`);
@@ -3186,6 +3242,7 @@
         const seat = fmtSeat(r);
         const mark = r.transferred
           ? `<span class="session-transferred">↪ 양도${r.transferTo ? ' · ' + escHtml(r.transferTo) : ''}</span>`
+          : r.tentative ? '<span class="mark-tent">미정</span>'
           : ds < todayStr
             ? '<span class="session-attended">✓ 관람</span>'
             : '<span class="session-booked">🎫 예매</span>';
@@ -3239,19 +3296,29 @@
       const cThumbs = cPhotos.map((src, i) =>
         `<div class="note-thumb-wrap"><img class="note-thumb" src="${src}" data-key="custom_${e.id}" data-idx="${i}"></div>`
       ).join('');
-      return `<div class="session-row">
+      const editBtn = `<span class="note-acts"><button class="jump-btn" onclick="openCustomForm('${ds}',${e.id})">✏️ 수정</button></span>`;
+      if (customKind(e) === 'show') {
+        const mark = e.tentative ? '<span class="mark-tent">미정</span>' : ds < todayStr ? '<span class="session-attended">✓ 관람</span>' : '<span class="session-booked">🎫 예매</span>';
+        const info = [e.place, e.price ? Number(e.price).toLocaleString() + '원' : '', e.vendor].filter(Boolean).join(' · ');
+        return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${col}">
         <div class="session-time">${e.time || '—'}</div>
         <div class="session-body">
-          <span class="session-tag" style="${appStyle(col)}">${customIcon(e)} ${customKind(e) === 'show' ? '공연' : '내 일정'}</span>
-          <div class="session-cast">${escHtml(e.name)}</div>
-          ${e.endDate ? `<div class="session-meta">${evMd(e.date)} ~ ${evMd(e.endDate)}</div>` : ''}
-          ${fmtSeat(e) ? `<div class="session-meta">${fmtSeat(e)}</div>` : ''}
-          ${e.comment ? `<div class="session-meta">${escHtml(e.comment)}</div>` : ''}
-          ${cThumbs ? `<div class="note-row">${cThumbs}</div>` : ''}
+          <div class="session-name" style="color:${col}">🎭 ${escHtml(e.name)}</div>
+          ${e.cast ? `<div class="session-cast">${escHtml(e.cast.split(/\s*[,·]\s*/).join(' · '))}</div>` : ''}
+          <div class="session-meta">${mark}${fmtSeat(e) ? `&nbsp;&nbsp;${fmtSeat(e)}` : ''}</div>
+          ${info ? `<div class="session-meta cu-info">${escHtml(info)}</div>` : ''}
+          ${e.comment ? `<div class="session-meta cu-info">${escHtml(e.comment)}</div>` : ''}
+          <div class="note-row">${cThumbs}${editBtn}</div>
         </div>
-        <div class="session-acts">
-          <button class="session-act-btn" onclick="openCustomForm('${ds}',${e.id})">✏️</button>
-          <button class="session-act-btn" onclick="deleteCustomEvent(${e.id})">🗑️</button>
+      </div>`;
+      }
+      return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${col}">
+        <div class="session-time">${e.time || '—'}</div>
+        <div class="session-body">
+          <div class="session-name" style="color:${col}">${customIcon(e)} ${escHtml(e.name)}</div>
+          ${e.endDate ? `<div class="session-meta">${evMd(e.date)} ~ ${evMd(e.endDate)}</div>` : ''}
+          ${e.comment ? `<div class="session-meta cu-info">${escHtml(e.comment)}</div>` : ''}
+          <div class="note-row">${cThumbs}${editBtn}</div>
         </div>
       </div>`;
     });
@@ -3579,6 +3646,7 @@
     cast: ['cast', 'actors', '출연', '캐스트', '캐스팅', '배우'],
     vendor: ['vendor', 'site', '구매처', '예매처'],
     memo: ['memo', 'note', 'notes', 'comment', '메모', '리뷰', '비고'],
+    status: ['status', '상태', '예매'],
   };
   function pasteWhen(dv, tv) {
     const d = String(dv ?? ''), m = d.match(/(\d{4})\s*[-./년]\s*(\d{1,2})\s*[-./월]\s*(\d{1,2})/);
@@ -3618,7 +3686,9 @@
       if (!w) { errs.push(`${i + 1}번째 ${name}: 날짜(date)를 읽지 못했어요 · 2026-12-26 처럼 적어 주세요`); return; }
       const price = String(get('price')).replace(/[^\d.]/g, '');
       rows.push({ '제목': name, '일시': w.ds + (w.time ? ' ' + w.time : ''), _ds: w.ds, _time: w.time,
-        '출연': str(get('cast')), '장소': str(get('place')), '좌석': str(get('seat')), '금액': price, '구매처': str(get('vendor')), '리뷰/메모': str(get('memo')) });
+        '출연': str(get('cast')), '장소': str(get('place')), '좌석': str(get('seat')), '금액': price, '구매처': str(get('vendor')), '리뷰/메모': str(get('memo')),
+        // "status": "미정" — 볼지 고민 중 (11/20)
+        _tent: /미정|고민|maybe|tentative|undecided/i.test(str(get('status'))) || get('status') === false });
     });
     return { rows, errs };
   }
@@ -3735,7 +3805,7 @@
   // 붙여넣은·링크로 온 일정은 무엇이 어디로 들어가는지 한 줄씩 보여 준다 — 숫자만으로는 뭔지 알 수 없었다(11/19)
   function impListHtml(L) {
     const tag = x => x.state === 'have' ? ['이미 있음', 'off'] : x.state === 'again' ? ['예전에 넣음', 'off']
-      : x.kind === 'match' ? ['🎫 예매 기록', 'on'] : ['🎭 내 일정', ''];
+      : x.kind === 'match' ? [x.r._tent ? '🎫 예매 기록 · 미정' : '🎫 예매 기록', 'on'] : [x.r._tent ? '🎭 내 일정 · 미정' : '🎭 내 일정', ''];
     // 항목마다 체크 — 끄면 그 일정만 빼고 넣는다 (11/19)
     const row = (x, i) => {
       const d = new Date(x.ds + 'T00:00:00'), r = x.r, [t, c] = tag(x);
@@ -3790,13 +3860,13 @@
         const app = getApps().find(a => a.id === x.w.id);
         const list = extraRecords(app.recordsKey), id = 'p' + Date.now().toString(36) + nMatch;
         if (x.w.kind === 'data') {
-          list.push({ id, date: x.ds, time: x.time, ...(seat || {}), price, status: '', transferTo: '', importKey: x.key });
+          list.push({ id, date: x.ds, time: x.time, ...(seat || {}), price, status: '', transferTo: '', ...(r._tent ? { tentative: true } : {}), importKey: x.key });
           if (memo) { const nk = noteKeyFor(x.w.id, x.ds, x.s); notes[nk] = { ...(notes[nk] || {}), memo: [(notes[nk] || {}).memo, memo].filter(Boolean).join('\n') }; }
         } else {   // 전용 앱 기록 모양 — 좌석표 있는 앱은 모두 같다. 할인·도장 같은 앱 칸은 비워 둔다
           const cast = Object.fromEntries(getActorFields(x.s).map(k => [k, x.s[k]]));
           // 앱 좌석은 '층 + 열 + 번' — 그 앱 좌석표에 맞춰 넣고, 구역·없는 자리는 메모에
           const as = impAppSeat(seat, _seatPlans[x.w.id]), now = new Date().toISOString();
-          list.push({ id, date: x.ds, time: x.time, ...cast, isBooked: true, castManual: false, status: '관람', transferTo: '',
+          list.push({ id, date: x.ds, time: x.time, ...cast, isBooked: !r._tent, castManual: false, status: '관람', transferTo: '',
             seatFloor: as.seatFloor, seatZone: as.seatZone, seatNumber: as.seatNumber,
             price, discountType: null, paidDiff: false, rating: 0, comment: '',
             memo: [memo, as.left, as.bad ? '좌석 ' + r['좌석'] : ''].filter(Boolean).join(' · '),
@@ -3804,9 +3874,14 @@
         }
         saveExtraRecords(list, app.recordsKey); nMatch++;
       } else {
+        // 회차 카드와 같은 칸으로 나눠 둔다 — 출연·장소·금액·예매처 (11/20, 예전 것은 메모 한 줄 그대로)
+        const st = (seat || {}).seatRow ? { seatZone: seat.seatZone, seatRow: seat.seatRow, seatNumber: seat.seatNumber }
+          : seat ? { seatZone: (seat.seatFloor ? seat.seatFloor + '층 ' : '') + seat.seatZone, seatNumber: seat.seatNumber } : {};
+        const cm = [r['리뷰/메모'], seat || !r['좌석'] ? '' : '좌석 ' + r['좌석']].filter(Boolean).join(' · ');
         custom.push({ id: Date.now() + nShow, kind: 'show', date: x.ds, time: x.time, name: impShowName(r['제목']),
-          comment: [r['장소'], r['출연'], price ? price.toLocaleString() + '원' : '', memo].filter(Boolean).join(' · '),
-          color: COLOR_PALETTE[0], photoIds: [], ...(seat || {}), importKey: x.key });
+          ...(r['출연'] ? { cast: r['출연'] } : {}), ...(r['장소'] ? { place: r['장소'] } : {}), ...(price ? { price } : {}),
+          ...(r['구매처'] ? { vendor: r['구매처'] } : {}), ...(r._tent ? { tentative: true } : {}),
+          comment: cm, color: COLOR_PALETTE[0], photoIds: [], ...st, importKey: x.key });
         nShow++;
       }
       led[x.key] = 1;
@@ -4589,7 +4664,7 @@
             <span class="srch-time">${s.time || ''}</span>
             <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
             <span class="srch-sub">${castHtml(w, s)}</span>
-            ${(r => r ? `<span class="srch-tag mine">${r.transferred ? '↪ 양도' : ds < todayStr ? '✓ 관람' : '🎫 예매'}</span>` : '')(
+            ${(r => r ? `<span class="srch-tag mine">${r.transferred ? '↪ 양도' : r.tentative ? '미정' : ds < todayStr ? '✓ 관람' : '🎫 예매'}</span>` : '')(
               att.find(r => recHit(r, w.id, s)))}
           </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없어요</div>');
     }
@@ -4672,7 +4747,7 @@
         ${past.length || cal ? `<div class="srch-list-hd">${past.length ? `<div class="srch-past-btns">${more ? `<button class="srch-back" onclick="_srchPastOpen+=10;renderSearch()">${nPast ? `지난 회차 ${more}개 더 보기 <span class="srch-past-n">(${Math.min(10, more)}개)</span> ▾` : `지난 회차 ${past.length}개 ▾`}</button>` : ''}${nPast ? `<button class="srch-back" onclick="_srchPastOpen=0;renderSearch()">접기 ▴</button>` : ''}</div>` : ''}${cal ? cal.btn : ''}</div>${cal ? cal.box : ''}` : ''}
         ${show.map(({ w, s }) => {
           const r = (att[s.date] || []).find(x => recHit(x, w.id, s));
-          const mark = r ? (r.transferred ? '↪ 양도' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
+          const mark = r ? (r.transferred ? '↪ 양도' : r.tentative ? '미정' : s.date < todayStr ? '✓ 관람' : '🎫 예매') : '';
           const ev = evOn(w, s.date, s.time);
           const dow = new Date(s.date + 'T00:00:00').getDay();
           return `<div class="srch-row" data-ds="${s.date}" onclick="openEvSess('${w.id}','${s.date}','${s.time || ''}','${s._showId || ''}',-1)">

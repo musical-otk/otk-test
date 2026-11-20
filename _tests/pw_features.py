@@ -339,7 +339,7 @@ async def main():
           const L=impPlan().list.map(x=>[x.kind,x.state]);const box=document.getElementById('set-import').innerText;const items=[...document.querySelectorAll('#set-import .imp-item')].map(e=>e.innerText.replace(/\\s+/g,' ').trim());
           const cb=document.querySelectorAll('#set-import .imp-item input');cb[1].click();const off=impPlan().list.length&&document.getElementById('set-import').innerText.match(/공연 일정으로[^\\d]*(\\d+)/)[1];document.querySelectorAll('#set-import .imp-item input')[1].click();const _r=location.reload;await applyImport();
           const rec=extraRecords(recKeyOf('show_hatshepsut2026')).map(r=>[r.date,r.time,r.seatZone,r.seatNumber,r.price]);
-          const cu=getCustom().filter(c=>c.name==='가상의 공연').map(c=>[c.kind,c.date,c.time,c.comment]);
+          const cu=getCustom().filter(c=>c.name==='가상의 공연').map(c=>[c.kind,c.date,c.time,c.place]);
           return [L, box.includes('붙여넣은 일정 2건')&&box.includes('못 읽은 항목 1건'), rec, cu, items, [cb.length, off]]}""", txt)
         check('붙여넣기 → 회차 예매 기록 + 🎭 내 일정 (미리보기에 한 줄씩)', got[:4] == [[['match', 'new'], ['show', 'new']], True, [['2026-12-26', '19:00', 'B', 3, 66000]], [['show', '2026-12-27', '14:00', '어느 극장']]] and len(got[4]) == 2 and '하트셉수트' in got[4][0] and '19:00' in got[4][0] and '예매 기록' in got[4][0] and '가상의 공연' in got[4][1] and '내 일정' in got[4][1] and got[5] == [2, '0'], got)
         await pg2.wait_for_timeout(2500)   # 넣은 뒤 새로 고침
@@ -356,6 +356,38 @@ async def main():
         await e2("location.hash='#add=" + base64.urlsafe_b64encode(js.encode()).decode().rstrip('=') + "'"); await pg2.wait_for_timeout(1500)
         got = await e2("""[location.hash, !!_imp&&_imp.rows.map(r=>r['제목'])]""")
         check('열려 있는 중에 온 링크(base64)도 받음', got == ['', ['링크로 온 공연']], got)
+        # 내 일정 공연 카드 — 회차 카드와 같은 모양, 버튼은 [✏️ 수정] 하나·삭제는 수정 창 안 (A안 11/20) · 미정은 점선
+        await e2("localStorage.clear()"); await pg2.reload(); await pg2.wait_for_timeout(2500)
+        got = await e2("""async()=>{
+          saveCustom([{id:7,kind:'show',date:'2026-12-21',time:'18:00',name:'알테르 에고',cast:'이재균, 손지윤',place:'예스24스테이지 3관',price:50500,vendor:'YES24',seatZone:'1',seatNumber:5,color:COLOR_PALETTE[0],photoIds:[]},
+                      {id:8,kind:'show',date:'2026-12-22',time:'19:30',name:'레드북',color:COLOR_PALETTE[1],photoIds:[],tentative:true}]);
+          await openDay('2026-12-21');
+          const row=document.querySelector('#sheet-content .session-row');const t=row.innerText.split(String.fromCharCode(10)).join(' ').split(/ +/).join(' ');
+          const btns=[...row.querySelectorAll('button')].map(b=>b.textContent.trim());
+          await openCustomForm('2026-12-21',7);
+          const f=[document.getElementById('cf-cast').value,document.getElementById('cf-place').value,document.getElementById('cf-price').value,document.getElementById('cf-vendor').value,
+                   !document.getElementById('cf-del').hidden, document.getElementById('cf-cancel').hidden];
+          document.getElementById('cf-tent').checked=true; await saveCustomEvent();
+          const e7=getCustom().find(e=>e.id===7);
+          await openDay('2026-12-22'); const tent=document.querySelector('#sheet-content .mark-tent')?.textContent;
+          document.getElementById('ov-detail').classList.remove('open');
+          currentYear=2026;currentMonth=11;if(getCalView&&getCalView()!=='month'){} renderCalendar();
+          const chips=[...document.querySelectorAll('#cal-grid .sess-card.tentative')].map(c=>c.textContent.replace(/\s+/g,' ').trim());
+          window.confirm=()=>true; await openCustomForm('2026-12-21',7); await deleteCustomEvent(7);
+          return [t, btns, f, [e7.tentative, e7.cast, e7.place], tent, chips.length, getCustom().length, document.getElementById('ov-custom').classList.contains('open')]}""")
+        check('내 일정 공연 카드: 출연·좌석·장소, 버튼은 ✏️ 수정 하나',
+              got and '이재균 · 손지윤' in got[0] and '🎫 예매' in got[0] and '1열 5번' in got[0] and '예스24스테이지 3관 · 50,500원 · YES24' in got[0] and got[1] == ['✏️ 수정'], got)
+        check('수정 창: 출연·장소·금액·예매처 채움, [삭제] 보이고 [취소] 숨김, 미정 저장', got and got[2] == ['이재균, 손지윤', '예스24스테이지 3관', '50500', 'YES24', True, True] and got[3] == [True, '이재균, 손지윤', '예스24스테이지 3관'], got)
+        check('미정: 카드에 [미정], 달력 칩은 점선 2개', got and got[4] == '미정' and got[5] == 2, got)
+        check('수정 창에서 삭제하면 지워지고 창이 닫힘', got and got[6] == 1 and got[7] is False, got)
+        got = await e2("""async()=>{await ensureCatalog();openExtraRec('2026-12-26','19:00','show_hatshepsut2026','');document.getElementById('xr-tent').checked=true;await saveExtraRec();
+          const r=extraRecords(recKeyOf('show_hatshepsut2026'))[0];const a=(getAttended()['2026-12-26']||[])[0];return [r&&r.tentative, a&&a.tentative]}""")
+        check('허브 예매 기록 창의 미정 → 기록·달력에 미정', got == [True, True], got)
+        got = await e2("""(()=>{localStorage.setItem('ikkisup_records',JSON.stringify([{id:'q',date:'2026-12-26',time:'19:00',isBooked:false,status:'관람'}]));
+          return (getAttended()['2026-12-26']||[]).filter(r=>r.appId==='app_ikkisup').map(r=>r.tentative)})()""")
+        check('전용 앱의 미정(예매 미확정) 기록도 허브에서 미정', got in ([True], []), got)
+        got = await e2("""parsePaste('[{"name":"x","date":"2026-12-01","status":"미정"},{"name":"y","date":"2026-12-02"}]').rows.map(r=>r._tent)""")
+        check('붙여넣기 "status": "미정"', got == [True, False], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 
