@@ -464,13 +464,6 @@
                      background: currentColor; opacity: 0.8; }
     /* 양도 — 표는 있었지만 안 봤다. 관람과 헷갈리지 않게 흐리게. */
     .sess-card.transferred { opacity: 0.5; }
-    .cal-legend { display: flex; justify-content: center; gap: 12px; padding: 8px 0 2px; font-size: 10px; color: var(--text3); }
-    .cal-legend span { display: inline-flex; align-items: center; gap: 4px; }
-    .cal-legend i { display: inline-block; width: 14px; height: 9px; border-radius: 3px; border: 1px solid var(--custom); background: color-mix(in srgb, var(--custom) 18%, transparent); }
-    .cal-legend i.lg-tent { background: transparent; border-style: dashed; border-width: 1.5px; }
-    .cal-legend i.lg-trans { opacity: 0.45; }
-    .cal-legend i.lg-dots { width: auto; height: auto; border: 0; background: none; display: inline-flex; flex-direction: column; gap: 1px; }
-    .cal-legend i.lg-dots b { display: block; width: 3px; height: 3px; border-radius: 50%; background: var(--custom); }
     /* 미정 — 볼지 고민 중. 속을 비우고 점선 (11/20) */
     .sess-card.tentative { background: transparent !important; border-style: dashed !important; border-width: 1.5px !important; border-color: currentColor !important; }
     .wk-sess.tentative { border-style: dashed !important; }
@@ -839,8 +832,6 @@
       <div class="cal-dow" id="cal-dow"></div>
       <div class="cal-days" id="cal-days"></div>
       <div class="axis-legend" id="axis-legend" style="display:none"></div>
-      <!-- 칸 모양 뜻 — 점선이 미정인 걸 짐작으로만 알았다 (사용자 에이전트 리뷰 11/20) -->
-      <div class="cal-legend"><span><i class="lg-booked"></i>예매</span><span><i class="lg-tent"></i>미정</span><span><i class="lg-trans"></i>양도</span><span><i class="lg-dots"><b></b><b></b></i>여러 장</span></div>
     </div>
     <div id="status" class="loading">스케줄 불러오는 중…</div>
     <button class="fab" onclick="openCustomForm('')">+</button>
