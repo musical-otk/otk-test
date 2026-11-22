@@ -1,14 +1,14 @@
 {
   "김도현": [
     {
-      "tag": "콰이어 오브 맨",
+      "id": "1",
       "works": [
         "show_choirofman2026",
         "app_widerstand"
       ]
     },
     {
-      "tag": "슛 더 크로우",
+      "id": "2",
       "works": [
         "show_shootthecrow2026"
       ]

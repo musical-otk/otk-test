@@ -1357,14 +1357,34 @@
   }
   // 작품 앱은 schedule.json 하나, '기타'는 여러 공연을 모은다
   const dataInfo = {};   // 정보만 작품의 show 파일 (극장·기간·예매처·이벤트)
-  // ── 동명이인 ── people.json(apps.json 옆 — 실제는 통합 저장소 루트, 테스트는 /otk-test/): { "김도현": [{ tag, works: [허브 작품 id] }, ...] }
-  // 회차를 받을 때 그 이름을 '김도현 · 콰이어 오브 맨' 으로 바꿔 둔다 — 찾기·♡·필터·달력이 모두 다른 사람으로 본다.
-  // 캐스팅 줄에는 bareName 으로 꼬리표를 떼고 보인다. 표에 없는 작품의 같은 이름은 그대로(순회 때 표에 넣는다)
-  const NAME_TAG = ' · ';
+  // ── 동명이인 ── people.json(apps.json 옆 — 실제는 통합 저장소 루트, 테스트는 /otk-test/):
+  //   { "김도현": [{ "id": "1", "works": [허브 작품 id] }, { "id": "2", "works": [...] }] }
+  // 회차를 받을 때 그 이름을 '김도현#1' 로 바꿔 둔다 — 찾기·♡·필터·달력이 모두 다른 사람으로 본다(♡ 에는 이 값이 저장돼 바뀌지 않는다).
+  // 화면에는 actorLabel 로 '김도현 · <그 사람의 가장 최근 작품>' — 대표작은 정할 수 없어 최근 작품으로 (사용자 11/23).
+  // 캐스팅 줄에는 bareName 으로 이름만. 표에 없는 작품의 같은 이름은 그대로(순회 때 표에 넣는다)
+  const NAME_TAG = '#';
   let PEOPLE = {};
   const peopleReady = fetch(new URL('people.json', APPS_INDEX_URL).href, { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).catch(() => ({}))
     .then(p => { PEOPLE = p && typeof p === 'object' ? p : {}; });
-  const bareName = n => String(n).split(NAME_TAG)[0];
+  const bareName = n => String(n).split(NAME_TAG)[0].split(' · ')[0];   // ' · ' 는 v180 의 예전 꼬리표
+  const personOf = n => { const [b, id] = String(n).split(NAME_TAG); return id && (PEOPLE[b] || []).find(p => String(p.id) === id); };
+  // 그 사람이 나오는 작품 중 가장 늦게까지 하는 작품 이름
+  function latestWorkName(person) {
+    let best = null, bestDate = '';
+    (person.works || []).forEach(id => {
+      const w = getApps().find(a => a.id === id) || allPresets().find(a => a.id === id);
+      if (!w) return;
+      const rows = schedules[id] || _catalogRows[id] || [];
+      const last = rows.reduce((m, r) => (r.date && r.date > m ? r.date : m), w.lastDate || '');
+      if (!best || last > bestDate) { best = w; bestDate = last; }
+    });
+    return best ? best.name : '';
+  }
+  function actorLabel(n) {
+    const p = personOf(n); if (!p) return bareName(n);
+    const w = latestWorkName(p);
+    return bareName(n) + (w ? ' · ' + w : '');
+  }
   function tagRows(appId, rows) {
     if (!Array.isArray(rows) || !Object.keys(PEOPLE).length) return rows;
     rows.forEach(r => getActorFields(r).forEach(k => {
@@ -1372,7 +1392,7 @@
       if (!who) return;
       const id = r._showId ? 'show_' + r._showId : appId;
       const p = who.find(x => (x.works || []).includes(id));
-      if (p) r[k] = n + NAME_TAG + p.tag;
+      if (p) r[k] = n + NAME_TAG + p.id;
     }));
     return rows;
   }
@@ -1381,23 +1401,25 @@
     await peopleReady;
     return tagRows(app.id, rows);
   }
-  // 꼬리표가 생기기 전에 ♡ 한 '김도현' — 어느 사람인지 한 번 묻는다
+  // 표가 생기기 전에 ♡ 한 '김도현'(또는 v180 의 '김도현 · 콰이어 오브 맨') — 어느 사람인지 한 번 묻는다
+  let _hmKey = null;
   function askHomonymHearts() {
-    const h = getHearts(), name = h.actors.find(n => PEOPLE[n] && PEOPLE[n].length > 1);
-    if (!name || document.getElementById('ov-homonym')) return;
+    const h = getHearts();
+    const key = h.actors.find(n => (PEOPLE[bareName(n)] || []).length > 1 && !personOf(n));
+    if (!key || document.getElementById('ov-homonym')) return;
+    const name = bareName(key);
+    _hmKey = key;
     const ov = document.createElement('div');
     ov.id = 'ov-homonym'; ov.className = 'hm-dim';
     ov.innerHTML = `<div class="hm-box"><div class="hm-q">관심 배우 <b>${name}</b> 은 이름이 같은 분이 여러 명이에요.<br>어느 분인가요?</div>
-      ${PEOPLE[name].map((p, i) => `<button class="set-btn" onclick="pickHomonym(${i})">${name}${NAME_TAG}${p.tag}</button>`).join('')}
+      ${PEOPLE[name].map((p, i) => `<button class="set-btn" onclick="pickHomonym(${i})">${actorLabel(name + NAME_TAG + p.id)}</button>`).join('')}
       <button class="set-btn" onclick="pickHomonym(-1)">모두</button></div>`;
-    _hmName = name;
     document.body.appendChild(ov);
   }
-  let _hmName = null;
   function pickHomonym(i) {
-    const name = _hmName, h = getHearts();
-    const keys = (i < 0 ? PEOPLE[name] : [PEOPLE[name][i]]).map(p => name + NAME_TAG + p.tag);
-    saveHearts({ ...h, actors: [...new Set(h.actors.flatMap(n => n === name ? keys : [n]))] });
+    const key = _hmKey, name = bareName(key), h = getHearts();
+    const keys = (i < 0 ? PEOPLE[name] : [PEOPLE[name][i]]).map(p => name + NAME_TAG + p.id);
+    saveHearts({ ...h, actors: [...new Set(h.actors.flatMap(n => n === key ? keys : [n]))] });
     document.getElementById('ov-homonym').remove();
     renderTabs(); renderCalendar();
     askHomonymHearts();   // 다른 이름도 있으면 이어서
@@ -4217,7 +4239,7 @@
       const esc = jsq(n);
       const ws = (index.get(n) || []).filter(a => (schedules[a.id] || []).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === n)));
       return `<div class="flt-row">
-        <button class="chip${nOn ? ' on' : ''}" ${nOn ? 'style="border-color:var(--custom);color:var(--custom)"' : ''} onclick="toggleActorOn('${esc}')">${n}</button>
+        <button class="chip${nOn ? ' on' : ''}" ${nOn ? 'style="border-color:var(--custom);color:var(--custom)"' : ''} onclick="toggleActorOn('${esc}')">${actorLabel(n)}</button>
         <span class="flt-tgs">${ws.map(a => { const o = nOn && !f.off.includes(offKey(a.id, n));
           return `<button class="flt-tg${o ? ' on' : ''}" ${o ? on(a.color, true) : ''} title="${a.name}" onclick="setFilterActorWork('${esc}','${a.id}')">${a.icon || a.name}</button>`; }).join('')}</span>
       </div>`;
@@ -4304,7 +4326,7 @@
     const aRow = n => {
       const ws = (actors.get(n) || []).filter(w => rowsW(w.id).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === n)));
       return `<div class="hp-row" onclick="closeHearts();showSearch();pickSearch('actor','${esc(n)}')">
-        <span class="hp-name">${n}</span>
+        <span class="hp-name">${actorLabel(n)}</span>
         <span class="hp-sub">${ws.length ? ws.map(w => w.icon || w.name).join(' ') : '남은 공연 없음'}</span>
         <button class="srch-heart on" title="관심 빼기" onclick="event.stopPropagation();unheartFromBox('actor','${esc(n)}')">♥</button>
       </div>`;
@@ -4836,7 +4858,7 @@
       const items = inWorks.flatMap(w => rowsOf(w).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => ({ w, s })));
       const on = getHearts().actors.includes(n);
       return `<div class="srch-card">
-        <div class="srch-card-hd"><span class="srch-name">${n}</span>
+        <div class="srch-card-hd"><span class="srch-name">${actorLabel(n)}</span>
           <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}`).join(' · ')}</span>
           <span class="srch-hd-right"><button class="srch-heart${on ? ' on' : ''}" title="${on ? '필터에서 빼기' : '필터에 넣기'}"
             onclick="toggleActorHeart('${n.replace(/'/g, "\\'")}')">${on ? '♥' : '♡'}</button></span></div>
@@ -4858,7 +4880,7 @@
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
     if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
       `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
-        <span class="flt-hit-name">${n}</span>
+        <span class="flt-hit-name">${actorLabel(n)}</span>
         <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => `<span title="${w.name}">${w.icon || w.name}</span>`).join(' ') : '남은 공연 없음'}</span>
       </button>`).join('');
 
