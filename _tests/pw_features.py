@@ -156,7 +156,8 @@ async def main():
         check('찾기: 영어 제목 작품을 한글로도 찾음 (페이티드 → FATED)', 'FATED' in ' '.join(await ev("[...document.querySelectorAll('.flt-hit-name')].map(e=>e.textContent)")))
         await pg.fill('#srch-q', '커튼콜'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
         evn = await ev("_evGroups.length")
-        check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 마하고니도)', evn > 12 and await ev("_evGroups.some(g=>g.w.name==='마하고니')"), evn)
+        # 특정 작품 이름은 묻지 않는다 — 그 작품 이벤트가 끝나면 데이터 따라 깨졌다(마하고니, 11/23)
+        check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 12개 넘게)', evn > 12, evn)
         await ev("closeSearch()")
         # 회차마다 설명 한 군데만 다른 같은 이벤트(하트비트 책갈피) — 공통 설명은 한 번, 다른 부분은 회차 줄에
         sp = await ev("""(()=>{const mk=(t,x)=>({name:'책갈피',startDate:'2026-11-16',endDate:'2026-11-16',times:[t],description:`유료 1매당 1개, 이 회차 책갈피: ${x} (총 3종), 매표소에서 수령`});
