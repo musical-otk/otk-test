@@ -98,7 +98,9 @@
     .tab-order-row { display: flex; align-items: center; gap: 8px; padding: 7px 4px; border-bottom: 1px solid var(--border); font-size: 14px; }
     .tab-order-row:last-child { border-bottom: none; }
     .tab-order-row .to-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .tab-order-row .to-off { font-size: 11px; color: var(--text3); margin-left: 4px; }
+    .hm-dim { position: fixed; inset: 0; z-index: 9000; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .hm-box { width: 100%; max-width: 340px; background: var(--bg2); border-radius: 16px; padding: 18px 16px 10px; }
+    .hm-q { font-size: 14px; line-height: 1.6; margin-bottom: 12px; color: var(--text1); }
     .tab-order-row { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
     .to-grip { color: var(--text3); font-size: 20px; padding: 2px 6px; cursor: grab; touch-action: none; }
     .tab-order-row.tab-drag { background: inherit; box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; border-radius: 8px; }
@@ -1017,7 +1019,7 @@
       <div id="set-import"></div>
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
-      <button class="set-btn set-row" onclick="toggleTheme()"><span>다크 / 라이트 모드</span><span id="theme-btn">☀️</span></button>
+      <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
       <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
       <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
       <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
@@ -1355,7 +1357,52 @@
   }
   // 작품 앱은 schedule.json 하나, '기타'는 여러 공연을 모은다
   const dataInfo = {};   // 정보만 작품의 show 파일 (극장·기간·예매처·이벤트)
+  // ── 동명이인 ── people.json(apps.json 옆 — 실제는 통합 저장소 루트, 테스트는 /otk-test/): { "김도현": [{ tag, works: [허브 작품 id] }, ...] }
+  // 회차를 받을 때 그 이름을 '김도현 · 콰이어 오브 맨' 으로 바꿔 둔다 — 찾기·♡·필터·달력이 모두 다른 사람으로 본다.
+  // 캐스팅 줄에는 bareName 으로 꼬리표를 떼고 보인다. 표에 없는 작품의 같은 이름은 그대로(순회 때 표에 넣는다)
+  const NAME_TAG = ' · ';
+  let PEOPLE = {};
+  const peopleReady = fetch(new URL('people.json', APPS_INDEX_URL).href, { cache: 'no-cache' }).then(r => r.ok ? r.json() : {}).catch(() => ({}))
+    .then(p => { PEOPLE = p && typeof p === 'object' ? p : {}; });
+  const bareName = n => String(n).split(NAME_TAG)[0];
+  function tagRows(appId, rows) {
+    if (!Array.isArray(rows) || !Object.keys(PEOPLE).length) return rows;
+    rows.forEach(r => getActorFields(r).forEach(k => {
+      const n = r[k], who = typeof n === 'string' && PEOPLE[n];
+      if (!who) return;
+      const id = r._showId ? 'show_' + r._showId : appId;
+      const p = who.find(x => (x.works || []).includes(id));
+      if (p) r[k] = n + NAME_TAG + p.tag;
+    }));
+    return rows;
+  }
   async function loadSchedule(app, opts) {
+    const rows = await loadScheduleRaw(app, opts);
+    await peopleReady;
+    return tagRows(app.id, rows);
+  }
+  // 꼬리표가 생기기 전에 ♡ 한 '김도현' — 어느 사람인지 한 번 묻는다
+  function askHomonymHearts() {
+    const h = getHearts(), name = h.actors.find(n => PEOPLE[n] && PEOPLE[n].length > 1);
+    if (!name || document.getElementById('ov-homonym')) return;
+    const ov = document.createElement('div');
+    ov.id = 'ov-homonym'; ov.className = 'hm-dim';
+    ov.innerHTML = `<div class="hm-box"><div class="hm-q">관심 배우 <b>${name}</b> 은 이름이 같은 분이 여러 명이에요.<br>어느 분인가요?</div>
+      ${PEOPLE[name].map((p, i) => `<button class="set-btn" onclick="pickHomonym(${i})">${name}${NAME_TAG}${p.tag}</button>`).join('')}
+      <button class="set-btn" onclick="pickHomonym(-1)">모두</button></div>`;
+    _hmName = name;
+    document.body.appendChild(ov);
+  }
+  let _hmName = null;
+  function pickHomonym(i) {
+    const name = _hmName, h = getHearts();
+    const keys = (i < 0 ? PEOPLE[name] : [PEOPLE[name][i]]).map(p => name + NAME_TAG + p.tag);
+    saveHearts({ ...h, actors: [...new Set(h.actors.flatMap(n => n === name ? keys : [n]))] });
+    document.getElementById('ov-homonym').remove();
+    renderTabs(); renderCalendar();
+    askHomonymHearts();   // 다른 이름도 있으면 이어서
+  }
+  async function loadScheduleRaw(app, opts) {
     if (app.kind === 'extra') return loadExtraSchedule();
     if (app.kind === 'data') {
       const info = await fetch(app.scheduleUrl, opts || { cache: 'no-cache' }).then(r => r.json());
@@ -1764,9 +1811,9 @@
   }
   function renderTabOrder() {
     const box = document.getElementById('set-taborder'); if (!box) return;
-    const list = tabApps();
+    const list = tabApps().filter(isTabVisible);   // OFF(막공 뒤 자동으로 꺼진 작품 등)는 탭에 없으니 순서 목록에서도 뺀다 (11/23)
     box.innerHTML = list.length ? list.map(a => `<div class="tab-order-row" data-id="${a.id}">
-        <span class="to-name">${a.icon ? a.icon + ' ' : ''}${a.name}${isTabVisible(a) ? '' : '<span class="to-off">OFF</span>'}</span>
+        <span class="to-name">${a.icon ? a.icon + ' ' : ''}${a.name}</span>
         <span class="to-grip" aria-label="끌어서 순서 바꾸기">≡</span>
       </div>`).join('') : '<div class="hint" style="padding:6px 0">탭이 있는 작품이 없어요</div>';
   }
@@ -2215,7 +2262,7 @@
   }
   function buildTransferText(name, ds, time, s, zone, num) {
     const d = new Date(ds + 'T00:00:00');
-    const cast = s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' ') : '';
+    const cast = s ? getActorFields(s).map(k => s[k]).filter(Boolean).map(bareName).join(' ') : '';
     const lines = [`뮤지컬 ${name} 양도`, '',
       `${parseInt(ds.slice(5, 7))}/${parseInt(ds.slice(8, 10))}(${DOW[d.getDay()]}) ${time || ''}`.trim()];
     if (cast) lines.push(cast);
@@ -2336,14 +2383,13 @@
   function getTheme() { return localStorage.getItem(THEME_KEY) || 'dark'; }
   function applyTheme(t) {
     document.body.classList.toggle('light', t === 'light');
-    document.getElementById('theme-btn').textContent = t === 'light' ? '🌙' : '☀️';
+    const seg = document.getElementById('theme-seg');
+    if (seg) seg.innerHTML = [['dark', '다크'], ['light', '라이트']].map(([v, n]) =>
+      `<button class="seg-btn${v === t ? ' on' : ''}" onclick="setTheme('${v}')">${n}</button>`).join('');
     document.getElementById('meta-theme').content = t === 'light' ? '#f8f8f6' : '#111118';
   }
-  function toggleTheme() {
-    const next = getTheme() === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(THEME_KEY, next);
-    applyTheme(next);
-  }
+  function setTheme(t) { localStorage.setItem(THEME_KEY, t); applyTheme(t); }
+  function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
 
   // ── 배우 필터 ──
   function getPrefs() {
@@ -3019,7 +3065,7 @@
       const past = ds < todayStr;
       const sessHtml = sess.map(({ s, app, recs, note, mine }) => {
         const cast = getActorFields(s).map(k => s[k]).filter(Boolean)
-          .map(n => actorOn(filter, app.id, n) ? `<b>${n}</b>` : n).join(' · ');
+          .map(n => actorOn(filter, app.id, n) ? `<b>${bareName(n)}</b>` : bareName(n)).join(' · ');
         const att   = recs.filter(r => !r.transferred);
         const trans = !att.length && recs.find(r => r.transferred);
         const tent = att.length && att.every(r => r.tentative);
@@ -3388,7 +3434,7 @@
       if (!rows.length) return;   // 못 받은 작품은 지문을 만들지 않는다 — 전부 '없어짐'으로 보이지 않게
       const sess = {}, ev = {};
       rows.filter(r => r.date >= todayStr).forEach(r => {
-        sess[r.date + ' ' + (r.time || '')] = getActorFields(r).map(k => k + '=' + r[k]).join('|');
+        sess[r.date + ' ' + (r.time || '')] = getActorFields(r).map(k => k + '=' + bareName(r[k])).join('|');
       });
       eventsOf(w).forEach(e => { if (e.name) ev[e.name + '|' + e.startDate] = (e.endDate || '') + '|' + (e.times || []).join(','); });
       out[w.id] = { sess, ev };
@@ -4109,8 +4155,9 @@
     _catalogLoading = Promise.all(todo.map(async p => {
       try {
         const rows = await fetch(p.scheduleUrl, { cache: 'no-cache' }).then(r => r.json());
-        if (Array.isArray(rows)) _catalogRows[p.id] = rows;
-        else if (rows && Array.isArray(rows.schedule)) { _catalogRows[p.id] = rows.schedule; _catalogInfo[p.id] = rows; }
+        await peopleReady;
+        if (Array.isArray(rows)) _catalogRows[p.id] = tagRows(p.id, rows);
+        else if (rows && Array.isArray(rows.schedule)) { _catalogRows[p.id] = tagRows(p.id, rows.schedule); _catalogInfo[p.id] = rows; }
         if (Array.isArray(rows)) {   // 앱 작품은 이벤트가 옆의 events.json 에 있다
           const ev = await fetch(p.scheduleUrl.replace(/schedule\.json(\?.*)?$/, 'events.json'), { cache: 'no-cache' })
             .then(r => r.ok ? r.json() : []).catch(() => []);
@@ -4325,7 +4372,7 @@
       const w = works.find(x => x.id === r.appId) || {};
       const s = w.id ? rowsOf(w).find(x => x.date === ds && (x.time || '') === (r.time || '') && (!r.showId || x._showId === r.showId)) : null;
       return { icon: w.icon || '🎭', name: w.name || '', time: r.time || '', appId: r.appId, showId: r.showId || '',
-        cast: s ? getActorFields(s).map(k => s[k]).filter(Boolean).join(' · ') : '',
+        cast: s ? getActorFields(s).map(k => s[k]).filter(Boolean).map(bareName).join(' · ') : '',
         ev: w.id ? eventsOf(w).filter(e => e.name && evAt(e, ds, r.time)).map(e => evShort(e.name)) : [] };
     }).concat(customOn(c.custom, ds).map(e => ({ icon: customIcon(e), name: e.name || '', time: e.time || '', cast: '', ev: [], customId: e.id })))
       .sort((a, b) => a.time.localeCompare(b.time));
@@ -4462,7 +4509,7 @@
       lines.get(lbl || k).names.push(s[k]);
     });
     return lines.size ? `<div class="ev-cast">${[...lines.values()].map(g =>
-      `<div class="ev-cast-row">${g.lbl ? `<span class="ev-cast-lbl">${g.lbl}</span>` : ''}<span>${g.names.map(n => fl && fl.has(n) ? `<b>${n}</b>` : n).join(' · ')}</span></div>`).join('')}</div>` : '';
+      `<div class="ev-cast-row">${g.lbl ? `<span class="ev-cast-lbl">${g.lbl}</span>` : ''}<span>${g.names.map(n => fl && fl.has(n) ? `<b>${bareName(n)}</b>` : bareName(n)).join(' · ')}</span></div>`).join('')}</div>` : '';
   };
   function showEvSheet(title, html) {
     document.getElementById('ev-sheet-title').textContent = title;
@@ -4602,7 +4649,7 @@
   }
   function castHtml(w, s, sep = ' · ') {
     const b = firstLastBold(w, s);
-    return getActorFields(s).map(k => s[k]).filter(Boolean).map(n => b && b.has(n) ? `<b>${n}</b>` : n).join(sep);
+    return getActorFields(s).map(k => s[k]).filter(Boolean).map(n => b && b.has(n) ? `<b>${bareName(n)}</b>` : bareName(n)).join(sep);
   }
   function rowsOf(w) { return (w.added && (schedules[w.id] || []).length ? schedules[w.id] : _catalogRows[w.id] || schedules[w.id]) || []; }
   function infoOf(w) { return dataInfo[w.id] || _catalogInfo[w.id] || null; }
@@ -5416,7 +5463,7 @@
     renderFrames();
     await migratePhotosToIndexedDB();
     const apps = getApps();
-    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd); return; }
+    if (!apps.length) { refreshStatus(); renderTabs(); renderCalendar(); discoverApps(true).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd).then(() => peopleReady).then(askHomonymHearts); return; }
     // 스케줄 로드 실패를 조용히 삼키지 않는다. 어떤 앱이 안 떴는지 알려준다.
     const failed = [];
     await Promise.all(apps.map(async app => {
@@ -5434,7 +5481,7 @@
     loadEvents(apps);      // 주간 보기에 붙일 특전·이벤트 (백그라운드)
 
     // 새 작품 자동 발견 (백그라운드, 실패해도 조용히) → 관심 배우가 나오는 새 작품을 달력에
-    discoverApps(true).then(() => { syncPresetIcons(); renderTabs(); }).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd);   // 새로 읽은 이름을 바로 탭에
+    discoverApps(true).then(() => { syncPresetIcons(); renderTabs(); }).then(migrateExtraShows).then(migrateDataToApps).then(adoptBookedApps).then(syncActorWorks, syncActorWorks).then(takeHashAdd).then(() => peopleReady).then(askHomonymHearts);   // 새로 읽은 이름을 바로 탭에
   }
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');

@@ -158,6 +158,9 @@ async def main():
         evn = await ev("_evGroups.length")
         # 특정 작품 이름은 묻지 않는다 — 그 작품 이벤트가 끝나면 데이터 따라 깨졌다(마하고니, 11/23)
         check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 12개 넘게)', evn > 12, evn)
+        # 동명이인(people.json) — 작품마다 다른 사람으로 받고, 캐스팅 줄엔 꼬리표 없이 (11/23)
+        hm = await ev("(async()=>{await ensureCatalog(); const c=(_catalogRows['show_choirofman2026']||schedules['show_choirofman2026']||[]).flatMap(Object.values), k=(_catalogRows['show_shootthecrow2026']||schedules['show_shootthecrow2026']||[]).flatMap(Object.values); const s=(_catalogRows['show_shootthecrow2026']||[]).find(r=>Object.values(r).includes('김도현 · 슛 더 크로우')); return [c.includes('김도현 · 콰이어 오브 맨'), k.includes('김도현 · 슛 더 크로우'), !c.includes('김도현') && !k.includes('김도현'), s ? castHtml({id:'show_shootthecrow2026'}, s).includes('김도현') && !castHtml({id:'show_shootthecrow2026'}, s).includes('·  슛') && !castHtml({id:'show_shootthecrow2026'}, s).includes('슛 더 크로우') : false]})()")
+        check('동명이인: 김도현 두 사람으로 나뉘고 캐스팅 줄엔 이름만', all(hm), hm)
         await ev("closeSearch()")
         # 회차마다 설명 한 군데만 다른 같은 이벤트(하트비트 책갈피) — 공통 설명은 한 번, 다른 부분은 회차 줄에
         sp = await ev("""(()=>{const mk=(t,x)=>({name:'책갈피',startDate:'2026-11-16',endDate:'2026-11-16',times:[t],description:`유료 1매당 1개, 이 회차 책갈피: ${x} (총 3종), 매표소에서 수령`});

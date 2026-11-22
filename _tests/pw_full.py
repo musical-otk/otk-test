@@ -129,9 +129,10 @@ async def main():
         check('상단 ⚙️ 있고 🔄 없음', await ev("!!document.getElementById('set-btn') && !document.querySelector('.header #sync-btn')"))
         await pg.click('#set-btn'); await pg.wait_for_timeout(300)
         check('설정 시트 열림', await ev("document.getElementById('ov-settings').classList.contains('open')"))
-        t0 = await ev("getTheme()"); await pg.click('#ov-settings .set-row:has(#theme-btn)'); await pg.wait_for_timeout(200)
-        check('설정에서 테마 바뀜', await ev("getTheme()") != t0)
-        await pg.click('#ov-settings .set-row'); await pg.wait_for_timeout(200)
+        # 화면 모드는 [다크 | 라이트] 두 칸 (11/23) — 위에서 applyTheme 만 불러 저장값과 화면이 다를 수 있어 화면 쪽을 본다
+        t0 = await ev("document.body.classList.contains('light')"); await pg.click('#theme-seg .seg-btn:not(.on)'); await pg.wait_for_timeout(200)
+        check('설정에서 테마 바뀜', await ev("document.body.classList.contains('light')") != t0 and await ev("(getTheme()==='light')===document.body.classList.contains('light')"))
+        await pg.click('#theme-seg .seg-btn:not(.on)'); await pg.wait_for_timeout(200)
         await pg.wait_for_timeout(500)
         check('설정에 버전 표시', 'mu:di v' in (await ev("document.getElementById('set-ver').textContent")))
         await pg.screenshot(path=os.path.join(OUT, 'settings.png'), full_page=True)
