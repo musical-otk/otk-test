@@ -314,6 +314,9 @@
   .milestone-divider{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px dashed var(--accent-light);border-bottom:1px dashed var(--accent-light);margin:3px 0;font-size:11px;color:var(--accent);font-weight:600;}
   .milestone-divider .ms-label{flex:1;}
   .milestone-divider .ms-change{padding:2px 8px;border-radius:6px;border:1px solid var(--accent);background:none;color:var(--accent);font-size:11px;cursor:pointer;font-family:inherit;}
+    .detail-evs { display:flex; flex-wrap:wrap; gap:6px; }
+    .detail-ev { display:inline-flex; align-items:center; gap:5px; font-size:13px; padding:4px 9px; border-radius:12px; color:var(--text1); }
+    .detail-ev i { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -2134,6 +2137,17 @@ function openDetail(id, slideFrom) {
     if (actor) html += `<div class="casting-tag">${actor}</div>`;
   });
   html += '</div>';
+
+  // 이 회차 이벤트 — events.json 을 열 때마다 새로 받으니 나중에 추가된 이벤트도 뜬다.
+  // 기간 안 + 시간이 정해진 이벤트는 그 시간 회차만 (허브 날짜 창과 같은 기준, 사용자 에이전트 리뷰 11/22)
+  {
+    const evs = getEvents().filter(ev => r.date >= ev.startDate && r.date <= (ev.endDate || ev.startDate)
+      && (!ev.times || !ev.times.length || ev.times.includes(r.time)));
+    if (evs.length) html += `<div class="detail-field"><div class="detail-field-label">이벤트</div><div class="detail-field-value detail-evs">${evs.map(ev => {
+      const c = /^#[0-9a-fA-F]{3,8}$/.test(ev.color || '') ? ev.color : 'var(--accent)';
+      return `<span class="detail-ev" style="background:color-mix(in srgb, ${c} 14%, transparent)"><i style="background:${c}"></i>${esc(ev.name)}</span>`;
+    }).join('')}</div></div>`;
+  }
 
   if (r.rating) html += `<div class="detail-field"><div class="detail-field-label">별점</div><div style="color:var(--star);font-size:20px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div></div>`;
   if (r.comment) html += `<div class="detail-field"><div class="detail-field-label">한줄 코멘트</div><div class="detail-field-value">${esc(r.comment)}</div></div>`;
