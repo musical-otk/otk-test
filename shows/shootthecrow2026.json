@@ -1,0 +1,204 @@
+{
+  "name": "슛 더 크로우",
+  "icon": "🧱",
+  "color": "#D9541E",
+  "venue": "링크아트센터 벅스홀",
+  "startDate": "2026-12-08",
+  "endDate": "2027-03-07",
+  "official": "https://x.com/ShootTheCrow_KR",
+  "tickets": {
+    "ticketlink": "https://www.ticketlink.co.kr/product/66840"
+  },
+  "alias": "슛더크로우 숏더크로우 Shoot the Crow",
+  "roles": [
+    {
+      "key": "dingding",
+      "label": "딩딩"
+    },
+    {
+      "key": "socrates",
+      "label": "소크라테스"
+    },
+    {
+      "key": "pitsy",
+      "label": "핏시"
+    },
+    {
+      "key": "randolph",
+      "label": "랜돌프"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-12-08",
+      "time": "20:00",
+      "dingding": "박지일",
+      "socrates": "최재웅",
+      "pitsy": "박정복",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "20:00",
+      "dingding": "임하룡",
+      "socrates": "김도현",
+      "pitsy": "이율",
+      "randolph": "김신비"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "20:00",
+      "dingding": "김승욱",
+      "socrates": "송종호",
+      "pitsy": "오용",
+      "randolph": "남민우"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "20:00",
+      "dingding": "임하룡",
+      "socrates": "김도현",
+      "pitsy": "이율",
+      "randolph": "김신비"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "15:00",
+      "dingding": "김승욱",
+      "socrates": "송종호",
+      "pitsy": "오용",
+      "randolph": "남민우"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "dingding": "임하룡",
+      "socrates": "김도현",
+      "pitsy": "오용",
+      "randolph": "김신비"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "dingding": "박지일",
+      "socrates": "최재웅",
+      "pitsy": "박정복",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "18:00",
+      "dingding": "박지일",
+      "socrates": "송종호",
+      "pitsy": "이율",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "20:00",
+      "dingding": "김승욱",
+      "socrates": "송종호",
+      "pitsy": "오용",
+      "randolph": "남민우"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "16:00",
+      "dingding": "박지일",
+      "socrates": "최재웅",
+      "pitsy": "박정복",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "20:00",
+      "dingding": "임하룡",
+      "socrates": "최재웅",
+      "pitsy": "박정복",
+      "randolph": "김신비"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "20:00",
+      "dingding": "임하룡",
+      "socrates": "김도현",
+      "pitsy": "이율",
+      "randolph": "김신비"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "20:00",
+      "dingding": "박지일",
+      "socrates": "송종호",
+      "pitsy": "오용",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "15:00",
+      "dingding": "김승욱",
+      "socrates": "김도현",
+      "pitsy": "이율",
+      "randolph": "남민우"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "dingding": "김승욱",
+      "socrates": "송종호",
+      "pitsy": "오용",
+      "randolph": "남민우"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "dingding": "박지일",
+      "socrates": "최재웅",
+      "pitsy": "박정복",
+      "randolph": "최정우"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "18:00",
+      "dingding": "임하룡",
+      "socrates": "김도현",
+      "pitsy": "이율",
+      "randolph": "김신비"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공",
+      "startDate": "2026-12-08",
+      "endDate": "2026-12-08",
+      "color": "#D9541E",
+      "times": [
+        "20:00"
+      ],
+      "description": "프리뷰 첫 공연 (배우별 첫공)",
+      "url": "https://x.com/ShootTheCrow_KR/status/2118209491535892793"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-09",
+      "color": "#D9541E",
+      "times": [
+        "20:00"
+      ],
+      "description": "프리뷰 첫 공연 (배우별 첫공)",
+      "url": "https://x.com/ShootTheCrow_KR/status/2118209491535892793"
+    },
+    {
+      "name": "첫공",
+      "startDate": "2026-12-10",
+      "endDate": "2026-12-10",
+      "color": "#D9541E",
+      "times": [
+        "20:00"
+      ],
+      "description": "프리뷰 첫 공연 (배우별 첫공)",
+      "url": "https://x.com/ShootTheCrow_KR/status/2118209491535892793"
+    }
+  ]
+}

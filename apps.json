@@ -179,5 +179,9 @@
   {
     "path": "shows/sachanmi2026.json",
     "app": false
+  },
+  {
+    "path": "shows/shootthecrow2026.json",
+    "app": false
   }
 ]
