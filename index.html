@@ -655,6 +655,9 @@
     .sd-new { display: flex; align-items: center; gap: 8px; padding: 8px 2px; border-bottom: 1px solid var(--border); font-size: 13px; }
     .sd-new span { flex: 1; font-weight: 600; }
     .sd-new button { background: none; border: 1px solid var(--border); border-radius: 14px; padding: 4px 10px; color: var(--text2); cursor: pointer; }
+    .sd-new-hd { display: flex; align-items: center; justify-content: space-between; }
+    .sd-new-hd button { background: none; border: 0; padding: 2px 0; font-size: 12px; font-weight: 600; color: var(--accent, var(--custom)); cursor: pointer; }
+    .sd-new-more { display: block; width: 100%; background: none; border: 0; padding: 10px 0 4px; font-size: 13px; color: var(--text2); cursor: pointer; }
 
     #sheet-custom, #sheet-app-form { max-height: 90vh; }
     .custom-hd { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; }
@@ -3470,17 +3473,23 @@
         ${w.cast.map(c => `<div class="sd-line"><span class="sd-tag">캐스팅</span>${md(c.k)} ${c.t}</div>`).join('')}
         ${w.ev.length ? `<div class="sd-line"><span class="sd-tag">새 이벤트</span>${few(evNames(w.ev), x => x)}</div>` : ''}</div>`).join('');
   }
-  // 새로 올라온 작품 — 설정 안에서만. ♡ 하거나 7일 지나면 빠진다
+  // 새로 올라온 작품 — 설정 안에서만. ♡ 하거나 7일 지나거나 [다 봤어요] 로 빠진다.
+  // 순회로 거의 매일 작품이 붙어 열 개 넘게 쌓였다 — 최신 5개만 펼치고 나머지는 접는다 (11/23)
+  let _newWorksOpen = false;
+  function clearNewWorks() { localStorage.setItem(NEWW_KEY, '{}'); _newWorksOpen = false; renderNewWorks(); }
   function renderNewWorks() {
     const box = document.getElementById('set-new'); if (!box) return;
     const nw = jget(NEWW_KEY, {}), hearts = getHearts().works, now = Date.now();
     const ids = Object.keys(nw).filter(id => !hearts.includes(id) && now - nw[id] < 7 * 864e5);
     if (ids.length !== Object.keys(nw).length) localStorage.setItem(NEWW_KEY, JSON.stringify(Object.fromEntries(ids.map(id => [id, nw[id]]))));
-    const works = ids.map(id => catalog('all').works.find(w => w.id === id)).filter(Boolean);
-    box.innerHTML = works.length ? `<div class="section-title" style="border-top:none;padding-top:2px">새로 올라온 작품</div>` +
-      works.map(w => `<div class="sd-new"><span>${w.icon || ''} ${w.fullName || w.name}</span>
+    const works = ids.sort((a, b) => nw[b] - nw[a]).map(id => catalog('all').works.find(w => w.id === id)).filter(Boolean);
+    const SHOW = 5, shown = _newWorksOpen ? works : works.slice(0, SHOW), more = works.length - shown.length;
+    box.innerHTML = works.length ? `<div class="section-title sd-new-hd" style="border-top:none;padding-top:2px"><span>새로 올라온 작품 ${works.length}</span><button onclick="clearNewWorks()">다 봤어요</button></div>` +
+      shown.map(w => `<div class="sd-new"><span>${w.icon || ''} ${w.fullName || w.name}</span>
         <button onclick="closeSettings();showSearch();pickSearch('work','${w.id}')">보기</button>
-        <button onclick="heartNewWork('${w.id}')">♡</button></div>`).join('') : '';
+        <button onclick="heartNewWork('${w.id}')">♡</button></div>`).join('') +
+      (more ? `<button class="sd-new-more" onclick="_newWorksOpen=true;renderNewWorks()">외 ${more}개 보기 ▾</button>`
+        : _newWorksOpen && works.length > SHOW ? `<button class="sd-new-more" onclick="_newWorksOpen=false;renderNewWorks()">접기 ▴</button>` : '') : '';
   }
   async function heartNewWork(id) { await heartWork(id); renderNewWorks(); renderTabs(); renderCalendar(); toast('관심에 넣었어요'); }
 
