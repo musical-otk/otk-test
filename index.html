@@ -3421,7 +3421,7 @@
     document.getElementById('ov-settings').classList.add('open');
     // 버전은 sw.js 의 CACHE_NAME 을 읽는다 — 올릴 때마다 손으로 맞출 일이 없게
     fetch('sw.js', { cache: 'no-cache' }).then(r => r.text())
-      .then(t => { const m = t.match(/otk-schedule-(v\d+)/); document.getElementById('set-ver').textContent = 'mu:di ' + (m ? m[1] : '') + (IS_TEST_HUB ? ' · 테스트' : ''); })
+      .then(t => { const m = t.match(/otk-schedule-v?(\d+(?:\.\d+)*)/); document.getElementById('set-ver').textContent = 'mu:di ' + (m ? 'v' + m[1] : '') + (IS_TEST_HUB ? ' · 테스트' : ''); })
       .catch(() => {});
   }
   // 요청 폼(구글 설문지) — 작품명이 있으면 '새 작품 추가'로 미리 채운다
