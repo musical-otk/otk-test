@@ -3473,7 +3473,7 @@
         ${w.cast.map(c => `<div class="sd-line"><span class="sd-tag">캐스팅</span>${md(c.k)} ${c.t}</div>`).join('')}
         ${w.ev.length ? `<div class="sd-line"><span class="sd-tag">새 이벤트</span>${few(evNames(w.ev), x => x)}</div>` : ''}</div>`).join('');
   }
-  // 새로 올라온 작품 — 설정 안에서만. ♡ 하거나 7일 지나거나 [다 봤어요] 로 빠진다.
+  // 새로 올라온 작품 — 설정 안에서만. ♡ 하거나 7일 지나거나 [모두 지우기] 로 빠진다.
   // 순회로 거의 매일 작품이 붙어 열 개 넘게 쌓였다 — 최신 5개만 펼치고 나머지는 접는다 (11/23)
   let _newWorksOpen = false;
   function clearNewWorks() { localStorage.setItem(NEWW_KEY, '{}'); _newWorksOpen = false; renderNewWorks(); }
@@ -3484,7 +3484,7 @@
     if (ids.length !== Object.keys(nw).length) localStorage.setItem(NEWW_KEY, JSON.stringify(Object.fromEntries(ids.map(id => [id, nw[id]]))));
     const works = ids.sort((a, b) => nw[b] - nw[a]).map(id => catalog('all').works.find(w => w.id === id)).filter(Boolean);
     const SHOW = 5, shown = _newWorksOpen ? works : works.slice(0, SHOW), more = works.length - shown.length;
-    box.innerHTML = works.length ? `<div class="section-title sd-new-hd" style="border-top:none;padding-top:2px"><span>새로 올라온 작품 ${works.length}</span><button onclick="clearNewWorks()">다 봤어요</button></div>` +
+    box.innerHTML = works.length ? `<div class="section-title sd-new-hd" style="border-top:none;padding-top:2px"><span>새로 올라온 작품 ${works.length}</span><button onclick="clearNewWorks()">모두 지우기</button></div>` +
       shown.map(w => `<div class="sd-new"><span>${w.icon || ''} ${w.fullName || w.name}</span>
         <button onclick="closeSettings();showSearch();pickSearch('work','${w.id}')">보기</button>
         <button onclick="heartNewWork('${w.id}')">♡</button></div>`).join('') +
