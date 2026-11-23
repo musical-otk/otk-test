@@ -183,5 +183,9 @@
   {
     "path": "shows/shootthecrow2026.json",
     "app": false
+  },
+  {
+    "path": "shows/vl2026.json",
+    "app": false
   }
 ]
