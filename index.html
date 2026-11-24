@@ -234,6 +234,7 @@
     .mc-sess.mine .mc-cast { color: var(--text2); }
     .mc-lbl { color: var(--text3); font-size: 11px; margin-right: 8px; }
     .mc-none { color: var(--text3); font-size: 11px; }
+    .mc-sess.faded { opacity: .45; }
     .mc-sess { display: grid; grid-template-columns: 40px 1fr; gap: 1px 8px; padding: 5px 0; border-top: 1px dashed var(--border); cursor: pointer; }
     .mc-time { font-weight: 700; }
     .mc-cast { color: var(--text1); }
@@ -4419,13 +4420,13 @@
     return { btn, box: `<div class="mycal">
       <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
       <div class="mc-grid">${dowOrder().map(i => `<em>${DOW[i]}</em>`).join('')}${cells}</div>
-      ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : '<div class="mc-hint">날짜를 누르면 그날 내 일정과 이 작품 회차가 보여요</div>'}
+      ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : `<div class="mc-hint">날짜를 누르면 그날 내 일정과 ${escHtml(w.fullName || w.name)} 회차가 보여요</div>`}
     </div>` };
   }
   function myCalDay(w, rows, shown, ds) {
     const d = new Date(ds + 'T00:00:00'), mine = myDayItems(ds);
-    const sess = shown.filter(r => r.date === ds).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
-    const hidden = rows.filter(r => r.date === ds).length - sess.length;
+    // 배우 필터에 안 맞는 회차도 연하게 같이 — '숨긴 회차 n개'만 쓰면 무슨 회차인지 몰랐다 (11/25)
+    const sess = rows.filter(r => r.date === ds).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
     return `<div class="mc-day-box">
       <div class="mc-day-hd">${evMd(ds)}(${DOW[d.getDay()]})</div>
       <div class="mc-lbl">내 일정</div>
@@ -4433,16 +4434,15 @@
           <span class="mc-time">${x.time}</span>
           <span class="mc-cast">${x.icon} ${escHtml(x.name)}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}${x.ev.length ? ` <span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}</span>
         </div>`).join('') : '<div class="mc-none">없음</div>'}
-      <div class="mc-lbl" style="margin-top:6px">이 작품</div>
+      <div class="mc-lbl" style="margin-top:6px">${w.icon ? w.icon + ' ' : ''}${escHtml(w.fullName || w.name)}</div>
       ${sess.map(s => {
         const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name));
-        return `<div class="mc-sess" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
+        return `<div class="mc-sess${shown.includes(s) ? '' : ' faded'}" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
           <span class="mc-time">${s.time || ''}</span>
           <span class="mc-cast">${castHtml(w, s)}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
         </div>`;
-      }).join('') || (hidden ? '' : '<div class="mc-none">이 작품 회차 없음</div>')}
-      ${hidden ? `<div class="mc-none">배우 필터로 숨긴 회차 ${hidden}개</div>` : ''}
-      ${sess.length ? `<button class="mc-go" onclick="myCalJump('${ds}')">목록에서 보기 ›</button>` : ''}
+      }).join('') || '<div class="mc-none">회차 없음</div>'}
+      ${sess.some(x => shown.includes(x)) ? `<button class="mc-go" onclick="myCalJump('${ds}')">목록에서 보기 ›</button>` : ''}
     </div>`;
   }
   // 날짜를 누르면 아래 회차 목록에서 그날로 — 지난 날이면 접힌 지난 회차를 그만큼 펼친다

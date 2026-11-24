@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'otk-schedule-0.18.1';   // 0.가운데.끝 — 기능 추가는 가운데, 고침은 끝 (v181 다음부터, 11/23)
+﻿const CACHE_NAME = 'otk-schedule-0.18.2';   // 0.가운데.끝 — 기능 추가는 가운데, 고침은 끝 (v181 다음부터, 11/23)
 // 테스트 사본(/otk-test/)에서도 그대로 돌게 sw.js 위치에서 구한다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');
 

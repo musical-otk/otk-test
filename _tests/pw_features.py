@@ -106,7 +106,8 @@ async def main():
         await ev("""(()=>{const w=catalog('all').works.find(x=>x.id==='show_socrates2026'),rows=rowsOf(w);
           const day=rows.filter(r=>r.date===_ds).flatMap(r=>getActorFields(r).map(k=>r[k]));
           const n=rows.flatMap(r=>getActorFields(r).map(k=>r[k])).find(x=>x&&!day.includes(x));_srchActors.add(n);renderSearch();})()""")
-        check('내 달력: 배우 필터면 그날 회차 숨김 수 표시', await ev("/배우 필터로 숨긴 회차/.test(document.querySelector('.mc-day-box').textContent)"))
+        check('내 달력: 배우 필터에 안 맞는 그날 회차는 연하게 같이', await ev("document.querySelectorAll('.mc-day-box .mc-sess.faded').length>0 && !/숨긴 회차/.test(document.querySelector('.mc-day-box').textContent)"))
+        check('내 달력: 회차 칸 이름이 이 작품 대신 작품 이름', await ev("[...document.querySelectorAll('.mc-day-box .mc-lbl')].some(l=>l.textContent.includes(catalog('all').works.find(x=>x.id==='show_socrates2026').name))"))
         await ev("_srchActors.clear();renderSearch()")
         await ev("pickSearch('work','show_turing2026')"); await pg.wait_for_timeout(300)
         check('내 달력: 다른 작품에서도 펼친 채', await ev("!!document.querySelector('.mycal')"))
