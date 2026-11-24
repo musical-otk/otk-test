@@ -1890,12 +1890,92 @@
       "url": "https://x.com/i_seensee/status/2118569064830571003"
     },
     {
-      "name": "The JUNGLE Party! 싱어롱 week",
+      "name": "싱어롱 Week",
       "startDate": "2026-12-08",
+      "endDate": "2026-12-08",
+      "color": "#D9482B",
+      "times": [
+        "20:00"
+      ],
+      "description": "넘버 SOME NIGHTS · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-09",
+      "color": "#D9482B",
+      "times": [
+        "20:00"
+      ],
+      "description": "넘버 YOU'RE THE VOICE · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-10",
+      "endDate": "2026-12-10",
+      "color": "#D9482B",
+      "times": [
+        "20:00"
+      ],
+      "description": "넘버 SOME NIGHTS · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-11",
+      "endDate": "2026-12-11",
+      "color": "#D9482B",
+      "times": [
+        "20:00"
+      ],
+      "description": "넘버 YOU'RE THE VOICE · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-12",
+      "endDate": "2026-12-12",
+      "color": "#D9482B",
+      "times": [
+        "14:00"
+      ],
+      "description": "넘버 SOME NIGHTS · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-12",
+      "endDate": "2026-12-12",
+      "color": "#D9482B",
+      "times": [
+        "18:00"
+      ],
+      "description": "넘버 YOU'RE THE VOICE · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-13",
       "endDate": "2026-12-13",
       "color": "#D9482B",
-      "description": "공연 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
-      "url": "https://x.com/i_seensee/status/2107350291800789217"
+      "times": [
+        "14:00"
+      ],
+      "description": "넘버 SOME NIGHTS · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
+    },
+    {
+      "name": "싱어롱 Week",
+      "startDate": "2026-12-13",
+      "endDate": "2026-12-13",
+      "color": "#D9482B",
+      "times": [
+        "18:00"
+      ],
+      "description": "넘버 YOU'RE THE VOICE · 커튼콜 종료 후 관객과 함께하는 싱어롱 (촬영·녹음 불가)",
+      "url": "https://x.com/i_seensee/status/2125122242849784318"
     },
     {
       "name": "크리스마스 파티 in The JUNGLE",
