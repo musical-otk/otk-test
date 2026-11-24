@@ -244,6 +244,214 @@
       "sogeum": "신은호",
       "daenyeong": "장준영",
       "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "16:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "송정훈",
+      "daenyeong": "정태영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "신은호",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "15:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "18:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-05",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "16:00",
+      "dan": "김대현",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-07",
+      "time": "20:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "정태영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-08",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "15:00",
+      "dan": "김기택",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-09",
+      "time": "19:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "14:00",
+      "dan": "김기택",
+      "sogeum": "류동휘",
+      "daenyeong": "김동준",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-10",
+      "time": "18:00",
+      "dan": "박준형",
+      "sogeum": "신은호",
+      "daenyeong": "정태영",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-12",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "송정훈",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-13",
+      "time": "16:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-13",
+      "time": "20:00",
+      "dan": "김기택",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-14",
+      "time": "20:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-15",
+      "time": "20:00",
+      "dan": "김대현",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
+    },
+    {
+      "date": "2027-01-16",
+      "time": "15:00",
+      "dan": "김기택",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "도정연"
+    },
+    {
+      "date": "2027-01-16",
+      "time": "19:00",
+      "dan": "박준형",
+      "sogeum": "류동휘",
+      "daenyeong": "정태영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-17",
+      "time": "14:00",
+      "dan": "김대현",
+      "sogeum": "송정훈",
+      "daenyeong": "장준영",
+      "yuri": "남도윤"
+    },
+    {
+      "date": "2027-01-17",
+      "time": "18:00",
+      "dan": "김기택",
+      "sogeum": "신은호",
+      "daenyeong": "김동준",
+      "yuri": "백찬혁"
     }
   ],
   "events": [
@@ -302,6 +510,54 @@
       "color": "#3A86C8",
       "description": "상세 추후 공지",
       "url": "https://x.com/kontentz/status/2120449275679433004"
+    },
+    {
+      "name": "쉐어하우스 집들이 위크",
+      "startDate": "2026-12-29",
+      "endDate": "2027-01-03",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
+    },
+    {
+      "name": "스페셜 스탬프 적립",
+      "startDate": "2026-12-29",
+      "endDate": "2026-12-31",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
+    },
+    {
+      "name": "스페셜 스탬프 적립",
+      "startDate": "2027-01-02",
+      "endDate": "2027-01-03",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
+    },
+    {
+      "name": "개인 폴라로이드 증정 위크(배우 지정)",
+      "startDate": "2027-01-05",
+      "endDate": "2027-01-10",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
+    },
+    {
+      "name": "트리플 적립",
+      "startDate": "2027-01-12",
+      "endDate": "2027-01-17",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
+    },
+    {
+      "name": "2차 커튼콜 위크",
+      "startDate": "2027-01-12",
+      "endDate": "2027-01-17",
+      "color": "#3A86C8",
+      "description": "상세 추후 공지",
+      "url": "https://x.com/kontentz/status/2125145280186392730"
     }
   ]
 }
