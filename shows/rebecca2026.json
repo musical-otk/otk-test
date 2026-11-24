@@ -960,6 +960,17 @@
   ],
   "events": [
     {
+      "name": "첫 공연 무대 인사",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-24",
+      "color": "#7A1F2B",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 종료 후 진행",
+      "url": "https://x.com/EMK_Musical/status/2125175151973286130"
+    },
+    {
       "name": "커튼콜 데이",
       "startDate": "2027-01-19",
       "endDate": "2027-01-24",
