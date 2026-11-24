@@ -572,16 +572,87 @@
       "startDate": "2026-11-24",
       "endDate": "2026-11-29",
       "color": "#4A6FB5",
-      "description": "커튼콜 종료 후 총 2곡 앵콜, 플래시 없이 사진·동영상 촬영 가능",
+      "description": "커튼콜 종료 후 총 2곡 앵콜(M6. 열대야 / M6. ONE · M13. 마지막 노래), 플래시 없이 사진·동영상 촬영 가능",
       "url": "https://x.com/welcomefunny_/status/2121779484739424711"
     },
     {
-      "name": "스페셜 커튼콜 위크",
+      "name": "스페셜 커튼콜 데이",
       "startDate": "2026-12-01",
+      "endDate": "2026-12-01",
+      "color": "#4A6FB5",
+      "times": [
+        "20:00"
+      ],
+      "description": "M11. 네가 날 원할 때 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-02",
+      "endDate": "2026-12-02",
+      "color": "#4A6FB5",
+      "times": [
+        "16:00",
+        "20:00"
+      ],
+      "description": "M11. 네가 날 원할 때 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-03",
+      "endDate": "2026-12-03",
+      "color": "#4A6FB5",
+      "times": [
+        "20:00"
+      ],
+      "description": "M10. 슬픈 거짓말 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-04",
+      "endDate": "2026-12-04",
+      "color": "#4A6FB5",
+      "times": [
+        "20:00"
+      ],
+      "description": "M10. 슬픈 거짓말 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-05",
+      "endDate": "2026-12-05",
+      "color": "#4A6FB5",
+      "times": [
+        "15:00"
+      ],
+      "description": "M10. 슬픈 거짓말 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-05",
+      "endDate": "2026-12-05",
+      "color": "#4A6FB5",
+      "times": [
+        "19:00"
+      ],
+      "description": "M11. 네가 날 원할 때 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
+    },
+    {
+      "name": "스페셜 커튼콜 데이",
+      "startDate": "2026-12-06",
       "endDate": "2026-12-06",
       "color": "#4A6FB5",
-      "description": "상세 추후 공지",
-      "url": "https://x.com/welcomefunny_/status/2109886882792476747"
+      "times": [
+        "14:00",
+        "18:00"
+      ],
+      "description": "M10. 슬픈 거짓말 (플래시 없이 사진·동영상 촬영 가능)",
+      "url": "https://x.com/welcomefunny_/status/2125036199266189431"
     },
     {
       "name": "프로필 폴라로이드 데이",
