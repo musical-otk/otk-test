@@ -187,5 +187,9 @@
   {
     "path": "shows/vl2026.json",
     "app": false
+  },
+  {
+    "path": "shows/touche2026.json",
+    "app": false
   }
 ]
