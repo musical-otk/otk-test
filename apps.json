@@ -191,5 +191,13 @@
   {
     "path": "shows/touche2026.json",
     "app": false
+  },
+  {
+    "path": "shows/twocities2026.json",
+    "app": false
+  },
+  {
+    "path": "shows/rebecca2026.json",
+    "app": false
   }
 ]

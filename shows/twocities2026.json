@@ -1,0 +1,712 @@
+{
+  "name": "두 도시 이야기",
+  "icon": "🌌",
+  "color": "#2F4A7A",
+  "venue": "광림아트센터 BBCH홀",
+  "startDate": "2026-11-11",
+  "endDate": "2027-02-08",
+  "official": "https://x.com/shownote",
+  "tickets": {
+    "nol": "https://nol.yanolja.com/ticket/products/26013098"
+  },
+  "alias": "두도시 두도시이야기 A Tale of Two Cities 투시티즈",
+  "roles": [
+    {
+      "key": "sidney",
+      "label": "시드니 칼튼"
+    },
+    {
+      "key": "charles",
+      "label": "찰스 다네이"
+    },
+    {
+      "key": "lucie",
+      "label": "루시 마네트"
+    },
+    {
+      "key": "madame",
+      "label": "마담 드파르주"
+    },
+    {
+      "key": "pross",
+      "label": "미스 프로스"
+    }
+  ],
+  "schedule": [
+    {
+      "date": "2026-11-11",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-12",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-13",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "19:00",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-17",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "14:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-18",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-19",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-20",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-21",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-24",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "14:30",
+      "sidney": "고은성",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-25",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-26",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-28",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-11-29",
+      "time": "19:00",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-01",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "14:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-02",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-03",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-04",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "14:00",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-05",
+      "time": "19:00",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-06",
+      "time": "19:00",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-08",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "14:30",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-09",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-11",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-12",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-13",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-15",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "14:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-16",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-17",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "14:00",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-19",
+      "time": "19:00",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "14:00",
+      "sidney": "고은성",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-20",
+      "time": "19:00",
+      "sidney": "카이",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-22",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "14:30",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-23",
+      "time": "19:30",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-24",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-25",
+      "time": "19:00",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-26",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-27",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-29",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "14:30",
+      "sidney": "신성록",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-30",
+      "time": "19:30",
+      "sidney": "고은성",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2026-12-31",
+      "time": "19:30",
+      "sidney": "카이",
+      "charles": "백형훈",
+      "lucie": "선민",
+      "madame": "김소향",
+      "pross": "최나래"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "14:00",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2027-01-01",
+      "time": "19:00",
+      "sidney": "신성록",
+      "charles": "백형훈",
+      "lucie": "김수연",
+      "madame": "김소향",
+      "pross": "나유진"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "14:00",
+      "sidney": "카이",
+      "charles": "노윤",
+      "lucie": "선민",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2027-01-02",
+      "time": "19:00",
+      "sidney": "고은성",
+      "charles": "진태화",
+      "lucie": "김수연",
+      "madame": "이영미",
+      "pross": "최나래"
+    },
+    {
+      "date": "2027-01-03",
+      "time": "14:00",
+      "sidney": "신성록",
+      "charles": "노윤",
+      "lucie": "이지혜",
+      "madame": "김소향",
+      "pross": "나유진"
+    }
+  ],
+  "events": [
+    {
+      "name": "첫공 무대 인사",
+      "startDate": "2026-11-11",
+      "endDate": "2026-11-11",
+      "color": "#2F4A7A",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 종료 후 무대 인사 · 플래시 없는 사진·영상 촬영만 가능",
+      "url": "https://x.com/shownote/status/2118236880994963803"
+    },
+    {
+      "name": "첫공 무대 인사",
+      "startDate": "2026-11-12",
+      "endDate": "2026-11-12",
+      "color": "#2F4A7A",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 종료 후 무대 인사 · 플래시 없는 사진·영상 촬영만 가능",
+      "url": "https://x.com/shownote/status/2118236880994963803"
+    },
+    {
+      "name": "첫공 무대 인사",
+      "startDate": "2026-11-13",
+      "endDate": "2026-11-13",
+      "color": "#2F4A7A",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 종료 후 무대 인사 · 플래시 없는 사진·영상 촬영만 가능",
+      "url": "https://x.com/shownote/status/2118236880994963803"
+    },
+    {
+      "name": "첫공 무대 인사",
+      "startDate": "2026-11-17",
+      "endDate": "2026-11-17",
+      "color": "#2F4A7A",
+      "times": [
+        "19:30"
+      ],
+      "description": "공연 종료 후 무대 인사 · 플래시 없는 사진·영상 촬영만 가능",
+      "url": "https://x.com/shownote/status/2118236880994963803"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-11-24",
+      "endDate": "2026-11-29",
+      "color": "#2F4A7A",
+      "description": "총 8회차 · 커튼콜 시점부터 플래시 없는 사진·영상 촬영 가능",
+      "url": "https://x.com/shownote/status/2118237125602910239"
+    }
+  ]
+}
