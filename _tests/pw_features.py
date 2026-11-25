@@ -155,8 +155,15 @@ async def main():
         await ev("closeCustomForm(); saveCustom(getCustom().slice(0,-2)); renderCalendar()")
         await ev("openSearch()"); await pg.fill('#srch-q', '페이티드'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
         check('찾기: 영어 제목 작품을 한글로도 찾음 (페이티드 → FATED)', 'FATED' in ' '.join(await ev("[...document.querySelectorAll('.flt-hit-name')].map(e=>e.textContent)")))
+        # 날짜 찾기에서 줄을 누르면 그 작품 그 회차 — 내 날짜 상세가 열려 예매한 작품만 보였다 (11/25)
+        await pg.fill('#srch-q', '12/9'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
+        dr = await ev("""(()=>{const rows=[...document.querySelectorAll('.srch-row')].filter(r=>r.querySelector('.srch-name'));
+          const r=rows[rows.length-1]; if(!r) return null; const nm=r.querySelector('.srch-name').textContent.trim(); r.click();
+          const t=document.getElementById('ev-sheet-title'); return [nm, t ? t.textContent : document.getElementById('ev-sheet-body').innerHTML.slice(0,80)];})()""")
+        check('찾기: 날짜 결과 줄 → 그 작품 회차 창', bool(dr) and dr[0].split(' ',1)[-1][:4] in dr[1], dr)
+        await ev("closeEvSheet && closeEvSheet()")
         await pg.fill('#srch-q', '커튼콜'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
-        evn = await ev("_evGroups.length")
+        evn =await ev("_evGroups.length")
         # 특정 작품 이름은 묻지 않는다 — 그 작품 이벤트가 끝나면 데이터 따라 깨졌다(마하고니, 11/23)
         check('찾기: 이벤트는 개수 제한 없이 전부 (커튼콜 → 12개 넘게)', evn > 12, evn)
         # 동명이인(people.json) — 작품마다 다른 사람으로 받고, 캐스팅 줄엔 꼬리표 없이 (11/23)

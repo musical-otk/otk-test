@@ -4748,7 +4748,8 @@
       const att = (getAttended()[ds] || []);
       const d = new Date(ds + 'T00:00:00');
       html += `<div class="flt-sec">${ds.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) 공연 ${hits.length}</div>` +
-        (hits.map(({ w, s }) => `<div class="srch-row"${w.added ? ` onclick="openDay('${ds}')"` : ''}>
+        // 누르면 그 작품 그 회차 — 예전엔 내 날짜 상세(openDay)가 열려 어느 줄을 눌러도 내가 예매한 작품만 보였다 (11/25)
+        (hits.map(({ w, s }) => `<div class="srch-row" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
             <span class="filter-group-dot" style="background:${w.color}"></span>
             <span class="srch-time">${s.time || ''}</span>
             <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
