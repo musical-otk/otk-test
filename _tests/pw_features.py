@@ -157,6 +157,8 @@ async def main():
         check('찾기: 영어 제목 작품을 한글로도 찾음 (페이티드 → FATED)', 'FATED' in ' '.join(await ev("[...document.querySelectorAll('.flt-hit-name')].map(e=>e.textContent)")))
         # 날짜 찾기에서 줄을 누르면 그 작품 그 회차 — 내 날짜 상세가 열려 예매한 작품만 보였다 (11/25)
         await pg.fill('#srch-q', '12/9'); await ev("renderSearch()"); await pg.wait_for_timeout(300)
+        check('찾기: 날짜 결과에 그 회차 이벤트 이름도', await ev("""(()=>{const ds=parseQueryDate('12/9');const want=catalog('all').works.some(w=>rowsOf(w).some(s=>s.date===ds&&eventsOf(w).some(e=>e.name&&evAt(e,ds,s.time))));
+          return !want || document.querySelectorAll('.srch-row .mc-ev').length>0})()"""))
         dr = await ev("""(()=>{const rows=[...document.querySelectorAll('.srch-row')].filter(r=>r.querySelector('.srch-name'));
           const r=rows[rows.length-1]; if(!r) return null; const nm=r.querySelector('.srch-name').textContent.trim(); r.click();
           const t=document.getElementById('ev-sheet-title'); return [nm, t ? t.textContent : document.getElementById('ev-sheet-body').innerHTML.slice(0,80)];})()""")

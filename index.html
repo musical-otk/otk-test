@@ -4753,7 +4753,8 @@
             <span class="filter-group-dot" style="background:${w.color}"></span>
             <span class="srch-time">${s.time || ''}</span>
             <span class="srch-name">${w.icon || ''} ${sessName(w, s)}</span>
-            <span class="srch-sub">${castHtml(w, s)}</span>
+            <span class="srch-sub">${castHtml(w, s)}${(ev => ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : '')(
+              eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name)))}</span>
             ${(r => r ? `<span class="srch-tag mine">${r.transferred ? '↪ 양도' : r.tentative ? '미정' : ds < todayStr ? '✓ 관람' : '🎫 예매'}</span>` : '')(
               att.find(r => recHit(r, w.id, s)))}
           </div>`).join('') || '<div class="hint" style="padding:6px 2px">그날 공연이 없어요</div>');
