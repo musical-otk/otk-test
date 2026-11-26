@@ -1199,37 +1199,45 @@
       "url": "https://x.com/thebestplays/status/2113155894850761181"
     },
     {
-      "name": "막공",
+      "name": "마지막 공연 무대인사 안내",
       "startDate": "2026-12-12",
       "endDate": "2026-12-12",
       "color": "#B0195E",
       "times": [
         "19:00"
       ],
-      "description": "마지막 공연 (스케줄표 '막공' 표기)",
-      "url": "https://x.com/thebestplays/status/2115345400559501597"
+      "description": "막공 · 마지막 공연 종료 후 무대인사 (사진·영상 촬영 및 녹음 제한)",
+      "url": "https://x.com/thebestplays/status/2125862139600748694"
     },
     {
-      "name": "막공",
+      "name": "마지막 공연 무대인사 안내",
       "startDate": "2026-12-13",
       "endDate": "2026-12-13",
       "color": "#B0195E",
       "times": [
         "14:00"
       ],
-      "description": "마지막 공연 (스케줄표 '막공' 표기)",
-      "url": "https://x.com/thebestplays/status/2115345400559501597"
+      "description": "막공 · 마지막 공연 종료 후 무대인사 (사진·영상 촬영 및 녹음 제한)",
+      "url": "https://x.com/thebestplays/status/2125862139600748694"
     },
     {
-      "name": "막공",
+      "name": "마지막 공연 무대인사 안내",
       "startDate": "2026-12-13",
       "endDate": "2026-12-13",
       "color": "#B0195E",
       "times": [
         "18:00"
       ],
-      "description": "마지막 공연 (스케줄표 '막공' 표기)",
-      "url": "https://x.com/thebestplays/status/2115345400559501597"
+      "description": "막공 · 마지막 공연 종료 후 무대인사 (사진·영상 촬영 및 녹음 제한)",
+      "url": "https://x.com/thebestplays/status/2125862139600748694"
+    },
+    {
+      "name": "셀카 포토카드 증정 이벤트",
+      "startDate": "2026-12-01",
+      "endDate": "2026-12-06",
+      "color": "#B0195E",
+      "description": "유료 티켓 1매당 당일 캐스트 셀카 포토카드 5종 1세트 (매표소 티켓 수령 시 증정)",
+      "url": "https://x.com/thebestplays/status/2125854582744256784"
     },
     {
       "name": "공연사진 책갈피 증정 이벤트",
