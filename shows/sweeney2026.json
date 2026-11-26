@@ -10,6 +10,9 @@
     "nol": "https://nol.yanolja.com/ticket/products/26014509",
     "ticketlink": "https://www.ticketlink.co.kr/product/66145"
   },
+  "lastShows": {
+    "전미도": "2027-01-24 18:00"
+  },
   "roles": [
     {
       "key": "todd",
@@ -698,6 +701,303 @@
       "turpin": "서영주",
       "anthony": "최재웅",
       "tobias": "강병훈",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-19",
+      "time": "19:30",
+      "todd": "조승우",
+      "lovett": "전미도",
+      "turpin": "서영주",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-20",
+      "time": "14:30",
+      "todd": "강필석",
+      "lovett": "박지연",
+      "turpin": "지현준",
+      "anthony": "최재웅",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-20",
+      "time": "19:30",
+      "todd": "조승우",
+      "lovett": "김소현",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-21",
+      "time": "19:30",
+      "todd": "김주택",
+      "lovett": "박지연",
+      "turpin": "김대종",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-22",
+      "time": "19:30",
+      "todd": "김주택",
+      "lovett": "전미도",
+      "turpin": "지현준",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-23",
+      "time": "14:00",
+      "todd": "강필석",
+      "lovett": "김소현",
+      "turpin": "서영주",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-23",
+      "time": "19:00",
+      "todd": "조승우",
+      "lovett": "박지연",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-24",
+      "time": "13:00",
+      "todd": "김주택",
+      "lovett": "김소현",
+      "turpin": "김대종",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-24",
+      "time": "18:00",
+      "todd": "강필석",
+      "lovett": "전미도",
+      "turpin": "김대종",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-26",
+      "time": "19:30",
+      "todd": "조승우",
+      "lovett": "김소현",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-27",
+      "time": "14:30",
+      "todd": "김주택",
+      "lovett": "박지연",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-27",
+      "time": "19:30",
+      "todd": "강필석",
+      "lovett": "김소현",
+      "turpin": "김대종",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-28",
+      "time": "19:30",
+      "todd": "조승우",
+      "lovett": "김지현",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-29",
+      "time": "19:30",
+      "todd": "강필석",
+      "lovett": "박지연",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-30",
+      "time": "14:00",
+      "todd": "김주택",
+      "lovett": "김소현",
+      "turpin": "김대종",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-30",
+      "time": "19:00",
+      "todd": "조승우",
+      "lovett": "박지연",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-01-31",
+      "time": "13:00",
+      "todd": "김주택",
+      "lovett": "김지현",
+      "turpin": "김대종",
+      "anthony": "최재웅",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-01-31",
+      "time": "18:00",
+      "todd": "강필석",
+      "lovett": "김지현",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-02-02",
+      "time": "19:30",
+      "todd": "강필석",
+      "lovett": "김소현",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "성민재",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-02-03",
+      "time": "14:30",
+      "todd": "조승우",
+      "lovett": "박지연",
+      "turpin": "김대종",
+      "anthony": "최재웅",
+      "tobias": "황순종",
+      "johanna": "장혜린",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-02-03",
+      "time": "19:30",
+      "todd": "김주택",
+      "lovett": "김소현",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-02-04",
+      "time": "19:30",
+      "todd": "강필석",
+      "lovett": "김지현",
+      "turpin": "김대종",
+      "anthony": "윤승우",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-02-05",
+      "time": "19:30",
+      "todd": "조승우",
+      "lovett": "김소현",
+      "turpin": "서영주",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-02-06",
+      "time": "14:00",
+      "todd": "김주택",
+      "lovett": "박지연",
+      "turpin": "지현준",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-02-06",
+      "time": "19:00",
+      "todd": "강필석",
+      "lovett": "박지연",
+      "turpin": "서영주",
+      "anthony": "최재웅",
+      "tobias": "강병훈",
+      "johanna": "장혜린",
+      "pirelli": "이형준"
+    },
+    {
+      "date": "2027-02-07",
+      "time": "13:00",
+      "todd": "조승우",
+      "lovett": "김지현",
+      "turpin": "김대종",
+      "anthony": "윤승우",
+      "tobias": "황순종",
+      "johanna": "성민재",
+      "pirelli": "서만석"
+    },
+    {
+      "date": "2027-02-07",
+      "time": "18:00",
+      "todd": "김주택",
+      "lovett": "김지현",
+      "turpin": "지현준",
+      "anthony": "윤승우",
+      "tobias": "황순종",
       "johanna": "성민재",
       "pirelli": "서만석"
     }
