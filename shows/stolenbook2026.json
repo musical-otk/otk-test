@@ -231,59 +231,75 @@
       "url": "https://x.com/mhicon_musical/status/2120800756605632572"
     },
     {
-      "name": "첫공",
+      "name": "첫공 무대인사",
       "startDate": "2026-12-19",
       "endDate": "2026-12-19",
       "color": "#4F5FA8",
       "times": [
         "19:00"
       ],
-      "description": "첫 공연 (스케줄표 '첫공' 표기)",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+      "description": "첫공 기념 무대인사 · 공연 종료 후 무대 정리 뒤 시작 · 촬영 불가",
+      "url": "https://x.com/mhicon_musical/status/2125879859947933949"
     },
     {
-      "name": "첫공",
+      "name": "첫공 무대인사",
       "startDate": "2026-12-20",
       "endDate": "2026-12-20",
       "color": "#4F5FA8",
       "times": [
         "14:00"
       ],
-      "description": "첫 공연 (스케줄표 '첫공' 표기)",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+      "description": "첫공 기념 무대인사 · 공연 종료 후 무대 정리 뒤 시작 · 촬영 불가",
+      "url": "https://x.com/mhicon_musical/status/2125879859947933949"
     },
     {
-      "name": "첫공",
+      "name": "첫공 무대인사",
       "startDate": "2026-12-20",
       "endDate": "2026-12-20",
       "color": "#4F5FA8",
       "times": [
         "18:00"
       ],
-      "description": "첫 공연 (스케줄표 '첫공' 표기)",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+      "description": "첫공 기념 무대인사 · 공연 종료 후 무대 정리 뒤 시작 · 촬영 불가",
+      "url": "https://x.com/mhicon_musical/status/2125879859947933949"
     },
     {
-      "name": "첫공",
+      "name": "첫공 무대인사",
       "startDate": "2026-12-22",
       "endDate": "2026-12-22",
       "color": "#4F5FA8",
       "times": [
         "19:30"
       ],
-      "description": "첫 공연 (스케줄표 '첫공' 표기)",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+      "description": "첫공 기념 무대인사 · 공연 종료 후 무대 정리 뒤 시작 · 촬영 불가",
+      "url": "https://x.com/mhicon_musical/status/2125879859947933949"
     },
     {
-      "name": "첫공",
+      "name": "첫공 무대인사",
       "startDate": "2027-01-05",
       "endDate": "2027-01-05",
       "color": "#4F5FA8",
       "times": [
         "19:30"
       ],
-      "description": "첫 공연 (스케줄표 '첫공' 표기)",
-      "url": "https://x.com/mhicon_musical/status/2119975346741325848"
+      "description": "첫공 기념 무대인사 · 공연 종료 후 무대 정리 뒤 시작 · 촬영 불가",
+      "url": "https://x.com/mhicon_musical/status/2125879859947933949"
+    },
+    {
+      "name": "커튼콜 위크",
+      "startDate": "2026-12-23",
+      "endDate": "2026-12-27",
+      "color": "#4F5FA8",
+      "description": "커튼콜 촬영 가능 · 플래시 사용, 자리 이동 불가",
+      "url": "https://x.com/mhicon_musical/status/2125880304238030958"
+    },
+    {
+      "name": "스페셜 커튼콜",
+      "startDate": "2026-12-29",
+      "endDate": "2027-01-03",
+      "color": "#4F5FA8",
+      "description": "커튼콜 종료 후 별도 정리 없이 바로 스페셜 커튼콜 시작 · 촬영 가능 · 중간 퇴장 시 재입장 불가 · 스페셜 커튼콜 넘버는 추후 공개",
+      "url": "https://x.com/mhicon_musical/status/2125880791150494021"
     }
   ]
 }
