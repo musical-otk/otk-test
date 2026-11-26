@@ -374,6 +374,17 @@ async def main():
         check('열려 있는 중에 온 링크(base64)도 받음', got == ['', ['링크로 온 공연']], got)
         # 내 일정 공연 카드 — 회차 카드와 같은 모양, 버튼은 [✏️ 수정] 하나·삭제는 수정 창 안 (A안 11/20) · 미정은 점선
         await e2("localStorage.clear()"); await pg2.reload(); await pg2.wait_for_timeout(2500)
+        # 회차를 못 찾은 기록도 날짜 상세에 — 허브가 새 스케줄을 받기 전엔 '일정 없음'만 떴다 (샤이닝 2차, 11/26)
+        got = await e2("""async()=>{
+          saveApps([{id:'app_t',name:'시험앱',icon:'✨',color:'#555',scheduleUrl:'x',appUrl:'',kind:'data',recordsKey:'k_app_t'}]);
+          schedules['app_t']=[{date:'2027-01-05',time:'20:00',a:'갑'}];
+          localStorage.setItem('k_app_t', JSON.stringify([{id:1,date:'2027-01-08',time:'20:00',isBooked:false,seatZone:'C',seatNumber:3},{id:2,date:'2027-01-05',time:'20:00'}]));
+          await openDay('2027-01-08'); const a=document.getElementById('sheet-content').innerText;
+          await openDay('2027-01-05'); const b=document.getElementById('sheet-content').innerText;
+          document.getElementById('ov-detail').classList.remove('open'); localStorage.removeItem('k_app_t'); saveApps([]); delete schedules['app_t'];
+          return [a, b]}""")
+        check('날짜 상세: 회차 못 찾은 기록도 보임(미정·아직 못 받음), 찾은 기록은 그대로',
+              got and '시험앱' in got[0] and '미정' in got[0] and '아직 못 받았어요' in got[0] and '일정 없음' not in got[0] and '아직 못 받았어요' not in got[1], got)
         got = await e2("""async()=>{
           saveCustom([{id:7,kind:'show',date:'2026-12-21',time:'18:00',name:'알테르 에고',cast:'이재균, 손지윤',place:'예스24스테이지 3관',price:50500,vendor:'YES24',seatZone:'1',seatNumber:5,color:COLOR_PALETTE[0],photoIds:[]},
                       {id:8,kind:'show',date:'2026-12-22',time:'19:30',name:'레드북',color:COLOR_PALETTE[1],photoIds:[],tentative:true}]);
