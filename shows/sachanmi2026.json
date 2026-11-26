@@ -7,7 +7,7 @@
   "endDate": "2026-12-19",
   "official": "https://x.com/NeoGloomyday",
   "noFirstLast": true,
-  "alias": "사의 찬미 사찬 춘천 영등포 삼척 충남 김천",
+  "alias": "사의 찬미 사찬 춘천 영등포 삼척 충남 김천 의성",
   "roles": [
     {
       "key": "r1",
@@ -80,6 +80,20 @@
       "r3": "유승현"
     },
     {
+      "date": "2026-12-09",
+      "time": "19:00",
+      "r1": "김종구",
+      "r2": "최연우",
+      "r3": "정민"
+    },
+    {
+      "date": "2026-12-10",
+      "time": "19:00",
+      "r1": "김종구",
+      "r2": "최연우",
+      "r3": "정민"
+    },
+    {
       "date": "2026-12-14",
       "time": "19:30",
       "r1": "이진혁",
@@ -140,6 +154,14 @@
       "color": "#3f5f5e",
       "description": "영등포아트홀 전 회차, 티켓 1매당 1장 — 해당 회차 출연 배우 3명 중 1명, 티켓봉투 안에",
       "url": "https://www.ydpcf.or.kr/artexhibit/view.do?id=579"
+    },
+    {
+      "name": "공연장: 의성문화회관",
+      "startDate": "2026-12-09",
+      "endDate": "2026-12-10",
+      "color": "#3f5f5e",
+      "description": "의성 · 티켓링크 단독 (11/24 14:00 오픈)",
+      "url": "https://www.ticketlink.co.kr/product/67178"
     },
     {
       "name": "공연장: 충남도청 문예회관",
