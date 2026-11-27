@@ -282,6 +282,26 @@ async def main():
           todayStr='2027-01-01';openEvSess('show_hatshepsut2026','2026-12-26','19:00','',0);const b=has();
           todayStr='2026-12-01';openEvSess('show_hatshepsut2026','2026-12-27','14:00','',0);const c=has();return [a,b,c]})()""")
         check('회차 자세히 창 양도 정보 복사 버튼', got == [True, False, False], got)
+        # 월별 통계 (11/27): 앱 기록 + 내 일정 공연 출연 칸이 같은 배우로 합쳐 세짐, 양도·미정은 빼고, 동명이인 안 고르면 (?)
+        got = await e2("""(()=>{const row=(schedules['show_hatshepsut2026']||[]).find(s=>s.date==='2026-12-26'&&s.time==='19:00');
+          const actor=bareName(getActorFields(row).map(k=>row[k])[0]);
+          localStorage.setItem(CUSTOM_KEY, JSON.stringify([
+            {id:'s1',kind:'show',name:'가상 연극',date:'2026-12-05',time:'15:00',cast:actor+'(역), 김도현'},
+            {id:'s2',kind:'show',name:'가상 연극',date:'2026-12-06',time:'15:00',cast:actor,tentative:true},
+            {id:'s3',kind:'show',name:'가상 연극',date:'2026-12-07',time:'15:00',cast:'김도현',castIds:{'김도현':'2'}}]));
+          todayStr='2026-12-10';_stMonth='2026-12';openStats();
+          const t=document.getElementById('st-body').innerText;
+          const chips=[...document.querySelectorAll('.st-actors span')].map(x=>x.textContent);
+          return [t.includes('2회 관람')&&t.includes('예정 1회')&&t.includes('미정 1'), chips.some(c=>c.startsWith(actor)&&c.endsWith('2')),
+            chips.some(c=>c==='김도현(?)1'), chips.some(c=>c.startsWith('김도현 ·')&&c.endsWith('1'))]})()""")
+        await e2("localStorage.removeItem(CUSTOM_KEY);document.getElementById('ov-stats').classList.remove('open')")
+        check('월별 통계: 관람·예정·미정, 출연 칸 배우가 회차 캐스팅과 합쳐짐, 동명이인', got == [True, True, True, True], got)
+        # 출연 자동완성: 쉼표 뒤 이름만 찾고, 고른 동명이인은 castIds 로
+        await e2("openCustomForm('2026-12-01')"); await pg2.wait_for_timeout(5000)
+        got = await e2("""(()=>{const el=document.getElementById('cf-cast');el.value='최호승, 김도';cfCastInput();
+          const btns=[...document.querySelectorAll('#cf-cast-sugg button')];const b=btns.find(x=>x.textContent.startsWith('김도현')&&x.querySelector('small'));
+          if(!b) return 'no-btn';b.click();const v=el.value;const ids=cfCastIdsKept(v);closeCustomForm();return [v, Object.keys(ids.castIds||{})]})()""")
+        check('출연 자동완성: 마지막 이름만 바꾸고 동명이인 id 남김', got == ['최호승, 김도현, ', ['김도현']], got)
         # 날짜 상세(메모·예매 수정 줄)에도 — 사용자가 여기서도 찾음(11/17)
         got = await e2("""(async()=>{closeEvSheet();todayStr='2026-12-01';await openDay('2026-12-26');
           const h=document.body.innerHTML;let t='';const o=navigator.clipboard;

@@ -581,6 +581,28 @@
       font-size: 18px; cursor: pointer; padding: 4px 6px; border-radius: 6px;
     }
     .settings-body { padding: 0 16px 8px; }
+    .st-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 2px 0 8px; }
+    .st-nav button { background: none; border: none; color: var(--text2); font-size: 20px; padding: 2px 10px; cursor: pointer; }
+    .st-month { font-size: 16px; font-weight: 700; min-width: 110px; text-align: center; }
+    .st-sum { text-align: center; font-size: 13px; color: var(--text2); margin-bottom: 4px; }
+    .st-sum b { font-size: 22px; color: var(--text1); margin-right: 2px; }
+    .st-sub { text-align: center; font-size: 12px; color: var(--text3); margin-bottom: 6px; }
+    .st-row { display: grid; grid-template-columns: minmax(0, 9em) 1fr auto; align-items: center; gap: 8px; padding: 6px 0; cursor: pointer; font-size: 13px; }
+    .st-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .st-bar { height: 10px; display: flex; border-radius: 5px; overflow: hidden; }
+    .st-bar i { display: block; height: 100%; }
+    .st-n { font-variant-numeric: tabular-nums; color: var(--text2); min-width: 1.5em; text-align: right; }
+    .st-list { margin: 0 0 6px; padding: 4px 0 4px 10px; border-left: 2px solid var(--border); font-size: 12px; color: var(--text2); }
+    .st-list div { padding: 3px 0; cursor: pointer; }
+    .st-actors { display: flex; flex-wrap: wrap; gap: 6px; }
+    .st-actors span { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 4px 10px; font-size: 12px; }
+    .st-actors b { margin-left: 4px; }
+    .st-trend { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; align-items: end; height: 84px; margin-top: 6px; }
+    .st-trend div { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; cursor: pointer; font-size: 11px; color: var(--text3); }
+    .st-trend i { display: block; width: 60%; background: var(--text3); border-radius: 3px 3px 0 0; min-height: 2px; }
+    .st-trend div.on { color: var(--text1); font-weight: 700; }
+    .st-trend div.on i { background: var(--text1); }
+    .st-empty { text-align: center; color: var(--text3); font-size: 13px; padding: 24px 0; }
     .section-title {
       font-size: 11px; font-weight: 700; color: var(--text3);
       letter-spacing: 0.4px; padding: 10px 0 8px;
@@ -791,6 +813,7 @@
   <div class="header">
     <div class="header-title" onclick="goToToday()">mu:di</div>
     <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()">⚙️</button>
+    <button class="hbtn" onclick="openStats()" title="월별 통계">📊</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
     <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">❤️</button>
     <div id="app-tabs"></div>
@@ -904,11 +927,13 @@
     </div>
     <div class="form-row cf-show">
       <div class="form-label">출연 (선택)</div>
-      <input class="form-input" type="text" id="cf-cast" placeholder="예: 이재균, 손지윤">
+      <input class="form-input" type="text" id="cf-cast" placeholder="예: 이재균, 손지윤" autocomplete="off" oninput="cfCastInput()">
+      <div class="cf-sugg" id="cf-cast-sugg" hidden></div>
     </div>
     <div class="form-row cf-show">
       <div class="form-label">장소 (선택)</div>
-      <input class="form-input" type="text" id="cf-place" placeholder="공연장">
+      <input class="form-input" type="text" id="cf-place" placeholder="공연장" autocomplete="off" oninput="cfPlaceInput()">
+      <div class="cf-sugg" id="cf-place-sugg" hidden></div>
     </div>
     <div class="form-row cf-show">
       <div class="form-label">금액 · 예매처 (선택)</div>
@@ -991,6 +1016,17 @@
 </div>
 
 <!-- 설정 -->
+<!-- 월별 통계 (11/27) — 📊 로 연다 -->
+<div class="overlay" id="ov-stats" onclick="closeOnBg(event,'ov-stats')">
+  <div class="sheet" id="sheet-stats">
+    <div class="sheet-handle"></div>
+    <div class="settings-hd">
+      <div class="settings-title">월별 통계</div>
+      <button class="settings-close" onclick="document.getElementById('ov-stats').classList.remove('open')">✕</button>
+    </div>
+    <div class="settings-body" id="st-body"></div>
+  </div>
+</div>
 <div class="overlay" id="ov-settings" onclick="closeOnBg(event,'ov-settings')">
   <div class="sheet" id="sheet-settings">
     <div class="sheet-handle"></div>
@@ -2650,6 +2686,8 @@
     document.getElementById('cf-seat-zone').value = ev && ev.seatZone ? ev.seatZone : '';
     document.getElementById('cf-seat-num').value = ev && ev.seatNumber != null ? ev.seatNumber : '';
     document.getElementById('cf-cast').value   = ev && ev.cast ? ev.cast : '';
+    _cfCastIds = ev && ev.castIds ? { ...ev.castIds } : {};
+    document.getElementById('cf-cast-sugg').hidden = true; document.getElementById('cf-place-sugg').hidden = true;
     document.getElementById('cf-place').value  = ev && ev.place ? ev.place : '';
     document.getElementById('cf-price').value  = ev && ev.price ? ev.price : '';
     document.getElementById('cf-vendor').value = ev && ev.vendor ? ev.vendor : '';
@@ -2690,6 +2728,78 @@
     _cfWork = null;
     document.getElementById('cf-name').value = n;
     document.getElementById('cf-sugg').hidden = true; renderCfSess();
+  }
+  // ── 출연·공연장 자동완성 (11/27) ──
+  // 출연: 허브 모든 작품 캐스팅 + 예전에 쓴 내 공연 출연. 쉼표 뒤 마지막 이름만 찾는다.
+  // 동명이인(people.json)은 '김도현 · 최근 작품'으로 갈라 띄우고, 고르면 castIds { 이름: id } 에 남긴다 — 칸에는 이름만.
+  // 공연장: 작품 정보의 극장 + 투어 '공연장: …' 이벤트 + 예전에 쓴 장소
+  let _cfCastIds = {};
+  const castNames = str => String(str || '').split(/\s*[,·\/]\s*/).map(n => n.replace(/\s*[(（].*?[)）]\s*/g, '').trim()).filter(Boolean);
+  function cfCastIdsKept(str) {
+    const names = new Set(castNames(str));
+    const kept = Object.fromEntries(Object.entries(_cfCastIds).filter(([n]) => names.has(n)));
+    return Object.keys(kept).length ? { castIds: kept } : {};
+  }
+  function allActorNames() {
+    const set = new Set();
+    catalog('all').works.forEach(w => rowsOf(w).forEach(r => getActorFields(r).forEach(k => {
+      const v = r[k]; if (typeof v === 'string' && v.trim()) set.add(v.trim());
+    })));
+    getCustom().forEach(e => castNames(e.cast).forEach(n => set.add(e.castIds && e.castIds[n] ? n + NAME_TAG + e.castIds[n] : n)));
+    return [...set];
+  }
+  function cfCastInput() {
+    const el = document.getElementById('cf-cast'), box = document.getElementById('cf-cast-sugg');
+    const parts = el.value.split(/([,·\/]\s*)/), last = parts[parts.length - 1];
+    const q = norm(last);
+    if (!q) { box.hidden = true; return; }
+    const typed = new Set(castNames(parts.slice(0, -1).join('')));
+    const hits = allActorNames().filter(n => norm(bareName(n)).includes(q) && !typed.has(bareName(n)))
+      .sort((a, b) => (norm(bareName(a)).startsWith(q) ? 0 : 1) - (norm(bareName(b)).startsWith(q) ? 0 : 1) || bareName(a).localeCompare(bareName(b), 'ko'));
+    // 표에 있는 이름은 사람별로만(태그 없는 같은 이름은 뺀다)
+    const shown = hits.filter(n => !(PEOPLE[n] && hits.some(h => h.startsWith(n + NAME_TAG)))).slice(0, 6);
+    if (shown.length === 1 && bareName(shown[0]) === last.trim() && !personOf(shown[0])) { box.hidden = true; return; }
+    box.innerHTML = shown.map(n => `<button onclick="pickCfCast('${jsq(n)}')">${escHtml(bareName(n))}${personOf(n) ? `<small>${escHtml(actorLabel(n).slice(bareName(n).length + 3))}</small>` : ''}</button>`).join('');
+    box.hidden = !shown.length;
+  }
+  function pickCfCast(n) {
+    const el = document.getElementById('cf-cast');
+    const parts = el.value.split(/([,·\/]\s*)/);
+    const b = bareName(n), id = String(n).split(NAME_TAG)[1];
+    parts[parts.length - 1] = b;
+    el.value = parts.join('') + ', ';
+    if (id) _cfCastIds[b] = id; else delete _cfCastIds[b];
+    document.getElementById('cf-cast-sugg').hidden = true;
+    el.focus();
+  }
+  function allVenues() {
+    const set = new Set();
+    catalog('all').works.forEach(w => {
+      const info = w.kind === 'data' ? infoOf(w) : _appInfo[w.id];
+      if (info && info.venue) set.add(info.venue.trim());
+      eventsOf(w).forEach(e => { const m = /^공연장\s*[:：]\s*(.+)$/.exec(e.name || ''); if (m) set.add(m[1].trim()); });
+    });
+    extraShows.forEach(x => x.venue && set.add(x.venue.trim()));
+    getCustom().forEach(e => e.place && set.add(e.place.trim()));
+    // 띄어쓰기만 다른 같은 극장('홍익대대학로아트센터' · '홍익대 대학로 아트센터')은 띄어 쓴 쪽 하나로
+    const one = {};
+    set.forEach(v => { const k = norm(v); if (!one[k] || v.split(' ').length > one[k].split(' ').length) one[k] = v; });
+    return Object.values(one);
+  }
+  function cfPlaceInput() {
+    // 앱 작품 극장은 show-info 에 있다 — 처음 칠 때 한 번 받아 둔다(받는 동안은 나머지로)
+    if (!cfPlaceInput._asked) { cfPlaceInput._asked = true; catalog('all').works.filter(w => w.kind !== 'data' && w.id !== EXTRA_ID).forEach(w => appInfoOf(w)); }
+    const el = document.getElementById('cf-place'), box = document.getElementById('cf-place-sugg');
+    const q = norm(el.value);
+    if (!q) { box.hidden = true; return; }
+    const hits = allVenues().filter(v => norm(v).includes(q) && norm(v) !== q)
+      .sort((a, b) => (norm(a).startsWith(q) ? 0 : 1) - (norm(b).startsWith(q) ? 0 : 1) || a.localeCompare(b, 'ko')).slice(0, 6);
+    box.innerHTML = hits.map(v => `<button onclick="pickCfPlace('${jsq(v)}')">📍 ${escHtml(v)}</button>`).join('');
+    box.hidden = !hits.length;
+  }
+  function pickCfPlace(v) {
+    document.getElementById('cf-place').value = v;
+    document.getElementById('cf-place-sugg').hidden = true;
   }
   async function pickCfWork(id) {
     const w = catalog('all').works.find(x => x.id === id); if (!w) return;
@@ -2818,7 +2928,7 @@
     const fv = id => document.getElementById(id).value.trim();
     const extra = kind === 'etc' ? { kind, icon: _cfIcon || '📌', ...(endDate ? { endDate } : {}) }
       : { kind, ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}),
-          ...(fv('cf-cast') ? { cast: fv('cf-cast') } : {}), ...(fv('cf-place') ? { place: fv('cf-place') } : {}),
+          ...(fv('cf-cast') ? { cast: fv('cf-cast') } : {}), ...(cfCastIdsKept(fv('cf-cast'))), ...(fv('cf-place') ? { place: fv('cf-place') } : {}),
           ...(Number(fv('cf-price')) ? { price: Number(fv('cf-price')) } : {}), ...(fv('cf-vendor') ? { vendor: fv('cf-vendor') } : {}),
           ...(document.getElementById('cf-tent').checked ? { tentative: true } : {}) };
     const time    = document.getElementById('cf-time').value;
@@ -4113,6 +4223,72 @@
     renderTabs(); renderCalendar();
     const n = Object.values(getAttended()).reduce((a, v) => a + v.length, 0);
     toast(`기록 ${n}건을 불러왔어요`);
+  }
+  // ── 월별 통계 (11/27) ──
+  // 관람 = 지난 날짜 · 예정 = 오늘부터. 양도·미정은 세지 않고 아래 한 줄로만.
+  // 배우: 허브 회차 캐스팅(동명이인은 '#id' 그대로) + 내 일정 공연의 출연 칸(castIds 로 고른 사람, 표에 있는데 안 고른 이름은 '(?)')
+  let _stMonth = '', _stOpen = null;
+  function statsItems() {
+    const out = [], att = getAttended(), apps = getApps();
+    Object.entries(att).forEach(([ds, recs]) => recs.forEach(r => {
+      const app = apps.find(a => a.id === r.appId); if (!app) return;
+      const row = (schedules[r.appId] || []).find(s => s.date === ds && recHit(r, r.appId, s));
+      const cast = row ? getActorFields(row).map(k => row[k]).filter(v => typeof v === 'string' && v) : [];
+      out.push({ ds, time: r.time || (row && row.time) || '', key: r.appId + '|' + (r.showId || (row && row._showId) || ''),
+        name: sessName(app, row), icon: app.icon || '🎭', color: app.color || '#888', cast,
+        skip: r.transferred ? 'trans' : r.tentative ? 'tent' : '' });
+    }));
+    getCustom().filter(e => customKind(e) === 'show' && e.date).forEach(e => {
+      const cast = castNames(e.cast).map(n => e.castIds && e.castIds[n] ? n + NAME_TAG + e.castIds[n] : PEOPLE[n] ? n + '(?)' : n);
+      out.push({ ds: e.date, time: e.time || '', key: 'c|' + norm(e.name), name: e.name, icon: '🎭', color: e.color || '#888', cast,
+        skip: e.tentative ? 'tent' : '' });
+    });
+    return out;
+  }
+  function openStats() {
+    _stMonth = _stMonth || todayStr.slice(0, 7); _stOpen = null;
+    renderStats();
+    document.getElementById('ov-stats').classList.add('open');
+  }
+  function stShift(d) {
+    const [y, m] = _stMonth.split('-').map(Number), t = new Date(y, m - 1 + d, 1);
+    _stMonth = t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0'); _stOpen = null; renderStats();
+  }
+  function stToggle(k) { _stOpen = _stOpen === k ? null : k; renderStats(); }
+  function renderStats() {
+    const all = statsItems(), mon = all.filter(x => x.ds.slice(0, 7) === _stMonth);
+    const live = mon.filter(x => !x.skip), past = live.filter(x => x.ds < todayStr), next = live.filter(x => x.ds >= todayStr);
+    const [y, m] = _stMonth.split('-').map(Number);
+    const by = {};
+    live.forEach(x => { const g = by[x.key] = by[x.key] || { ...x, past: 0, next: 0, list: [] }; x.ds < todayStr ? g.past++ : g.next++; g.list.push(x); });
+    const works = Object.values(by).sort((a, b) => (b.past + b.next) - (a.past + a.next) || a.name.localeCompare(b.name, 'ko'));
+    const max = Math.max(1, ...works.map(g => g.past + g.next));
+    const actors = {};
+    live.forEach(x => new Set(x.cast).forEach(n => { actors[n] = (actors[n] || 0) + 1; }));
+    const top = Object.entries(actors).sort((a, b) => b[1] - a[1] || bareName(a[0]).localeCompare(bareName(b[0]), 'ko')).slice(0, 8);
+    const trans = mon.filter(x => x.skip === 'trans').length, tent = mon.filter(x => x.skip === 'tent').length;
+    const skipTxt = [trans && '양도 ' + trans, tent && '미정 ' + tent].filter(Boolean).join(' · ');
+    const fmtD = x => { const d = new Date(x.ds + 'T00:00:00'); return `${+x.ds.slice(5, 7)}/${+x.ds.slice(8)}(${DOW[d.getDay()]}) ${x.time}`; };
+    // 최근 6개월 — 고른 달이 맨 오른쪽
+    const months = [...Array(6)].map((_, i) => { const t = new Date(y, m - 6 + i, 1); return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0'); });
+    const cnt = months.map(k => all.filter(x => !x.skip && x.ds.slice(0, 7) === k).length), cmax = Math.max(1, ...cnt);
+    document.getElementById('st-body').innerHTML = `
+      <div class="st-nav"><button onclick="stShift(-1)">‹</button><div class="st-month">${y}년 ${m}월</div><button onclick="stShift(1)">›</button></div>
+      ${live.length ? `<div class="st-sum"><b>${past.length}</b>회 관람${next.length ? ` · 예정 ${next.length}회` : ''} · 작품 ${works.length}개</div>
+      ${skipTxt ? `<div class="st-sub">${skipTxt} (세지 않음)</div>` : ''}
+      <div class="section-title">작품별</div>
+      ${works.map(g => `<div class="st-row" onclick="stToggle('${jsq(g.key)}')">
+          <span class="st-name">${g.icon} ${escHtml(g.name)}</span>
+          <span class="st-bar"><i style="width:${g.past / max * 100}%;background:${g.color}"></i><i style="width:${g.next / max * 100}%;background:${g.color};opacity:.35"></i></span>
+          <span class="st-n">${g.past + g.next}</span></div>
+        ${_stOpen === g.key ? `<div class="st-list">${g.list.sort((a, b) => (a.ds + a.time).localeCompare(b.ds + b.time)).map(x =>
+          `<div onclick="document.getElementById('ov-stats').classList.remove('open');openDay('${x.ds}')">${fmtD(x)}${x.ds >= todayStr ? ' · 예정' : ''}${x.cast.length ? ' · ' + escHtml(x.cast.map(bareName).join(' ')) : ''}</div>`).join('')}</div>` : ''}`).join('')}
+      ${top.length ? `<div class="section-title">많이 본 배우</div>
+      <div class="st-actors">${top.map(([n, c]) => `<span>${escHtml(n.endsWith('(?)') ? n : actorLabel(n))}<b>${c}</b></span>`).join('')}</div>` : ''}`
+      : `<div class="st-empty">이 달 기록이 없어요${skipTxt ? ` (${skipTxt})` : ''}</div>`}
+      <div class="section-title">최근 6개월</div>
+      <div class="st-trend">${months.map((k, i) => `<div class="${k === _stMonth ? 'on' : ''}" onclick="_stMonth='${k}';_stOpen=null;renderStats()">
+        <span>${cnt[i] || ''}</span><i style="height:${cnt[i] / cmax * 56}px"></i><span>${+k.slice(5)}월</span></div>`).join('')}</div>`;
   }
   function closeSettings() { document.getElementById('ov-settings').classList.remove('open'); }
 
