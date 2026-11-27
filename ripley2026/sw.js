@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ripley2026-v10';
+const CACHE_NAME = 'ripley2026-v11';
 const CACHE_PREFIX = 'ripley2026-';   // 같은 origin 의 다른 앱 캐시는 건드리지 않는다
 const NO_CACHE = /[?&]t=\d+/;   // 스케줄·이벤트 json 은 매번 새 주소라 캐시에 쌓지 않는다
 const BASE = self.location.pathname.replace(/\/sw\.js$/, '');   // 어느 폴더에 두어도 동작 (otk-test 사본 포함)
