@@ -296,6 +296,10 @@ async def main():
             chips.some(c=>c==='김도현(?)1'), chips.some(c=>c.startsWith('김도현 ·')&&c.endsWith('1'))]})()""")
         await e2("localStorage.removeItem(CUSTOM_KEY);document.getElementById('ov-stats').classList.remove('open')")
         check('월별 통계: 관람·예정·미정, 출연 칸 배우가 회차 캐스팅과 합쳐짐, 동명이인', got == [True, True, True, True], got)
+        got = await e2("""(()=>{const b=document.getElementById('stats-btn'), vis=()=>b.offsetParent!==null;
+          const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
+          document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
+        check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
         # 출연 자동완성: 쉼표 뒤 이름만 찾고, 고른 동명이인은 castIds 로
         await e2("openCustomForm('2026-12-01')"); await pg2.wait_for_timeout(5000)
         got = await e2("""(()=>{const el=document.getElementById('cf-cast');el.value='최호승, 김도';cfCastInput();

@@ -813,7 +813,7 @@
   <div class="header">
     <div class="header-title" onclick="goToToday()">mu:di</div>
     <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()">⚙️</button>
-    <button class="hbtn" onclick="openStats()" title="월별 통계">📊</button>
+    <button class="hbtn" id="stats-btn" onclick="openStats()" title="월별 통계" hidden>📊</button>
     <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
     <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">❤️</button>
     <div id="app-tabs"></div>
@@ -1041,6 +1041,7 @@
       <button class="set-btn" id="sync-btn" onclick="refreshShowInfo()">🔄 공연 정보 새로 받기</button>
       <div id="set-diff"></div>
       <div class="section-title">내 기록</div>
+      <button class="set-btn" onclick="closeSettings();openStats()">📊 월별 통계</button>
       <button class="set-btn" onclick="reloadRecords()">📒 기록 새로고침</button>
       <button class="set-btn" onclick="downloadBackup(false)">💾 백업 파일 받기</button>
       <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
@@ -1057,6 +1058,7 @@
       <div id="set-restore"></div>
       <div class="section-title">화면</div>
       <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
+      <div class="set-btn set-row set-dow"><span>위쪽에 📊 통계 버튼</span><span class="seg-view" id="stats-seg"></span></div>
       <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
       <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
       <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
@@ -2446,6 +2448,15 @@
     if (seg) seg.innerHTML = [['dark', '다크'], ['light', '라이트']].map(([v, n]) =>
       `<button class="seg-btn${v === t ? ' on' : ''}" onclick="setTheme('${v}')">${n}</button>`).join('');
     document.getElementById('meta-theme').content = t === 'light' ? '#f8f8f6' : '#111118';
+  }
+  // 📊 버튼 — 위쪽 줄이 붐비지 않게 기본은 숨기고 설정에서 켠다. 통계는 설정 '내 기록'에서도 연다 (11/27)
+  const STATS_BTN_KEY = HUB_NS + 'stats_btn';
+  function applyStatsBtn() {
+    const on = localStorage.getItem(STATS_BTN_KEY) === 'show';
+    document.getElementById('stats-btn').hidden = !on;
+    const seg = document.getElementById('stats-seg');
+    if (seg) seg.innerHTML = [['show', '보이기'], ['hide', '숨기기']].map(([v, n]) =>
+      `<button class="seg-btn${(v === 'show') === on ? ' on' : ''}" onclick="lsSet(STATS_BTN_KEY,'${v}');applyStatsBtn()">${n}</button>`).join('');
   }
   function setTheme(t) { localStorage.setItem(THEME_KEY, t); applyTheme(t); }
   function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }
@@ -5675,7 +5686,7 @@
   addEventListener('visibilitychange', () => { if (!document.hidden) { refreshToday(); refreshRecords(); } });
 
   async function init() {
-    applyTheme(getTheme());
+    applyTheme(getTheme()); applyStatsBtn();
     renderDowHead();
     const t = new Date();
     currentYear = t.getFullYear(); currentMonth = t.getMonth();
