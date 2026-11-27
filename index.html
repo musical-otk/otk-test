@@ -2989,8 +2989,8 @@
   async function moveCustomToWork(id, wid, time, showId) {
     const e = getCustom().find(x => String(x.id) === String(id)), w = catalog('all').works.find(x => x.id === wid);
     if (!e || !w) return;
-    if (!confirm(`${w.name} ${e.date.slice(5).replace('-', '/')} ${time} 회차 기록으로 옮길까요?
-좌석·금액·메모·사진은 그대로 가져가요.`)) return;
+    if (!confirm(`허브에 등록된 〈${w.name}〉 ${e.date.slice(5).replace('-', '/')} ${time} 회차 정보를 가져올까요?
+캐스팅·이벤트가 붙고, 좌석·금액·메모·사진은 그대로 남아요.`)) return;
     const hits = () => (getAttended()[e.date] || []).filter(r => r.appId === w.id).length;
     const before = hits();
     await openCustomForm(e.date, e.id);   // 좌석·금액·메모·사진을 폼에 채운 뒤 '작품 회차 예매로 저장' 길을 그대로 탄다
@@ -3575,7 +3575,7 @@
           <div class="session-meta">${mark}${fmtSeat(e) ? `&nbsp;&nbsp;${fmtSeat(e)}` : ''}</div>
           ${info ? `<div class="session-meta cu-info">${escHtml(info)}</div>` : ''}
           ${e.comment ? `<div class="session-meta cu-info">${escHtml(e.comment)}</div>` : ''}
-          ${(m => m ? `<button class="jump-btn cu-move" onclick="moveCustomToWork('${jsq(e.id)}','${jsq(m.w.id)}','${jsq(m.s.time || '')}','${jsq(m.s._showId || '')}')">🔗 ${escHtml(m.w.name)} 회차로 옮기기</button>` : '')(customWorkMatch(e))}
+          ${(m => m ? `<button class="jump-btn cu-move" onclick="moveCustomToWork('${jsq(e.id)}','${jsq(m.w.id)}','${jsq(m.s.time || '')}','${jsq(m.s._showId || '')}')">🔗 등록된 공연 정보 가져오기</button>` : '')(customWorkMatch(e))}
           <div class="note-row">${cThumbs}${editBtn}</div>
         </div>
       </div>`;
