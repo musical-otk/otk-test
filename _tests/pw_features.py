@@ -309,6 +309,19 @@ async def main():
           setCfKind('etc');const etcFirst=document.querySelector('#cf-icons button').textContent;
           localStorage.removeItem(CUSTOM_KEY);return [vis,first,e&&e.icon,customLabel(e),again,etcFirst]})()""")
         check('내 일정 공연 아이콘 고르기', got == [True,'🎭','🎤','🎤 가상 콘서트','🎤','✈️'], got)
+        # 내 일정 공연 → 허브 작품 회차로 옮기기 (11/27): 이름 띄어쓰기 무시, 좌석·금액·메모 가져가고 내 일정은 지움
+        got = await e2("""(async()=>{todayStr='2026-12-01';
+          localStorage.setItem(CUSTOM_KEY, JSON.stringify([{id:'m1',kind:'show',name:'하트 셉수트',date:'2026-12-27',time:'14:00',seatZone:'D',seatNumber:9,price:55000,comment:'첫 관람',vendor:'NOL'},
+            {id:'m2',kind:'show',name:'하트셉수트',date:'2026-12-28',time:'03:00'}]));
+          await openDay('2026-12-27');const btn=[...document.querySelectorAll('#sheet-content .cu-move')];
+          await openDay('2026-12-28');const none=document.querySelectorAll('#sheet-content .cu-move').length;
+          if(btn.length!==1) return ['btn',btn.length];
+          await moveCustomToWork('m1','show_hatshepsut2026','14:00','');await new Promise(r=>setTimeout(r,300));
+          const rec=JSON.parse(localStorage.getItem(HUB_NS+'rec_hatshepsut2026')).find(r=>r.date==='2026-12-27');
+          const note=getNotes()['show_hatshepsut2026__2026-12-27__14:00'];
+          const left=getCustom().map(e=>e.id);localStorage.removeItem(CUSTOM_KEY);
+          return [none, rec&&[rec.time,rec.seatZone,rec.seatNumber,rec.price], note&&note.memo, left]})()""")
+        check('내 일정 공연 → 작품 회차로 옮기기', got == [0, ['14:00','D',9,55000], '첫 관람 · 예매처 NOL', ['m2']], got)
         # 출연 자동완성: 쉼표 뒤 이름만 찾고, 고른 동명이인은 castIds 로
         await e2("openCustomForm('2026-12-01')"); await pg2.wait_for_timeout(5000)
         got = await e2("""(()=>{const el=document.getElementById('cf-cast');el.value='최호승, 김도';cfCastInput();

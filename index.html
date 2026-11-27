@@ -734,6 +734,7 @@
       cursor: pointer; color: var(--text2);
     }
     .note-memo-snip { font-size: 11px; color: var(--text3); flex: 1; white-space: pre-wrap; word-break: break-all; max-height: 32px; overflow: hidden; }
+    .cu-move { display: block; margin: 6px 0 2px; }
     .jump-btn {
       background: none; border: none; color: var(--text2);
       font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer;
@@ -2972,6 +2973,39 @@
     renderCalendar();
   }
 
+  // ── 내 일정 공연 → 허브 작품 회차로 옮기기 (11/27) ──
+  // 작품이 허브에 들어오기 전에 적었거나 자동완성을 안 거친 기록(네이처오브포겟팅 11/7). 이름(띄어쓰기 무시)이 작품 이름·전체 이름·별칭과 같고
+  // 그 날짜·시각 회차가 있을 때만. 시간이 비었으면 그날 회차가 하나일 때만.
+  function customWorkMatch(e) {
+    if (customKind(e) !== 'show' || !e.date) return null;
+    const q = norm(e.name);
+    const w = catalog('all').works.find(w => w.id !== EXTRA_ID &&
+      [w.name, w.fullName, ...String(w.alias || '').split(/[\s,·]+/)].some(t => t && norm(t) === q));
+    if (!w) return null;
+    const day = rowsOf(w).filter(r => r.date === e.date);
+    const s = e.time ? day.find(r => (r.time || '') === e.time) : day.length === 1 ? day[0] : null;
+    return s ? { w, s } : null;
+  }
+  async function moveCustomToWork(id, wid, time, showId) {
+    const e = getCustom().find(x => String(x.id) === String(id)), w = catalog('all').works.find(x => x.id === wid);
+    if (!e || !w) return;
+    if (!confirm(`${w.name} ${e.date.slice(5).replace('-', '/')} ${time} 회차 기록으로 옮길까요?
+좌석·금액·메모·사진은 그대로 가져가요.`)) return;
+    const hits = () => (getAttended()[e.date] || []).filter(r => r.appId === w.id).length;
+    const before = hits();
+    await openCustomForm(e.date, e.id);   // 좌석·금액·메모·사진을 폼에 채운 뒤 '작품 회차 예매로 저장' 길을 그대로 탄다
+    _customEditId = null; _cfWork = w;
+    document.getElementById('cf-time').value = time;
+    const memo = [e.comment, e.vendor && '예매처 ' + e.vendor].filter(Boolean).join(' · ');
+    document.getElementById('cf-comment').value = memo;
+    if (!cfSession()) { closeCustomForm(); toast('그 회차를 찾지 못했어요'); return; }
+    await saveCfAsBooking();
+    if (hits() > before) {   // 옮겨졌을 때만 내 일정을 지운다 (사진은 새로 저장됐으니 옛 것은 지운다)
+      await Promise.all((e.photoIds || []).map(pid => PhotoDB.remove(pid)));
+      saveCustom(getCustom().filter(x => String(x.id) !== String(id)));
+      renderCalendar(); openDay(e.date);
+    }
+  }
   async function deleteCustomEvent(id) {
     if (!confirm('지울까요?')) return;
     const ev = getCustom().find(e => e.id === id);
@@ -3536,11 +3570,12 @@
         return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${col}">
         <div class="session-time">${e.time || '—'}</div>
         <div class="session-body">
-          <div class="session-name" style="color:${col}">🎭 ${escHtml(e.name)}</div>
+          <div class="session-name" style="color:${col}">${customIcon(e)} ${escHtml(e.name)}</div>
           ${e.cast ? `<div class="session-cast">${escHtml(e.cast.split(/\s*[,·]\s*/).join(' · '))}</div>` : ''}
           <div class="session-meta">${mark}${fmtSeat(e) ? `&nbsp;&nbsp;${fmtSeat(e)}` : ''}</div>
           ${info ? `<div class="session-meta cu-info">${escHtml(info)}</div>` : ''}
           ${e.comment ? `<div class="session-meta cu-info">${escHtml(e.comment)}</div>` : ''}
+          ${(m => m ? `<button class="jump-btn cu-move" onclick="moveCustomToWork('${jsq(e.id)}','${jsq(m.w.id)}','${jsq(m.s.time || '')}','${jsq(m.s._showId || '')}')">🔗 ${escHtml(m.w.name)} 회차로 옮기기</button>` : '')(customWorkMatch(e))}
           <div class="note-row">${cThumbs}${editBtn}</div>
         </div>
       </div>`;
