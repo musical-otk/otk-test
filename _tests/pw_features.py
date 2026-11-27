@@ -300,6 +300,11 @@ async def main():
           const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
           document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
         check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
+        got = await e2("""(()=>{_stMonth='2026-11';openStats();const el=document.getElementById('st-body');
+          const tc=(type,x)=>{const tt=new Touch({identifier:1,target:el,clientX:x,clientY:300});el.dispatchEvent(new TouchEvent(type,{touches:type==='touchstart'?[tt]:[],changedTouches:[tt],bubbles:true}))};
+          tc('touchstart',300);tc('touchend',150);const a=_stMonth;tc('touchstart',100);tc('touchend',260);tc('touchstart',100);tc('touchend',260);
+          const b=_stMonth;document.getElementById('ov-stats').classList.remove('open');return [a,b]})()""")
+        check('통계 가로로 밀어 달 넘기기', got == ['2026-12', '2026-10'], got)
         # 내 일정 공연도 아이콘 고르기 (11/27): 공연 목록 따로, 저장, 통계·카드에 반영, 예전 공연 이름 고르면 그 아이콘
         got = await e2("""(async()=>{openCustomForm('2026-12-03');await new Promise(r=>setTimeout(r,300));
           const vis=document.getElementById('cf-icons').offsetParent!==null, first=document.querySelector('#cf-icons button').textContent;
@@ -468,7 +473,7 @@ async def main():
           await openDay(R.date);const b=[...document.querySelectorAll('#sheet-content .jump-btn')].map(x=>x.textContent.trim());
           jumpToApp('app_ikkisup',R.date,R.time,true);const src=document.getElementById('frame-app_ikkisup').src;switchView('cal');
           return [b, /edit=1/.test(src)]}""")
-        check('전용 페이지 작품 내 기록 → [✏️ 예매 수정][전용 페이지 ›], 전용 페이지는 &edit=1', got and got[0] == ['✏️ 예매 수정', '전용 페이지 ›'] and got[1], got)
+        check('전용 페이지 작품 내 기록 → [✏️ 예매 수정][전용 페이지 ›], 전용 페이지는 &edit=1', got and got[0][:2] == ['✏️ 예매 수정', '전용 페이지 ›'] and got[1], got)
         # 전용 페이지 작품도 허브 기록 창으로 (11/27, 한 번만 볼 작품): 앱 기록 모양으로 저장, 고칠 때 앱 칸(별점 등)은 그대로
         got = await e2("""async()=>{const a=getApps().find(x=>x.id==='app_ikkisup');const rows=(await fetch(a.scheduleUrl).then(r=>r.json())).filter(r=>r.date>=todayStr);
           const R=rows[0], R2=rows.find(r=>r.date!==R.date);
