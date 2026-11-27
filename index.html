@@ -202,6 +202,9 @@
     }
     .seg-btn.on { background: var(--custom-bg); border-color: var(--custom-bd); color: var(--custom); }
     .seg-btn:active { opacity: 0.7; }
+    /* 누른 뒤 남는 브라우저 기본 테두리(안드로이드 주황)를 앱 보라로 — 키보드로 옮길 때만 보인다 (11/28) */
+    button:focus:not(:focus-visible) { outline: none; }
+    button:focus-visible { outline: 2px solid var(--custom-bd); outline-offset: 1px; }
     .seg-filter { flex: 0 1 auto; padding: 7px 12px; max-width: 42%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     /* 필터 창 — 찾기 / 적용 중 */
     .flt-q { width: 100%; margin: 2px 0 6px; }
