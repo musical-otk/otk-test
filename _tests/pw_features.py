@@ -300,6 +300,15 @@ async def main():
           const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
           document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
         check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
+        # 내 일정 공연도 아이콘 고르기 (11/27): 공연 목록 따로, 저장, 통계·카드에 반영, 예전 공연 이름 고르면 그 아이콘
+        got = await e2("""(async()=>{openCustomForm('2026-12-03');await new Promise(r=>setTimeout(r,300));
+          const vis=document.getElementById('cf-icons').offsetParent!==null, first=document.querySelector('#cf-icons button').textContent;
+          document.getElementById('cf-name').value='가상 콘서트';[...document.querySelectorAll('#cf-icons button')].find(b=>b.textContent==='🎤').click();
+          await saveCustomEvent();const e=getCustom().find(x=>x.name==='가상 콘서트');
+          openCustomForm('2026-12-04');await new Promise(r=>setTimeout(r,300));pickCfName('가상 콘서트');const again=_cfIcon;closeCustomForm();
+          setCfKind('etc');const etcFirst=document.querySelector('#cf-icons button').textContent;
+          localStorage.removeItem(CUSTOM_KEY);return [vis,first,e&&e.icon,customLabel(e),again,etcFirst]})()""")
+        check('내 일정 공연 아이콘 고르기', got == [True,'🎭','🎤','🎤 가상 콘서트','🎤','✈️'], got)
         # 출연 자동완성: 쉼표 뒤 이름만 찾고, 고른 동명이인은 castIds 로
         await e2("openCustomForm('2026-12-01')"); await pg2.wait_for_timeout(5000)
         got = await e2("""(()=>{const el=document.getElementById('cf-cast');el.value='최호승, 김도';cfCastInput();

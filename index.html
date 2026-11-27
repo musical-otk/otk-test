@@ -901,7 +901,7 @@
       <input class="form-input" type="text" id="cf-name" placeholder="공연 이름" autocomplete="off" oninput="cfNameInput()">
       <div class="cf-sugg cf-show" id="cf-sugg" hidden></div>
     </div>
-    <div class="form-row cf-etc">
+    <div class="form-row">
       <div class="form-label">아이콘</div>
       <div class="cf-icons" id="cf-icons"></div>
     </div>
@@ -2650,15 +2650,17 @@
 
   // 내 일정 — kind: 'show'(허브에 없는 공연, 좌석) | 'etc'(출장·운동… 아이콘, 기간). 옛 일정은 kind 가 없다 → 공연
   const CF_ICONS = ['✈️', '🏃', '📝', '🍽️', '💼', '🎂', '🏥', '📌'];
+  const CF_SHOW_ICONS = ['🎭', '🎤', '🎻', '🎹', '🩰', '🎪', '🎬', '🌙'];
+  const cfIconList = () => document.getElementById('ov-custom').dataset.kind === 'etc' ? CF_ICONS : CF_SHOW_ICONS;
   const customKind = e => e.kind === 'etc' ? 'etc' : 'show';
-  const customIcon = e => customKind(e) === 'etc' ? (e.icon || '📌') : '🎭';
+  const customIcon = e => e.icon || (customKind(e) === 'etc' ? '📌' : '🎭');   // 공연도 고를 수 있다 (11/27)
   // 그날 걸린 내 일정 — 기간 일정은 시작~끝 사이 모든 날
   // 달력에 쓰는 이름 — 공연은 다른 회차처럼 이름만, 기타만 작은 아이콘을 앞에
   // 사용자가 쓴 글(내 일정·메모·양도 상대·검색어·가져온 CSV)은 화면에 넣기 전에 이스케이프 — 남의 백업에 든 태그가 실행되지 않게
   const escHtml = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   // onclick="f('…')" 안에 넣는 글 — JS 따옴표를 먼저, 그다음 HTML 속성용
   const jsq = v => escHtml(String(v ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"));
-  const customLabel = e => escHtml((customKind(e) === 'etc' ? customIcon(e) + ' ' : '') + e.name);
+  const customLabel = e => escHtml((customKind(e) === 'etc' || e.icon ? customIcon(e) + ' ' : '') + e.name);   // 공연은 직접 고른 아이콘만
   const customOn = (list, ds) => list.filter(e => e.date <= ds && ds <= (e.endDate || e.date));
   let _cfIcon = '📌';
   function setCfKind(k) {
@@ -2667,6 +2669,9 @@
     document.getElementById('cf-k-etc').classList.toggle('on', k === 'etc');
     document.getElementById('cf-name-lbl').textContent = k === 'show' ? '공연명' : '이름';
     if (k === 'show') toggleCfMulti(false);
+    // 종류를 바꾸면 기본 아이콘도 따라간다 (직접 고른 건 둔다)
+    if (_cfIcon === '📌' && k === 'show') _cfIcon = '🎭'; else if (_cfIcon === '🎭' && k === 'etc') _cfIcon = '📌';
+    renderCfIcons();
     document.getElementById('cf-name').placeholder = k === 'show' ? '공연 이름' : '예: 출장, 운동, 시험, 약속';
     if (!_customEditId) document.getElementById('cf-time').value = k === 'show' ? '20:00' : '';   // 기타는 하루 종일인 게 많다
   }
@@ -2678,8 +2683,8 @@
     if (!on) document.getElementById('cf-end').value = '';
   }
   function renderCfIcons() {
-    const custom = CF_ICONS.includes(_cfIcon) ? '' : _cfIcon;
-    document.getElementById('cf-icons').innerHTML = CF_ICONS.map(i =>
+    const list = cfIconList(), custom = list.includes(_cfIcon) ? '' : _cfIcon;
+    document.getElementById('cf-icons').innerHTML = list.map(i =>
       `<button class="${i === _cfIcon ? 'on' : ''}" onclick="_cfIcon='${i}';renderCfIcons()">${i}</button>`).join('') +
       `<input id="cf-icon-own" maxlength="4" placeholder="직접" value="${custom}" oninput="if(this.value.trim()){_cfIcon=this.value.trim();document.querySelectorAll('#cf-icons button').forEach(b=>b.classList.remove('on'))}">`;
   }
@@ -2706,7 +2711,7 @@
     // 고칠 때는 [삭제 · 저장], 새로 넣을 때는 [취소 · 저장] — 삭제는 카드가 아니라 여기서 (11/20)
     document.getElementById('cf-del').hidden = !ev;
     document.getElementById('cf-cancel').hidden = !!ev;
-    _cfIcon = ev && ev.icon ? ev.icon : '📌'; renderCfIcons();
+    _cfIcon = ev ? customIcon(ev) : '🎭';
     _cfWork = null; document.getElementById('cf-sugg').hidden = true; renderCfSess();
     ensureCatalog();   // 아직 안 넣은 작품도 자동완성·회차에 쓰게 미리 받는다
     setCfKind(ev ? customKind(ev) : 'show');
@@ -2737,6 +2742,8 @@
   }
   function pickCfName(n) {
     _cfWork = null;
+    const prev = getCustom().filter(e => customKind(e) === 'show' && e.name === n && e.icon).pop();
+    if (prev) { _cfIcon = prev.icon; renderCfIcons(); }
     document.getElementById('cf-name').value = n;
     document.getElementById('cf-sugg').hidden = true; renderCfSess();
   }
@@ -2938,7 +2945,7 @@
     const seatNum = kind === 'show' ? document.getElementById('cf-seat-num').value : '';
     const fv = id => document.getElementById(id).value.trim();
     const extra = kind === 'etc' ? { kind, icon: _cfIcon || '📌', ...(endDate ? { endDate } : {}) }
-      : { kind, ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}),
+      : { kind, ...(_cfIcon && _cfIcon !== '🎭' ? { icon: _cfIcon } : {}), ...(seatZone ? { seatZone } : {}), ...(seatNum !== '' ? { seatNumber: +seatNum } : {}),
           ...(fv('cf-cast') ? { cast: fv('cf-cast') } : {}), ...(cfCastIdsKept(fv('cf-cast'))), ...(fv('cf-place') ? { place: fv('cf-place') } : {}),
           ...(Number(fv('cf-price')) ? { price: Number(fv('cf-price')) } : {}), ...(fv('cf-vendor') ? { vendor: fv('cf-vendor') } : {}),
           ...(document.getElementById('cf-tent').checked ? { tentative: true } : {}) };
@@ -4251,7 +4258,7 @@
     }));
     getCustom().filter(e => customKind(e) === 'show' && e.date).forEach(e => {
       const cast = castNames(e.cast).map(n => e.castIds && e.castIds[n] ? n + NAME_TAG + e.castIds[n] : PEOPLE[n] ? n + '(?)' : n);
-      out.push({ ds: e.date, time: e.time || '', key: 'c|' + norm(e.name), name: e.name, icon: '🎭', color: e.color || '#888', cast,
+      out.push({ ds: e.date, time: e.time || '', key: 'c|' + norm(e.name), name: e.name, icon: customIcon(e), color: e.color || '#888', cast,
         skip: e.tentative ? 'tent' : '' });
     });
     return out;
