@@ -468,7 +468,21 @@ async def main():
           await openDay(R.date);const b=[...document.querySelectorAll('#sheet-content .jump-btn')].map(x=>x.textContent.trim());
           jumpToApp('app_ikkisup',R.date,R.time,true);const src=document.getElementById('frame-app_ikkisup').src;switchView('cal');
           return [b, /edit=1/.test(src)]}""")
-        check('전용 페이지 작품 내 기록 → [✏️ 수정], 누르면 &edit=1', got and '✏️ 수정' in got[0] and got[1], got)
+        check('전용 페이지 작품 내 기록 → [✏️ 예매 수정][전용 페이지 ›], 전용 페이지는 &edit=1', got and got[0] == ['✏️ 예매 수정', '전용 페이지 ›'] and got[1], got)
+        # 전용 페이지 작품도 허브 기록 창으로 (11/27, 한 번만 볼 작품): 앱 기록 모양으로 저장, 고칠 때 앱 칸(별점 등)은 그대로
+        got = await e2("""async()=>{const a=getApps().find(x=>x.id==='app_ikkisup');const rows=(await fetch(a.scheduleUrl).then(r=>r.json())).filter(r=>r.date>=todayStr);
+          const R=rows[0], R2=rows.find(r=>r.date!==R.date);
+          localStorage.setItem('ikkisup_records',JSON.stringify([{id:'e1',date:R.date,time:R.time,isBooked:false,status:'관람',rating:4,seatFloor:'1층',seatZone:'B',seatNumber:5}]));
+          openExtraRec(R.date,R.time,'app_ikkisup','');const shown=document.getElementById('xr-zone').value, tent=document.getElementById('xr-tent').checked;
+          document.getElementById('xr-tent').checked=false;document.getElementById('xr-price').value='60000';await saveExtraRec();
+          const e1=JSON.parse(localStorage.getItem('ikkisup_records')).find(r=>r.id==='e1');
+          openExtraRec(R2.date,R2.time,'app_ikkisup','');document.getElementById('xr-zone').value='';document.getElementById('xr-num').value='';await saveExtraRec();
+          const n=JSON.parse(localStorage.getItem('ikkisup_records')).find(r=>r.date===R2.date);
+          const roleKeys=Object.keys(R2).filter(k=>k!=='date'&&k!=='time');
+          localStorage.removeItem('ikkisup_records');
+          return [shown,tent,[e1.rating,e1.isBooked,e1.status,e1.seatFloor,e1.seatZone,e1.seatNumber,e1.price],
+            n&&[n.isBooked,n.status,n.time===R2.time,roleKeys.every(k=>n[k]===R2[k])]]}""")
+        check('전용 페이지 작품 허브 창 기록: 앱 모양·앱 칸 유지', got == ['1층 B', True, [4, True, '관람', '1층', 'B', 5, 60000], [True, '관람', True, True]], got)
         await e2("localStorage.clear()")
         check('페이지 오류 없음 (2)', not errs2, '; '.join(errs2)[:200])
 

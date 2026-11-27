@@ -2246,19 +2246,22 @@
     const rows = (schedules[appId] && schedules[appId].length ? schedules[appId] : _catalogRows[appId]) || [];
     const s   = rows.find(x => x.date === ds && (x.time || '') === time && (!showId || x._showId === showId));
     const rec = extraRecords(key).find(r => r.date === ds && (r.time || '') === time && (!showId || !r.showId || r.showId === showId));
-    _xr = { appId, key, ds, time, showId, show: (s && s._show) || app.name, id: rec ? rec.id : null };
+    const appShape = app.kind !== 'data' && app.kind !== 'extra';
+    _xr = { appId, key, ds, time, showId, show: (s && s._show) || app.name, id: rec ? rec.id : null, appShape, row: s || null };
     const d = new Date(ds + 'T00:00:00');
     document.getElementById('xr-title').textContent = rec ? '예매 수정' : '예매 기록';
     document.getElementById('xr-when').textContent =
       `${_xr.show} · ${ds.slice(5).replace('-', '.')}(${DOW[d.getDay()]}) ${time}`;
-    document.getElementById('xr-zone').value  = rec?.seatZone || '';
+    // 앱 기록은 층(seatFloor)이 따로 — '1층 B' 처럼 붙여 보여 주고, 안 고쳤으면 저장할 때 그대로 둔다
+    _xr.seatShown = appShape ? [rec?.seatFloor, rec?.seatZone].filter(Boolean).join(' ') : (rec?.seatZone || '');
+    document.getElementById('xr-zone').value  = _xr.seatShown;
     document.getElementById('xr-num').value   = rec?.seatNumber ?? '';
     document.getElementById('xr-price').value = rec?.price || '';
     const tr = rec?.status === '양도';
     document.getElementById('xr-trans').checked   = tr;
     document.getElementById('xr-trans-to').hidden = !tr;
     document.getElementById('xr-trans-to').value  = rec?.transferTo || '';
-    document.getElementById('xr-tent').checked    = !!rec?.tentative;
+    document.getElementById('xr-tent').checked    = !!rec?.tentative || (appShape && rec?.isBooked === false);
     document.getElementById('xr-del').style.visibility = rec ? '' : 'hidden';
     // 메모·사진은 날짜 상세의 '📝 메모'와 같은 자리(notes)에 둔다 — 어느 쪽에서 써도 같이 보인다
     _xr.noteKey = noteKeyFor(appId, ds, { time, _showId: showId });
@@ -2349,7 +2352,7 @@
   }
   function closeExtraRec() { document.getElementById('ov-extra-rec').classList.remove('open'); }
   function afterExtraRec() {
-    closeExtraRec(); renderCalendar(); renderExtraPage(_xr.appId);
+    closeExtraRec(); renderCalendar(); if (!_xr.appShape) renderExtraPage(_xr.appId);   // 전용 페이지 작품은 그 틀(iframe)을 덮으면 안 된다
     // 찾기에서 왔으면 찾기 화면을 그대로 두고 표시만 갱신한다
     if (!document.getElementById('home-search').hidden) renderSearch(); else openDay(_xr.ds);
   }
@@ -2375,7 +2378,23 @@
       ...(document.getElementById('xr-tent').checked ? { tentative: true } : {}),
     };
     const i = list.findIndex(r => r.id === rec.id);
-    if (i >= 0) list[i] = rec; else list.push(rec);
+    if (_xr.appShape) {   // 전용 페이지 기록 모양 — 별점·할인 같은 앱 칸은 건드리지 않는다
+      const old = i >= 0 ? list[i] : null, now = new Date().toISOString();
+      const zone = rec.seatZone, numRaw = document.getElementById('xr-num').value;
+      const same = old && zone === _xr.seatShown && String(old.seatNumber ?? '') === numRaw;
+      const as = same ? { seatFloor: old.seatFloor, seatZone: old.seatZone, seatNumber: old.seatNumber }
+        : impAppSeat(impSeat(zone + (numRaw !== '' ? ' ' + numRaw : '')) || (zone ? { seatZone: zone, seatNumber: numRaw === '' ? null : +numRaw } : null), _seatPlans[_xr.appId]);
+      const cast = _xr.row ? Object.fromEntries(getActorFields(_xr.row).filter(k => !String(k).startsWith('_')).map(k => [k, bareName(_xr.row[k])])) : {};
+      const tent = document.getElementById('xr-tent').checked;
+      const base = old || { id: rec.id, date: _xr.ds, time: _xr.time, ...cast, castManual: false, discountType: null, paidDiff: false,
+        rating: 0, comment: '', memo: '', createdAt: now };
+      const next = { ...base, isBooked: !tent, status: rec.status === '양도' ? '양도' : (old && old.status && old.status !== '양도' ? old.status : '관람'),
+        transferTo: rec.transferTo, seatFloor: as.seatFloor ?? null, seatZone: as.seatZone ?? null, seatNumber: as.seatNumber ?? null,
+        price: rec.price, updatedAt: now };
+      if (as.bad && !same) next.memo = [old && old.memo, '좌석 ' + [zone, numRaw].filter(Boolean).join(' ')].filter(Boolean).join(' · ');
+      delete next.tentative;
+      if (i >= 0) list[i] = next; else list.push(next);
+    } else if (i >= 0) list[i] = rec; else list.push(rec);
     saveExtraRecords(list, _xr.key);
     afterExtraRec();
   }
@@ -3443,8 +3462,11 @@
   }
 
   // ── 날짜 상세 ──
+  // 전용 페이지 작품도 허브 기록 창으로 기록할 수 있나 — 좌석표로 앱 기록 모양을 아는 앱만 (11/27, 한 번만 볼 작품은 전용 페이지가 필요 없다)
+  const hubRecOk = app => !!(app && app.kind !== 'data' && app.kind !== 'extra' && app.appUrl && impAppOk(app));
   async function openDay(ds) {
     _customFormDs = ds;
+    await loadSeatPlans();
     const attended = getAttended();
     const d = new Date(ds + 'T00:00:00');
     document.getElementById('sheet-date').textContent =
@@ -3502,7 +3524,10 @@
       // 좌석도처럼 앱에만 있는 것들은 허브로 끌고 오지 않고 앱으로 보낸다.
       // 기타 공연은 앱이 없으니 허브에서 예매를 기록한다
       // 내 기록이 있으면 [✏️ 수정] — 미정·예매·양도를 바꾸러 가는 길이 안 보였다 (사용자 에이전트 리뷰 11/20)
-      const jumpBtn = canJump(s._app)
+      const jumpBtn = canJump(s._app) && hubRecOk(s._app)
+        ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${s.time || ''}','${s._app.id}','')">${attRecs.length ? '✏️ 예매 수정' : '🎫 예매 기록'}</button>` +
+          `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}'${attRecs.length ? ',true' : ''})">전용 페이지 ›</button>`
+        : canJump(s._app)
         ? (attRecs.length
           ? `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}',true)">✏️ 수정</button>`
           : `<button class="jump-btn" onclick="jumpToApp('${s._app.id}','${ds}','${s.time || ''}')">전용 페이지에서 보기 ›</button>`)
@@ -3542,7 +3567,8 @@
         : r.tentative ? '<span class="mark-tent">미정</span>'
         : ds < todayStr ? '<span class="session-attended">✓ 관람</span>' : '<span class="session-booked">🎫 예매</span>';
       const seat = fmtSeat(r);
-      const btn = canJump(app) ? `<button class="jump-btn" onclick="jumpToApp('${app.id}','${ds}','${r.time || ''}',true)">✏️ 수정</button>`
+      const btn = canJump(app) && hubRecOk(app) ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${r.time || ''}','${app.id}','')">✏️ 예매 수정</button><button class="jump-btn" onclick="jumpToApp('${app.id}','${ds}','${r.time || ''}',true)">전용 페이지 ›</button>`
+        : canJump(app) ? `<button class="jump-btn" onclick="jumpToApp('${app.id}','${ds}','${r.time || ''}',true)">✏️ 수정</button>`
         : (app.kind === 'extra' || app.kind === 'data') ? `<button class="jump-btn" onclick="openExtraRec('${ds}','${r.time || ''}','${app.id}','${r.showId || ''}')">✏️ 예매 수정</button>` : '';
       return `<div class="session-row" style="box-shadow: inset 3px 0 0 ${app.color}">
         <div class="session-time">${r.time || '—'}</div>
@@ -4802,7 +4828,8 @@
     showEvSheet(`${w.icon ? w.icon + ' ' : ''}${w.name} · ${evMd(ds)}(${DOW[d.getDay()]}) ${time}`,
       evCast(w, s) +
       (first ? [first, ...evs.filter(e => e !== first)].map(e => evItem(e, false, evAllWhen(w, e))).join('') : '') +
-      `<div class="ev-foot">${evCopyBtn(w, s)}${evRecBtn(w, s)}</div>`);
+      `<div class="ev-foot">${evCopyBtn(w, s)}${evRecBtn(w, s)}${(app => app && app.appUrl && app.kind !== 'data' && app.kind !== 'extra'
+        ? `<button class="ev-btn ev-plain" onclick="closeEvSheet();openAppAt('${w.id}','${ds}','${time}')">전용 페이지 ›</button>` : '')(getApps().find(a => a.id === w.id) || allPresets().find(a => a.id === w.id))}</div>`);
   }
   // 양도글 복사 — 내가 예매한(양도 안 한) 아직 안 지난 회차만. 전용 페이지 작품 기록도 허브가 읽으니 같이 된다
   const evCopyBtn = (w, s) => {
@@ -5178,11 +5205,21 @@
     closeSearch();
     if (currentView !== id) switchView(id);
   }
+  // 회차 창의 '전용 페이지 ›' — 찾기의 예전 길(안 넣은 작품은 ♥ 없이 잠깐 넣어 그 회차로)
+  async function openAppAt(id, ds, time) {
+    const app = getApps().find(a => a.id === id), preset = allPresets().find(p => p.id === id);
+    if (app && canJump(app)) { closeSearch(); jumpToApp(id, ds, time, (getAttended()[ds] || []).some(r => r.appId === id)); return; }
+    if (!app && preset && preset.appUrl && preset.deepLink !== false && await addPresetById(id, true)) { renderFrames(); closeSearch(); jumpToApp(id, ds, time); return; }
+    const url = (app || preset || {}).appUrl;
+    if (url) window.open(url + (url.includes('?') ? '&' : '?') + `date=${encodeURIComponent(ds)}&time=${encodeURIComponent(time)}`, '_blank');
+  }
   async function sessTap(id, ds, time, showId) {
     const app = getApps().find(a => a.id === id);
     const preset = allPresets().find(p => p.id === id);
     // 정보만·기타는 허브의 예매 창 — 달력에 넣는 건 저장할 때
     if ((app || preset || {}).kind === 'data' || (app || {}).kind === 'extra') { openExtraRec(ds, time, id, showId); return; }
+    await loadSeatPlans();
+    if (hubRecOk(app || preset)) { closeSearch(); openExtraRec(ds, time, id, ''); return; }
     if (app && canJump(app)) { closeSearch(); jumpToApp(id, ds, time); return; }
     // 아직 안 넣은 전용 페이지 — 새 창으로 튀지 않게 ♥ 없이 잠깐 넣어 허브 안 탭으로 연다(11/18). 기록을 남기면 예매 회차만 달력에 남는다
     if (!app && preset && preset.appUrl && preset.deepLink !== false && await addPresetById(id, true)) { renderFrames(); closeSearch(); jumpToApp(id, ds, time); return; }   // 넣은 직후엔 틀(iframe)이 아직 없다
