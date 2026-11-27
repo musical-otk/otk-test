@@ -154,6 +154,12 @@
       "startDate": "2026-12-23",
       "endDate": "2026-12-27",
       "openedAt": "2026-11-17T11:00"
+    },
+    {
+      "name": "1차",
+      "startDate": "2026-12-29",
+      "endDate": "2027-01-17",
+      "openedAt": "2026-12-04T11:00"
     }
   ],
   "discounts": [
