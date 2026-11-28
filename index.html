@@ -748,6 +748,8 @@
     #sheet-settings #set-taborder { padding: 2px 14px 2px 0; min-height: 48px; display: flex; flex-direction: column; justify-content: center; }
     #sheet-settings #set-taborder .tab-order-row { padding: 6px 0; border-bottom-color: color-mix(in srgb, var(--border) 60%, transparent); }
     #sheet-settings #set-taborder .hint { padding: 0; font-size: var(--fs-b); }
+    #sheet-settings .set-val { margin-left: auto; padding: 0 8px; font-size: var(--fs-s); font-weight: 400; color: var(--text3); }
+    #sheet-settings #set-diff:not(:empty) { padding: 10px 2px 0; }
     #sheet-settings .set-btn.set-danger { margin: 24px 0 6px; background: var(--bg2); border: none; text-align: center; color: #d9534f; font-weight: 600; }
     #sheet-settings .set-btn.set-danger:active { background: color-mix(in srgb, #d9534f 10%, var(--bg2)); }
     .rs-box { border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; margin-bottom: 10px; font-size: var(--fs-s); color: var(--text2); line-height: 1.6; }
@@ -1177,7 +1179,7 @@
       <div class="section-title">mu:di</div>
       <div class="set-grp">
         <a class="set-btn nav set-guide" href="guide.html">사용법 보기</a>
-        <button class="set-btn nav" id="sync-btn" onclick="refreshShowInfo()">공연 정보 새로 받기</button>
+        <button class="set-btn nav" id="sync-btn" onclick="refreshShowInfo()"><span>공연 정보 새로 받기</span><small class="set-val" id="sync-at"></small></button>
         <button class="set-btn nav" onclick="openRequestForm()">작품 추가·정보 수정 요청</button>
         <button class="set-btn nav" onclick="hardReload()">최신 버전으로 다시 열기</button>
       </div>
@@ -3885,7 +3887,10 @@
     const evNames = arr => { const c = {}; arr.forEach(x => { c[x] = (c[x] || 0) + 1; }); return Object.entries(c).map(([n, k]) => k > 1 ? `${n} (${k}회차)` : n); };
     const hearts = getHearts().works;
     const works = [...d.works].sort((a, b) => hearts.includes(b.id) - hearts.includes(a.id));
-    box.innerHTML = `<div class="sd-when">${at} 받음${d.first ? ' · 다음부터 바뀐 점을 알려 드려요' : works.length ? '' : ' · 바뀐 점 없음'}</div>` +
+    // 받은 시각은 버튼 줄 오른쪽에 작게만. '바뀐 점 없음'·'다음부터 알려 드려요' 같은 문장은 안 쓴다 — 바뀐 게 있을 때만 아래에 목록 (11/28)
+    const atEl = document.getElementById('sync-at'); if (atEl) atEl.textContent = at;
+    box.innerHTML = works.length ? `<div class="sd-when">바뀐 점</div>` : '';
+    box.innerHTML +=
       works.map(w => `<div class="sd-work"><div class="sd-work-hd">${w.icon} ${w.name}${hearts.includes(w.id) ? ' ♥' : ''}</div>
         ${w.added.length ? `<div class="sd-line"><span class="sd-tag">새 회차</span>${span(w.added)}</div>` : ''}
         ${w.gone.length ? `<div class="sd-line"><span class="sd-tag">취소</span>${few(w.gone, md)}</div>` : ''}
