@@ -173,6 +173,8 @@ async def main():
         check('동명이인: 김도현 두 사람으로 나뉘고 캐스팅 줄엔 이름만', all(hm), hm)
         lb = await ev("[actorLabel('김도현#1'), actorLabel('김도현#2')]")
         check('동명이인: 이름 옆은 그 사람의 가장 최근 작품', lb == ['김도현 · 콰이어 오브 맨', '김도현 · 슛 더 크로우'], lb)
+        xs = await ev("(()=>{const q=document.getElementById('srch-q'), b=document.querySelector('#home-search .hs-close'); q.value='김'; b.click(); const r=[q.value==='', !document.getElementById('home-search').hidden]; b.click(); r.push(document.getElementById('home-search').hidden); return r})()")
+        check('찾기 ✕: 글자 있으면 지우기, 비어 있으면 달력으로', xs == [True, True, True], xs)
         await ev("closeSearch()")
         # 회차마다 설명 한 군데만 다른 같은 이벤트(하트비트 책갈피) — 공통 설명은 한 번, 다른 부분은 회차 줄에
         sp = await ev("""(()=>{const mk=(t,x)=>({name:'책갈피',startDate:'2026-11-16',endDate:'2026-11-16',times:[t],description:`유료 1매당 1개, 이 회차 책갈피: ${x} (총 3종), 매표소에서 수령`});

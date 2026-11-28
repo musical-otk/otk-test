@@ -172,6 +172,9 @@
     .hub-empty { margin: 4px 16px 12px; padding: 14px; border: 1px dashed var(--border); border-radius: 12px; text-align: center; }
     .hub-empty-t { font-size: 14px; font-weight: 800; margin-bottom: 4px; }
     .hub-empty-s { font-size: 12px; color: var(--text3); margin-bottom: 10px; line-height: 1.5; }
+    .hs-bar #srch-q { padding-right: 40px; }
+    #srch-q::-webkit-search-cancel-button { display: none; }
+    #home-search .hs-bar .hs-close { position: absolute; right: 2px; top: 50%; transform: translateY(-50%); }
     .hs-close { background: none; border: none; font-size: 16px; color: var(--text3); padding: 6px 8px; cursor: pointer; }
 
     /* 기본은 숨김. 켜져 있으면 flex:1 로 달력과 화면을 반씩 나눠 가져
@@ -401,8 +404,8 @@
     /* 찾기 화면 (11/28) — 흰 입력칸, 테두리 없는 회색 최근 검색어, 결과는 한 장 판 */
     #srch-q { background: var(--bg2); }
     .srch-recent { gap: 5px; }
-    .srch-recent .srch-chip { border: none; background: var(--bg3); color: var(--text2); padding: 4px 8px 4px 11px; }
-    .srch-recent .x { padding-left: 0; }
+    .srch-recent .srch-chip { border: none; background: var(--custom-bg); color: var(--custom); padding: 4px 8px 4px 11px; }
+    .srch-recent .x { padding-left: 0; color: var(--custom); opacity: .55; }
     .flt-list { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 6px; }
     .flt-list .flt-hit { margin: 0; border: none; border-top: 1px solid var(--border); border-radius: 0; background: none; padding: 9px 14px; }
     .flt-list .flt-hit:first-child { border-top: none; }
@@ -916,7 +919,7 @@
       <div class="hs-bar">
         <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 이벤트 · 날짜 11/21"
                autocomplete="off" oninput="_srchSel = null; renderSearch()">
-        <button class="hs-close" onclick="closeSearch()" title="달력으로">✕</button>
+        <button class="hs-close" onclick="srchX()" title="지우기 · 비어 있으면 달력으로">✕</button>
       </div>
       <div id="srch-results"></div>
     </div>
@@ -5050,6 +5053,12 @@
     ensureCatalog().then(renderSearch);
     scrollTo(0, 0);
     setTimeout(() => q.focus(), 50);
+  }
+  // 입력칸 안 ✕ (11/28) — 글자가 있으면 지우고, 비어 있으면 달력으로
+  function srchX() {
+    const q = document.getElementById('srch-q');
+    if (q.value) { q.value = ''; _srchSel = null; renderSearch(); q.focus(); }
+    else closeSearch();
   }
   function closeSearch() {
     document.getElementById('home-search').hidden = true;
