@@ -119,7 +119,7 @@
     .tab-order-row { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
     .to-grip { color: var(--text3); font-size: 20px; padding: 2px 6px; cursor: grab; touch-action: none; }
     .tab-order-row.tab-drag { background: inherit; box-shadow: 0 4px 14px rgba(0,0,0,0.25); position: relative; z-index: 2; border-radius: var(--r); }
-    #set-taborder { position: relative; }
+    #set-taborder { position: relative; display: flex; flex-direction: column; justify-content: center; }   /* 비었을 때 안내도 48px 줄 가운데 */
 
     .app-list-note { font-size: var(--fs-c); color: var(--text3); font-weight: 500; margin-top: 2px; }
     .app-list-eye, .app-list-mini {
@@ -724,9 +724,11 @@
       width: 100%; margin: 2px 0 10px; padding: 11px 12px; text-align: left;
       background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r);
       color: var(--text1); font-size: var(--fs-b); font-weight: 600; cursor: pointer;
+      min-height: 48px; box-sizing: border-box;   /* 설정 줄 높이를 모두 같게 — 고르는 칸이 있는 줄만 높았다 (11/28) */
     }
     .set-btn:active { opacity: .7; }
     .set-btn.set-row { display: flex; justify-content: space-between; align-items: center; }
+    .set-btn.set-dow { padding-top: 9px; padding-bottom: 9px; }   /* 고르는 칸(28px)이 있어도 다른 줄과 같은 48px — 예전 .set-dow 값은 .set-btn 에 덮여 안 먹었다 */
     .set-btn.spinning { opacity: .5; pointer-events: none; }
     .set-btn.set-danger { color: #d9534f; background: none; }
     .set-btn.set-guide { display: block; text-decoration: none; text-align: center; margin-bottom: 4px; }
