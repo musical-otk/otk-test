@@ -504,6 +504,27 @@
       z-index: 30;
     }
     .fab:active { opacity: 0.8; }
+    /* ── 디자인 정리 (11/28) ──
+       위쪽: 선 아이콘(⚙ 통계 찾기) + ♥ 만 색, 탭 앞 구분선 / 도구줄: 두 칸 스위치 두 개 + 슬라이더 필터
+       달력: 날짜 칸 카드 없이 한 바탕, 오늘은 보라 원 / 칩: 테두리 없이 채움만, 글씨는 작품 색을 화면 글자색과 섞어
+       어느 작품 색이든 읽히게(다크의 진회색 FATED 가 안 보였다) */
+    .hbtn svg { width: 19px; height: 19px; display: block; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .hd-sep { width: 1px; height: 20px; background: var(--border); margin: 0 4px 0 2px; flex-shrink: 0; }
+    .cal-seg { gap: 8px; align-items: stretch; }
+    .cal-seg .seg-view { display: flex; background: var(--bg3); border-radius: 999px; padding: 3px; flex: 0 0 auto; }
+    .cal-seg .seg-view.seg-mode { flex: 1; }
+    .cal-seg .seg-view .seg-btn { border: none; border-radius: 999px; margin: 0; background: none; padding: 6px 13px; }
+    .cal-seg .seg-view.seg-mode .seg-btn { flex: 1; }
+    .cal-seg .seg-view .seg-btn.on { background: var(--bg2); color: var(--custom); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+    .seg-filter { flex: 0 0 36px; border-radius: 999px; padding: 0; display: flex; align-items: center; justify-content: center; color: var(--text2); }
+    .seg-filter svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; }
+    .cal-cell.has-schedule { background: transparent; }
+    .cal-cell.today .date-wrap { background: var(--custom); }
+    .cal-cell.today .date-num { color: #fff; }
+    .sess-card { --c: #888; border: none; border-radius: 7px; padding: 3px 4px;
+                 background: color-mix(in srgb, color-mix(in srgb, var(--c) 75%, var(--text1)) 20%, transparent); color: color-mix(in srgb, var(--c) 62%, var(--text1)); }
+    .sess-card .sess-card-time { font-size: 8.5px; }
+    .fab { width: 42px; height: 42px; box-shadow: 0 3px 10px rgba(0,0,0,0.22); }
 
     .loading { text-align: center; padding: 48px 16px; color: var(--text3); font-size: 13px; }
 
@@ -817,10 +838,11 @@
 
   <div class="header">
     <div class="header-title" onclick="goToToday()">mu:di</div>
-    <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()">⚙️</button>
-    <button class="hbtn" id="stats-btn" onclick="openStats()" title="월별 통계" hidden>📊</button>
-    <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기">🔍</button>
+    <button class="hbtn" id="set-btn" aria-label="설정" title="설정" onclick="openSettings()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+    <button class="hbtn" id="stats-btn" onclick="openStats()" title="월별 통계" hidden><svg viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 16v-5M12 16V6M17 16v-8"/></svg></button>
+    <button class="hbtn" onclick="openSearch()" title="공연·배우·날짜 찾기" aria-label="찾기"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></button>
     <button class="hbtn hbtn-heart" onclick="openHearts()" title="관심함">❤️</button>
+    <span class="hd-sep"></span>
     <div id="app-tabs"></div>
   </div>
 
@@ -857,9 +879,11 @@
         <button class="seg-btn" id="seg-month" onclick="setCalView('month')">월</button>
         <button class="seg-btn" id="seg-week"  onclick="setCalView('week')">주</button>
       </div>
-      <button class="seg-btn" id="seg-all"  onclick="setCalMode('all')">전체 회차</button>
-      <button class="seg-btn" id="seg-mine" onclick="setCalMode('mine')">내 기록</button>
-      <button class="seg-btn seg-filter" id="seg-filter" onclick="openFilter()">🔎</button>
+      <div class="seg-view seg-mode">
+        <button class="seg-btn" id="seg-all"  onclick="setCalMode('all')">전체 회차</button>
+        <button class="seg-btn" id="seg-mine" onclick="setCalMode('mine')">내 기록</button>
+      </div>
+      <button class="seg-btn seg-filter" id="seg-filter" onclick="openFilter()" title="필터" aria-label="필터"><svg viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></svg></button>
     </div>
     <div id="cal-week" hidden></div>
     <div class="cal-grid" id="cal-grid">
@@ -3114,7 +3138,7 @@
     const n  = f.offWorks.length + f.offActors.length + f.off.length;
     const fb = document.getElementById('seg-filter');
     fb.classList.toggle('on', n > 0);
-    fb.textContent = '🔎';   // 꺼 둔 게 있으면 버튼 색(on)으로만 알린다
+    // 꺼 둔 게 있으면 버튼 색(on)으로만 알린다 — 아이콘은 HTML 의 슬라이더 그대로
   }
 
   function closeOverlays() { document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open')); }
@@ -3424,7 +3448,7 @@
 
       // 칩: 윗줄 시각(+양도·×N·사진 표시), 아랫줄 작품 이름. 같은 날 두 번 본 경우만 ×N 을 붙인다.
       const sessBadges = marked.map(({ s, attCnt, hasPic, trans, tent }) => `
-        <div class="sess-card${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}" style="${appStyle(s._app.color)}"
+        <div class="sess-card${trans ? ' transferred' : ''}${tent ? ' tentative' : ''}" style="--c:${s._app.color}"
              ${trans ? `title="양도${trans.transferTo ? ' · ' + escHtml(trans.transferTo) : ''}"` : ''}>
           <span class="sess-card-time">${fmtTime(s.time)}</span>
           ${attCnt >= 2 ? `<span class="sess-card-dots" title="${attCnt}장">${'<i></i>'.repeat(Math.min(attCnt, 3))}</span>` : ''}
@@ -3441,7 +3465,7 @@
               `<i style="left:${axisPos(s.time)}%;background:${s._app.color}"></i>`).join('')}</div>`);
 
       const customBadges = showC.map(e => `
-        <div class="sess-card${e.tentative ? ' tentative' : ''}" style="${appStyle(e.color || COLOR_PALETTE[0])}">
+        <div class="sess-card${e.tentative ? ' tentative' : ''}" style="--c:${e.color || COLOR_PALETTE[0]}">
           <span class="sess-card-time">${e.time ? fmtTime(e.time) : ''}</span>
           <span class="sess-card-name">${customLabel(e)}</span>
         </div>`);

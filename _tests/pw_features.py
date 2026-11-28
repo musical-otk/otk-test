@@ -27,7 +27,7 @@ async def main():
 
         # ── 달력 ──
         check('달력 버튼 순서 [전체 회차][내 기록]', await ev(
-            "[...document.querySelectorAll('.cal-seg > .seg-btn')].map(b=>b.id).join(',')") == 'seg-all,seg-mine,seg-filter')
+            "[...document.querySelectorAll('.cal-seg .seg-mode .seg-btn, .cal-seg > .seg-btn')].map(b=>b.id).join(',')") == 'seg-all,seg-mine,seg-filter')
         async def swipe(id, x1, x2, y1=500, y2=500):
             await ev("""([id,x1,x2,y1,y2])=>{const el=document.getElementById(id);const mk=(x,y)=>new Touch({identifier:1,target:el,clientX:x,clientY:y});
               el.dispatchEvent(new TouchEvent('touchstart',{touches:[mk(x1,y1)],changedTouches:[mk(x1,y1)],bubbles:true}));
