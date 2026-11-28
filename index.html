@@ -732,6 +732,20 @@
     .set-btn.spinning { opacity: .5; pointer-events: none; }
     .set-btn.set-danger { color: #d9534f; background: none; }
     .set-btn.set-guide { display: block; text-decoration: none; text-align: center; margin-bottom: 4px; }
+    /* 설정 창은 회색 상자 반복 대신 목록 — 줄은 투명 + 가는 구분선, 묶음은 제목과 여백으로 (11/28)
+       다른 창(동명이인 고르기·요청 버튼)의 .set-btn 은 그대로 둔다 */
+    #sheet-settings .settings-body .set-btn { background: none; border: none; border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent); border-radius: 0; margin: 0; padding-left: 2px; padding-right: 2px; font-weight: 500; }   /* 줄은 보통 굵기 — 굵은 건 묶음 제목만 */
+    #sheet-settings .settings-body .set-btn:active { opacity: 1; background: var(--bg3); }
+    #sheet-settings .settings-body .set-btn.set-dow:active { background: none; }
+    #sheet-settings .settings-body .set-btn.set-guide { text-align: left; }
+    #sheet-settings .settings-body .set-dow .seg-view { background: var(--bg3); border-radius: var(--r); }   /* 고르는 칸만 연한 회색 */
+    #sheet-settings .settings-body .section-title { border-top: none; padding: 24px 2px 4px; font-size: var(--fs-s); font-weight: 800; color: var(--text1); letter-spacing: 0; }
+    #sheet-settings .settings-body .hint { padding: 10px 2px 4px; }
+    #sheet-settings .settings-body #set-taborder { border: 1px solid var(--border); border-radius: var(--r); background: var(--bg2); margin: 2px 0 4px; min-height: 0; }
+    #sheet-settings .settings-body #set-taborder .tab-order-row { padding: 5px 4px; border-bottom-color: color-mix(in srgb, var(--border) 55%, transparent); }
+    #sheet-settings .settings-body .set-lab .set-btn { min-height: 44px; }
+    #sheet-settings .settings-body .set-btn.set-danger { margin: 28px 0 6px; text-align: center; justify-content: center; border: 1px solid color-mix(in srgb, #d9534f 45%, transparent); border-radius: var(--r); font-weight: 600; }
+    #sheet-settings .settings-body .set-btn.set-danger:active { background: color-mix(in srgb, #d9534f 10%, transparent); }
     .rs-box { border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; margin-bottom: 10px; font-size: var(--fs-s); color: var(--text2); line-height: 1.6; }
     .rs-box b { color: var(--text1); }
     .imp-range { display: flex; gap: 4px; margin: 6px 0; align-items: center; flex-wrap: wrap; }
@@ -1129,7 +1143,7 @@
     <div class="settings-body">
       <a class="set-btn set-guide" href="guide.html">❓ 사용법 보기</a>
       <div id="set-new"></div>
-      <div class="section-title" style="border-top:none;padding-top:2px">공연 정보</div>
+      <div class="section-title" style="padding-top:14px">공연 정보</div>
       <button class="set-btn" id="sync-btn" onclick="refreshShowInfo()">🔄 공연 정보 새로 받기</button>
       <div id="set-diff"></div>
       <div class="section-title">화면</div>
@@ -1160,7 +1174,7 @@
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
       <button class="set-btn" onclick="hardReload()">🔄 최신 버전으로 다시 열기</button>
-      <button class="set-btn set-danger" onclick="wipeHubData()">mu:di 기록 모두 지우기</button>
+      <button class="set-btn set-danger" onclick="wipeHubData()">🗑 mu:di 기록 모두 지우기</button>
       <div class="hint" id="set-ver" style="text-align:center;padding-top:4px"></div>
       <div id="app-list-ui" hidden></div>
     </div>
