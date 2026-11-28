@@ -340,14 +340,16 @@ async def main():
           q('.fx-more').click(); r.push([chips().length, more(), chips().filter(c=>c.endsWith('종료')).length]);   // 7개(지난 2개), 접기
           q('.fx-more').click(); saveFilter({v:3,offWorks:[A[5].id],offActors:[],off:[offKey(A[6].id,'가상배우'),offKey(A[6].id,'가상둘')]}); renderActorFilters();
           r.push([chips().length, more(), !!q('#fx-idle'), !!q('#fx-wdone')]);                 // 가상배우: 꺼 둔 지난 작품 + 3개, 가상둘은 꺼 둔 칩 때문에 밖으로, 꺼 둔 종료 작품도 밖에
-          saveFilter({v:3,offWorks:[],offActors:[],off:[]}); currentMonth=7; renderActorFilters();
+          schedules[A[5].id]=[row('2026-12-03','가상배우')]; saveFilter({v:3,offWorks:[],offActors:[],off:[]}); renderActorFilters();
+          r.push([!chips()[0].includes(A[5].name), !!q('#fx-wdone')]);   // 이번 달에 막공한 작품은 진행 중보다 앞에 안 섬, 관심 작품에서도 접힘
+          schedules[A[5].id]=[row('2026-08-05','가상배우')]; currentMonth=7; renderActorFilters();
           r.push([chips()[0].startsWith(A[5].icon?A[5].icon+' '+A[5].name:A[5].name), !!q('#fx-wdone')]);   // 8월 보면 8월 작품이 맨 앞, 접히지 않음
           closeFilter(); A.forEach((a,i)=>{ if(keepS[i]===undefined) delete schedules[a.id]; else schedules[a.id]=keepS[i]; }); actorIndex=keepI; getActorFields=keepF2; todayStr=keepT; currentYear=keepY; currentMonth=keepM;
           if(keepV) localStorage.setItem(CAL_VIEW_KEY,keepV); else localStorage.removeItem(CAL_VIEW_KEY);
           if(keepH) localStorage.setItem(HEARTS_KEY,keepH); else localStorage.removeItem(HEARTS_KEY); _hearts=null;
           if(keepF) localStorage.setItem(FILTER_KEY,keepF); else localStorage.removeItem(FILTER_KEY); renderCalendar();
           return r})()""")
-        check('보기 필터 접기: 꺼 둔 것 안 접힘·+N·공연 없는 배우·보는 달 우선', got == [[3,'+4',True,True],[7,'접기',2],[5,'+3',False,False],[True,False]], got)
+        check('보기 필터 접기: 꺼 둔 것 안 접힘·+N·공연 없는 배우·보는 달 우선', got == [[3,'+4',True,True],[7,'접기',2],[5,'+3',False,False],[True,True],[True,False]], got)
         # 작품 탭 줄 (11/28): 없으면 줄·칸막이 없음, 들어가면 한 줄, 넘치면 아이콘 아래 둘째 줄
         got = await e2("""(()=>{const keep=localStorage.getItem(APPS_KEY), kv=localStorage.getItem(HIDDEN_KEY);
           const mk=i=>({id:'show_fk'+i,name:'가짜'+i,icon:'',color:'#888',scheduleUrl:'xfk'+i,appUrl:'',kind:'data',recordsKey:'kfk'+i});

@@ -302,7 +302,7 @@
     .fx-state { display: flex; align-items: center; justify-content: space-between; margin: 4px 2px 0; padding: 8px 4px 8px 14px;
                 background: var(--custom-bg); border-radius: var(--r); font-size: var(--fs-b); font-weight: 600; color: var(--custom); }
     .fx-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 14px 2px 6px; }
-    .fx-sec span { font-size: var(--fs-s); font-weight: 700; color: var(--text3); }
+    .fx-sec span { font-size: var(--fs-c); font-weight: 700; color: var(--text3); }
     .fx-sec small { font-size: var(--fs-c); color: var(--text3); text-align: right; }
     .fx-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
     .fx-li { display: flex; align-items: center; gap: 10px; width: 100%; padding: 11px 14px; border: none; border-top: 1px solid var(--border);
@@ -4636,7 +4636,7 @@
       const ds = (schedules[a.id] || []).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => s.date).sort();
       if (!ds.length) return null;
       const next = ds.find(d => d >= todayStr);
-      return { a, next, last: ds[ds.length - 1], live: !!next, inView: ds.some(d => d >= vr[0] && d <= vr[1]), off: f.off.includes(offKey(a.id, n)) };
+      return { a, next, last: ds[ds.length - 1], live: !!next, inView: vr[1] < todayStr && ds.some(d => d >= vr[0] && d <= vr[1]), off: f.off.includes(offKey(a.id, n)) };
     }).filter(Boolean).sort((x, y) => (y.inView - x.inView) || (y.live - x.live)
       || (x.live ? x.next.localeCompare(y.next) : y.last.localeCompare(x.last)));
   }
@@ -4651,7 +4651,8 @@
     const doneTag = '<small class="fx-end">종료</small>';
     // 관심 작품 — 종료된 작품도 꺼 뒀거나 보는 기간에 공연이 있으면 접지 않는다
     const works = H.works.map(id => apps.find(a => a.id === id)).filter(Boolean);
-    const wInView = a => (schedules[a.id] || []).some(s => s.date >= vr[0] && s.date <= vr[1]);
+    // '보는 기간' 우선은 지난 달을 볼 때만 — 이번 달에 막공한 작품(다이브 11/8)이 진행 중 작품보다 앞에 서던 것 (11/28)
+    const wInView = a => vr[1] < todayStr && (schedules[a.id] || []).some(s => s.date >= vr[0] && s.date <= vr[1]);
     const keepOut = a => !isFinished(a.id) || !workOn(f, a.id) || wInView(a);
     const shown = works.filter(keepOut), folded = works.filter(a => !keepOut(a));
     const wRow = a => { const on = workOn(f, a.id);
