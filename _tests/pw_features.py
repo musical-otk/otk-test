@@ -300,6 +300,20 @@ async def main():
           const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
           document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
         check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
+        # 보기 필터 (11/28): 한 줄 + 스위치, 종료된 작품은 접힘, 배우 줄 작품 이름 → 그 작품에서만 빼기(취소선), 모두 켜기는 제목 줄
+        got = await e2("""(()=>{const keepH=localStorage.getItem(HEARTS_KEY), keepF=localStorage.getItem(FILTER_KEY);
+          const a=getApps()[0]; if(!a) return 'no-app';
+          const n=(()=>{for(const s of (schedules[a.id]||[]).filter(s=>s.date>=todayStr)){const k=getActorFields(s).find(k=>typeof s[k]==='string');if(k)return s[k]}})();
+          saveHearts({...getHearts(),works:[a.id],actors:[n]}); saveFilter({v:3,offWorks:[],offActors:[],off:[]});
+          openFilter(); const q=s=>document.querySelector(s);
+          const r0=[q('#fx-allon').hidden, q('.fx-li[role=switch]').getAttribute('aria-checked')];
+          q('.fx-li[role=switch]').click(); const r1=[getFilter().offWorks.includes(a.id), q('#fx-allon').hidden, q('.fx-li[role=switch]').classList.contains('off')];
+          const w=q('.fx-w'); w.click(); const r2=[getFilter().off.length, !!q('.fx-w.x')];
+          q('#fx-allon').click(); const r3=[filterActive(), q('#fx-allon').hidden];
+          closeFilter(); if(keepH) localStorage.setItem(HEARTS_KEY,keepH); else localStorage.removeItem(HEARTS_KEY); _hearts=null;
+          if(keepF) localStorage.setItem(FILTER_KEY,keepF); else localStorage.removeItem(FILTER_KEY);
+          return [r0,r1,r2,r3]})()""")
+        check('보기 필터: 스위치·작품별 빼기·모두 켜기', got == [[True,'true'],[True,False,True],[1,True],[False,True]], got)
         # 작품 탭 줄 (11/28): 없으면 줄·칸막이 없음, 들어가면 한 줄, 넘치면 아이콘 아래 둘째 줄
         got = await e2("""(()=>{const keep=localStorage.getItem(APPS_KEY), kv=localStorage.getItem(HIDDEN_KEY);
           const mk=i=>({id:'show_fk'+i,name:'가짜'+i,icon:'',color:'#888',scheduleUrl:'xfk'+i,appUrl:'',kind:'data',recordsKey:'kfk'+i});
