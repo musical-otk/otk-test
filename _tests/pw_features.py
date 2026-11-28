@@ -173,6 +173,14 @@ async def main():
         check('동명이인: 김도현 두 사람으로 나뉘고 캐스팅 줄엔 이름만', all(hm), hm)
         lb = await ev("[actorLabel('김도현#1'), actorLabel('김도현#2')]")
         check('동명이인: 이름 옆은 그 사람의 가장 최근 작품', lb == ['김도현 · 콰이어 오브 맨', '김도현 · 슛 더 크로우'], lb)
+        rc = await ev("""(async()=>{await ensureCatalog(); const keep=localStorage.getItem(RECENT_Q_KEY); localStorage.setItem(RECENT_Q_KEY, JSON.stringify(['옛글자']));
+          const w=catalog('all').works.find(w=>w.fullName&&w.fullName!==w.name)||catalog('all').works[0];
+          const q=document.getElementById('srch-q'); q.value=w.name.slice(0,2); renderSearch(); pickSearch('work', w.id); backSearch(); q.value=''; renderSearch();
+          const chips=[...document.querySelectorAll('.srch-recent .srch-chip')].map(c=>c.firstChild.textContent);
+          document.querySelector('.srch-recent .srch-chip').click(); const opened=_srchSel&&_srchSel.key===w.id;
+          if(keep) localStorage.setItem(RECENT_Q_KEY,keep); else localStorage.removeItem(RECENT_Q_KEY); backSearch();
+          return [chips[0]===(w.icon?w.icon+' ':'')+(w.fullName||w.name), chips[1]==='옛글자', chips.length, opened]})()""")
+        check('최근 검색: 친 글자 말고 누른 작품 이름, 누르면 바로 열림, 옛 기록 유지', rc == [True, True, 2, True], rc)
         xs = await ev("(()=>{const q=document.getElementById('srch-q'), b=document.querySelector('#home-search .hs-close'); q.value='김'; b.click(); const r=[q.value==='', !document.getElementById('home-search').hidden]; b.click(); r.push(document.getElementById('home-search').hidden); return r})()")
         check('찾기 ✕: 글자 있으면 지우기, 비어 있으면 달력으로', xs == [True, True, True], xs)
         await ev("closeSearch()")
