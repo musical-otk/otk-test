@@ -1132,6 +1132,14 @@
       <div class="section-title" style="border-top:none;padding-top:2px">공연 정보</div>
       <button class="set-btn" id="sync-btn" onclick="refreshShowInfo()">🔄 공연 정보 새로 받기</button>
       <div id="set-diff"></div>
+      <div class="section-title">화면</div>
+      <!-- 화면을 내 기록 위로 (11/28) — 복원처럼 되돌리기 어려운 버튼은 아래쪽에 -->
+      <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
+      <div class="set-btn set-row set-dow"><span>위쪽에 📊 통계 버튼</span><span class="seg-view" id="stats-seg"></span></div>
+      <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
+      <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
+      <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
+      <div class="set-btn" id="set-taborder" style="cursor:default;padding:4px 10px"></div>
       <div class="section-title">내 기록</div>
       <button class="set-btn" onclick="closeSettings();openStats()">📊 월별 통계</button>
       <button class="set-btn" onclick="reloadRecords()">📒 기록 새로고침</button>
@@ -1148,13 +1156,6 @@
       <input type="file" id="import-file" accept=".csv,text/csv" hidden onchange="pickImport(this)">
       <div id="set-import"></div>
       <div id="set-restore"></div>
-      <div class="section-title">화면</div>
-      <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
-      <div class="set-btn set-row set-dow"><span>위쪽에 📊 통계 버튼</span><span class="seg-view" id="stats-seg"></span></div>
-      <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
-      <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
-      <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
-      <div class="set-btn" id="set-taborder" style="cursor:default;padding:4px 10px"></div>
       <div class="section-title">요청</div>
       <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
       <div class="section-title">기타</div>
@@ -4839,7 +4840,11 @@
       .sort((a, b) => a.time.localeCompare(b.time));
   }
   function myDayCtx() { return { works: catalog('all').works, att: getAttended(), custom: getCustom() }; }
-  function myCalBox(w, rows, shown) {
+  // t = { title, pairs: [{w,s}] 전체 회차, shown: [{w,s}] 걸러 보이는 회차 } — 작품 하나, 또는 배우 한 명(여러 작품, 11/28)
+  let _myCalT = null;
+  function myCalBox(t) {
+    _myCalT = t;
+    const shown = t.shown.map(x => x.s);
     const open = (() => { try { return !!localStorage.getItem(MYCAL_KEY); } catch (e) { return false; } })();
     const btn = `<button class="srch-back mycal-btn" onclick="toggleMyCal()">📅 내 일정과 비교 ${open ? '▴' : '▾'}</button>`;
     if (!open) return { btn, box: '' };
@@ -4858,13 +4863,13 @@
     return { btn, box: `<div class="mycal">
       <div class="mc-hd"><button onclick="myCalMove(-1)">‹</button><span>${y}년 ${m}월</span><button onclick="myCalMove(1)">›</button></div>
       <div class="mc-grid">${dowOrder().map(i => `<em>${DOW[i]}</em>`).join('')}${cells}</div>
-      ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(w, rows, shown, _myCalSel) : `<div class="mc-hint">날짜를 누르면 그날 내 일정과 ${escHtml(w.fullName || w.name)} 회차가 보여요</div>`}
+      ${_myCalSel && _myCalSel.startsWith(_myCalYM) ? myCalDay(t, _myCalSel) : `<div class="mc-hint">날짜를 누르면 그날 내 일정과 ${escHtml(t.title)} 회차가 보여요</div>`}
     </div>` };
   }
-  function myCalDay(w, rows, shown, ds) {
-    const d = new Date(ds + 'T00:00:00'), mine = myDayItems(ds);
+  function myCalDay(t, ds) {
+    const d = new Date(ds + 'T00:00:00'), mine = myDayItems(ds), multi = new Set(t.pairs.map(x => x.w.id)).size > 1;
     // 배우 필터에 안 맞는 회차도 연하게 같이 — '숨긴 회차 n개'만 쓰면 무슨 회차인지 몰랐다 (11/25)
-    const sess = rows.filter(r => r.date === ds).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    const sess = t.pairs.filter(x => x.s.date === ds).sort((a, b) => (a.s.time || '').localeCompare(b.s.time || ''));
     return `<div class="mc-day-box">
       <div class="mc-day-hd">${evMd(ds)}(${DOW[d.getDay()]})</div>
       <div class="mc-lbl">내 일정</div>
@@ -4872,22 +4877,21 @@
           <span class="mc-time">${x.time}</span>
           <span class="mc-cast">${x.icon} ${escHtml(x.name)}${x.cast ? ` <span class="mc-sub">${x.cast}</span>` : ''}${x.ev.length ? ` <span class="mc-ev">${x.ev.join(' · ')}</span>` : ''}</span>
         </div>`).join('') : '<div class="mc-none">없음</div>'}
-      <div class="mc-lbl" style="margin-top:6px">${w.icon ? w.icon + ' ' : ''}${escHtml(w.fullName || w.name)}</div>
-      ${sess.map(s => {
+      <div class="mc-lbl" style="margin-top:6px">${t.icon ? t.icon + ' ' : ''}${escHtml(t.title)}</div>
+      ${sess.map(({ w, s }) => {
         const ev = eventsOf(w).filter(e => e.name && evAt(e, ds, s.time)).map(e => evShort(e.name));
-        return `<div class="mc-sess${shown.includes(s) ? '' : ' faded'}" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
+        return `<div class="mc-sess${t.shown.some(x => x.s === s) ? '' : ' faded'}" onclick="openEvSess('${w.id}','${ds}','${s.time || ''}','${s._showId || ''}',-1)">
           <span class="mc-time">${s.time || ''}</span>
-          <span class="mc-cast">${castHtml(w, s)}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
+          <span class="mc-cast">${multi ? `${w.icon || ''} <b>${escHtml(w.name)}</b> ` : ''}${castHtml(w, s)}${ev.length ? ` <span class="mc-ev">${ev.join(' · ')}</span>` : ''}</span>
         </div>`;
       }).join('') || '<div class="mc-none">회차 없음</div>'}
-      ${sess.some(x => shown.includes(x)) ? `<button class="mc-go" onclick="myCalJump('${ds}')">목록에서 보기 ›</button>` : ''}
+      ${sess.some(x => t.shown.some(y => y.s === x.s)) ? `<button class="mc-go" onclick="myCalJump('${ds}')">목록에서 보기 ›</button>` : ''}
     </div>`;
   }
   // 날짜를 누르면 아래 회차 목록에서 그날로 — 지난 날이면 접힌 지난 회차를 그만큼 펼친다
   function myCalJump(ds) {
     if (ds < todayStr) {
-      const w = catalog('all').works.find(x => x.id === _srchSel.key);
-      _srchPastOpen = Math.max(_srchPastOpen, rowsOf(w).filter(r => r.date >= ds && r.date < todayStr).length);
+      _srchPastOpen = Math.max(_srchPastOpen, ((_myCalT && _myCalT.shown) || []).filter(x => x.s.date >= ds && x.s.date < todayStr).length);
       renderSearch();
     }
     const el = document.querySelector(`.srch-row[data-ds="${ds}"]`);
@@ -5250,7 +5254,7 @@
         ${links ? `<div class="srch-links">${links}</div>` : ''}
         ${castChips(rows, { roles: info.roles || ai.roles })}
         ${(() => { const shown = rows.filter(castPick(rows, { roles: info.roles || ai.roles }));
-          return sessList(shown.map(s => ({ w, s })), false, myCalBox(w, rows, shown)); })()}
+          return sessList(shown.map(s => ({ w, s })), false, myCalBox({ title: w.fullName || w.name, icon: w.icon, pairs: rows.map(s => ({ w, s })), shown: shown.map(s => ({ w, s })) })); })()}
       </div>`;
     };
     // 고른 배우로 회차 거르기 — 같은 배역끼리는 '또는', 다른 배역끼리는 '그리고'.
@@ -5324,7 +5328,7 @@
           <span class="srch-sub">${inWorks.map(w => `${w.icon || ''}${w.name}`).join(' · ')}</span>
           <span class="srch-hd-right"><button class="srch-heart${on ? ' on' : ''}" title="${on ? '필터에서 빼기' : '필터에 넣기'}"
             onclick="toggleActorHeart('${n.replace(/'/g, "\\'")}')">${on ? '♥' : '♡'}</button></span></div>
-        ${sessList(items, true) || '<div class="srch-sub">앞으로 회차 없음</div>'}
+        ${sessList(items, true, myCalBox({ title: bareName(n), pairs: items, shown: items })) || '<div class="srch-sub">앞으로 회차 없음</div>'}
       </div>`;
     };
     const esc = jsq;

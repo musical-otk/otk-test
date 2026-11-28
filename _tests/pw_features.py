@@ -181,6 +181,15 @@ async def main():
           if(keep) localStorage.setItem(RECENT_Q_KEY,keep); else localStorage.removeItem(RECENT_Q_KEY); backSearch();
           return [chips[0]===(w.icon?w.icon+' ':'')+(w.fullName||w.name), chips[1]==='옛글자', chips.length, opened]})()""")
         check('최근 검색: 친 글자 말고 누른 작품 이름, 누르면 바로 열림, 옛 기록 유지', rc == [True, True, 2, True], rc)
+        mc = await ev("""(async()=>{await ensureCatalog(); const acts=new Map(); catalog('all').works.forEach(w=>rowsOf(w).forEach(s=>{if(s.date<todayStr)return; getActorFields(s).forEach(k=>{const n=s[k]; if(!n)return; if(!acts.has(n))acts.set(n,new Set()); acts.get(n).add(w.id)})}));
+          const n=[...acts.entries()].find(([n,ws])=>ws.size>1); if(!n) return 'no-actor';
+          const keep=localStorage.getItem(MYCAL_KEY); localStorage.setItem(MYCAL_KEY,'1'); pickSearch('actor', n[0]);
+          const hasCal=!!document.querySelector('.mycal'), btn=!!document.querySelector('.mycal-btn');
+          const on=document.querySelector('.mc-day:not(.off)'); if(on) on.click();
+          const lines=[...document.querySelectorAll('.mc-day-box .mc-sess:not(.mine)')].length;
+          if(keep) localStorage.setItem(MYCAL_KEY,keep); else localStorage.removeItem(MYCAL_KEY); backSearch();
+          return [btn, hasCal, !!on, lines>0]})()""")
+        check('배우 찾기에도 내 일정과 비교(여러 작품 회차)', mc == [True, True, True, True], mc)
         xs = await ev("(()=>{const q=document.getElementById('srch-q'), b=document.querySelector('#home-search .hs-close'); q.value='김'; b.click(); const r=[q.value==='', !document.getElementById('home-search').hidden]; b.click(); r.push(document.getElementById('home-search').hidden); return r})()")
         check('찾기 ✕: 글자 있으면 지우기, 비어 있으면 달력으로', xs == [True, True, True], xs)
         await ev("closeSearch()")
