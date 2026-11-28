@@ -732,20 +732,24 @@
     .set-btn.spinning { opacity: .5; pointer-events: none; }
     .set-btn.set-danger { color: #d9534f; background: none; }
     .set-btn.set-guide { display: block; text-decoration: none; text-align: center; margin-bottom: 4px; }
-    /* 설정 창은 회색 상자 반복 대신 목록 — 줄은 투명 + 가는 구분선, 묶음은 제목과 여백으로 (11/28)
-       다른 창(동명이인 고르기·요청 버튼)의 .set-btn 은 그대로 둔다 */
-    #sheet-settings .settings-body .set-btn { background: none; border: none; border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent); border-radius: 0; margin: 0; padding-left: 2px; padding-right: 2px; font-weight: 500; }   /* 줄은 보통 굵기 — 굵은 건 묶음 제목만 */
-    #sheet-settings .settings-body .set-btn:active { opacity: 1; background: var(--bg3); }
-    #sheet-settings .settings-body .set-btn.set-dow:active { background: none; }
-    #sheet-settings .settings-body .set-btn.set-guide { text-align: left; }
-    #sheet-settings .settings-body .set-dow .seg-view { background: var(--bg3); border-radius: var(--r); }   /* 고르는 칸만 연한 회색 */
-    #sheet-settings .settings-body .section-title { border-top: none; padding: 24px 2px 4px; font-size: var(--fs-s); font-weight: 800; color: var(--text1); letter-spacing: 0; }
-    #sheet-settings .settings-body .hint { padding: 10px 2px 4px; }
-    #sheet-settings .settings-body #set-taborder { border: 1px solid var(--border); border-radius: var(--r); background: var(--bg2); margin: 2px 0 4px; min-height: 0; }
-    #sheet-settings .settings-body #set-taborder .tab-order-row { padding: 5px 4px; border-bottom-color: color-mix(in srgb, var(--border) 55%, transparent); }
-    #sheet-settings .settings-body .set-lab .set-btn { min-height: 44px; }
-    #sheet-settings .settings-body .set-btn.set-danger { margin: 28px 0 6px; text-align: center; justify-content: center; border: 1px solid color-mix(in srgb, #d9534f 45%, transparent); border-radius: var(--r); font-weight: 600; }
-    #sheet-settings .settings-body .set-btn.set-danger:active { background: color-mix(in srgb, #d9534f 10%, transparent); }
+    /* 설정 창 (11/28) — 연회색 바탕에 묶음마다 테두리 없는 흰 상자, 줄 사이 가는 선. 다른 창의 .set-btn 은 그대로 */
+    #sheet-settings { background: var(--bg3); }
+    body:not(.light) #sheet-settings { background: var(--bg1); }
+    #sheet-settings .section-title { border-top: none; padding: 18px 14px 6px; font-size: var(--fs-s); font-weight: 600; color: var(--text3); letter-spacing: 0; }
+    #sheet-settings .set-grp { background: var(--bg2); border-radius: var(--r); padding-left: 14px; overflow: hidden; }
+    #sheet-settings .set-grp .set-btn { display: flex; align-items: center; justify-content: space-between; background: none; border: none; border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent); border-radius: 0; margin: 0; padding: 0 14px 0 0; font-weight: 500; text-decoration: none; }
+    #sheet-settings .set-grp > .set-btn:last-child, #sheet-settings .set-grp > .set-lab:last-child > .set-btn:last-child, #sheet-settings .set-grp > .set-row:has(+ .set-lab[hidden]:last-child) { border-bottom: none; }
+    #sheet-settings .set-grp .set-btn:active { opacity: 1; background: var(--bg3); }
+    #sheet-settings .set-grp .set-dow:active { background: none; }
+    #sheet-settings .set-grp .set-btn.nav::after { content: '›'; color: var(--text3); font-size: 18px; line-height: 1; }
+    #sheet-settings .set-grp .set-dow .seg-view { background: var(--bg3); border-radius: var(--r); }
+    #sheet-settings .set-lab { margin: 0; padding: 0; border: none; }
+    #sheet-settings .set-lab .set-btn { padding-left: 14px; color: var(--text2); }
+    #sheet-settings #set-taborder { padding: 2px 14px 2px 0; min-height: 48px; display: flex; flex-direction: column; justify-content: center; }
+    #sheet-settings #set-taborder .tab-order-row { padding: 6px 0; border-bottom-color: color-mix(in srgb, var(--border) 60%, transparent); }
+    #sheet-settings #set-taborder .hint { padding: 0; font-size: var(--fs-b); }
+    #sheet-settings .set-btn.set-danger { margin: 24px 0 6px; background: var(--bg2); border: none; text-align: center; color: #d9534f; font-weight: 600; }
+    #sheet-settings .set-btn.set-danger:active { background: color-mix(in srgb, #d9534f 10%, var(--bg2)); }
     .rs-box { border: 1px solid var(--border); border-radius: var(--r); padding: 10px 12px; margin-bottom: 10px; font-size: var(--fs-s); color: var(--text2); line-height: 1.6; }
     .rs-box b { color: var(--text1); }
     .imp-range { display: flex; gap: 4px; margin: 6px 0; align-items: center; flex-wrap: wrap; }
@@ -1141,40 +1145,44 @@
       <button class="settings-close" onclick="closeSettings()">✕</button>
     </div>
     <div class="settings-body">
-      <a class="set-btn set-guide" href="guide.html">❓ 사용법 보기</a>
+      <!-- 설정 11/28 — 묶음마다 흰 상자 하나(연회색 바탕), 이모지 없이 › 로 넘어가는 줄 표시, 자주 만지는 화면이 위·가끔 쓰는 mu:di 는 아래 -->
       <div id="set-new"></div>
-      <div class="section-title" style="padding-top:14px">공연 정보</div>
-      <button class="set-btn" id="sync-btn" onclick="refreshShowInfo()">🔄 공연 정보 새로 받기</button>
-      <div id="set-diff"></div>
       <div class="section-title">화면</div>
-      <!-- 화면을 내 기록 위로 (11/28) — 복원처럼 되돌리기 어려운 버튼은 아래쪽에 -->
-      <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
-      <div class="set-btn set-row set-dow"><span>위쪽에 📊 통계 버튼</span><span class="seg-view" id="stats-seg"></span></div>
-      <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
-      <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
-      <div class="hint" style="padding:6px 2px 2px">탭 순서 — ≡ 를 잡고 끌거나 길게 눌러 옮겨요 (위쪽 탭도 길게 눌러 끌 수 있어요)</div>
-      <div class="set-btn" id="set-taborder" style="cursor:default;padding:4px 10px"></div>
-      <div class="section-title">내 기록</div>
-      <button class="set-btn" onclick="closeSettings();openStats()">📊 월별 통계</button>
-      <button class="set-btn" onclick="reloadRecords()">📒 기록 새로고침</button>
-      <button class="set-btn" onclick="downloadBackup(false)">💾 백업 파일 받기</button>
-      <button class="set-btn" onclick="downloadBackup(true)">🖼 사진까지 백업 (파일이 커요)</button>
-      <button class="set-btn" onclick="document.getElementById('restore-file').click()">📂 백업 파일에서 복원</button>
-      <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
-      <!-- 실험실 — 아직 다듬는 중인 기능을 한데 모은다 (11/19) -->
-      <button class="set-btn set-row" onclick="toggleLab()"><span>🧪 실험실</span><span id="lab-arrow">▾</span></button>
-      <div id="set-lab" class="set-lab" hidden>
-        <button class="set-btn" onclick="document.getElementById('import-file').click()">📥 다른 앱 기록 가져오기 (CSV)</button>
-        <button class="set-btn" onclick="openPaste()">📋 일정 붙여넣기 (JSON)</button>
+      <div class="set-grp">
+        <div class="set-btn set-row set-dow"><span>화면 모드</span><span class="seg-view" id="theme-seg"></span></div>
+        <button class="set-btn set-row" id="stats-row" role="switch" onclick="lsSet(STATS_BTN_KEY, localStorage.getItem(STATS_BTN_KEY) === 'show' ? 'hide' : 'show');applyStatsBtn()"><span>위쪽에 통계 버튼 보이기</span><span id="stats-seg"></span></button>
+        <div class="set-btn set-row set-dow"><span>월간 달력 시작</span><span class="seg-view" id="ws-month"></span></div>
+        <div class="set-btn set-row set-dow"><span>주간 달력 시작</span><span class="seg-view" id="ws-week"></span></div>
       </div>
+      <div class="section-title">탭 순서</div>
+      <div class="set-grp"><div id="set-taborder"></div></div>
+      <div class="section-title">내 기록</div>
+      <div class="set-grp">
+        <button class="set-btn nav" onclick="closeSettings();openStats()">월별 통계</button>
+        <button class="set-btn nav" onclick="reloadRecords()">기록 새로고침</button>
+        <button class="set-btn nav" onclick="downloadBackup(false)">백업 파일 받기</button>
+        <button class="set-btn nav" onclick="downloadBackup(true)">사진까지 백업 (파일이 커요)</button>
+        <button class="set-btn nav" onclick="document.getElementById('restore-file').click()">백업 파일에서 복원</button>
+        <!-- 실험실 — 아직 다듬는 중인 기능을 한데 모은다 (11/19) -->
+        <button class="set-btn set-row" onclick="toggleLab()"><span>실험실</span><span id="lab-arrow">▾</span></button>
+        <div id="set-lab" class="set-lab" hidden>
+          <button class="set-btn nav" onclick="document.getElementById('import-file').click()">다른 앱 기록 가져오기 (CSV)</button>
+          <button class="set-btn nav" onclick="openPaste()">일정 붙여넣기 (JSON)</button>
+        </div>
+      </div>
+      <input type="file" id="restore-file" accept=".json,application/json" hidden onchange="pickRestore(this)">
       <input type="file" id="import-file" accept=".csv,text/csv" hidden onchange="pickImport(this)">
       <div id="set-import"></div>
       <div id="set-restore"></div>
-      <div class="section-title">요청</div>
-      <button class="set-btn" onclick="openRequestForm()">✉️ 작품 추가·정보 수정 요청</button>
-      <div class="section-title">기타</div>
-      <button class="set-btn" onclick="hardReload()">🔄 최신 버전으로 다시 열기</button>
-      <button class="set-btn set-danger" onclick="wipeHubData()">🗑 mu:di 기록 모두 지우기</button>
+      <div class="section-title">mu:di</div>
+      <div class="set-grp">
+        <a class="set-btn nav set-guide" href="guide.html">사용법 보기</a>
+        <button class="set-btn nav" id="sync-btn" onclick="refreshShowInfo()">공연 정보 새로 받기</button>
+        <button class="set-btn nav" onclick="openRequestForm()">작품 추가·정보 수정 요청</button>
+        <button class="set-btn nav" onclick="hardReload()">최신 버전으로 다시 열기</button>
+      </div>
+      <div id="set-diff"></div>
+      <button class="set-btn set-danger" onclick="wipeHubData()">mu:di 기록 모두 지우기</button>
       <div class="hint" id="set-ver" style="text-align:center;padding-top:4px"></div>
       <div id="app-list-ui" hidden></div>
     </div>
@@ -2606,8 +2614,8 @@
     document.getElementById('stats-btn').hidden = !on;
     fitTabs();
     const seg = document.getElementById('stats-seg');
-    if (seg) seg.innerHTML = [['show', '보이기'], ['hide', '숨기기']].map(([v, n]) =>
-      `<button class="seg-btn${(v === 'show') === on ? ' on' : ''}" onclick="lsSet(STATS_BTN_KEY,'${v}');applyStatsBtn()">${n}</button>`).join('');
+    if (seg) seg.innerHTML = `<span class="fx-sw${on ? ' on' : ''}" aria-hidden="true"><i></i></span>`;   // 켜고 끄기라 두 칸 고르기 대신 스위치 (11/28)
+    const row = document.getElementById('stats-row'); if (row) row.setAttribute('aria-checked', on);
   }
   function setTheme(t) { localStorage.setItem(THEME_KEY, t); applyTheme(t); }
   function toggleTheme() { setTheme(getTheme() === 'dark' ? 'light' : 'dark'); }

@@ -316,8 +316,8 @@ async def main():
         await e2("localStorage.removeItem(CUSTOM_KEY);document.getElementById('ov-stats').classList.remove('open')")
         check('월별 통계: 관람·예정·미정, 출연 칸 배우가 회차 캐스팅과 합쳐짐, 동명이인', got == [True, True, True, True], got)
         got = await e2("""(()=>{const b=document.getElementById('stats-btn'), vis=()=>b.offsetParent!==null;
-          const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
-          document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
+          const a0=vis(); openSettings(); applyStatsBtn(); document.getElementById('stats-row').click(); const a1=vis();
+          document.getElementById('stats-row').click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
         check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
         # 보기 필터 (11/28): 한 줄 + 스위치, 종료된 작품은 접힘, 배우 줄 작품 이름 → 그 작품에서만 빼기(취소선), 모두 켜기는 제목 줄
         got = await e2("""(()=>{const keepH=localStorage.getItem(HEARTS_KEY), keepF=localStorage.getItem(FILTER_KEY);
@@ -465,7 +465,7 @@ async def main():
         # 설정의 실험실 — 가져오기·붙여넣기는 그 안에 접혀 있다 (11/19)
         got = await e2("""(()=>{openSettings();const lab=document.getElementById('set-lab');const a=lab.hidden;toggleLab();
           return [a, lab.hidden, [...lab.querySelectorAll('button')].map(b=>b.textContent.trim())]})()""")
-        check('실험실을 펼치면 CSV 가져오기·일정 붙여넣기', got == [True, False, ['📥 다른 앱 기록 가져오기 (CSV)', '📋 일정 붙여넣기 (JSON)']], got)
+        check('실험실을 펼치면 CSV 가져오기·일정 붙여넣기', got == [True, False, ['다른 앱 기록 가져오기 (CSV)', '일정 붙여넣기 (JSON)']], got)
         # 일정 붙여넣기 (JSON 글) — 읽기 (11/19)
         got = await e2("""(()=>{const P=parsePaste('```json\\n[{“name”:“가상의 공연”,"date":"2026.12.26 오후 3시","seat":"1층 C열 7번","price":"55,000원",},{"이름":"레미","날짜":"2027년 1월 10일","시간":"14:00","출연":["가","나"]},{"name":"날짜없음"},{"date":"2026-12-01"},{"name":"틀린날","date":"2026-02-31"},]\\n```');
           return [P.rows.map(r=>[r['제목'],r._ds,r._time,r['좌석'],r['금액'],r['출연']]), P.errs.length, !!parsePaste('안녕').fail, parsePaste('{"list":[{"title":"x","date":"2026-12-01T19:30:00"}]}').rows.map(r=>r._ds+' '+r._time)]})()""")
