@@ -398,6 +398,14 @@
     .srch-recent .x { color: var(--text3); font-size: 11px; padding-left: 2px; }
     .srch-recent .clr { background: none; border: none; color: var(--text3); font-size: 11px; cursor: pointer; }
     .srch-tag.mine { color: var(--custom); border-color: var(--custom); font-weight: 700; }
+    /* 찾기 화면 (11/28) — 흰 입력칸, 테두리 없는 회색 최근 검색어, 결과는 한 장 판 */
+    #srch-q { background: var(--bg2); }
+    .srch-recent { gap: 5px; }
+    .srch-recent .srch-chip { border: none; background: var(--bg3); color: var(--text2); padding: 4px 8px 4px 11px; }
+    .srch-recent .x { padding-left: 0; }
+    .flt-list { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 6px; }
+    .flt-list .flt-hit { margin: 0; border: none; border-top: 1px solid var(--border); border-radius: 0; background: none; padding: 9px 14px; }
+    .flt-list .flt-hit:first-child { border-top: none; }
     .srch-back { background: none; border: none; color: var(--text2); font-size: 13px; padding: 4px 2px 8px; cursor: pointer; }
     /* 월/주 — 붙어 있는 한 덩어리 토글 */
     .seg-view { display: flex; flex: 0 0 auto; }
@@ -906,7 +914,7 @@
     <!-- 찾기 — 🔍 로 연다. 입력하는 동안 달력 자리에 결과가 나온다 -->
     <div id="home-search" hidden>
       <div class="hs-bar">
-        <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 이벤트 · 날짜"
+        <input id="srch-q" class="form-input" type="search" placeholder="공연 · 배우 · 이벤트 · 날짜 11/21"
                autocomplete="off" oninput="_srchSel = null; renderSearch()">
         <button class="hs-close" onclick="closeSearch()" title="달력으로">✕</button>
       </div>
@@ -5139,6 +5147,8 @@
     const nextOf = rows => rows.filter(s => s.date >= todayStr).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
     const when = s => { const d = new Date(s.date + 'T00:00:00'); return `${s.date.slice(5).replace('-', '/')}(${DOW[d.getDay()]}) ${s.time || ''}`; };
     // 공연 한 줄 — 검색 결과와 빈 칸일 때 전체 목록이 같이 쓴다
+    // 목록은 한 장 판 안에 줄로만 나눈다 — 상자 29개가 쌓여 단조로웠다 (11/28, 보기 필터 창과 같은 모양)
+    const fltList = a => a.length ? `<div class="flt-list">${a.join('')}</div>` : '';
     const workHit = w => `<button class="flt-hit" onclick="pickSearch('work','${w.id}')">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${w.fullName || w.name}${getHearts().works.includes(w.id) ? ' <span class="flt-hit-heart">♥</span>' : ''}</span>
@@ -5153,12 +5163,11 @@
       const playing = on.filter(w => first(w) && first(w) <= todayStr);
       const soon = on.filter(w => !playing.includes(w)).sort((a, b) => (first(a) || '9999').localeCompare(first(b) || '9999'));
       const rq = getRecentQ();
-      box.innerHTML = '<div class="hint" style="padding:2px 2px 6px">공연·배우·이벤트 이름이나 날짜(11/21)로 찾아요</div>' +
-        (rq.length ? `<div class="srch-recent">${rq.map((t, i) => `<button class="srch-chip" onclick="useRecentQ(${i})">${escHtml(t)}<span class="x" onclick="event.stopPropagation();dropRecentQ(${i})">✕</span></button>`).join('')}<button class="clr" onclick="dropRecentQ(-1)">전체 삭제</button></div>` : '') +
-        (all.length ? (playing.length ? `<div class="flt-sec">공연 중 ${playing.length}</div>` + playing.map(workHit).join('') : '') +
-          (soon.length ? `<div class="flt-sec">공연 예정 ${soon.length}</div>` + soon.map(workHit).join('') : '') +
+      box.innerHTML = (rq.length ? `<div class="srch-recent">${rq.map((t, i) => `<button class="srch-chip" onclick="useRecentQ(${i})">${escHtml(t)}<span class="x" onclick="event.stopPropagation();dropRecentQ(${i})">✕</span></button>`).join('')}<button class="clr" onclick="dropRecentQ(-1)">전체 삭제</button></div>` : '') +
+        (all.length ? (playing.length ? `<div class="flt-sec">공연 중 ${playing.length}</div>` + fltList(playing.map(workHit)) : '') +
+          (soon.length ? `<div class="flt-sec">공연 예정 ${soon.length}</div>` + fltList(soon.map(workHit)) : '') +
           (ended.length ? `<button class="srch-back" onclick="_srchEndedOpen=!_srchEndedOpen;renderSearch()">${_srchEndedOpen ? '지난 공연 접기 ▴' : `지난 공연 ${ended.length}개 ▾`}</button>` +
-            (_srchEndedOpen ? ended.map(workHit).join('') : '') : '')
+            (_srchEndedOpen ? fltList(ended.map(workHit)) : '') : '')
           : `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '불러오는 중…' : '올라온 공연이 없어요'}</div>`);
       return;
     }
@@ -5302,13 +5311,13 @@
 
     // 목록 — 이름만 한 줄씩
     const ws = works.filter(w => norm(w.name).includes(q) || norm(w.fullName).includes(q) || norm(w.alias).includes(q)).slice(0, 6);
-    if (ws.length) html += `<div class="flt-sec">공연</div>` + ws.map(workHit).join('');
+    if (ws.length) html += `<div class="flt-sec">공연</div>` + fltList(ws.map(workHit));
     const as = [...actors.entries()].filter(([n]) => norm(n).includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'ko')).slice(0, 10);
-    if (as.length) html += `<div class="flt-sec">배우</div>` + as.map(([n, inWorks]) =>
+    if (as.length) html += `<div class="flt-sec">배우</div>` + fltList(as.map(([n, inWorks]) =>
       `<button class="flt-hit" onclick="pickSearch('actor','${esc(n)}')">
         <span class="flt-hit-name">${actorLabel(n)}</span>
         <span class="flt-hit-sub">${inWorks.length ? inWorks.map(w => `<span title="${w.name}">${w.icon || w.name}</span>`).join(' ') : '남은 공연 없음'}</span>
-      </button>`).join('');
+      </button>`));
 
     // 이벤트 — 이름(설명 포함)에 걸린 것 중 아직 안 끝난 것. 누르면 그 작품 자세히
     const md = s => s.slice(5).replace('-', '/');
@@ -5322,12 +5331,12 @@
     const evs = [...evMap.values()].map(g => (g.list.sort((a, b) => evFirst(a).localeCompare(evFirst(b))), g))
       .sort((a, b) => evFirst(a.list[0]).localeCompare(evFirst(b.list[0])));   // 자르지 않는다 — 12개에서 잘려 마하고니 커튼콜이 빠졌었다
     _evGroups = evs;
-    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + evs.map(({ w, name, list }, gi) =>
+    if (evs.length) html += `<div class="flt-sec">이벤트</div>` + fltList(evs.map(({ w, name, list }, gi) =>
       `<button class="flt-hit" onclick="openEvGroup(${gi})">
         <span class="filter-group-dot" style="background:${w.color}"></span>
         <span class="flt-hit-name">${w.icon ? w.icon + ' ' : ''}${name}</span>
         <span class="flt-hit-sub">${w.name} · ${list.slice(0, 4).map(evWhen).join(' · ')}${list.length > 4 ? ` 외 ${list.length - 4}회` : ''}</span>
-      </button>`).join('');
+      </button>`));
 
     box.innerHTML = html || `<div class="hint" style="padding:8px 2px">${_catalogLoading ? '찾는 중…' : '찾는 결과가 없어요'}</div>` +
       (_catalogLoading ? '' : `<button class="set-btn" style="margin-top:6px" onclick="openRequestForm(document.getElementById('srch-q').value.trim())">✉️ 이 작품 추가 요청하기</button>`);
