@@ -306,14 +306,38 @@ async def main():
           const n=(()=>{for(const s of (schedules[a.id]||[]).filter(s=>s.date>=todayStr)){const k=getActorFields(s).find(k=>typeof s[k]==='string');if(k)return s[k]}})();
           saveHearts({...getHearts(),works:[a.id],actors:[n]}); saveFilter({v:3,offWorks:[],offActors:[],off:[]});
           openFilter(); const q=s=>document.querySelector(s);
-          const r0=[q('#fx-allon').hidden, q('.fx-li[role=switch]').getAttribute('aria-checked')];
-          q('.fx-li[role=switch]').click(); const r1=[getFilter().offWorks.includes(a.id), q('#fx-allon').hidden, q('.fx-li[role=switch]').classList.contains('off')];
+          const r0=[!q('#fx-allon'), q('.fx-li[role=switch]').getAttribute('aria-checked')];
+          q('.fx-li[role=switch]').click(); const r1=[getFilter().offWorks.includes(a.id), !q('#fx-allon'), q('.fx-li[role=switch]').classList.contains('off')];
           const w=q('.fx-w'); w.click(); const r2=[getFilter().off.length, q('.fx-w').getAttribute('aria-checked')==='false'];
-          q('#fx-allon').click(); const r3=[filterActive(), q('#fx-allon').hidden];
+          q('#fx-allon').click(); const r3=[filterActive(), !q('#fx-allon')];
           closeFilter(); if(keepH) localStorage.setItem(HEARTS_KEY,keepH); else localStorage.removeItem(HEARTS_KEY); _hearts=null;
           if(keepF) localStorage.setItem(FILTER_KEY,keepF); else localStorage.removeItem(FILTER_KEY);
           return [r0,r1,r2,r3]})()""")
         check('보기 필터: 스위치·작품별 빼기·모두 켜기', got == [[True,'true'],[True,False,True],[1,True],[False,True]], got)
+        # 보기 필터 접기 (11/28): 꺼 둔 것은 안 접힘, 배우 칩 진행 중 3개 + +N(펼치면 지난 작품까지), 공연 없는 배우 접기, 보는 달에 공연 있던 작품은 앞에
+        got = await e2("""(()=>{const keepH=localStorage.getItem(HEARTS_KEY), keepF=localStorage.getItem(FILTER_KEY), keepT=todayStr, keepY=currentYear, keepM=currentMonth, keepV=localStorage.getItem(CAL_VIEW_KEY);
+          const R=getApps()[0]; if(!R) return 'no-app'; const A=[0,1,2,3,4,5,6].map(i=>i===5?R:{id:'fxfake'+i,name:'가짜'+i,icon:''}); const keepS=A.map(a=>schedules[a.id]);
+          const row=(d,x)=>({date:d,time:'19:30',role1:x});
+          A.forEach((a,i)=>schedules[a.id]= i<5 ? [row('2026-12-1'+(i+1),'가상배우')] : i===5 ? [row('2026-08-05','가상배우')] : [row('2026-09-01','가상배우'),{date:'2026-09-02',time:'19:30',role1:'가상둘'}]);
+          const keepI=actorIndex; actorIndex=()=>new Map([['가상배우',A],['가상둘',[A[6]]]]);
+          const keepF2=getActorFields; getActorFields=s=>Object.keys(s).filter(k=>k.startsWith('role'));
+          todayStr='2026-12-10'; localStorage.setItem(CAL_VIEW_KEY,'month'); currentYear=2026; currentMonth=11;
+          saveHearts({...getHearts(),works:[A[5].id],actors:['가상배우','가상둘']}); saveFilter({v:3,offWorks:[],offActors:[],off:[]});
+          _fxIdleOpen=false; _fxDoneOpen=false; _fxOpenActors.clear(); openFilter();
+          const q=s=>document.querySelector(s), chips=()=>[...document.querySelectorAll('.fx-w')].map(b=>b.textContent.trim()), more=()=>q('.fx-more')?.textContent;
+          const r=[];
+          r.push([chips().length, more(), !!q('#fx-idle'), !!q('#fx-wdone')]);                 // 3개 +4, 가상둘 접힘, 종료 작품 접힘
+          q('.fx-more').click(); r.push([chips().length, more(), chips().filter(c=>c.endsWith('종료')).length]);   // 7개(지난 2개), 접기
+          q('.fx-more').click(); saveFilter({v:3,offWorks:[A[5].id],offActors:[],off:[offKey(A[6].id,'가상배우'),offKey(A[6].id,'가상둘')]}); renderActorFilters();
+          r.push([chips().length, more(), !!q('#fx-idle'), !!q('#fx-wdone')]);                 // 가상배우: 꺼 둔 지난 작품 + 3개, 가상둘은 꺼 둔 칩 때문에 밖으로, 꺼 둔 종료 작품도 밖에
+          saveFilter({v:3,offWorks:[],offActors:[],off:[]}); currentMonth=7; renderActorFilters();
+          r.push([chips()[0].startsWith(A[5].icon?A[5].icon+' '+A[5].name:A[5].name), !!q('#fx-wdone')]);   // 8월 보면 8월 작품이 맨 앞, 접히지 않음
+          closeFilter(); A.forEach((a,i)=>{ if(keepS[i]===undefined) delete schedules[a.id]; else schedules[a.id]=keepS[i]; }); actorIndex=keepI; getActorFields=keepF2; todayStr=keepT; currentYear=keepY; currentMonth=keepM;
+          if(keepV) localStorage.setItem(CAL_VIEW_KEY,keepV); else localStorage.removeItem(CAL_VIEW_KEY);
+          if(keepH) localStorage.setItem(HEARTS_KEY,keepH); else localStorage.removeItem(HEARTS_KEY); _hearts=null;
+          if(keepF) localStorage.setItem(FILTER_KEY,keepF); else localStorage.removeItem(FILTER_KEY); renderCalendar();
+          return r})()""")
+        check('보기 필터 접기: 꺼 둔 것 안 접힘·+N·공연 없는 배우·보는 달 우선', got == [[3,'+4',True,True],[7,'접기',2],[5,'+3',False,False],[True,False]], got)
         # 작품 탭 줄 (11/28): 없으면 줄·칸막이 없음, 들어가면 한 줄, 넘치면 아이콘 아래 둘째 줄
         got = await e2("""(()=>{const keep=localStorage.getItem(APPS_KEY), kv=localStorage.getItem(HIDDEN_KEY);
           const mk=i=>({id:'show_fk'+i,name:'가짜'+i,icon:'',color:'#888',scheduleUrl:'xfk'+i,appUrl:'',kind:'data',recordsKey:'kfk'+i});

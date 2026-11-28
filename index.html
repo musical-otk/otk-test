@@ -294,7 +294,8 @@
     .flt-allon { display: flex; justify-content: flex-end; padding: 0 0 4px; }
     /* 보기 필터 — 한 줄 + 스위치 (11/28) */
     .fx-allon { font: inherit; font-size: 13px; font-weight: 600; color: var(--custom); background: none; border: none; padding: 4px 8px; cursor: pointer; }
-    .fx-allon[hidden] { display: none; }
+    .fx-state { display: flex; align-items: center; justify-content: space-between; margin: 4px 2px 0; padding: 8px 4px 8px 14px;
+                background: var(--custom-bg); border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--custom); }
     .fx-sec { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 14px 2px 6px; }
     .fx-sec span { font-size: 12px; font-weight: 700; color: var(--text3); }
     .fx-sec small { font-size: 11px; color: var(--text3); text-align: right; }
@@ -316,6 +317,11 @@
     .fx-w::before { content: ''; width: 7px; height: 7px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--text3); flex-shrink: 0; }   /* 꺼짐: 빈 점 */
     .fx-w.on::before { background: var(--custom); box-shadow: none; }   /* 켜짐: 보라 점 (체크 대신, 11/28) */
     .fx-li.off .fx-w { opacity: .5; }
+    .fx-end { font-size: 10px; font-weight: 600; color: var(--text3); }
+    .fx-w.done { color: var(--text3); }
+    .fx-w.done.on { color: var(--text2); }
+    .fx-more { font: inherit; font-size: 12px; font-weight: 600; color: var(--custom); background: none; border: none; padding: 3px 4px; cursor: pointer; }
+    .fx-none { font-size: 12px; font-weight: 500; color: var(--text3); margin-top: 3px; }
     .fx-swbtn { background: none; border: none; padding: 4px; margin: -4px; cursor: pointer; }
     .fx-sw { display: block; width: 40px; height: 24px; border-radius: 999px; background: var(--border); position: relative; flex-shrink: 0; transition: background .15s; }
     .fx-sw i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); transition: left .15s; }
@@ -1152,7 +1158,6 @@
     <div class="sheet-handle"></div>
     <div class="settings-hd">
       <div class="settings-title" style="flex:1">보기 필터</div>
-      <button class="fx-allon" id="fx-allon" onclick="clearFilter()" hidden>모두 켜기</button>
       <button class="settings-close" onclick="closeFilter()">✕</button>
     </div>
     <div class="settings-body">
@@ -4600,38 +4605,76 @@
   // 작품 색은 쓰지 않는다(칠하면 촌스럽다 — 사용자). 종료된 작품은 접어 둔다. 배우 줄 아래 작품 이름을 누르면 그 작품에서만 뺀다(취소선)
   let _fxDoneOpen = false;
   const fxSw = on => `<span class="fx-sw${on ? ' on' : ''}" aria-hidden="true"><i></i></span>`;
+  // 11/28 접기 규칙 — 꺼 둔 것은 절대 접지 않는다(접히면 숨은 필터가 된다). 달력에서 보고 있는 기간에 공연이 있는 작품도 앞에 펼친다.
+  // 배우 줄: 보는 기간 작품 → 진행 중(가까운 공연 순) → 지난 작품. 꺼 둔 칩은 항상, 나머지는 앞에서 3개까지 보이고 나머지는 +N
+  // 배우 묶음: 진행 중 작품도, 꺼 둔 것도, 보는 기간 작품도 없는 배우는 '지금 공연 없는 배우'로 접는다
+  let _fxIdleOpen = false;
+  const _fxOpenActors = new Set();
+  const FX_SHOW = 3;
+  function fxViewRange() {
+    if (getCalView() === 'week' && weekStart) {
+      const e = new Date(weekStart); e.setDate(e.getDate() + 6);
+      return [ymd(weekStart), ymd(e)];
+    }
+    if (currentYear == null) return [todayStr, todayStr];
+    return [ymd(new Date(currentYear, currentMonth, 1)), ymd(new Date(currentYear, currentMonth + 1, 0))];
+  }
+  function fxActorWorks(n, f, index, vr) {
+    return (index.get(n) || []).map(a => {
+      const ds = (schedules[a.id] || []).filter(s => getActorFields(s).some(k => s[k] === n)).map(s => s.date).sort();
+      if (!ds.length) return null;
+      const next = ds.find(d => d >= todayStr);
+      return { a, next, last: ds[ds.length - 1], live: !!next, inView: ds.some(d => d >= vr[0] && d <= vr[1]), off: f.off.includes(offKey(a.id, n)) };
+    }).filter(Boolean).sort((x, y) => (y.inView - x.inView) || (y.live - x.live)
+      || (x.live ? x.next.localeCompare(y.next) : y.last.localeCompare(x.last)));
+  }
   function renderActorFilters() {
     const box = document.getElementById('actor-filters');
     if (!box) return;
-    const allon = document.getElementById('fx-allon');
-    if (allon) allon.hidden = !filterActive();
-    const H = getHearts(), f = getFilter(), apps = getApps(), index = actorIndex();
+    const H = getHearts(), f = getFilter(), apps = getApps(), index = actorIndex(), vr = fxViewRange();
     if (!H.works.length && !H.actors.length) {
       box.innerHTML = '<div class="hint" style="padding:8px 2px">관심 작품·배우가 없어요. 🔍 찾기에서 ♡를 눌러 주세요.</div>';
       return;
     }
+    const doneTag = '<small class="fx-end">종료</small>';
+    // 관심 작품 — 종료된 작품도 꺼 뒀거나 보는 기간에 공연이 있으면 접지 않는다
     const works = H.works.map(id => apps.find(a => a.id === id)).filter(Boolean);
-    const live = works.filter(a => !isFinished(a.id)), done = works.filter(a => isFinished(a.id));
+    const wInView = a => (schedules[a.id] || []).some(s => s.date >= vr[0] && s.date <= vr[1]);
+    const keepOut = a => !isFinished(a.id) || !workOn(f, a.id) || wInView(a);
+    const shown = works.filter(keepOut), folded = works.filter(a => !keepOut(a));
     const wRow = a => { const on = workOn(f, a.id);
       return `<button class="fx-li${on ? '' : ' off'}" role="switch" aria-checked="${on}" onclick="toggleWorkOn('${a.id}')">
-        <span class="fx-ico">${a.icon || '🎭'}</span><span class="fx-t">${escHtml(a.name)}</span>${fxSw(on)}</button>`; };
-    const aRow = n => {
-      const nOn = !f.offActors.includes(n), esc = jsq(n);
-      const ws = (index.get(n) || []).filter(a => (schedules[a.id] || []).some(s => s.date >= todayStr && getActorFields(s).some(k => s[k] === n)));
+        <span class="fx-ico">${a.icon || '🎭'}</span><span class="fx-t">${escHtml(a.name)}${isFinished(a.id) ? ' ' + doneTag : ''}</span>${fxSw(on)}</button>`; };
+    // 관심 배우
+    const info = H.actors.map(n => ({ n, ws: fxActorWorks(n, f, index, vr) }));
+    const busy = x => f.offActors.includes(x.n) || x.ws.some(w => w.live || w.off || w.inView);
+    const chip = (n, w) => `<button class="fx-w${w.off ? '' : ' on'}${w.live ? '' : ' done'}" role="switch" aria-checked="${!w.off}" onclick="setFilterActorWork('${jsq(n)}','${w.a.id}')">${w.a.icon ? w.a.icon + ' ' : ''}${escHtml(w.a.name)}${w.live ? '' : ' ' + doneTag}</button>`;
+    const aRow = ({ n, ws }) => {
+      const nOn = !f.offActors.includes(n), esc = jsq(n), open = _fxOpenActors.has(n);
+      let vis = ws;
+      if (!open) { let c = 0; vis = ws.filter(w => w.off || ((w.inView || w.live) && c < FX_SHOW && ++c)); }   // 꺼 둔 칩만 제한 밖, 나머지는 정렬 순(보는 기간 → 진행 중) 3개
+      const rest = ws.length - vis.length;
+      const more = rest ? `<button class="fx-more" onclick="_fxOpenActors.add('${esc}');renderActorFilters()">+${rest}</button>`
+        : open && ws.length > FX_SHOW ? `<button class="fx-more" onclick="_fxOpenActors.delete('${esc}');renderActorFilters()">접기</button>` : '';
+      const sub = ws.length ? `<div class="fx-sub">${vis.map(w => chip(n, w)).join('')}${more}</div>` : '<div class="fx-none">등록된 공연에 나오지 않아요</div>';
       return `<div class="fx-li fx-actor${nOn ? '' : ' off'}">
-        <div class="fx-t"><b>${escHtml(actorLabel(n))}</b>
-          ${ws.length ? `<div class="fx-sub">${ws.map(a => { const o = !f.off.includes(offKey(a.id, n));
-            return `<button class="fx-w${o ? ' on' : ''}" role="switch" aria-checked="${o}" onclick="setFilterActorWork('${esc}','${a.id}')">${a.icon ? a.icon + ' ' : ''}${escHtml(a.name)}</button>`; }).join('')}</div>` : ''}</div>
+        <div class="fx-t"><b>${escHtml(actorLabel(n))}</b>${sub}</div>
         <button class="fx-swbtn" role="switch" aria-checked="${nOn}" aria-label="${escHtml(bareName(n))}" onclick="toggleActorOn('${esc}')">${fxSw(nOn)}</button>
       </div>`;
     };
+    const aBusy = info.filter(busy), aIdle = info.filter(x => !busy(x));
+    // 모두 켜기 — ✕ 옆에 있으면 잘못 눌러서(11/28) 꺼 둔 게 있을 때만 맨 위 한 줄로
+    const nOff = f.offWorks.length + f.offActors.length + f.off.length;
     box.innerHTML = `
-      ${H.actors.length ? `<div class="fx-sec"><span>관심 배우</span><small>작품을 눌러 그 작품만 켜고 꺼요</small></div>
-        <div class="fx-card">${H.actors.map(aRow).join('')}</div>` : ''}
+      ${nOff ? `<div class="fx-state"><span>${nOff}개 꺼 둠</span><button class="fx-allon" id="fx-allon" onclick="clearFilter()">모두 켜기</button></div>` : ''}
+      ${H.actors.length ? `<div class="fx-sec"><span>관심 배우</span></div>
+        ${aBusy.length ? `<div class="fx-card">${aBusy.map(aRow).join('')}</div>` : ''}
+        ${aIdle.length ? `<button class="fx-done" id="fx-idle" onclick="_fxIdleOpen=!_fxIdleOpen;renderActorFilters()">지금 공연 없는 배우 ${aIdle.length} <span>${_fxIdleOpen ? '▴' : '▾'}</span></button>
+          ${_fxIdleOpen ? `<div class="fx-card">${aIdle.map(aRow).join('')}</div>` : ''}` : ''}` : ''}
       ${works.length ? `<div class="fx-sec"><span>관심 작품</span></div>
-        ${live.length ? `<div class="fx-card">${live.map(wRow).join('')}</div>` : ''}
-        ${done.length ? `<button class="fx-done" onclick="_fxDoneOpen=!_fxDoneOpen;renderActorFilters()">종료된 작품 ${done.length} <span>${_fxDoneOpen ? '▴' : '▾'}</span></button>
-          ${_fxDoneOpen ? `<div class="fx-card">${done.map(wRow).join('')}</div>` : ''}` : ''}` : ''}`;
+        ${shown.length ? `<div class="fx-card">${shown.map(wRow).join('')}</div>` : ''}
+        ${folded.length ? `<button class="fx-done" id="fx-wdone" onclick="_fxDoneOpen=!_fxDoneOpen;renderActorFilters()">종료된 작품 ${folded.length} <span>${_fxDoneOpen ? '▴' : '▾'}</span></button>
+          ${_fxDoneOpen ? `<div class="fx-card">${folded.map(wRow).join('')}</div>` : ''}` : ''}` : ''}`;
   }
   function toggleWorkOn(id) {
     const f = getFilter();
