@@ -84,6 +84,19 @@
     }
     .hbtn:active { background: var(--bg3); }
     #app-tabs { display: flex; gap: 6px; flex-shrink: 0; position: relative; }   /* 탭 끌기가 offsetLeft 를 이 줄 기준으로 잰다 */
+    /* 탭이 없으면 줄도 칸막이도 없다 (11/28) */
+    .header.no-tabs .hd-sep, .header.no-tabs #app-tabs { display: none; }
+    /* 첫 줄에 안 들어가면 탭만 둘째 줄로 — 옆으로 밀고, 오른쪽 끝은 흐리게 (11/28) */
+    .header.tabs-wrap { flex-wrap: wrap; overflow-x: hidden; row-gap: 8px; }
+    .header.tabs-wrap .hd-sep { display: none; }
+    .header.tabs-wrap #app-tabs {
+      flex: 0 0 calc(100% + 24px); margin: 0 -12px; padding: 0 12px;
+      overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain;
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+    }
+    .header.tabs-wrap #app-tabs::-webkit-scrollbar { display: none; }
+    .header.tabs-wrap #app-tabs.at-end { -webkit-mask-image: none; mask-image: none; }
     .app-btn {
       padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
       white-space: nowrap; flex-shrink: 0; cursor: pointer;
@@ -1875,7 +1888,28 @@
         `<button class="app-btn" id="btn-${app.id}" onclick="switchView('${app.id}')">${app.icon ? app.icon + ' ' : ''}${app.name}</button>`
       ).join('') +
       (hiddenCount ? `<button class="app-btn app-btn-more" onclick="openHiddenApps()" title="숨겨진 공연 열기">+${hiddenCount}</button>` : '');
+    fitTabs();
   }
+  // 탭 줄 자리 정하기 — 한 줄로 놓고 재 본 뒤, 넘치면 둘째 줄로 (11/28)
+  function fitTabs() {
+    const hd = document.querySelector('.header'), strip = document.getElementById('app-tabs');
+    if (!hd || !strip) return;
+    hd.classList.toggle('no-tabs', !strip.children.length);
+    hd.classList.remove('tabs-wrap');
+    const over = strip.children.length && hd.scrollWidth > hd.clientWidth + 1;
+    hd.classList.toggle('tabs-wrap', !!over);
+    if (!over) hd.scrollLeft = 0;
+    tabsEdge();
+  }
+  // 끝까지 밀었으면 흐림을 뗀다
+  function tabsEdge() {
+    const s = document.getElementById('app-tabs');
+    if (s) s.classList.toggle('at-end', s.scrollLeft + s.clientWidth >= s.scrollWidth - 2);
+  }
+  document.getElementById('app-tabs').addEventListener('scroll', tabsEdge, { passive: true });
+  let _fitT = null;
+  window.addEventListener('resize', () => { clearTimeout(_fitT); _fitT = setTimeout(fitTabs, 80); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTabs);
 
   // ── 탭 순서 ── 내 작품 목록(APPS_KEY) 순서가 곧 탭 순서. 탭이 없는 작품(배우 ♡·예매만)은 제자리에 둔다
   const tabApps = () => getApps().filter(a => !a.viaActor);
@@ -1911,11 +1945,14 @@
   (function tabDrag() {
     let timer = null, drag = null, startX = 0, startY = 0, grabDx = 0, lastX = 0, skipClick = false;
     const strip = () => document.getElementById('app-tabs');
-    const scroller = () => document.querySelector('.header');
+    // 둘째 줄일 때는 탭 줄이 스스로 밀린다 (11/28)
+    const scroller = () => { const h = document.querySelector('.header'); return h.classList.contains('tabs-wrap') ? strip() : h; };
+    // offsetLeft 는 탭 줄 안쪽 기준이라 밀린 만큼 뺀다
+    const stripLeft = () => strip().getBoundingClientRect().left - strip().scrollLeft;
     const tabs = () => [...strip().querySelectorAll('.app-btn[id^="btn-"]')];
     // 끄는 탭을 손가락 위치에 둔다 — offsetLeft 는 transform 과 상관없는 제자리라 기준으로 쓴다
     const follow = x => {
-      const left = x - strip().getBoundingClientRect().left - grabDx;
+      const left = x - stripLeft() - grabDx;
       drag.style.transform = `translateX(${left - drag.offsetLeft}px) scale(1.08)`;
     };
     // 자리가 바뀐 옆 탭은 옛 자리에서 새 자리로 미끄러지게 (FLIP)
@@ -1957,7 +1994,7 @@
       const sc = scroller(), r = sc.getBoundingClientRect();
       if (e.clientX < r.left + 30) sc.scrollLeft -= 8; else if (e.clientX > r.right - 30) sc.scrollLeft += 8;
       // 끄는 탭의 가운데가 옆 탭의 가운데를 넘으면 자리를 바꾼다
-      const sl = strip().getBoundingClientRect().left, mid = e.clientX - sl - grabDx + drag.offsetWidth / 2;
+      const sl = stripLeft(), mid = e.clientX - sl - grabDx + drag.offsetWidth / 2;
       const others = tabs().filter(b => b !== drag);
       const before = new Map(others.map(b => [b, b.offsetLeft]));
       const next = others.find(b => b.offsetLeft > drag.offsetLeft && mid > b.offsetLeft + b.offsetWidth / 2);
@@ -2502,6 +2539,7 @@
   function applyStatsBtn() {
     const on = localStorage.getItem(STATS_BTN_KEY) === 'show';
     document.getElementById('stats-btn').hidden = !on;
+    fitTabs();
     const seg = document.getElementById('stats-seg');
     if (seg) seg.innerHTML = [['show', '보이기'], ['hide', '숨기기']].map(([v, n]) =>
       `<button class="seg-btn${(v === 'show') === on ? ' on' : ''}" onclick="lsSet(STATS_BTN_KEY,'${v}');applyStatsBtn()">${n}</button>`).join('');

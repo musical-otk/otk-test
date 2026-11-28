@@ -300,6 +300,19 @@ async def main():
           const a0=vis(); openSettings(); applyStatsBtn(); document.querySelector('#stats-seg button').click(); const a1=vis();
           document.querySelectorAll('#stats-seg button')[1].click(); const a2=vis(); closeSettings(); return [a0,a1,a2]})()""")
         check('📊 버튼: 기본 숨김, 설정에서 보이기·숨기기', got == [False, True, False], got)
+        # 작품 탭 줄 (11/28): 없으면 줄·칸막이 없음, 들어가면 한 줄, 넘치면 아이콘 아래 둘째 줄
+        got = await e2("""(()=>{const keep=localStorage.getItem(APPS_KEY), kv=localStorage.getItem(HIDDEN_KEY);
+          const mk=i=>({id:'show_fk'+i,name:'가짜'+i,icon:'',color:'#888',scheduleUrl:'xfk'+i,appUrl:'',kind:'data',recordsKey:'kfk'+i});
+          const hd=document.querySelector('.header'), sep=document.querySelector('.hd-sep'), tabs=document.getElementById('app-tabs'), heart=document.querySelector('.hbtn-heart');
+          const st=()=>[hd.classList.contains('tabs-wrap'), sep.offsetParent!==null, tabs.children.length?tabs.getBoundingClientRect().top>=heart.getBoundingClientRect().bottom:null, document.documentElement.scrollWidth<=innerWidth];
+          localStorage.removeItem(HIDDEN_KEY);
+          saveApps([]);renderTabs();const a=st();
+          saveApps([0,1].map(mk));renderTabs();const b=st();
+          saveApps([0,1,2,3,4,5,6,7].map(mk));renderTabs();const c=st();
+          if(keep) localStorage.setItem(APPS_KEY,keep); else localStorage.removeItem(APPS_KEY);
+          if(kv) localStorage.setItem(HIDDEN_KEY,kv);
+          renderTabs();highlightTab(currentView);return [a,b,c]})()""")
+        check('작품 탭 줄: 0개 줄 없음 · 2개 한 줄 · 8개 둘째 줄', got == [[False, False, None, True], [False, True, False, True], [True, False, True, True]], got)
         got = await e2("""(()=>{_stMonth='2026-11';openStats();const el=document.getElementById('st-body');
           const tc=(type,x)=>{const tt=new Touch({identifier:1,target:el,clientX:x,clientY:300});el.dispatchEvent(new TouchEvent(type,{touches:type==='touchstart'?[tt]:[],changedTouches:[tt],bubbles:true}))};
           tc('touchstart',300);tc('touchend',150);const a=_stMonth;tc('touchstart',100);tc('touchend',260);tc('touchstart',100);tc('touchend',260);
