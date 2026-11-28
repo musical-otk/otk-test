@@ -308,7 +308,7 @@ async def main():
           openFilter(); const q=s=>document.querySelector(s);
           const r0=[q('#fx-allon').hidden, q('.fx-li[role=switch]').getAttribute('aria-checked')];
           q('.fx-li[role=switch]').click(); const r1=[getFilter().offWorks.includes(a.id), q('#fx-allon').hidden, q('.fx-li[role=switch]').classList.contains('off')];
-          const w=q('.fx-w'); w.click(); const r2=[getFilter().off.length, !!q('.fx-w.x')];
+          const w=q('.fx-w'); w.click(); const r2=[getFilter().off.length, q('.fx-w').getAttribute('aria-checked')==='false'];
           q('#fx-allon').click(); const r3=[filterActive(), q('#fx-allon').hidden];
           closeFilter(); if(keepH) localStorage.setItem(HEARTS_KEY,keepH); else localStorage.removeItem(HEARTS_KEY); _hearts=null;
           if(keepF) localStorage.setItem(FILTER_KEY,keepF); else localStorage.removeItem(FILTER_KEY);

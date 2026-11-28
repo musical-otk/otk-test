@@ -307,9 +307,13 @@
     .fx-t { flex: 1; min-width: 0; font-size: 14px; font-weight: 600; color: var(--text1); overflow-wrap: anywhere; }
     .fx-t b { font-weight: 700; }
     .fx-li.off .fx-ico, .fx-li.off .fx-t { opacity: .4; }
-    .fx-sub { display: flex; flex-wrap: wrap; gap: 2px 10px; margin-top: 3px; }
-    .fx-w { font: inherit; font-size: 12px; font-weight: 500; color: var(--text2); background: none; border: none; padding: 2px 0; cursor: pointer; }
-    .fx-w.x { color: var(--text3); text-decoration: line-through; }
+    .fx-sub { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 7px; }
+    /* 배우가 나오는 작품 — 켜진 것은 ✓ 와 옅은 바탕, 꺼진 것은 테두리만 (특정 극만 켜기, 11/28) */
+    .fx-w { font: inherit; font-size: 12px; font-weight: 500; color: var(--text3); background: none; border: 1px solid var(--border);
+            border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+    .fx-w.on { color: var(--text1); background: var(--bg3); border-color: transparent; }
+    .fx-w.on::before { content: '✓ '; color: var(--custom); font-weight: 700; }
+    .fx-li.off .fx-w { opacity: .5; }
     .fx-swbtn { background: none; border: none; padding: 4px; margin: -4px; cursor: pointer; }
     .fx-sw { display: block; width: 40px; height: 24px; border-radius: 999px; background: var(--border); position: relative; flex-shrink: 0; transition: background .15s; }
     .fx-sw i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.2); transition: left .15s; }
@@ -4615,17 +4619,17 @@
       return `<div class="fx-li fx-actor${nOn ? '' : ' off'}">
         <div class="fx-t"><b>${escHtml(actorLabel(n))}</b>
           ${ws.length ? `<div class="fx-sub">${ws.map(a => { const o = !f.off.includes(offKey(a.id, n));
-            return `<button class="fx-w${o ? '' : ' x'}" onclick="setFilterActorWork('${esc}','${a.id}')">${a.icon ? a.icon + ' ' : ''}${escHtml(a.name)}</button>`; }).join('')}</div>` : ''}</div>
+            return `<button class="fx-w${o ? ' on' : ''}" role="switch" aria-checked="${o}" onclick="setFilterActorWork('${esc}','${a.id}')">${a.icon ? a.icon + ' ' : ''}${escHtml(a.name)}</button>`; }).join('')}</div>` : ''}</div>
         <button class="fx-swbtn" role="switch" aria-checked="${nOn}" aria-label="${escHtml(bareName(n))}" onclick="toggleActorOn('${esc}')">${fxSw(nOn)}</button>
       </div>`;
     };
     box.innerHTML = `
+      ${H.actors.length ? `<div class="fx-sec"><span>관심 배우</span><small>작품을 눌러 그 작품만 켜고 꺼요</small></div>
+        <div class="fx-card">${H.actors.map(aRow).join('')}</div>` : ''}
       ${works.length ? `<div class="fx-sec"><span>관심 작품</span></div>
         ${live.length ? `<div class="fx-card">${live.map(wRow).join('')}</div>` : ''}
         ${done.length ? `<button class="fx-done" onclick="_fxDoneOpen=!_fxDoneOpen;renderActorFilters()">종료된 작품 ${done.length} <span>${_fxDoneOpen ? '▴' : '▾'}</span></button>
-          ${_fxDoneOpen ? `<div class="fx-card">${done.map(wRow).join('')}</div>` : ''}` : ''}` : ''}
-      ${H.actors.length ? `<div class="fx-sec"><span>관심 배우</span><small>작품 이름을 누르면 그 작품에서만 빼요</small></div>
-        <div class="fx-card">${H.actors.map(aRow).join('')}</div>` : ''}`;
+          ${_fxDoneOpen ? `<div class="fx-card">${done.map(wRow).join('')}</div>` : ''}` : ''}` : ''}`;
   }
   function toggleWorkOn(id) {
     const f = getFilter();
